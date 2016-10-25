@@ -29,6 +29,7 @@ public class TopView extends View implements View.OnTouchListener {
     private static final int ICON_H = 150;
     private static final int MOVING_TIME = 10;
 
+    // アイコンの上下左右の空白
     private static final int ICON_MARGIN = 50;
     private boolean firstDraw = false;
     private int skipFrame = 3;  // n回に1回描画
@@ -37,10 +38,6 @@ public class TopView extends View implements View.OnTouchListener {
     // サイズ更新用
     private boolean resetSize;
     private int newWidth, newHeight;
-
-    // アイコン表示領域
-    private int contentWidth, contentHeight;
-    private float scrollX, scrollY;
 
     // アイコンを動かす仕組み
     private IconBase dragIcon;
@@ -186,7 +183,16 @@ public class TopView extends View implements View.OnTouchListener {
         if (width == 0) {
             width = getWidth();
         }
-        int column = width / (ICON_W + 20);
+
+        int column = 0;
+        int w = ICON_MARGIN;
+        while(true) {
+            w += ICON_W + ICON_MARGIN;
+            if (w >= width) {
+                break;
+            }
+            column++;
+        }
         if (column <= 0) {
             return;
         }
@@ -195,8 +201,8 @@ public class TopView extends View implements View.OnTouchListener {
         if (animate) {
             int i=0;
             for (IconBase icon : icons) {
-                int x = (i%column) * (ICON_W + 20);
-                int y = (i/column) * (ICON_H + 20);
+                int x = ICON_MARGIN + (i%column) * (ICON_W + ICON_MARGIN);
+                int y = ICON_MARGIN + (i/column) * (ICON_H + ICON_MARGIN);
                 if ( y > maxHeight ) {
                     maxHeight = y;
                 }
@@ -209,8 +215,8 @@ public class TopView extends View implements View.OnTouchListener {
         else {
             int i=0;
             for (IconBase icon : icons) {
-                int x = (i%column) * (ICON_W + 20);
-                int y = (i/column) * (ICON_H + 20);
+                int x = ICON_MARGIN + (i%column) * (ICON_W + ICON_MARGIN);
+                int y = ICON_MARGIN + (i/column) * (ICON_H + ICON_MARGIN);
                 if ( y > maxHeight ) {
                     maxHeight = y;
                 }
@@ -218,7 +224,7 @@ public class TopView extends View implements View.OnTouchListener {
                 i++;
             }
         }
-        setSize(width, maxHeight + (ICON_H + 20) * 2);
+        setSize(width, maxHeight + (ICON_H + ICON_MARGIN) * 2);
     }
 
     /**
