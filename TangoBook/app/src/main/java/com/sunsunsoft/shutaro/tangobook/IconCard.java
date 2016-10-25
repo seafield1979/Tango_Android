@@ -9,27 +9,28 @@ import android.graphics.Paint;
  */
 
 public class IconCard extends IconBase {
-    public IconCard(int x, int y, int width, int height) {
-        super(IconType.RECT, x,y,width,height);
+    protected int radius;
+
+    public IconCard(int x, int y, int width) {
+        super(IconType.CIRCLE, x,y,width,width);
 
         color = Color.rgb(0,255,255);
+        this.radius = width / 2;
     }
 
     public void draw(Canvas canvas, Paint paint) {
         // 線の種類
         paint.setStyle(Paint.Style.STROKE);
         // 線の太さ
-        paint.setStrokeWidth(1);
-        // 内部を塗りつぶし
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setStrokeWidth(10);
         // 色
         paint.setColor(color);
 
-        canvas.drawRect((float)x,
-                (float)y,
-                (float)(x + width),
-                (float)(y + height),
-                paint);
+        // 塗りつぶし
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+        // x,yが円を囲む矩形の左上にくるように座標を調整
+        canvas.drawCircle(x+radius, y+radius, radius, paint);
 
         drawId(canvas, paint);
     }

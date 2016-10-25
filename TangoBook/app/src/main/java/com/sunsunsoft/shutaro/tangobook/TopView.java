@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -15,21 +16,31 @@ import java.util.LinkedList;
 /**
  * アイコンの整列とアニメーション、挿入のテスト
  */
-public class IconsView extends View implements View.OnTouchListener {
+public class TopView extends View implements View.OnTouchListener {
     enum viewState {
         none,
         drag,               // アイコンのドラッグ中
         icon_moving,        // アイコンの一変更後の移動中
     }
 
-    private static final int RECT_ICON_NUM = 10;
-    private static final int CIRCLE_ICON_NUM = 10;
+    private static final int RECT_ICON_NUM = 20;
+    private static final int CIRCLE_ICON_NUM = 20;
     private static final int ICON_W = 200;
     private static final int ICON_H = 150;
     private static final int MOVING_TIME = 10;
+
+    private static final int ICON_MARGIN = 50;
     private boolean firstDraw = false;
     private int skipFrame = 3;  // n回に1回描画
     private int skipCount;
+
+    // サイズ更新用
+    private boolean resetSize;
+    private int newWidth, newHeight;
+
+    // アイコン表示領域
+    private int contentWidth, contentHeight;
+    private float scrollX, scrollY;
 
     // アイコンを動かす仕組み
     private IconBase dragIcon;
@@ -41,18 +52,23 @@ public class IconsView extends View implements View.OnTouchListener {
     private viewState state = viewState.none;
 
     private Paint paint = new Paint();
-    private TouchEventCallbacks _callbacks;
     private LinkedList<IconBase> icons = new LinkedList<IconBase>();
 
-    public void setCallbacks(TouchEventCallbacks callbacks){
-        _callbacks = callbacks;
+    // get/set
+    public void setSize(int width, int height) {
+        resetSize = true;
+        newWidth = width;
+        newHeight = height;
+        Log.d("topview", "setSize:" + width + " " + height);
+        setLayoutParams(new LinearLayout.LayoutParams(width, height));
     }
 
-    public IconsView(Context context) {
+
+    public TopView(Context context) {
         this(context, null);
     }
 
-    public IconsView(Context context, AttributeSet attrs) {
+    public TopView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setOnTouchListener(this);
 
@@ -76,7 +92,7 @@ public class IconsView extends View implements View.OnTouchListener {
         }
 
         for (int i=0; i<CIRCLE_ICON_NUM; i++) {
-            IconBase icon = new IconCard(0, 0, ICON_W, ICON_H);
+            IconBase icon = new IconCard(0, 0, ICON_H);
             icons.add(icon);
             int color = 0;
             switch (i%3) {
@@ -95,13 +111,30 @@ public class IconsView extends View implements View.OnTouchListener {
 
     }
 
+    /**
+     * Viewのサイズを指定する
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
     @Override
-    public void onDraw(Canvas canvas) {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.d("topview", "onMeasure " + widthMeasureSpec + " " + heightMeasureSpec);
         if (firstDraw == false) {
             firstDraw = true;
-            sortRects(false);
+            sortRects(false, MeasureSpec.getSize(widthMeasureSpec));
         }
 
+        if (resetSize) {
+            int width = MeasureSpec.EXACTLY | newWidth;
+            int height = MeasureSpec.EXACTLY | newHeight;
+            setMeasuredDimension(width, height);
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+    }
+
+    @Override
+    public void onDraw(Canvas canvas) {
         // 背景塗りつぶし
         canvas.drawColor(Color.WHITE);
 
@@ -147,16 +180,26 @@ public class IconsView extends View implements View.OnTouchListener {
      * Viewのサイズが確定した時点で呼び出す
      */
     public void sortRects(boolean animate) {
-        int column = this.getWidth() / (ICON_W + 20);
+        sortRects(animate, 0);
+    }
+    public void sortRects(boolean animate, int width) {
+        if (width == 0) {
+            width = getWidth();
+        }
+        int column = width / (ICON_W + 20);
         if (column <= 0) {
             return;
         }
 
+        int maxHeight = 0;
         if (animate) {
             int i=0;
             for (IconBase icon : icons) {
                 int x = (i%column) * (ICON_W + 20);
                 int y = (i/column) * (ICON_H + 20);
+                if ( y > maxHeight ) {
+                    maxHeight = y;
+                }
                 icon.startMove(x,y,MOVING_TIME);
                 i++;
             }
@@ -168,23 +211,43 @@ public class IconsView extends View implements View.OnTouchListener {
             for (IconBase icon : icons) {
                 int x = (i%column) * (ICON_W + 20);
                 int y = (i/column) * (ICON_H + 20);
+                if ( y > maxHeight ) {
+                    maxHeight = y;
+                }
                 icon.setPos(x, y);
                 i++;
             }
         }
+        setSize(width, maxHeight + (ICON_H + 20) * 2);
+    }
+
+    /**
+     * アイコンをタッチする処理
+     * @param vt
+     * @return
+     */
+    private boolean touchIcons(ViewTouch vt) {
+        for (IconBase icon : icons) {
+            if (icon.checkClick(vt.touchX, vt.touchY)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * アイコンをクリックする処理
      * @param vt
+     * @return アイコンがクリックされたらtrue
      */
-    private void clickIcons(ViewTouch vt) {
+    private boolean clickIcons(ViewTouch vt) {
         // どのアイコンがクリックされたかを判定
         for (IconBase icon : icons) {
             if (icon.checkClick(vt.touchX, vt.touchY)) {
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     /**
@@ -199,9 +262,10 @@ public class IconsView extends View implements View.OnTouchListener {
      * アイコンをドラッグ開始
      * @param vt
      */
-    private void dragStart(ViewTouch vt) {
+    private boolean dragStart(ViewTouch vt) {
         // タッチされたアイコンを選択する
         // 一番上のアイコンからタッチ判定したいのでリストを逆順（一番手前から）で参照する
+        boolean ret = false;
         Collections.reverse(icons);
         for (IconBase icon : icons) {
             // 座標判定
@@ -209,20 +273,26 @@ public class IconsView extends View implements View.OnTouchListener {
                     icon.y <= vt.touchY && vt.touchY < icon.getBottom())
             {
                 dragIcon = icon;
+                ret = true;
                 break;
             }
         }
         Collections.reverse(icons);
 
-        state = viewState.drag;
-
-        invalidate();
+        if (ret) {
+            state = viewState.drag;
+            invalidate();
+            return true;
+        }
+        return ret;
     }
 
-    private void dragMove(ViewTouch vt) {
+    private boolean dragMove(ViewTouch vt) {
         // ドラッグ中のアイコンを移動
+        boolean ret = false;
         if (dragIcon != null) {
             dragIcon.move((int)vt.moveX, (int)vt.moveY);
+            ret = true;
         }
 
         skipCount++;
@@ -230,12 +300,19 @@ public class IconsView extends View implements View.OnTouchListener {
             invalidate();
             skipCount = 0;
         }
+        return ret;
     }
 
-    private void dragEnd(ViewTouch vt) {
+    /**
+     * ドラッグ終了時の処理
+     * @param vt
+     * @return
+     */
+    private boolean dragEnd(ViewTouch vt) {
         // ドロップ処理
         // 他のアイコンの上にドロップされたらドロップ処理を呼び出す
-        if (dragIcon == null) return;
+        if (dragIcon == null) return false;
+        boolean ret = false;
 
         boolean isDroped = false;
         for (IconBase icon : icons) {
@@ -271,6 +348,7 @@ public class IconsView extends View implements View.OnTouchListener {
                         break;
                 }
                 isDroped = true;
+                ret = true;
                 break;
             }
         }
@@ -293,6 +371,7 @@ public class IconsView extends View implements View.OnTouchListener {
         }
 
         dragIcon = null;
+        return ret;
     }
 
     public boolean onTouch(View v, MotionEvent e) {
@@ -307,21 +386,36 @@ public class IconsView extends View implements View.OnTouchListener {
             Log.v("view5", "Long Touch");
         }
 
+        boolean done = false;
         switch(touchType) {
+            case Touch:
+                if (touchIcons(viewTouch)) {
+                    done = true;
+                }
+                break;
             case Click:
-                clickIcons(viewTouch);
+                if (clickIcons(viewTouch)) {
+                    done = true;
+                }
                 break;
             case LongClick:
                 longClickIcons(viewTouch);
+                done = true;
                 break;
             case MoveStart:
-                dragStart(viewTouch);
+                if (dragStart(viewTouch)) {
+                    done = true;
+                }
                 break;
             case Moving:
-                dragMove(viewTouch);
+                if (dragMove(viewTouch)) {
+                    done = true;
+                }
                 break;
             case MoveEnd:
-                dragEnd(viewTouch);
+                if (dragEnd(viewTouch)) {
+                    done = true;
+                }
                 break;
             case MoveCancel:
                 sortRects(false);
@@ -329,23 +423,21 @@ public class IconsView extends View implements View.OnTouchListener {
                 invalidate();
                 break;
         }
+        if (done) {
+            // 何かしらアイコンに対するタッチ処理が行われたのでScrollViewのスクロールは行わない
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+        }
 
         switch(e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 // trueを返す。こうしないと以降のMoveイベントが発生しなくなる。
                 ret = true;
-                if (dragIcon != null) {
-                    _callbacks.touchCallback(e.getAction());
-                }
                 break;
             case MotionEvent.ACTION_UP:
                 ret = true;
-
-                _callbacks.touchCallback(e.getAction());
                 break;
             case MotionEvent.ACTION_MOVE:
                 ret = true;
-                _callbacks.touchCallback(e.getAction());
                 break;
             default:
         }

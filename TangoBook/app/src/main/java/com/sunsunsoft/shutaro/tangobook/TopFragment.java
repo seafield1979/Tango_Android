@@ -15,12 +15,10 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 
 
-public class TopFragment extends Fragment implements OnClickListener, OnTouchListener,
-        TouchEventCallbacks{
+public class TopFragment extends Fragment implements OnClickListener, OnTouchListener{
     private final static String BACKGROUND_COLOR = "background_color";
-    private Button updateButton;
-    private Button showIdButton;
-    private IconsView myView;
+    private TopView myView;
+    private Button button1;
 
     public static TopFragment newInstance(@ColorRes int IdRes) {
         TopFragment frag = new TopFragment();
@@ -42,53 +40,21 @@ public class TopFragment extends Fragment implements OnClickListener, OnTouchLis
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.fragment_page_linearlayout);
         linearLayout.setBackgroundResource(getArguments().getInt(BACKGROUND_COLOR));
 
-        updateButton = (Button)view.findViewById(R.id.button);
-        updateButton.setOnClickListener(this);
+        myView = (TopView)view.findViewById(R.id.IconsView);
+        Log.v("topfragment", view.getWidth() + " " + myView.getHeight());
 
-        showIdButton = (Button)view.findViewById(R.id.button2);
-        showIdButton.setOnClickListener(this);
-
-        myView = (IconsView)view.findViewById(R.id.IconsView);
-        myView.setCallbacks(this);
+        button1 = (Button)view.findViewById(R.id.button);
+        button1.setOnClickListener(this);
 
         return view;
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button:
-                myView.sortRects(true);
-                myView.invalidate();
-                break;
-            case R.id.button2:
-                TopViewSettings.drawIconId = !TopViewSettings.drawIconId;
-                myView.invalidate();
-                break;
+        if (v.getId() == R.id.button) {
+            myView.setLayoutParams(new LinearLayout.LayoutParams(1000, 2000));
         }
     }
-
     public boolean onTouch(View v, MotionEvent e) {
         return true;
-    }
-
-    //TouchEventCallbacks
-    // 子Viewをタッチしている最中はスクロールしないようにする
-    public void touchCallback(int action) {
-//        switch (action) {
-//            case MotionEvent.ACTION_DOWN:
-//            {
-//                HoldableViewPager viewPager = (HoldableViewPager)getActivity().findViewById(R.id.main_viewpager);
-//                viewPager.setSwipeHold(true);
-//            }
-//            break;
-//            case MotionEvent.ACTION_UP:
-//            case MotionEvent.ACTION_CANCEL:
-//            {
-//                HoldableViewPager viewPager = (HoldableViewPager)getActivity().findViewById(R.id.main_viewpager);
-//                viewPager.setSwipeHold(false);
-//            }
-//            break;
-//            default:
-//        }
     }
 }

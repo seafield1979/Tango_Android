@@ -9,6 +9,7 @@ import java.util.TimerTask;
 
 enum TouchType {
     None,
+    Touch,
     Click,        // ただのクリック（タップ)
     LongClick,    // 長クリック
     MoveStart,    // 移動開始
@@ -90,7 +91,7 @@ public class ViewTouch {
                 isTouching = true;
                 touchX = e.getX();
                 touchY = e.getY();
-                type = TouchType.None;
+                type = TouchType.Touch;
                 touchTime = System.currentTimeMillis();
                 startLongTouchTimer();
             }

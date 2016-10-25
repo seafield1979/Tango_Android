@@ -7,28 +7,25 @@
               android:background="@android:color/holo_blue_dark"
               android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <Button
+        android:text="test"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <Button
-            android:text="update"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:id="@+id/button"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/button"/>
 
-        <Button
-            android:text="show id"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:id="@+id/button2"/>
-
-    </LinearLayout>
-
-    <com.sunsunsoft.shutaro.tangobook.IconsView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/IconsView"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.sunsunsoft.shutaro.tangobook.TopView
+                android:layout_width="match_parent"
+                android:layout_height="1000dp"
+                android:id="@+id/IconsView"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

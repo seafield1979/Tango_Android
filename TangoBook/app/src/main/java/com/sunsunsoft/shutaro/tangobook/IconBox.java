@@ -16,10 +16,6 @@ public class IconBox extends IconBase{
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        // 線の種類
-        paint.setStyle(Paint.Style.STROKE);
-        // 線の太さ
-        paint.setStrokeWidth(1);
         // 内部を塗りつぶし
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         // 色
