@@ -33,6 +33,14 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "ページ" + (position + 1);
+        switch (position) {
+            case 0:
+                return "Card";
+            case 1:
+                return "Book";
+            case 2:
+                return "Box";
+        }
+        return "blank";
     }
 }
