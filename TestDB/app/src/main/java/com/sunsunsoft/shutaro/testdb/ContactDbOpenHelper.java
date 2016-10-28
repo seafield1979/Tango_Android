@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Contactテーブルを作成する
+ * Contactデータベース用のヘルパー
  */
 public class ContactDbOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "ContactDbOpenHelper";
