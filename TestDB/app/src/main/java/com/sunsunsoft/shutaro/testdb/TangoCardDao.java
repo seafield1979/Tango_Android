@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
@@ -26,8 +27,6 @@ public class TangoCardDao {
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
         mRealm = Realm.getDefaultInstance();
-
-        Log.d("---------", "path: " + mRealm.getPath());
     }
 
     /**
@@ -44,7 +43,6 @@ public class TangoCardDao {
 
         return list;
     }
-
 
     /**
      * 要素を追加
@@ -64,6 +62,79 @@ public class TangoCardDao {
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(card);
+        mRealm.commitTransaction();
+    }
+
+    /**
+     * 要素を更新
+     */
+    public void updateOne(int id, String wordA, String wordB) {
+        mRealm.beginTransaction();
+        TangoCard card = mRealm.where(TangoCard.class).equalTo("id", id).findFirst();
+        card.setWordA(wordA);
+        card.setWordB(wordB);
+
+        mRealm.commitTransaction();
+    }
+
+    /**
+     * IDのリストに一致する項目を全て更新する
+     * @param ids
+     * @param wordA  更新するA
+     * @param wordB  更新するB
+     */
+    public void updateIds(Integer[] ids, String wordA, String wordB) {
+        mRealm.beginTransaction();
+
+        // Build the query looking at all users:
+        RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
+
+        // Add query conditions:
+        boolean isFirst = true;
+        for (int id : ids) {
+            if (isFirst) {
+                isFirst = false;
+                query.equalTo("id", id);
+            } else {
+                query.or().equalTo("id", id);
+            }
+        }
+        // Execute the query:
+        RealmResults<TangoCard> results = query.findAll();
+
+        for (TangoCard card : results) {
+            card.setWordA(wordA);
+            card.setWordB(wordB);
+        }
+
+        mRealm.commitTransaction();
+    }
+
+    /**
+     * IDのリストに一致する項目を全て削除する
+     */
+    public void deleteIds(Integer[] ids) {
+        if (ids.length <= 0) return;
+
+        mRealm.beginTransaction();
+
+        // Build the query looking at all users:
+        RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
+
+        // Add query conditions:
+        boolean isFirst = true;
+        for (int id : ids) {
+            if (isFirst) {
+                isFirst = false;
+                query.equalTo("id", id);
+            } else {
+                query.or().equalTo("id", id);
+            }
+        }
+        // Execute the query:
+        RealmResults<TangoCard> results = query.findAll();
+
+        results.deleteAllFromRealm();
         mRealm.commitTransaction();
     }
 

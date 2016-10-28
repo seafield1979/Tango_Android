@@ -18,17 +18,18 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import android.widget.Toast;
 
+import java.util.LinkedList;
 import java.util.List;
 
-public class TangoCardFragment extends Fragment implements OnClickListener, OnItemClickListener {
+public class TangoCardFragment extends Fragment implements OnClickListener {
     private final static String BACKGROUND_COLOR = "background_color";
 
     // データベースモデル
     TangoCardDao mCardDao;
 
     private ListView listView;
-    private Button button1, button2, button3;
-    private EditText nameEdit, idEdit;
+    private Button[] buttons = new Button[4];
+    private EditText wordAEdit, wordBEdit;
 
     public static TangoCardFragment newInstance(@ColorRes int IdRes) {
         TangoCardFragment frag = new TangoCardFragment();
@@ -53,15 +54,17 @@ public class TangoCardFragment extends Fragment implements OnClickListener, OnIt
         listView = (ListView)view.findViewById(R.id.listView);
 
 
-        button1 = (Button)view.findViewById(R.id.button);
-        button2 = (Button)view.findViewById(R.id.button2);
-        button3 = (Button)view.findViewById(R.id.button3);
-        nameEdit = (EditText)view.findViewById(R.id.editText);
-        idEdit = (EditText)view.findViewById(R.id.editText2);
+        buttons[0] = (Button)view.findViewById(R.id.button);
+        buttons[1] = (Button)view.findViewById(R.id.button2);
+        buttons[2] = (Button)view.findViewById(R.id.button3);
+        buttons[3] = (Button)view.findViewById(R.id.button4);
 
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
-        button3.setOnClickListener(this);
+        wordAEdit = (EditText)view.findViewById(R.id.editText);
+        wordBEdit = (EditText)view.findViewById(R.id.editText2);
+
+        for (Button button : buttons) {
+            button.setOnClickListener(this);
+        }
 
         // DAOの準備
         mCardDao = new TangoCardDao(getActivity());
@@ -80,12 +83,13 @@ public class TangoCardFragment extends Fragment implements OnClickListener, OnIt
                 showList();
                 break;
             case R.id.button2:
-                mCardDao.add1("hoge","ほげ");
-                showList();
+                addItem();
                 break;
             case R.id.button3:
+                updateItem();
                 break;
             case R.id.button4:
+                deleteItem();
                 break;
         }
     }
@@ -99,13 +103,63 @@ public class TangoCardFragment extends Fragment implements OnClickListener, OnIt
         listView.setAdapter(adapter);
     }
 
+    /**
+     * 項目を追加する
+     */
+    private void addItem() {
+        String wordA = wordAEdit.getText().toString();
+        String wordB = wordBEdit.getText().toString();
 
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TangoCardAdapter adapter = (TangoCardAdapter)listView.getAdapter();
-        TangoCard data = (TangoCard)adapter.getItem(position);
-        data.setWordA("hogehogehoge");
-        adapter.notifyDataSetChanged();
+        mCardDao.add1(wordA, wordB);
+        showList();
     }
+
+    /**
+     * チェックされた項目を更新する
+     */
+    private void updateItem() {
+        String wordA = wordAEdit.getText().toString();
+        String wordB = wordBEdit.getText().toString();
+
+        // チェックされた項目のIDを取得する
+        Integer[] checkedIds = getCheckedIds();
+
+        mCardDao.updateIds(checkedIds, wordA, wordB);
+        showList();
+    }
+
+    /**
+     * チェックされた項目を削除する
+     */
+    private void deleteItem() {
+        Integer[] checkedIds = getCheckedIds();
+
+        mCardDao.deleteIds(checkedIds);
+        showList();
+    }
+
+    /**
+     * チェックされた項目のIDを取得する
+     */
+    protected Integer[] getCheckedIds() {
+        // チェックされた項目のIDを取得する
+        LinkedList<Integer> idsList = new LinkedList<Integer>();
+        TangoCardAdapter adapter = (TangoCardAdapter) listView.getAdapter();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            TangoCard card = adapter.getItem(i);
+            if (card.getIsChecked()) {
+                idsList.add(card.getId());
+            }
+        }
+        return idsList.toArray(new Integer[0]);
+    }
+
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        TangoCardAdapter adapter = (TangoCardAdapter)listView.getAdapter();
+//        TangoCard data = (TangoCard)adapter.getItem(position);
+//        //data.setWordA("hogehogehoge");
+//        adapter.notifyDataSetChanged();
+//    }
 
     // Toast を表示する
     // x,y はデフォルトの表示位置(画面中央)からのオフセット

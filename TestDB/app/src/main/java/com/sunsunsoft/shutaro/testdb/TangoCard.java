@@ -68,6 +68,7 @@ public class TangoCard extends RealmObject{
     public Date getStudyTime() { return studyTime; }
     public void setStudyTime(Date studyTime) { this.studyTime = studyTime; }
 
+    public boolean getIsChecked() { return isChecked; }
     public void setChecked(boolean checked) {
         isChecked = checked;
     }

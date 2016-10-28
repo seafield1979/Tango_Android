@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:text="Name"
+            android:text="A"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,10 +67,9 @@
             android:ems="10"
             android:id="@+id/editText"
             android:background="@android:color/background_light"
-            tools:text="aaa"
-            android:text="aaa"/>
+            android:text="hoge"/>
         <TextView
-            android:text="ID"
+            android:text="B"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -84,8 +83,7 @@
             android:ems="10"
             android:id="@+id/editText2"
             android:background="@android:color/background_light"
-            tools:text="123"
-            android:text="123"/>
+            android:text="ほげ"/>
     </LinearLayout>
 
 
@@ -93,6 +91,6 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="30dp"/>
 
 </LinearLayout>
