@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.testdb;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -25,7 +26,7 @@ import android.widget.Toast;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TangoCardFragment extends Fragment implements OnClickListener, TCardDialogFragment.OnOkClickListener {
+public class TangoBookFragment extends Fragment implements OnClickListener, TBookDialogFragment.OnOkClickListener {
     // Enums
     enum DialogMode {
         Add,
@@ -36,7 +37,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
     public static final int REQUEST_CODE = 1;
 
     // データベースモデル
-    TangoCardDao mCardDao;
+    TangoBookDao mBookDao;
 
     private ListView listView;
     private Button[] buttons = new Button[4];
@@ -51,8 +52,8 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
      * @param IdRes
      * @return
      */
-    public static TangoCardFragment newInstance(@ColorRes int IdRes) {
-        TangoCardFragment frag = new TangoCardFragment();
+    public static TangoBookFragment newInstance(@ColorRes int IdRes) {
+        TangoBookFragment frag = new TangoBookFragment();
         Bundle b = new Bundle();
         b.putInt(BACKGROUND_COLOR, IdRes);
         frag.setArguments(b);
@@ -84,7 +85,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
         }
 
         // DAOの準備
-        mCardDao = new TangoCardDao();
+        mBookDao = new TangoBookDao(getActivity());
 
         showList();
         return view;
@@ -115,22 +116,22 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
      * ListViewを最新のレコードで更新する
      */
     private void showList() {
-        List<TangoCard> cards = mCardDao.selectAll();
-        TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
+        List<TangoBook> books = mBookDao.selectAll();
+        TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
         listView.setAdapter(adapter);
     }
 
     /**
      * チェックされた項目を１つ更新する
-     * @param card
+     * @param book
      */
-    private void updateCheckedItemOne(TangoCard card) {
+    private void updateCheckedItemOne(TangoBook book) {
         // チェックされた項目のIDを取得する
         Integer[] checkedIds = getCheckedIds();
 
         if (checkedIds.length <= 0) return;
 
-        mCardDao.updateById(checkedIds[0], card);
+        mBookDao.updateOne(checkedIds[0], book);
         showList();
     }
 
@@ -140,7 +141,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
     private void deleteItems() {
         Integer[] checkedIds = getCheckedIds();
 
-        mCardDao.deleteIds(checkedIds);
+        mBookDao.deleteIds(checkedIds);
         showList();
     }
 
@@ -150,11 +151,11 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
     protected Integer[] getCheckedIds() {
         // チェックされた項目のIDを取得する
         LinkedList<Integer> idsList = new LinkedList<Integer>();
-        TangoCardAdapter adapter = (TangoCardAdapter) listView.getAdapter();
+        TangoBookAdapter adapter = (TangoBookAdapter) listView.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
-            TangoCard card = adapter.getItem(i);
-            if (card.getIsChecked()) {
-                idsList.add(card.getId());
+            TangoBook book = adapter.getItem(i);
+            if (book.isChecked()) {
+                idsList.add(book.getId());
             }
         }
         return idsList.toArray(new Integer[0]);
@@ -165,8 +166,8 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
      */
     protected void addItemByDialog() {
         dialogMode = DialogMode.Add;
-        DialogFragment dialogFragment = TCardDialogFragment.createInstance(null);
-        dialogFragment.setTargetFragment(TangoCardFragment.this, 0);
+        DialogFragment dialogFragment = TBookDialogFragment.createInstance(null);
+        dialogFragment.setTargetFragment(TangoBookFragment.this, 0);
         dialogFragment.show(getFragmentManager(), "fragment_dialog");
     }
 
@@ -178,60 +179,54 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
         Integer[] ids = getCheckedIds();
         if (ids.length <= 0) return;
 
+        TangoBook book = mBookDao.selectById(ids[0]);
+
+        if (book == null) return;
+
         dialogMode = DialogMode.Update;
-        TangoCard card = mCardDao.selectById(ids[0]);
-
-        if (card == null) return;
-
-        DialogFragment dialogFragment = TCardDialogFragment.createInstance(card);
-        dialogFragment.setTargetFragment(TangoCardFragment.this, 0);
+        DialogFragment dialogFragment = TBookDialogFragment.createInstance(book);
+        dialogFragment.setTargetFragment(TangoBookFragment.this, 0);
         dialogFragment.show(getFragmentManager(), "fragment_dialog");
     }
 
     /*
-     * TCardDialogActivityからコールバックされるメソッド
+     * TBookDialogActivityからコールバックされるメソッド
      */
     @Override
     public void onOkClicked(Bundle args) {
         if (args != null) {
             // ダイアログの戻り値を取得
-            String wordA = args.getString(TCardDialogFragment.KEY_RET_WORD_A);
-            String wordB = args.getString(TCardDialogFragment.KEY_RET_WORD_B);
-            String hintAB = args.getString(TCardDialogFragment.KEY_RET_HINT_AB);
-            String hintBA = args.getString(TCardDialogFragment.KEY_RET_HINT_BA);
-            String comment = args.getString(TCardDialogFragment.KEY_RET_COMMENT);
+            String name = args.getString(TBookDialogFragment.KEY_RET_NAME);
+            int color = args.getInt(TBookDialogFragment.KEY_RET_COLOR);
+            String comment = args.getString(TBookDialogFragment.KEY_RET_COMMENT);
 
             switch(dialogMode) {
                 case Add:
                 {
                     // カードを追加する
-                    TangoCard card = new TangoCard();
-                    card.setWordA(wordA);
-                    card.setWordB(wordB);
-                    card.setHintAB(hintAB);
-                    card.setHintBA(hintBA);
-                    card.setComment(comment);
+                    TangoBook book = new TangoBook();
+                    book.setName(name);
+                    book.setColor(color);
+                    book.setComment(comment);
 
-                    mCardDao.addOne(card);
+                    mBookDao.addOne(book);
                     showList();
                 }
-                    break;
+                break;
                 case Update:
                 {
                     // チェックされた項目のカードを更新する
                     Integer[] ids = getCheckedIds();
                     if (ids.length <= 0) return;
 
-                    TangoCard card = mCardDao.selectById(ids[0]);
-                    card.setWordA(wordA);
-                    card.setWordB(wordB);
-                    card.setHintAB(hintAB);
-                    card.setHintBA(hintBA);
-                    card.setComment(comment);
+                    TangoBook book = mBookDao.selectById(ids[0]);
+                    book.setName(name);
+                    book.setColor(color);
+                    book.setComment(comment);
 
-                    updateCheckedItemOne(card);
+                    updateCheckedItemOne(book);
                 }
-                    break;
+                break;
             }
         }
     }

@@ -8,9 +8,9 @@ import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by shutaro on 2016/10/28.
+ * 単語カード
+ * RealmObjectのサブクラスなのでそのままテーブルとして使用される
  */
-
 public class TangoCard extends RealmObject{
     @PrimaryKey
     private int id;

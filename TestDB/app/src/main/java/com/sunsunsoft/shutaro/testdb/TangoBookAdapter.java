@@ -16,11 +16,11 @@ import java.util.List;
 /**
  * ListViewに表示するためのアダプター
  */
-public class TangoCardAdapter extends ArrayAdapter<TangoCard> {
+public class TangoBookAdapter extends ArrayAdapter<TangoBook> {
     private LayoutInflater mLayoutInflater;
 
-    public TangoCardAdapter(Context context, int textViewResourceId,
-                          List<TangoCard> objects)
+    public TangoBookAdapter(Context context, int textViewResourceId,
+                            List<TangoBook> objects)
     {
         super(context, textViewResourceId, objects);
         mLayoutInflater = (LayoutInflater) context
@@ -30,20 +30,20 @@ public class TangoCardAdapter extends ArrayAdapter<TangoCard> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        final TangoCard item = getItem(position);
+        final TangoBook item = getItem(position);
 
         if (null == convertView) {
             convertView = mLayoutInflater.inflate(
-                    R.layout.tcard_list_item, null);
+                    R.layout.tbook_list_item, null);
             Log.v("myData", String.valueOf(position));
         }
 
-        // ViewにTangoCardの情報を設定
+        // ViewにTangoBookの情報を設定
         TextView textView = (TextView) convertView.findViewById(R.id.textView1);
-        textView.setText(item.getWordA());
+        textView.setText(item.getName());
 
         TextView textView2 = (TextView) convertView.findViewById(R.id.textView2);
-        textView2.setText(item.getWordB());
+        textView2.setText(item.getComment());
 
         if (position % 2 == 1) {
             convertView.setBackgroundColor(Color.rgb(200, 100, 0));

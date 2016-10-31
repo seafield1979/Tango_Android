@@ -18,16 +18,11 @@ import io.realm.RealmResults;
  */
 
 public class TangoCardDao {
+
     private Realm mRealm;
 
-    public TangoCardDao(Context context) {
-        // Realm.getDefaultInstance() の前に Realm.setDefaultConfiguration をコールしておかないとエラーになる
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(context)
-                .schemaVersion(1)
-                .migration(new TangoCardMigration())
-                .build();
-        Realm.setDefaultConfiguration(realmConfig);
-        mRealm = Realm.getDefaultInstance();
+    public TangoCardDao() {
+        mRealm = MyRealmManager.getRealm();
     }
 
     /**
@@ -35,6 +30,7 @@ public class TangoCardDao {
      * @return nameのString[]
      */
     public List<TangoCard> selectAll() {
+
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
         LinkedList<TangoCard> list = new LinkedList<>();
         for (TangoCard card : results) {

@@ -10,9 +10,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
@@ -23,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setViews();
+
+        // Realmの初期化
+        MyRealmManager.initRealm(getApplicationContext());
     }
 
     private void setViews() {
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         // drawer
         setDrawer();
-
     }
 
     /**
@@ -85,21 +86,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
-    /**
-     * 他のActivityの戻り値を取得する
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == TangoCardFragment.REQUEST_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                String value = data.getStringExtra("wordA");
-//                Log.d("hoge", value);
-//            }
-//        }
-//    }
+        MyRealmManager.closeRealm();
+    }
 }

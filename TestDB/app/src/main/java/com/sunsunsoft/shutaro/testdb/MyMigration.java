@@ -8,7 +8,7 @@ import io.realm.RealmSchema;
  * Created by shutaro on 2016/10/28.
  */
 
-public class TangoCardMigration implements RealmMigration{
+public class MyMigration implements RealmMigration{
     @Override
     public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
 

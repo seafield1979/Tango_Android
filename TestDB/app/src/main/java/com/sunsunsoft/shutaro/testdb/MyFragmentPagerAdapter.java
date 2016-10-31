@@ -19,7 +19,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return TangoCardFragment.newInstance(android.R.color.holo_blue_bright);
             case 1:
-                return MyFragment2.newInstance(android.R.color.holo_green_light);
+                return TangoBookFragment.newInstance(android.R.color.holo_green_light);
             case 2:
                 return MyFragment3.newInstance(android.R.color.holo_red_dark);
         }
@@ -28,7 +28,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Override
