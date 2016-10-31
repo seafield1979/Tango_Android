@@ -48,49 +48,11 @@
         android:orientation="horizontal">
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:text="A"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/textView"
-            android:textAlignment="center"/>
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/editText"
-            android:background="@android:color/background_light"
-            android:text="hoge"/>
-        <TextView
-            android:text="B"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/textView2"
-            tools:textAlignment="center"/>
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/editText2"
-            android:background="@android:color/background_light"
-            android:text="ほげ"/>
-    </LinearLayout>
-
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>

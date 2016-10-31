@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_tcard_update"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sunsunsoft.shutaro.testdb.TCardUpdateActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <Button
+            android:text="OK"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/buttonOK"/>
+
+        <Button
+            android:text="Random"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/buttonRandom"/>
+    </LinearLayout>
+    <!--WordA-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:text="wordA"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:hint="English"
+            android:ems="10"
+            android:id="@+id/editWordA"
+            android:layout_weight="2"/>
+
+        <Button
+            android:text="random"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonWordA"
+            android:layout_weight="1"/>
+    </LinearLayout>
+    <!--WordB-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:text="wordB"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:hint="Japanese"
+            android:ems="10"
+            android:id="@+id/editWordB"
+            android:layout_weight="2"/>
+
+        <Button
+            android:text="random"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonWordB"
+            android:layout_weight="1"/>
+    </LinearLayout>
+    <!--hintAB-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:text="HintAB"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:hint="HintAB"
+            android:ems="10"
+            android:id="@+id/editHintAB"
+            android:layout_weight="2"/>
+
+        <Button
+            android:text="random"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonHintAB"
+            android:layout_weight="1"/>
+    </LinearLayout>
+    <!--hinBA-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:text="HintBA"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:hint="HintBA"
+            android:ems="10"
+            android:id="@+id/editHintBA"
+            android:layout_weight="2"/>
+
+        <Button
+            android:text="random"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonHintBA"
+            android:layout_weight="1"/>
+    </LinearLayout>
+    <!--comment-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:text="Comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:hint="Comment"
+            android:ems="10"
+            android:id="@+id/editComment"
+            android:layout_weight="2"/>
+
+        <Button
+            android:text="random"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonComment"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>
