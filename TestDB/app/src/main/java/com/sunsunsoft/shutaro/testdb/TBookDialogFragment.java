@@ -134,7 +134,7 @@ public class TBookDialogFragment extends DialogFragment implements View.OnClickL
     private void submit() {
         Bundle arg = new Bundle();
         arg.putString(KEY_RET_NAME, mEditName.getText().toString());
-        arg.putInt(KEY_RET_COLOR, convStrToInt(mEditColor.getText().toString()));
+        arg.putInt(KEY_RET_COLOR, MyColor.convStrToInt(mEditColor.getText().toString()));
         arg.putString(KEY_RET_COMMENT, mEditComment.getText().toString());
 
         mListener.onOkClicked(arg);
@@ -155,7 +155,7 @@ public class TBookDialogFragment extends DialogFragment implements View.OnClickL
                 mEditName.setText("Name " + randVal);
                 break;
             case R.id.buttonColor:
-                mEditColor.setText(getRandomColorStr());
+                mEditColor.setText(MyColor.getRandomColorStr());
                 break;
             case R.id.buttonComment:
                 mEditComment.setText("Comment " + randVal);
@@ -170,48 +170,7 @@ public class TBookDialogFragment extends DialogFragment implements View.OnClickL
         int randVal = rand.nextInt(1000);
 
         mEditName.setText("Name " + randVal);
-        mEditColor.setText(getRandomColorStr());
+        mEditColor.setText(MyColor.getRandomColorStr());
         mEditComment.setText("Comment " + randVal);
-    }
-
-    private int getRandomColor() {
-        int r = rand.nextInt(255);
-        int g = rand.nextInt(255);
-        int b = rand.nextInt(255);
-        return (r << 16) | (g << 8) | b;
-    }
-
-    private String getRandomColorStr() {
-        int color = getRandomColor();
-        return String.format("#%06x", color);
-    }
-
-    private int convStrToInt(String intStr) {
-        // 先頭が # なら取り除く
-        int val = 0;
-        Log.d("mylog", intStr.substring(0,1));
-        if (intStr.substring(0,1).equals("#")) {
-            intStr = intStr.substring(1);
-        }
-        if (intStr.length() < 6) return 0;
-
-        int color = (hex2int(intStr.substring(0, 2)) << 16) |
-                (hex2int(intStr.substring(2, 4)) << 8) |
-                hex2int(intStr.substring(4, 6));
-        Log.d("mylog", "" + color);
-
-        return (hex2int(intStr.substring(0, 2)) << 16) |
-                (hex2int(intStr.substring(2, 4)) << 8) |
-                hex2int(intStr.substring(4, 6));
-    }
-
-    private int hex2int(String s){
-        int v=0;
-        try {
-            v=Integer.parseInt(s,16);
-        }catch (Exception e){
-            v=0;
-        }
-        return v;
     }
 }
