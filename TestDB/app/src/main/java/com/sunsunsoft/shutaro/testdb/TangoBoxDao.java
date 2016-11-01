@@ -16,8 +16,8 @@ import io.realm.RealmResults;
 public class TangoBoxDao {
     private Realm mRealm;
 
-    public TangoBoxDao(Context context) {
-        mRealm = MyRealmManager.getRealm();
+    public TangoBoxDao(Realm realm) {
+        mRealm = realm;
     }
 
     /**

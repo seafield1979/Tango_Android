@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.testdb;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,13 +23,15 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
                 return TangoBookFragment.newInstance(android.R.color.holo_green_light);
             case 2:
                 return TangoBoxFragment.newInstance(android.R.color.holo_red_dark);
+            case 3:
+                return TangoCardBookFragment.newInstance(Color.rgb(80,255,128));
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -40,6 +43,8 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
                 return "Book";
             case 2:
                 return "Box";
+            case 3:
+                return "CardInBook";
         }
         return "blank";
     }

@@ -84,7 +84,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
         }
 
         // DAOの準備
-        mCardDao = new TangoCardDao();
+        mCardDao = MyRealmManager.getCardDao();
 
         showList();
         return view;
@@ -234,14 +234,5 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
                     break;
             }
         }
-    }
-
-
-    // Toast を表示する
-    // x,y はデフォルトの表示位置(画面中央)からのオフセット
-    private void makeToast(String message, int x, int y){
-        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, x, y);
-        toast.show();
     }
 }

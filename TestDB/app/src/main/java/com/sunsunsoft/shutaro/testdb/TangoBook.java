@@ -7,11 +7,12 @@ import java.util.Random;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class TangoBook extends RealmObject {
     @PrimaryKey
     private int id;
-
+    @Required
     private String name;        // 単語帳の名前
     private String comment;     // 単語帳の説明
     private int color;          // 表紙の色

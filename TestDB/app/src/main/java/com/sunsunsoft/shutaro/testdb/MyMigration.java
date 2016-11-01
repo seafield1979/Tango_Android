@@ -35,7 +35,7 @@ public class MyMigration implements RealmMigration{
             // マイグレーション処理
 
             // Create a new class
-            RealmObjectSchema boxSchema = schema.create("TangoBox")
+            schema.create("TangoBox")
                     .addField("id", Integer.class, FieldAttribute.PRIMARY_KEY)
                     .addField("name", String.class, FieldAttribute.REQUIRED)
                     .addField("comment", String.class, FieldAttribute.REQUIRED)
@@ -48,7 +48,7 @@ public class MyMigration implements RealmMigration{
 
         if (oldVersion == MyRealmManager.Version2) {
             // 間違って追加した TangoBox の studyTime カラムを削除
-            RealmObjectSchema boxSchema = schema.get("TangoBox")
+            schema.get("TangoBox")
                     .removeField("studyTime");
 
             oldVersion = MyRealmManager.Version21;
@@ -74,5 +74,13 @@ public class MyMigration implements RealmMigration{
             oldVersion = MyRealmManager.Version23;
         }
 
+        if (oldVersion == MyRealmManager.Version23) {
+            // TangoCardBook テーブル追加
+            schema.create("TangoCardBook")
+                    .addField("bookId", Integer.class)
+                    .addField("cardId", String.class);
+
+            oldVersion = MyRealmManager.Version30;
+        }
     }
 }

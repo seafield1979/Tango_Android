@@ -21,6 +21,7 @@ import java.util.Random;
  * DialogFragmentのサブクラス
  */
 public class TCardDialogFragment extends DialogFragment implements OnClickListener{
+
     private final static String KEY_WORD_A = "key_wordA";
     private final static String KEY_WORD_B = "key_wordB";
     private final static String KEY_HINT_AB = "key_hint_AB";

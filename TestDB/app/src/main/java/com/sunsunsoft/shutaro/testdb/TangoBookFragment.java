@@ -37,9 +37,6 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
     private final static String BACKGROUND_COLOR = "background_color";
     public static final int REQUEST_CODE = 1;
 
-    // データベースモデル
-    TangoBookDao mBookDao;
-
     private ListView listView;
     private Button[] buttons = new Button[4];
 
@@ -85,9 +82,6 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
             button.setOnClickListener(this);
         }
 
-        // DAOの準備
-        mBookDao = new TangoBookDao(getActivity());
-
         showList();
         return view;
     }
@@ -117,7 +111,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
      * ListViewを最新のレコードで更新する
      */
     private void showList() {
-        List<TangoBook> books = mBookDao.selectAll();
+        List<TangoBook> books = MyRealmManager.getBookDao().selectAll();
         TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
         listView.setAdapter(adapter);
     }
@@ -132,7 +126,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
 
         if (checkedIds.length <= 0) return;
 
-        mBookDao.updateOne(checkedIds[0], book);
+        MyRealmManager.getBookDao().updateOne(checkedIds[0], book);
         showList();
     }
 
@@ -142,7 +136,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
     private void deleteItems() {
         Integer[] checkedIds = getCheckedIds();
 
-        mBookDao.deleteIds(checkedIds);
+        MyRealmManager.getBookDao().deleteIds(checkedIds);
         showList();
     }
 
@@ -183,7 +177,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
         Integer[] ids = getCheckedIds();
         if (ids.length <= 0) return;
 
-        TangoBook book = mBookDao.selectById(ids[0]);
+        TangoBook book = MyRealmManager.getBookDao().selectById(ids[0]);
 
         if (book == null) return;
 
@@ -215,7 +209,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
                     book.setCreateTime(new Date());
                     book.setUpdateTime(new Date());
 
-                    mBookDao.addOne(book);
+                    MyRealmManager.getBookDao().addOne(book);
                     showList();
                 }
                 break;
@@ -225,7 +219,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
                     Integer[] ids = getCheckedIds();
                     if (ids.length <= 0) return;
 
-                    TangoBook book = mBookDao.selectById(ids[0]);
+                    TangoBook book = MyRealmManager.getBookDao().selectById(ids[0]);
                     book.setName(name);
                     book.setColor(color);
                     book.setComment(comment);

@@ -37,9 +37,6 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
     private final static String BACKGROUND_COLOR = "background_color";
     public static final int REQUEST_CODE = 1;
 
-    // データベースモデル
-    TangoBoxDao mBoxDao;
-
     private ListView listView;
     private Button[] buttons = new Button[4];
 
@@ -84,9 +81,6 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
             button.setOnClickListener(this);
         }
 
-        // DAOの準備
-        mBoxDao = new TangoBoxDao(getActivity());
-
         showList();
         return view;
     }
@@ -116,7 +110,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
      * ListViewを最新のレコードで更新する
      */
     private void showList() {
-        List<TangoBox> boxes = mBoxDao.selectAll();
+        List<TangoBox> boxes = MyRealmManager.getBoxDao().selectAll();
         TangoBoxAdapter adapter = new TangoBoxAdapter(getContext(), 0, boxes);
         listView.setAdapter(adapter);
     }
@@ -131,7 +125,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
 
         if (checkedIds.length <= 0) return;
 
-        mBoxDao.updateOne(checkedIds[0], box);
+        MyRealmManager.getBoxDao().updateOne(checkedIds[0], box);
         showList();
     }
 
@@ -141,7 +135,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
     private void deleteItems() {
         Integer[] checkedIds = getCheckedIds();
 
-        mBoxDao.deleteIds(checkedIds);
+        MyRealmManager.getBoxDao().deleteIds(checkedIds);
         showList();
     }
 
@@ -181,7 +175,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
         Integer[] ids = getCheckedIds();
         if (ids.length <= 0) return;
 
-        TangoBox box = mBoxDao.selectById(ids[0]);
+        TangoBox box = MyRealmManager.getBoxDao().selectById(ids[0]);
 
         if (box == null) return;
 
@@ -213,7 +207,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
                     box.setCreateTime(new Date());
                     box.setUpdateTime(new Date());
 
-                    mBoxDao.addOne(box);
+                    MyRealmManager.getBoxDao().addOne(box);
                     showList();
                 }
                 break;
@@ -223,7 +217,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
                     Integer[] ids = getCheckedIds();
                     if (ids.length <= 0) return;
 
-                    TangoBox box = mBoxDao.selectById(ids[0]);
+                    TangoBox box = MyRealmManager.getBoxDao().selectById(ids[0]);
                     box.setName(name);
                     box.setColor(color);
                     box.setComment(comment);
@@ -235,6 +229,4 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
             }
         }
     }
-
-
 }

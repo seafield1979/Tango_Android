@@ -6,6 +6,7 @@ import java.util.Random;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * 単語カード
@@ -14,6 +15,7 @@ import io.realm.annotations.PrimaryKey;
 public class TangoCard extends RealmObject{
     @PrimaryKey
     private int id;
+    @Required
     private String wordA;       // 単語帳の表
     private String wordB;       // 単語帳の裏
     private String hintAB;    // 思い出すためのヒント A->B

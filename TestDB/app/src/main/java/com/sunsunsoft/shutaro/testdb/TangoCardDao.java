@@ -1,15 +1,10 @@
 package com.sunsunsoft.shutaro.testdb;
 
-import android.content.Context;
-import android.util.Log;
-
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -21,8 +16,8 @@ public class TangoCardDao {
 
     private Realm mRealm;
 
-    public TangoCardDao() {
-        mRealm = MyRealmManager.getRealm();
+    public TangoCardDao(Realm realm) {
+        mRealm = realm;
     }
 
     /**
@@ -32,13 +27,7 @@ public class TangoCardDao {
     public List<TangoCard> selectAll() {
 
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
-        LinkedList<TangoCard> list = new LinkedList<>();
-        for (TangoCard card : results) {
-            Log.d("select", "id:" + card.getId() + " A:" + card.getWordA() + " B:" + card.getWordB());
-            list.add(card);
-        }
-
-        return list;
+        return results;
     }
 
     /**
@@ -46,7 +35,7 @@ public class TangoCardDao {
      * @param ids
      * @return
      */
-    public List<TangoCard>selectByIds(int[] ids) {
+    public List<TangoCard>selectByIds(Integer[] ids) {
         // Build the query looking at all users:
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 
