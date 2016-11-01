@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +34,13 @@ public class TCardBookDialogFragment extends DialogFragment implements View.OnCl
     private ListView mListView;
 
 
-    static TCardDialogFragment createInstance(DialogMode mode, int book_id) {
-        TCardDialogFragment fragment = new TCardDialogFragment();
+    static TCardBookDialogFragment createInstance(DialogMode mode, int bookId) {
+        TCardBookDialogFragment fragment = new TCardBookDialogFragment();
 
         // set arguments
         Bundle args = new Bundle();
         args.putInt(KEY_MODE, mode.ordinal());
-        args.putInt(KEY_BOOK_ID, mode.ordinal());
+        args.putInt(KEY_BOOK_ID, bookId);
 
         fragment.setArguments(args);
 
@@ -102,7 +103,7 @@ public class TCardBookDialogFragment extends DialogFragment implements View.OnCl
                 showAllCards();
                 break;
             case Delete:
-                showCardsByBookId(mBookId);
+                showCards(mBookId);
                 break;
         }
 
@@ -113,29 +114,24 @@ public class TCardBookDialogFragment extends DialogFragment implements View.OnCl
      */
     private void showAllCards() {
         List<TangoCard> cards = MyRealmManager.getCardDao().selectAll();
+        cards = MyRealmManager.getCardDao().toChangeable(cards);
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);
-
-        // todo
-        // すでにその単語帳に含まれる単語はリストから除外する
     }
 
     /**
      * 指定の単語帳に含まれるカードを表示する
      */
-    private void showCardsByBookId(int book_id) {
-
-        // まずは TangoCardBook から指定の単語帳に含まれるカードのIDを取得する
-        List<TangoCardBook> list = MyRealmManager.getCardBookDao().selectByBookId(book_id);
-        LinkedList<Integer> idsList = new LinkedList<Integer>();
-        for (TangoCardBook item : list) {
-            idsList.add(item.getCardId());
-        }
+    private void showCards(int bookId) {
+        List<Integer> idsList = MyRealmManager.getCardBookDao().selecteByBookId(bookId);
 
         if (idsList.size() <= 0) return;
 
         // カードのIDからカードの情報を取得する
-        List<TangoCard> cards = MyRealmManager.getCardDao().selectByIds(idsList.toArray(new Integer[0]));
+        List<TangoCard> cards = MyRealmManager.getCardDao()
+                .selectByIds(idsList.toArray(new Integer[0]));
+        cards = MyRealmManager.getCardDao().toChangeable(cards);
+
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);
     }
@@ -144,10 +140,14 @@ public class TCardBookDialogFragment extends DialogFragment implements View.OnCl
      * 呼び出し元に引数を返して終了
      */
     private void submit() {
-        Bundle arg = new Bundle();
-//        arg.putString(KEY_RET_NAME, mEditName.getText().toString());
+        if (mMode == DialogMode.Add) {
+            // 追加
+            addCardsToBook(mBookId);
+        } else if (mMode == DialogMode.Delete) {
+            // 削除
+            deleteCardsFromBook(mBookId);
+        }
 
-        mListener.onOkClicked(arg);
         dismiss();
     }
 
@@ -156,6 +156,47 @@ public class TCardBookDialogFragment extends DialogFragment implements View.OnCl
             case R.id.buttonOK:
                 submit();
                 break;
+        }
+    }
+
+    /**
+     * チェックされた項目のIDを取得する
+     */
+    protected Integer[] getCheckedCardIds() {
+        // チェックされた項目のIDを取得する
+        LinkedList<Integer> idsList = new LinkedList<Integer>();
+        TangoCardAdapter adapter = (TangoCardAdapter) mListView.getAdapter();
+        if (adapter == null) return null;
+
+        for (int i = 0; i < adapter.getCount(); i++) {
+            TangoCard card = adapter.getItem(i);
+            if (card.getIsChecked()) {
+                idsList.add(card.getId());
+            }
+        }
+
+        return idsList.toArray(new Integer[0]);
+    }
+
+    /**
+     * 指定の単語帳に単語を追加する
+     */
+    protected void addCardsToBook(int bookId) {
+        Integer[] cardIds = getCheckedCardIds();
+
+        if (cardIds != null) {
+            MyRealmManager.getCardBookDao().addItems(bookId, cardIds);
+        }
+    }
+
+    /**
+     * 指定の単語帳から単語を削除する
+     */
+    protected void deleteCardsFromBook(int bookId) {
+        Integer[] cardIds = getCheckedCardIds();
+
+        if (cardIds != null) {
+            MyRealmManager.getCardBookDao().deleteByCardIds(bookId, cardIds);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.testdb;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -28,6 +29,19 @@ public class TangoCardDao {
 
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
         return results;
+    }
+
+    /**
+     * 変更不可なRealmのオブジェクトを変更可能なリストに変換する
+     * @param list
+     * @return
+     */
+    public List<TangoCard> toChangeable(List<TangoCard> list) {
+        LinkedList<TangoCard> newList = new LinkedList<TangoCard>();
+        for (TangoCard card : list) {
+            newList.add(mRealm.copyFromRealm(card));
+        }
+        return newList;
     }
 
     /**

@@ -59,7 +59,7 @@ public class TangoCardAdapter extends ArrayAdapter<TangoCard> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                Log.d("contactAdapter", "pos:" + p);
+                Log.d("TangoCardAdapter", "pos:" + p);
                 item.setChecked(isChecked);
             }
         });

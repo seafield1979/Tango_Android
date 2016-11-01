@@ -54,7 +54,7 @@ public class TangoBoxAdapter extends ArrayAdapter<TangoBox> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                Log.d("contactAdapter", "pos:" + p);
+                Log.d("TangoBoxAdapter", "pos:" + p);
                 item.setChecked(isChecked);
             }
         });

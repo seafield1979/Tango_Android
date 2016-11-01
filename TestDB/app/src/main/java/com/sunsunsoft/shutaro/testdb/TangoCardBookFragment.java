@@ -101,9 +101,13 @@ public class TangoCardBookFragment extends Fragment implements OnClickListener, 
     protected void addItemsByDialog() {
         dialogMode = TCardBookDialogFragment.DialogMode.Add;
 
-        TangoBook book = TangoBook.createDummy();
+        // リストのチェックのついた項目のIDを取得
+        Integer[] ids = getCheckedIds();
+        if (ids.length <= 0) return;
 
-        DialogFragment dialogFragment = TBookDialogFragment.createInstance(book);
+        int bookId = ids[0];
+
+        DialogFragment dialogFragment = TCardBookDialogFragment.createInstance(dialogMode, bookId);
         dialogFragment.setTargetFragment(TangoCardBookFragment.this, 0);
         dialogFragment.show(getFragmentManager(), "fragment_dialog");
     }
@@ -118,9 +122,9 @@ public class TangoCardBookFragment extends Fragment implements OnClickListener, 
         Integer[] ids = getCheckedIds();
         if (ids.length <= 0) return;
 
-        int book_id = ids[0];
+        int bookId = ids[0];
 
-        DialogFragment dialogFragment = TCardBookDialogFragment.createInstance(dialogMode, book_id);
+        DialogFragment dialogFragment = TCardBookDialogFragment.createInstance(dialogMode, bookId);
         dialogFragment.setTargetFragment(TangoCardBookFragment.this, 0);
         dialogFragment.show(getFragmentManager(), "fragment_dialog");
     }

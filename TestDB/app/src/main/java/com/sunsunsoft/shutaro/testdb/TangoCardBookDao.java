@@ -35,48 +35,78 @@ public class TangoCardBookDao {
 
     /**
      * 指定の単語帳に含まれるカードを取得
-     * @param book_id
+     * @param bookId
      * @return
      */
-    public List<TangoCardBook> selectByBookId(int book_id) {
+    public List<TangoCardBook> selectByBookId(int bookId) {
         RealmResults<TangoCardBook> results =
                 mRealm.where(TangoCardBook.class)
-                        .equalTo("id", book_id).
+                        .equalTo("bookId", bookId).
                         findAll();
         return results;
     }
 
+    /**
+     * 指定の単語帳に含まれるカードのIDリストを取得
+     */
+    public List<Integer> selecteByBookId(int bookId) {
+        List<TangoCardBook> list = selectByBookId(bookId);
+
+        LinkedList<Integer> idsList = new LinkedList<Integer>();
+        for (TangoCardBook item : list) {
+            idsList.add(item.getCardId());
+        }
+        return idsList;
+    }
 
 
     /**
-     * 指定単語帳のカードを削除
-     * @param book_id   単語帳ID
-     * @param card_ids  削除するカードのID
+     * 指定の単語帳にカードを追加する
      */
-    public void deleteByCardIds(int book_id, int[] card_ids) {
-        if (card_ids.length <= 0) return;
+    public void addItems(int bookId, Integer[] cardIds) {
+        if (cardIds == null) return;
 
         mRealm.beginTransaction();
+
+        for (int cardId : cardIds) {
+            TangoCardBook c2b = new TangoCardBook();
+            c2b.setBookId(bookId);
+            c2b.setCardId(cardId);
+
+            mRealm.copyToRealm(c2b);
+        }
+        mRealm.commitTransaction();
+    }
+
+    /**
+     * 指定単語帳のカードを削除
+     * @param bookId   単語帳ID
+     * @param cardIds  削除するカードのID
+     */
+    public void deleteByCardIds(int bookId, Integer[] cardIds) {
+        if (cardIds.length <= 0) return;
 
         // Build the query looking at all users:
         RealmQuery<TangoCardBook> query = mRealm.where(TangoCardBook.class);
 
         // Add query conditions:
         boolean isFirst = true;
-        query.equalTo("book_id", book_id);
+        query.equalTo("bookId", bookId);
 
-        for (int id : card_ids) {
+        for (int id : cardIds) {
             if (isFirst) {
                 isFirst = false;
-                query.equalTo("card_id", id);
+                query.equalTo("cardId", id);
             } else {
-                query.or().equalTo("card_id", id);
+                query.or().equalTo("cardId", id);
             }
         }
+        mRealm.beginTransaction();
+
         // Execute the query:
         RealmResults<TangoCardBook> results = query.findAll();
+        results.deleteAllFromRealm();
 
-//        results.deleteAllFromRealm();
         mRealm.commitTransaction();
     }
 }
