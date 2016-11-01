@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.testdb;
 
 
 import java.util.Date;
+import java.util.Random;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
@@ -87,5 +88,21 @@ public class TangoBook extends RealmObject {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+
+    // テスト用のダミーカードを取得
+    public static TangoBook createDummy() {
+        Random rand = new Random();
+        int randVal = rand.nextInt(1000);
+
+        TangoBook book = new TangoBook();
+        book.name = "Name " + randVal;
+        book.comment = "Comment " + randVal;
+        book.color = MyColor.getRandomColor();
+        book.createTime = new Date();
+        book.updateTime = new Date();
+
+        return book;
     }
 }

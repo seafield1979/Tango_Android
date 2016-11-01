@@ -1,15 +1,11 @@
 package com.sunsunsoft.shutaro.testdb;
 
 import android.content.Context;
-import android.util.Log;
-
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -166,17 +162,15 @@ public class TangoBookDao {
     }
 
     /**
-     * 学習履歴(OK/NG)を追加する
-     */
-    public void addHistory() {
-
-    }
-
-    /**
      * 学習日付を更新する
      */
-    private void updateStudyTime() {
+    private void updateStudyTime(Integer id) {
+        TangoBook newBook = mRealm.where(TangoBook.class).equalTo("id", id).findFirst();
+        if (newBook == null) return;
 
+        mRealm.beginTransaction();
+        newBook.setStudyTime(new Date());
+        mRealm.commitTransaction();
     }
 
     /**

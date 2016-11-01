@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -166,7 +167,10 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
      */
     protected void addItemByDialog() {
         dialogMode = DialogMode.Add;
-        DialogFragment dialogFragment = TBookDialogFragment.createInstance(null);
+
+        TangoBook book = TangoBook.createDummy();
+
+        DialogFragment dialogFragment = TBookDialogFragment.createInstance(book);
         dialogFragment.setTargetFragment(TangoBookFragment.this, 0);
         dialogFragment.show(getFragmentManager(), "fragment_dialog");
     }
@@ -208,6 +212,8 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
                     book.setName(name);
                     book.setColor(color);
                     book.setComment(comment);
+                    book.setCreateTime(new Date());
+                    book.setUpdateTime(new Date());
 
                     mBookDao.addOne(book);
                     showList();
@@ -223,6 +229,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
                     book.setName(name);
                     book.setColor(color);
                     book.setComment(comment);
+                    book.setUpdateTime(new Date());
 
                     updateCheckedItemOne(book);
                 }
@@ -230,7 +237,6 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
             }
         }
     }
-
 
     // Toast を表示する
     // x,y はデフォルトの表示位置(画面中央)からのオフセット

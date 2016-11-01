@@ -45,7 +45,7 @@ public class TangoBookAdapter extends ArrayAdapter<TangoBook> {
         TextView textView2 = (TextView) convertView.findViewById(R.id.textView2);
         textView2.setText(item.getComment());
 
-        convertView.setBackgroundColor(MyColor.addAlpha(item.getColor(), 128));
+        convertView.setBackgroundColor(MyColor.addAlpha(item.getColor(), 255));
 
         // チェックボックスにイベントリスナを登録
         CheckBox check = (CheckBox)convertView.findViewById(R.id.checkBox);

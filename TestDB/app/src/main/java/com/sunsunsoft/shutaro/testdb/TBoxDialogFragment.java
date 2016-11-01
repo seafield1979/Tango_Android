@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,9 @@ import java.util.Random;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * 単語Boxの項目を設定するためのDialogFragment
  */
-public class TBookDialogFragment extends DialogFragment implements View.OnClickListener {
+public class TBoxDialogFragment extends DialogFragment implements View.OnClickListener {
     private final static String KEY_NAME = "key_name";
     private final static String KEY_COLOR = "key_color";
     private final static String KEY_COMMENT = "key_comment";
@@ -46,18 +45,19 @@ public class TBookDialogFragment extends DialogFragment implements View.OnClickL
     Random rand = new Random();
 
     /**
-     * Create a new instance of TBookDialogFragment, providing "num"
+     * Create a new instance of TBoxDialogFragment, providing "num"
      * as an argument.
      */
-    static TBookDialogFragment createInstance(TangoBook book) {
-        TBookDialogFragment fragment = new TBookDialogFragment();
+    static TBoxDialogFragment createInstance(TangoBox box) {
+        TBoxDialogFragment fragment = new TBoxDialogFragment();
 
         // set arguments
-        if (book != null) {
+        if (box != null) {
             Bundle args = new Bundle();
-            args.putString(KEY_NAME, book.getName());
-            args.putInt(KEY_COLOR, book.getColor());
-            args.putString(KEY_COMMENT, book.getComment());
+            args.putString(KEY_NAME, box.getName());
+            args.putInt(KEY_COLOR, box.getColor());
+            args.putString(KEY_COMMENT, box.getComment());
+
             fragment.setArguments(args);
         }
 
@@ -104,7 +104,7 @@ public class TBookDialogFragment extends DialogFragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tbook_dialog, container, false);
+        return inflater.inflate(R.layout.fragment_tbox_dialog, container, false);
     }
 
     @Override

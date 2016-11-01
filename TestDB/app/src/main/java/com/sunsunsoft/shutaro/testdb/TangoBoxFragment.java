@@ -1,108 +1,240 @@
 package com.sunsunsoft.shutaro.testdb;
 
-import android.content.Context;
-import android.net.Uri;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView.OnItemClickListener;
 
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TangoBoxFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TangoBoxFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TangoBoxFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public TangoBoxFragment() {
-        // Required empty public constructor
+public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxDialogFragment.OnOkClickListener {
+    // Enums
+    enum DialogMode {
+        Add,
+        Update
     }
 
+    private final static String BACKGROUND_COLOR = "background_color";
+    public static final int REQUEST_CODE = 1;
+
+    // データベースモデル
+    TangoBoxDao mBoxDao;
+
+    private ListView listView;
+    private Button[] buttons = new Button[4];
+
+    // ダイアログを呼び出しモード
+    // 返り値を受け取るときに呼び出しモードに応じた処理を行う
+    DialogMode dialogMode = DialogMode.Add;
+
+
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TangoBoxFragment.
+     * 新しいFragmentを生成する
+     * @param IdRes
+     * @return
      */
-    // TODO: Rename and change types and number of parameters
-    public static TangoBoxFragment newInstance(String param1, String param2) {
-        TangoBoxFragment fragment = new TangoBoxFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static TangoBoxFragment newInstance(@ColorRes int IdRes) {
+        TangoBoxFragment frag = new TangoBoxFragment();
+        Bundle b = new Bundle();
+        b.putInt(BACKGROUND_COLOR, IdRes);
+        frag.setArguments(b);
+        return frag;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tango_box, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_page1, null);
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.fragment_page1_linearlayout);
+        linearLayout.setBackgroundResource(getArguments().getInt(BACKGROUND_COLOR));
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        listView = (ListView)view.findViewById(R.id.listView);
+
+        buttons[0] = (Button)view.findViewById(R.id.button);
+        buttons[1] = (Button)view.findViewById(R.id.button2);
+        buttons[2] = (Button)view.findViewById(R.id.button3);
+        buttons[3] = (Button)view.findViewById(R.id.button4);
+
+        for (Button button : buttons) {
+            button.setOnClickListener(this);
         }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+        // DAOの準備
+        mBoxDao = new TangoBoxDao(getActivity());
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+        showList();
+        return view;
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * クリックイベント
+     * @param v
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.button:
+                showList();
+                break;
+            case R.id.button2:
+                addItemByDialog();
+                break;
+            case R.id.button3:
+                updateItemByDialog();
+                break;
+            case R.id.button4:
+                deleteItems();
+                break;
+        }
     }
+
+    /**
+     * ListViewを最新のレコードで更新する
+     */
+    private void showList() {
+        List<TangoBox> boxes = mBoxDao.selectAll();
+        TangoBoxAdapter adapter = new TangoBoxAdapter(getContext(), 0, boxes);
+        listView.setAdapter(adapter);
+    }
+
+    /**
+     * チェックされた項目を１つ更新する
+     * @param box
+     */
+    private void updateCheckedItemOne(TangoBox box) {
+        // チェックされた項目のIDを取得する
+        Integer[] checkedIds = getCheckedIds();
+
+        if (checkedIds.length <= 0) return;
+
+        mBoxDao.updateOne(checkedIds[0], box);
+        showList();
+    }
+
+    /**
+     * チェックされた項目を削除する
+     */
+    private void deleteItems() {
+        Integer[] checkedIds = getCheckedIds();
+
+        mBoxDao.deleteIds(checkedIds);
+        showList();
+    }
+
+    /**
+     * チェックされた項目のIDを取得する
+     */
+    protected Integer[] getCheckedIds() {
+        // チェックされた項目のIDを取得する
+        LinkedList<Integer> idsList = new LinkedList<Integer>();
+        TangoBoxAdapter adapter = (TangoBoxAdapter) listView.getAdapter();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            TangoBox box = adapter.getItem(i);
+            if (box.isChecked()) {
+                idsList.add(box.getId());
+            }
+        }
+        return idsList.toArray(new Integer[0]);
+    }
+
+    /**
+     * 単語カードを追加するためのダイアログを立ち上げる
+     */
+    protected void addItemByDialog() {
+        dialogMode = DialogMode.Add;
+        TangoBox box = TangoBox.createDummy();
+
+        DialogFragment dialogFragment = TBoxDialogFragment.createInstance(box);
+        dialogFragment.setTargetFragment(TangoBoxFragment.this, 0);
+        dialogFragment.show(getFragmentManager(), "fragment_dialog");
+    }
+
+    /**
+     * 単語カードを更新するためのダイアログを立ち上げる
+     * Fragmentの戻り値でカードを更新
+     */
+    protected void updateItemByDialog() {
+        Integer[] ids = getCheckedIds();
+        if (ids.length <= 0) return;
+
+        TangoBox box = mBoxDao.selectById(ids[0]);
+
+        if (box == null) return;
+
+        dialogMode = DialogMode.Update;
+        DialogFragment dialogFragment = TBoxDialogFragment.createInstance(box);
+        dialogFragment.setTargetFragment(TangoBoxFragment.this, 0);
+        dialogFragment.show(getFragmentManager(), "fragment_dialog");
+    }
+
+    /*
+     * TBoxDialogActivityからコールバックされるメソッド
+     */
+    @Override
+    public void onOkClicked(Bundle args) {
+        if (args != null) {
+            // ダイアログの戻り値を取得
+            String name = args.getString(TBoxDialogFragment.KEY_RET_NAME);
+            int color = args.getInt(TBoxDialogFragment.KEY_RET_COLOR);
+            String comment = args.getString(TBoxDialogFragment.KEY_RET_COMMENT);
+
+            switch(dialogMode) {
+                case Add:
+                {
+                    // カードを追加する
+                    TangoBox box = new TangoBox();
+                    box.setName(name);
+                    box.setColor(color);
+                    box.setComment(comment);
+                    box.setCreateTime(new Date());
+                    box.setUpdateTime(new Date());
+
+                    mBoxDao.addOne(box);
+                    showList();
+                }
+                break;
+                case Update:
+                {
+                    // チェックされた項目のカードを更新する
+                    Integer[] ids = getCheckedIds();
+                    if (ids.length <= 0) return;
+
+                    TangoBox box = mBoxDao.selectById(ids[0]);
+                    box.setName(name);
+                    box.setColor(color);
+                    box.setComment(comment);
+                    box.setUpdateTime(new Date());
+
+                    updateCheckedItemOne(box);
+                }
+                break;
+            }
+        }
+    }
+
+
 }
