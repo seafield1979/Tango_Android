@@ -17,7 +17,7 @@ import static com.sunsunsoft.shutaro.tangobook.TopViewSettings.drawIconId;
  */
 abstract public class IconBase {
 
-    private static final String TAG = "MyIcon";
+    private static final String TAG = "IconBase";
     private static int count;
 
     public int id;
@@ -169,6 +169,21 @@ abstract public class IconBase {
     }
     public void drop() {
         Log.v(TAG, "drop");
+    }
+
+    /**
+     *
+     * @param clickX
+     * @param clickY
+     * @return
+     */
+    public boolean checkTouch(float clickX, float clickY) {
+        if (x <= clickX && clickX <= getRight() &&
+                y <= clickY && clickY <= getBottom() )
+        {
+            return true;
+        }
+        return false;
     }
 
     /**

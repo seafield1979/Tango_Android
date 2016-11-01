@@ -234,7 +234,7 @@ public class TopView extends View implements View.OnTouchListener {
      */
     private boolean touchIcons(ViewTouch vt) {
         for (IconBase icon : icons) {
-            if (icon.checkClick(vt.touchX, vt.touchY)) {
+            if (icon.checkTouch(vt.touchX, vt.touchY)) {
                 return true;
             }
         }

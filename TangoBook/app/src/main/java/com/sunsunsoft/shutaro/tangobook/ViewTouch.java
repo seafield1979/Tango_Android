@@ -81,8 +81,6 @@ public class ViewTouch {
     }
 
     public TouchType checkTouchType(MotionEvent e) {
-
-
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
             {
