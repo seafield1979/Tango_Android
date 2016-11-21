@@ -4,28 +4,15 @@
               android:id="@+id/fragment_page_linearlayout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:orientation="vertical"
               android:background="@android:color/holo_blue_dark"
-              android:orientation="vertical">
-
-    <Button
-        android:text="test"
+    >
+    <LinearLayout
+        android:id="@+id/view_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+    </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.sunsunsoft.shutaro.tangobook.TopView
-                android:layout_width="match_parent"
-                android:layout_height="1000dp"
-                android:id="@+id/IconsView"/>
-        </LinearLayout>
-    </ScrollView>
 </LinearLayout>

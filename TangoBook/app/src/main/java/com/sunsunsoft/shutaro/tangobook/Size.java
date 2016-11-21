@@ -5,20 +5,15 @@ package com.sunsunsoft.shutaro.tangobook;
  */
 
 public class Size {
-    private int mWidth, mHeight;
+    public int width, height;
 
+    public Size() {}
     public Size(int width, int height) {
-        mWidth = width;
-        mHeight = height;
+        this.width = width;
+        this.height = height;
     }
-
-    public int getWidth(){ return mWidth; }
-    public int getHeight() { return mHeight; }
-
-    public void setWidth(int width) {
-        mWidth = width;
-    }
-    public void setHeight(int height) {
-        mHeight = height;
+    public Size(Size _size) {
+        this.width = _size.width;
+        this.height = _size.height;
     }
 }

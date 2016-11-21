@@ -16,9 +16,16 @@ import android.view.View.OnTouchListener;
 
 
 public class TopFragment extends Fragment implements OnClickListener, OnTouchListener{
+
+    /**
+     * Constract
+     */
     private final static String BACKGROUND_COLOR = "background_color";
-    private TopView myView;
-    private Button button1;
+
+    /**
+     * Member variables
+     */
+    private TopView topView;
 
     public static TopFragment newInstance(@ColorRes int IdRes) {
         TopFragment frag = new TopFragment();
@@ -37,22 +44,17 @@ public class TopFragment extends Fragment implements OnClickListener, OnTouchLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top, null);
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.fragment_page_linearlayout);
-        linearLayout.setBackgroundResource(getArguments().getInt(BACKGROUND_COLOR));
 
-        myView = (TopView)view.findViewById(R.id.IconsView);
-        Log.v("topfragment", view.getWidth() + " " + myView.getHeight());
-
-        button1 = (Button)view.findViewById(R.id.button);
-        button1.setOnClickListener(this);
+        // Viewを追加
+        topView = new TopView(getContext());
+        LinearLayout containerView = (LinearLayout)view.findViewById(R.id.view_container);
+        containerView.addView(topView);
 
         return view;
     }
 
     public void onClick(View v) {
-        if (v.getId() == R.id.button) {
-            myView.setLayoutParams(new LinearLayout.LayoutParams(1000, 2000));
-        }
+
     }
     public boolean onTouch(View v, MotionEvent e) {
         return true;

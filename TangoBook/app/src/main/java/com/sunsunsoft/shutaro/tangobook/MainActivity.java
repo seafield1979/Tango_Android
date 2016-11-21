@@ -20,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setViews();
+
+        ULog.init();
+        UDrawManager.getInstance().init();
     }
 
     private void setViews() {

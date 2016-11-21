@@ -1,11 +1,12 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 /**
- * Created by shutaro on 2016/10/24.
+ * アイコンの種類
  */
 
 public enum IconType {
-    RECT,
-    CIRCLE,
-    IMAGE
+    Card,
+    Book,
+    Box,
+    Trashbox
 }

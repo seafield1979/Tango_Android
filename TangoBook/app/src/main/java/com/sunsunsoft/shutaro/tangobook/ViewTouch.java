@@ -1,7 +1,5 @@
 package com.sunsunsoft.shutaro.tangobook;
 
-import android.text.method.Touch;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.Timer;
@@ -9,20 +7,34 @@ import java.util.TimerTask;
 
 enum TouchType {
     None,
-    Touch,
+    Touch,        // タッチ開始
+    LongPress,    // 長押し
     Click,        // ただのクリック（タップ)
     LongClick,    // 長クリック
-    MoveStart,    // 移動開始
     Moving,       // 移動
     MoveEnd,      // 移動終了
-    MoveCancel      // 移動キャンセル
+    MoveCancel    // 移動キャンセル
 }
+
+/**
+ * ViewTouchで長押しされた時のコールバック
+ */
+
+interface ViewTouchCallbacks {
+
+    /**
+     * 長押しされたときに呼ばれる
+     */
+    void longPressed();
+}
+
+
 /**
  * View上のタッチ処理を判定する
  *
  */
 public class ViewTouch {
-    private static final boolean _DEBUG = false;
+    public static final String TAG = "ViewTouch";
 
     // クリック判定するためのタッチ座標誤差
     public static final int CLICK_DISTANCE = 30;
@@ -34,35 +46,53 @@ public class ViewTouch {
     public static final int MOVE_START_TIME = 100;
 
     // 長押しまでの時間(ms)
-    public static final int LONG_TOUCH_TIME = 1000;
+    public static final int LONG_TOUCH_TIME = 700;
 
-    public TouchType type;
 
+    private ViewTouchCallbacks callbacks;
+    public TouchType type;          // 外部用のタイプ(変化があった時に有効な値を返す)
+    private TouchType innerType;    // 内部用のタイプ
     private Timer timer;
 
-    // タッチ中にtrueになる
+    private boolean isTouchUp;      // タッチアップしたフレームだけtrueになる
     private boolean isTouching;
     private boolean isLongTouch;
 
     // タッチ開始した座標
-    float touchX, touchY;
+    private float touchX, touchY;
 
-    protected float x, y;
+    protected float x, y;       // スクリーン座標
     float moveX, moveY;
+    private boolean isMoveStart;
 
     // タッチ開始した時間
     long touchTime;
 
-    // get/set
-    public float getMoveX() {
-        return moveX;
+    /**
+     * Get/Set
+     */
+    public float getX() { return x; }
+    public float getY() { return y; }
+    public float getX(float offset) { return x + offset; }
+    public float getY(float offset) { return y + offset; }
+    public float touchX() {return this.touchX;}
+    public float touchY() {return this.touchY;}
+    public float touchX(float offset) {return this.touchX + offset;}
+    public float touchY(float offset) {return this.touchY + offset;}
+    public boolean isMoveStart() { return isMoveStart; }
+    public boolean isTouchUp() {
+        return isTouchUp;
     }
-    public float getMoveY() {
-        return moveY;
+    public void setTouchUp(boolean touchUp) {
+        isTouchUp = touchUp;
     }
 
     public ViewTouch() {
-        type = TouchType.None;
+        this(null);
+        innerType = TouchType.None;
+    }
+    public ViewTouch(ViewTouchCallbacks callback) {
+        this.callbacks = callback;
     }
 
     /**
@@ -73,7 +103,7 @@ public class ViewTouch {
     public boolean checkLongTouch() {
         // ロングタッチが検出済みならそれを返す
         if (isLongTouch) {
-            Log.d("viewtouch", "Long Touch");
+            ULog.print(TAG, "Long Touch");
             isLongTouch = false;
             return true;
         }
@@ -81,30 +111,35 @@ public class ViewTouch {
     }
 
     public TouchType checkTouchType(MotionEvent e) {
+        isTouchUp = false;
+
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
             {
-                Log.d("viewtouch", "Touch Down");
+                ULog.print(TAG, "Touch Down");
 
                 isTouching = true;
                 touchX = e.getX();
                 touchY = e.getY();
-                type = TouchType.Touch;
+                type = innerType = TouchType.Touch;
                 touchTime = System.currentTimeMillis();
                 startLongTouchTimer();
             }
-                break;
+            break;
             case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
             {
-                Log.d("viewtouch", "Up");
+                ULog.print(TAG, "Up");
                 isTouching = false;
 
                 timer.cancel();
 
-                if (type == TouchType.Moving) {
-                    Log.d("viewtouch", "MoveEnd");
-                    type = TouchType.None;
-                    return TouchType.MoveEnd;
+                isTouchUp = true;
+
+                if (innerType == TouchType.Moving) {
+                    ULog.print(TAG, "MoveEnd");
+                    type = innerType = TouchType.MoveEnd;
+                    return type;
                 } else {
                     float x = (e.getX() - touchX);
                     float y = (e.getY() - touchY);
@@ -115,23 +150,28 @@ public class ViewTouch {
 
                         if (time <= LONG_CLICK_TIME) {
                             type = TouchType.Click;
-                            Log.d("viewtouch", "SingleClick");
+                            ULog.print(TAG, "SingleClick");
                         } else {
                             type = TouchType.LongClick;
-                            Log.d("viewtouch", "LongClick");
+                            ULog.print(TAG, "LongClick");
                         }
                     } else {
                         type = TouchType.None;
                     }
                 }
             }
-                break;
+            break;
             case MotionEvent.ACTION_MOVE:
-                // 少し同じ位置をタッチ時続けないと移動状態にならない
-                boolean moveStart = false;
+                isMoveStart = false;
+
+                // 長押し時は何もしない
+                if (innerType == TouchType.LongPress) {
+                    type = TouchType.None;
+                    break;
+                }
 
                 // クリックが判定できるようにタッチ時間が一定時間以上、かつ移動距離が一定時間以上で移動判定される
-                if ( type != TouchType.Moving) {
+                else if ( innerType != TouchType.Moving) {
                     float dx = (e.getX() - touchX);
                     float dy = (e.getY() - touchY);
                     float dist = (float) Math.sqrt(dx * dx + dy * dy);
@@ -139,33 +179,32 @@ public class ViewTouch {
                     if (dist >= CLICK_DISTANCE) {
                         long time = System.currentTimeMillis() - touchTime;
                         if (time >= MOVE_START_TIME) {
-                            type = TouchType.Moving;
-                            moveStart = true;
+                            type = innerType = TouchType.Moving;
+                            isMoveStart = true;
                             x = touchX;
                             y = touchY;
                         }
                     }
                 }
-                if ( type == TouchType.Moving) {
+                if ( innerType == TouchType.Moving) {
                     moveX = e.getX() - x;
                     moveY = e.getY() - y;
+                } else {
+                    innerType = type = TouchType.None;
                 }
                 x = e.getX();
                 y = e.getY();
 
-                if (moveStart) {
-                    Log.d("viewtouch", "MoveStart");
-                    return TouchType.MoveStart;
-                }
                 break;
-            case MotionEvent.ACTION_CANCEL:
-                Log.d("viewtouch", "Cancel");
-                if (type == TouchType.Moving) {
-                    type = TouchType.None;
-                    return TouchType.MoveCancel;
-                }
-                break;
+//            case MotionEvent.ACTION_CANCEL:
+//                ULog.print(TAG, "Cancel");
+//                if (type == TouchType.Moving) {
+//                    type = TouchType.None;
+//                    return TouchType.MoveCancel;
+//                }
+//                break;
         }
+
         return type;
     }
 
@@ -182,10 +221,15 @@ public class ViewTouch {
             @Override
             public void run() {
                 timer.cancel();
-                if (isTouching) {
+                if (isTouching && type != TouchType.Moving) {
                     // ロングタッチを検出する
                     isLongTouch = true;
-                    Log.d("viewtouch", "timer Long Touch");
+                    innerType = type = TouchType.LongPress;
+                    // ロングタッチイベント開始はonTouchから取れないので親に通知する
+                    if (callbacks != null) {
+                        callbacks.longPressed();
+                    }
+                    ULog.print(TAG, "timer Long Touch");
                 }
             }
         }, LONG_TOUCH_TIME, 1000);
