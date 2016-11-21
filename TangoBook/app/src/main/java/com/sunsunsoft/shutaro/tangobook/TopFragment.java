@@ -20,6 +20,7 @@ public class TopFragment extends Fragment implements OnClickListener, OnTouchLis
     /**
      * Constract
      */
+    public final static String TAG = "TopFragment";
     private final static String BACKGROUND_COLOR = "background_color";
 
     /**
