@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.support.v4.view.NestedScrollingParent;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +45,7 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
     private ViewTouch vt = new ViewTouch(this);
 
     private Context mContext;
+    private NestedScrollingParent mNestedScrollingParent;
     private Paint paint = new Paint();
 
 
@@ -54,10 +56,16 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
     }
 
     public TopView(Context context, AttributeSet attrs) {
+        this(context, attrs, null);
+    }
+
+    public TopView(Context context, AttributeSet attrs, NestedScrollingParent nestedParent) {
         super(context, attrs);
         this.setOnTouchListener(this);
         mContext = context;
+        mNestedScrollingParent = nestedParent;
     }
+
 
     private void initWindows(int width, int height) {
         // 描画オブジェクトクリア
@@ -152,6 +160,13 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
         if (UDrawManager.getInstance().touchEvent(vt)) {
             invalidate();
         }
+
+        switch(vt.type) {
+            case Moving:
+                //mNestedScrollingParent.onNestedScroll()
+                break;
+        }
+
 
         switch(e.getAction()) {
             case MotionEvent.ACTION_DOWN:

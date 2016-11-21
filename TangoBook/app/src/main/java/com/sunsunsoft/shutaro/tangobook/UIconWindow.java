@@ -56,7 +56,7 @@ public class UIconWindow extends UWindow {
     public static final int ICON_MARGIN = 30;
 
     private static final int RECT_ICON_NUM = 10;
-    private static final int CARD_ICON_NUM = 10;
+    private static final int CARD_ICON_NUM = 200;
     private static final int BOX_ICON_NUM = 10;
 
     private static final int ICON_W = 200;
