@@ -34,6 +34,22 @@ public class TangoBookDao {
     }
 
     /**
+     * 指定の単語帳に追加されていない単語を取得
+     * @return
+     */
+    public List<TangoBook> selectExceptIds(List<Integer> ids) {
+
+        RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
+
+        for (int id : ids) {
+            query.notEqualTo("id", id);
+        }
+        RealmResults<TangoBook> results = query.findAll();
+
+        return results;
+    }
+
+    /**
      * 変更不可なRealmのオブジェクトを変更可能なリストに変換する
      * @param list
      * @return

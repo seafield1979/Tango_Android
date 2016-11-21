@@ -53,7 +53,7 @@ public class MyRealmManager {
         return boxDao;
     }
 
-    public static TangoCardInBookDao getCardBookDao() {
+    public static TangoCardInBookDao getCardInBookDao() {
         return cardInBookDao;
     }
 

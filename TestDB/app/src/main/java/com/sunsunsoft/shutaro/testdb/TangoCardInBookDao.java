@@ -46,6 +46,15 @@ public class TangoCardInBookDao {
         return results;
     }
 
+    public static List<Integer> listToIds(List<TangoCardInBook> list) {
+        LinkedList<Integer> ids = new LinkedList<>();
+
+        for (TangoCardInBook obj : list) {
+            ids.add(obj.getCardId());
+        }
+        return ids;
+    }
+
     /**
      * 指定の単語帳に含まれるカードのIDリストを取得
      */

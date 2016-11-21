@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -111,10 +109,10 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
         mListView = (ListView)view.findViewById(R.id.listView);
         switch (mMode) {
             case AddCards:
-                showAllCards();
+                showAddableCards();
                 break;
             case AddBooks:
-                showAllBooks();
+                showAddableBooks();
                 break;
             case Delete:
                 showItems(mBoxId);
@@ -134,10 +132,50 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
     }
 
     /**
+     * ボックスに未追加のカード番号を表示する
+     */
+    private void showAddableCards() {
+        List<TangoItemInBox> itemsInBox = MyRealmManager.getItemInBoxDao().selectByBoxId
+                (mBoxId);
+        LinkedList<Integer> cardIds = new LinkedList<>();
+
+        for (TangoItemInBox item : itemsInBox) {
+            if(item.getItemType() == TangoItemType.Card.ordinal()) {
+                cardIds.add(item.getItemId());
+            }
+        }
+
+        List<TangoCard> cards = MyRealmManager.getCardDao().selectExceptIds(cardIds);
+        cards = MyRealmManager.getCardDao().toChangeable(cards);
+        TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
+        mListView.setAdapter(adapter);
+    }
+
+    /**
      * 全ての単語帳を表示する
      */
     private void showAllBooks() {
         List<TangoBook> books = MyRealmManager.getBookDao().selectAll();
+        books = MyRealmManager.getBookDao().toChangeable(books);
+        TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
+        mListView.setAdapter(adapter);
+    }
+
+    /**
+     * ボックスに未追加の単語帳を表示する
+     */
+    private void showAddableBooks() {
+        List<TangoItemInBox> itemsInBox = MyRealmManager.getItemInBoxDao().selectByBoxId
+                (mBoxId);
+        LinkedList<Integer> bookIds = new LinkedList<>();
+
+        for (TangoItemInBox item : itemsInBox) {
+            if(item.getItemType() == TangoItemType.Book.ordinal()) {
+                bookIds.add(item.getItemId());
+            }
+        }
+
+        List<TangoBook> books = MyRealmManager.getBookDao().selectExceptIds(bookIds);
         books = MyRealmManager.getBookDao().toChangeable(books);
         TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
         mListView.setAdapter(adapter);
@@ -226,6 +264,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
                 submit();
                 break;
             case R.id.buttonCancel:
+                dismiss();
                 break;
         }
     }

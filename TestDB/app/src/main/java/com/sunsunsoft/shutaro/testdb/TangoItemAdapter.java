@@ -36,12 +36,9 @@ public class TangoItemAdapter extends ArrayAdapter<TangoItemInBoxList> {
 
         if (null == convertView) {
             convertView = mLayoutInflater.inflate(
-                    R.layout.tbook_list_item, null);
+                    R.layout.titem_in_box_list_item, null);
             Log.v("myData", String.valueOf(position));
         }
-
-        LinearLayout layout = (LinearLayout)convertView.findViewById(R.id.list_top);
-
 
         // ViewにTangoBookの情報を設定
         TextView textView = (TextView) convertView.findViewById(R.id.textView1);

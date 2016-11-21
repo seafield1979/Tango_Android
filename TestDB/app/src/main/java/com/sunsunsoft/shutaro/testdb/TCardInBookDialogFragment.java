@@ -13,6 +13,8 @@ import android.widget.ListView;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.realm.RealmResults;
+
 /**
  * 単語帳に含まれるカードを管理するDialogFragment
  */
@@ -24,6 +26,10 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
 
     public static final String KEY_MODE = "key_mode";
     public static final String KEY_BOOK_ID = "key_book_id";
+    private static final int[] buttonIds = {
+            R.id.buttonOK,
+            R.id.buttonCancel
+    };
 
     DialogMode mMode;
     int mBookId;
@@ -92,13 +98,15 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
         super.onViewCreated(view, savedInstanceState);
 
         // Buttons
-        ((Button)view.findViewById(R.id.buttonOK)).setOnClickListener(this);
+        for (int id : buttonIds) {
+            (view.findViewById(id)).setOnClickListener(this);
+        }
 
         // ListView
         mListView = (ListView)view.findViewById(R.id.listView);
         switch (mMode) {
             case Add:
-                showAllCards();
+                showAddableCards();
                 break;
             case Delete:
                 showCards(mBookId);
@@ -118,10 +126,24 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
     }
 
     /**
+     * 未追加のカードを表示する
+     */
+    private void showAddableCards() {
+        List<TangoCardInBook> cardsInBook = MyRealmManager.getCardInBookDao().selectByBookId
+                (mBookId);
+        List<Integer> idsInBook = TangoCardInBookDao.listToIds(cardsInBook);
+
+        List<TangoCard> cards = MyRealmManager.getCardDao().selectExceptIds(idsInBook);
+        cards = MyRealmManager.getCardDao().toChangeable(cards);
+        TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
+        mListView.setAdapter(adapter);
+    }
+
+    /**
      * 指定の単語帳に含まれるカードを表示する
      */
     private void showCards(int bookId) {
-        List<Integer> idsList = MyRealmManager.getCardBookDao().selecteByBookId(bookId);
+        List<Integer> idsList = MyRealmManager.getCardInBookDao().selecteByBookId(bookId);
 
         if (idsList.size() <= 0) return;
 
@@ -154,6 +176,9 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
             case R.id.buttonOK:
                 submit();
                 break;
+            case R.id.buttonCancel:
+                dismiss();
+                break;
         }
     }
 
@@ -183,7 +208,7 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
         Integer[] cardIds = getCheckedCardIds();
 
         if (cardIds != null) {
-            MyRealmManager.getCardBookDao().addItems(bookId, cardIds);
+            MyRealmManager.getCardInBookDao().addItems(bookId, cardIds);
         }
     }
 
@@ -194,7 +219,7 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
         Integer[] cardIds = getCheckedCardIds();
 
         if (cardIds != null) {
-            MyRealmManager.getCardBookDao().deleteByCardIds(bookId, cardIds);
+            MyRealmManager.getCardInBookDao().deleteByCardIds(bookId, cardIds);
         }
     }
 }
