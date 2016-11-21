@@ -11,11 +11,11 @@ import io.realm.RealmResults;
  * TangoCardBookのDAO
  */
 
-public class TangoCardBookDao {
+public class TangoCardInBookDao {
 
     private Realm mRealm;
 
-    public TangoCardBookDao(Realm realm) {
+    public TangoCardInBookDao(Realm realm) {
         mRealm = realm;
     }
 
@@ -23,10 +23,10 @@ public class TangoCardBookDao {
      * 全要素取得
      * @return nameのString[]
      */
-    public List<TangoCardBook> selectAll() {
-        RealmResults<TangoCardBook> results = mRealm.where(TangoCardBook.class).findAll();
-        LinkedList<TangoCardBook> list = new LinkedList<>();
-        for (TangoCardBook box : results) {
+    public List<TangoCardInBook> selectAll() {
+        RealmResults<TangoCardInBook> results = mRealm.where(TangoCardInBook.class).findAll();
+        LinkedList<TangoCardInBook> list = new LinkedList<>();
+        for (TangoCardInBook box : results) {
             list.add(box);
         }
 
@@ -38,9 +38,9 @@ public class TangoCardBookDao {
      * @param bookId
      * @return
      */
-    public List<TangoCardBook> selectByBookId(int bookId) {
-        RealmResults<TangoCardBook> results =
-                mRealm.where(TangoCardBook.class)
+    public List<TangoCardInBook> selectByBookId(int bookId) {
+        RealmResults<TangoCardInBook> results =
+                mRealm.where(TangoCardInBook.class)
                         .equalTo("bookId", bookId).
                         findAll();
         return results;
@@ -50,10 +50,10 @@ public class TangoCardBookDao {
      * 指定の単語帳に含まれるカードのIDリストを取得
      */
     public List<Integer> selecteByBookId(int bookId) {
-        List<TangoCardBook> list = selectByBookId(bookId);
+        List<TangoCardInBook> list = selectByBookId(bookId);
 
         LinkedList<Integer> idsList = new LinkedList<Integer>();
-        for (TangoCardBook item : list) {
+        for (TangoCardInBook item : list) {
             idsList.add(item.getCardId());
         }
         return idsList;
@@ -69,7 +69,7 @@ public class TangoCardBookDao {
         mRealm.beginTransaction();
 
         for (int cardId : cardIds) {
-            TangoCardBook c2b = new TangoCardBook();
+            TangoCardInBook c2b = new TangoCardInBook();
             c2b.setBookId(bookId);
             c2b.setCardId(cardId);
 
@@ -87,7 +87,7 @@ public class TangoCardBookDao {
         if (cardIds.length <= 0) return;
 
         // Build the query looking at all users:
-        RealmQuery<TangoCardBook> query = mRealm.where(TangoCardBook.class);
+        RealmQuery<TangoCardInBook> query = mRealm.where(TangoCardInBook.class);
 
         // Add query conditions:
         boolean isFirst = true;
@@ -104,7 +104,7 @@ public class TangoCardBookDao {
         mRealm.beginTransaction();
 
         // Execute the query:
-        RealmResults<TangoCardBook> results = query.findAll();
+        RealmResults<TangoCardInBook> results = query.findAll();
         results.deleteAllFromRealm();
 
         mRealm.commitTransaction();

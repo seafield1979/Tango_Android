@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * ListViewに表示するためのアダプター
+ * 単語カード(TangoCard)をListViewに表示するためのアダプター
  */
 public class TangoCardAdapter extends ArrayAdapter<TangoCard> {
     private LayoutInflater mLayoutInflater;

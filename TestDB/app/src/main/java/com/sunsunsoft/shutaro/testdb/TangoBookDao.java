@@ -10,9 +10,8 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
- * Created by shutaro on 2016/10/28.
+ * 単語帳(TangoBook)のDAO
  */
-
 public class TangoBookDao {
     private Realm mRealm;
 
@@ -35,11 +34,24 @@ public class TangoBookDao {
     }
 
     /**
+     * 変更不可なRealmのオブジェクトを変更可能なリストに変換する
+     * @param list
+     * @return
+     */
+    public List<TangoBook> toChangeable(List<TangoBook> list) {
+        LinkedList<TangoBook> newList = new LinkedList<>();
+        for (TangoBook book : list) {
+            newList.add(mRealm.copyFromRealm(book));
+        }
+        return newList;
+    }
+
+    /**
      * 指定のIDの要素を取得
      * @param ids
      * @return
      */
-    public List<TangoBook>selectByIds(int[] ids) {
+    public List<TangoBook>selectByIds(Integer[] ids) {
         // Build the query looking at all users:
         RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
 

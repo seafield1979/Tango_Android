@@ -10,9 +10,8 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
- * Created by shutaro on 2016/10/28.
+ * 単語帳のDAO
  */
-
 public class TangoCardDao {
 
     private Realm mRealm;

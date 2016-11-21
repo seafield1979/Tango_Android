@@ -24,14 +24,16 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return TangoBoxFragment.newInstance(android.R.color.holo_red_dark);
             case 3:
-                return TangoCardBookFragment.newInstance(Color.rgb(80,255,128));
+                return TangoCardInBookFragment.newInstance(Color.rgb(80,255,128));
+            case 4:
+                return TangoItemInBoxFragment.newInstance(Color.rgb(100,100,200));
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -45,6 +47,8 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
                 return "Box";
             case 3:
                 return "CardInBook";
+            case 4:
+                return "In Box";
         }
         return "blank";
     }

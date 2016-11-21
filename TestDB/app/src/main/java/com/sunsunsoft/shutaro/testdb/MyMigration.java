@@ -75,8 +75,8 @@ public class MyMigration implements RealmMigration{
         }
 
         if (oldVersion == MyRealmManager.Version23) {
-            // TangoCardBook テーブル追加
-            schema.create("TangoCardBook")
+            // TangoCardInBook テーブル追加
+            schema.create("TangoCardInBook")
                     .addField("bookId", Integer.class)
                     .addField("cardId", String.class);
 

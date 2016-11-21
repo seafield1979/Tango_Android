@@ -5,7 +5,7 @@ import io.realm.RealmObject;
 /**
  * 単語帳に含まれるカード
  */
-public class TangoCardBook extends RealmObject {
+public class TangoCardInBook extends RealmObject {
     private int bookId;
     private int cardId;
 

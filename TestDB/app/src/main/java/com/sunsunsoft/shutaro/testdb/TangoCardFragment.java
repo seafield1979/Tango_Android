@@ -15,6 +15,9 @@ import android.view.View.OnClickListener;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 単語帳(TangoBook)のテスト用Fragment
+ */
 public class TangoCardFragment extends Fragment implements OnClickListener, TCardDialogFragment.OnOkClickListener {
     // Enums
     enum DialogMode {
@@ -143,7 +146,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
         TangoCardAdapter adapter = (TangoCardAdapter) listView.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             TangoCard card = adapter.getItem(i);
-            if (card.getIsChecked()) {
+            if (card.isChecked()) {
                 idsList.add(card.getId());
             }
         }

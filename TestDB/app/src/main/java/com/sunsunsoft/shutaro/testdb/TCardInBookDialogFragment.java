@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by shutaro on 2016/11/01.
+ * 単語帳に含まれるカードを管理するDialogFragment
  */
-
-public class TCardBookDialogFragment extends DialogFragment implements View.OnClickListener {
+public class TCardInBookDialogFragment extends DialogFragment implements View.OnClickListener {
     enum DialogMode {
         Add,
         Delete
@@ -34,8 +32,8 @@ public class TCardBookDialogFragment extends DialogFragment implements View.OnCl
     private ListView mListView;
 
 
-    static TCardBookDialogFragment createInstance(DialogMode mode, int bookId) {
-        TCardBookDialogFragment fragment = new TCardBookDialogFragment();
+    static TCardInBookDialogFragment createInstance(DialogMode mode, int bookId) {
+        TCardInBookDialogFragment fragment = new TCardInBookDialogFragment();
 
         // set arguments
         Bundle args = new Bundle();
@@ -86,7 +84,7 @@ public class TCardBookDialogFragment extends DialogFragment implements View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tcard_book_dialog, container, false);
+        return inflater.inflate(R.layout.fragment_tcard_in_book_dialog, container, false);
     }
 
     @Override
@@ -170,7 +168,7 @@ public class TCardBookDialogFragment extends DialogFragment implements View.OnCl
 
         for (int i = 0; i < adapter.getCount(); i++) {
             TangoCard card = adapter.getItem(i);
-            if (card.getIsChecked()) {
+            if (card.isChecked()) {
                 idsList.add(card.getId());
             }
         }

@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 
 /**
  * 単語帳や単語カードを入れる箱
- * 箱とその中のアイテムの関連は別モデルで管理する
+ * 箱の中のアイテムとの関連は別モデルで管理する
  */
 public class TangoBox extends RealmObject {
     @PrimaryKey

@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 単語帳(TangoBook)のテスト用のFragment
+ */
 public class TangoBookFragment extends Fragment implements OnClickListener, TBookDialogFragment.OnOkClickListener {
     // Enums
     enum DialogMode {

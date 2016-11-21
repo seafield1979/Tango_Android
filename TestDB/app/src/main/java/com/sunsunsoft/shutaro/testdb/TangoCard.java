@@ -73,10 +73,7 @@ public class TangoCard extends RealmObject{
     public byte[] getHistory() { return history; }
     public void setHistory(byte[] history) { this.history = history; }
 
-    public Date getStudyTime() { return studyTime; }
-    public void setStudyTime(Date studyTime) { this.studyTime = studyTime; }
-
-    public boolean getIsChecked() { return isChecked; }
+    public boolean isChecked() { return isChecked; }
     public void setChecked(boolean checked) {
         isChecked = checked;
     }

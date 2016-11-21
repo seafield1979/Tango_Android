@@ -16,7 +16,7 @@ import java.util.Random;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * 単語帳の追加、編集用のDialogFragment
  */
 public class TBookDialogFragment extends DialogFragment implements View.OnClickListener {
     private final static String KEY_NAME = "key_name";

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * ListViewに表示するためのアダプター
+ * 単語帳のデータをListViewに表示するためのアダプター
  */
 public class TangoBookAdapter extends ArrayAdapter<TangoBook> {
     private LayoutInflater mLayoutInflater;
