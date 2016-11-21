@@ -6,25 +6,58 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 /**
- * Created by shutaro on 2016/11/21.
+ * 単語カードのアイコン
  */
 
 public class IconCard extends UIcon{
+    /**
+     * Consts
+     */
+
     private static final int ICON_W = 150;
+    private static final int ICON_H = 100;
+    private static final int DISP_TITLE_LEN = 6;
+    private static final int TEXT_PAD_X = 10;
+    private static final int TEXT_PAD_Y = 10;
 
-    protected int radius;
+    /**
+     * Member Variables
+     */
+    protected TangoCard card;
+    protected String title;
 
-    public IconCard(UIconWindow parent, UIconCallbacks iconCallbacks) {
-        this(parent, iconCallbacks, 0, 0, ICON_W);
+    /**
+     * Get/Set
+     */
+
+    /**
+     * Constructor
+     */
+
+    public IconCard(TangoCard card, UIconWindow parent, UIconCallbacks iconCallbacks) {
+        this(card, parent, iconCallbacks, 0, 0);
     }
 
-    public IconCard(UIconWindow parent, UIconCallbacks iconCallbacks, int x, int y, int width) {
-        super(parent, iconCallbacks, IconType.Card, x,y,width,width);
+    public IconCard(TangoCard card, UIconWindow parent, UIconCallbacks iconCallbacks, int x, int y) {
+        super(parent, iconCallbacks, IconType.Card,
+                x, y, ICON_W, ICON_H);
 
         color = Color.rgb(0,255,255);
-        this.radius = width / 2;
+        this.card = card;
+        this.title = card.getWordA().substring(0, DISP_TITLE_LEN);
     }
 
+    /**
+     * Methods
+     */
+
+    /**
+     * カードアイコンを描画
+     * 長方形の中に単語のテキストを最大 DISP_TITLE_LEN 文字表示
+     * @param canvas
+     * @param paint
+     * @param offset
+     */
     public void drawIcon(Canvas canvas, Paint paint, PointF offset) {
         // 内部を塗りつぶし
         paint.setStyle(Paint.Style.FILL);
@@ -54,6 +87,9 @@ public class IconCard extends UIcon{
         } else {
             drawPos = pos;
         }
-        canvas.drawCircle(drawPos.x+radius, drawPos.y+radius, radius, paint);
+
+        canvas.drawRect( drawPos.x, drawPos.y,
+                drawPos.x + ICON_W, drawPos.y + ICON_H, paint);
+        canvas.drawText( title, drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_PAD_Y, paint);
     }
 }

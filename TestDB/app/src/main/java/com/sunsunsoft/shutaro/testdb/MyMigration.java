@@ -82,5 +82,15 @@ public class MyMigration implements RealmMigration{
 
             oldVersion = MyRealmManager.Version30;
         }
+
+        if (oldVersion == MyRealmManager.Version30) {
+            // TangoCardInBook テーブル追加
+            schema.create("TangoListItem")
+                    .addField("pos", Integer.class)
+                    .addField("itemType", Integer.class)
+                    .addField("id", Integer.class);
+
+            oldVersion = MyRealmManager.Version40;
+        }
     }
 }

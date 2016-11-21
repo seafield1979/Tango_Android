@@ -44,7 +44,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
      * @param IdRes
      * @return
      */
-    public static TangoCardFragment newInstance(@ColorRes int IdRes) {
+    public static TangoCardFragment newInstance(int IdRes) {
         TangoCardFragment frag = new TangoCardFragment();
         Bundle b = new Bundle();
         b.putInt(BACKGROUND_COLOR, IdRes);
