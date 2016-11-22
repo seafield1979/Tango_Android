@@ -63,17 +63,24 @@ public class TCardDialogFragment extends DialogFragment implements OnClickListen
         TCardDialogFragment fragment = new TCardDialogFragment();
 
         // set arguments
+        Bundle args = new Bundle();
         if (card != null) {
-            Bundle args = new Bundle();
             args.putString(KEY_WORD_A, card.getWordA());
             args.putString(KEY_WORD_B, card.getWordB());
             args.putString(KEY_HINT_AB, card.getHintAB());
             args.putString(KEY_HINT_BA, card.getHintBA());
             args.putString(KEY_COMMENT, card.getComment());
-
-            fragment.setArguments(args);
+        } else {
+            // ランダム
+            int randVal = new Random().nextInt(1000);
+            args.putString(KEY_WORD_A, "WordA " + randVal);
+            args.putString(KEY_WORD_B, "WordB " + randVal);
+            args.putString(KEY_HINT_AB, "HintAB " + randVal);
+            args.putString(KEY_HINT_BA, "HintBA " + randVal);
+            args.putString(KEY_COMMENT, "Comment " + randVal);
         }
-
+        fragment.setArguments(args);
+        
         return fragment;
     }
 

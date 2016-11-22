@@ -16,8 +16,8 @@ public class MyRealmManager {
     public static final int Version22 = 22;  // add primary key to TangoBox.id
     public static final int Version23 = 23;  // set nullAble
     public static final int Version30 = 30; // Add TangoCardInBook
-    public static final int Version40 = 40; // Add TangoListItem
-    public static final int latestVersion = Version40; // Add TangoListItem
+    public static final int Version40 = 40; // Add TangoItemPos
+    public static final int latestVersion = Version40; // Add TangoItemPos
 
     public static Realm getRealm() { return realm; }
 
@@ -26,7 +26,7 @@ public class MyRealmManager {
     private static TangoBoxDao boxDao;
     private static TangoCardInBookDao cardInBookDao;
     private static TangoItemInBoxDao itemInBoxDao;
-    private static TangoListItemDao listItemDao;
+    private static TangoItemPosDao itemPosDao;
 
     public static void initRealm(Context context) {
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(context)
@@ -41,7 +41,7 @@ public class MyRealmManager {
         boxDao = new TangoBoxDao(realm);
         cardInBookDao = new TangoCardInBookDao(realm);
         itemInBoxDao = new TangoItemInBoxDao(realm);
-        listItemDao = new TangoListItemDao(realm);
+        itemPosDao = new TangoItemPosDao(realm);
     }
 
     public static TangoCardDao getCardDao() {
@@ -64,7 +64,7 @@ public class MyRealmManager {
         return itemInBoxDao;
     }
 
-    public static TangoListItemDao getListItemDao() { return listItemDao; }
+    public static TangoItemPosDao getItemPosDao() { return itemPosDao; }
 
     public static void closeRealm() {
         realm.close();

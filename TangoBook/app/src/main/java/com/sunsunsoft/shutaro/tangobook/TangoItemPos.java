@@ -1,16 +1,28 @@
-package com.sunsunsoft.shutaro.testdb;
+package com.sunsunsoft.shutaro.tangobook;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 
 /**
- * ホームに表示するアイテムのリスト
- * 主に表示順を管理する
+ * 単語帳のアイテムの場所を特定する情報
+ *
+ * 特定のアイテム以下にあるアイテムを検索するのに使用する
+ * 例: ホーム以下
+ *      指定の単語帳以下
+ *      指定のボックス以下
+ *      ゴミ箱以下
+ * posは自分が所属するグループ内での配置位置
  */
 
-public class TangoListItem extends RealmObject {
+public class TangoItemPos extends RealmObject {
 
-    // 表示順 0...
+    // 親の種類 (0:ホーム / 1:単語帳 / 2:ボックス / 3:ゴミ箱) TangoParentType
+    private int parentType;
+
+    // 親のID
+    private int parentId;
+
+    // 表示位置 0...
     private int pos;
 
     // アイテムの種類 1:カード / 2:単語帳 / 3:ボックス

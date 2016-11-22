@@ -4,7 +4,7 @@
              android:layout_height="match_parent"
              android:id="@+id/top_layout"
               android:orientation="vertical"
-             tools:context="com.sunsunsoft.shutaro.testdb.TangoListItemFragment">
+             tools:context="com.sunsunsoft.shutaro.testdb.TangoItemPosFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="show"
+            android:text="home"
             android:id="@+id/button"/>
 
         <Button

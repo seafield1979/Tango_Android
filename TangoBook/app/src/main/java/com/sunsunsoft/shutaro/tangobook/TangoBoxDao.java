@@ -39,7 +39,7 @@ public class TangoBoxDao {
      * @param ids
      * @return
      */
-    public List<TangoBox>selectByIds(int[] ids) {
+    public List<TangoBox>selectByIds(Integer[] ids) {
         // Build the query looking at all users:
         RealmQuery<TangoBox> query = mRealm.where(TangoBox.class);
 
@@ -115,13 +115,13 @@ public class TangoBoxDao {
 
     /**
      * 一件更新  ユーザーが設定するデータ全て
-     * @param id
      * @param box
+     * @return true:更新成功
      */
-    public void updateOne(Integer id, TangoBox box) {
+    public boolean updateOne(TangoBox box) {
 
-        TangoBox newBox = mRealm.where(TangoBox.class).equalTo("id", id).findFirst();
-        if (newBox == null) return;
+        TangoBox newBox = mRealm.where(TangoBox.class).equalTo("id", box.getId()).findFirst();
+        if (newBox == null) return false;
 
         mRealm.beginTransaction();
 
@@ -131,6 +131,7 @@ public class TangoBoxDao {
         newBox.setUpdateTime(new Date());
 
         mRealm.commitTransaction();
+        return true;
     }
 
     /**

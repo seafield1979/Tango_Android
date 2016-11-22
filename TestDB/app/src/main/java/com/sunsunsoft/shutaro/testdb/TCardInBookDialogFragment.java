@@ -129,9 +129,9 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
      * 未追加のカードを表示する
      */
     private void showAddableCards() {
-        List<TangoCardInBook> cardsInBook = MyRealmManager.getCardInBookDao().selectByBookId
+        // 単語帳に含まれる
+        Integer[] idsInBook = MyRealmManager.getItemPosDao().getCardIdsByBookId
                 (mBookId);
-        List<Integer> idsInBook = TangoCardInBookDao.listToIds(cardsInBook);
 
         List<TangoCard> cards = MyRealmManager.getCardDao().selectExceptIds(idsInBook);
         cards = MyRealmManager.getCardDao().toChangeable(cards);
@@ -143,13 +143,11 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
      * 指定の単語帳に含まれるカードを表示する
      */
     private void showCards(int bookId) {
-        List<Integer> idsList = MyRealmManager.getCardInBookDao().selecteByBookId(bookId);
+        List<TangoCard> cards = MyRealmManager.getItemPosDao().selectCardsByBookId
+                (bookId);
+        if (cards == null) return;
 
-        if (idsList.size() <= 0) return;
-
-        // カードのIDからカードの情報を取得する
-        List<TangoCard> cards = MyRealmManager.getCardDao()
-                .selectByIds(idsList.toArray(new Integer[0]));
+        // 変更可能にする
         cards = MyRealmManager.getCardDao().toChangeable(cards);
 
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
@@ -208,7 +206,7 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
         Integer[] cardIds = getCheckedCardIds();
 
         if (cardIds != null) {
-            MyRealmManager.getCardInBookDao().addItems(bookId, cardIds);
+            MyRealmManager.getItemPosDao().addCardsInBook(bookId, cardIds);
         }
     }
 

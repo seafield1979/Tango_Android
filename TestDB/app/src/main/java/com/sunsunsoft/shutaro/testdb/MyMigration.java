@@ -85,7 +85,7 @@ public class MyMigration implements RealmMigration{
 
         if (oldVersion == MyRealmManager.Version30) {
             // TangoCardInBook テーブル追加
-            schema.create("TangoListItem")
+            schema.create("TangoItemPos")
                     .addField("pos", Integer.class)
                     .addField("itemType", Integer.class)
                     .addField("id", Integer.class);

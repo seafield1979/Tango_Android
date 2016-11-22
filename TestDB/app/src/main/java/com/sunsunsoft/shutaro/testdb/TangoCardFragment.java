@@ -109,6 +109,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
      */
     private void showList() {
         List<TangoCard> cards = mCardDao.selectAll();
+        cards = mCardDao.toChangeable(cards);
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         listView.setAdapter(adapter);
     }

@@ -143,13 +143,12 @@ public class TangoBookDao {
 
     /**
      * 一件更新  ユーザーが設定するデータ全て
-     * @param id
      * @param book
+     * @return true:更新成功
      */
-    public void updateOne(Integer id, TangoBook book) {
-
-        TangoBook newBook = mRealm.where(TangoBook.class).equalTo("id", id).findFirst();
-        if (newBook == null) return;
+    public boolean updateOne(TangoBook book) {
+        TangoBook newBook = mRealm.where(TangoBook.class).equalTo("id", book.getId()).findFirst();
+        if (newBook == null) return false;
 
         mRealm.beginTransaction();
 
@@ -159,6 +158,7 @@ public class TangoBookDao {
         newBook.setUpdateTime(new Date());
 
         mRealm.commitTransaction();
+        return true;
     }
 
     /**

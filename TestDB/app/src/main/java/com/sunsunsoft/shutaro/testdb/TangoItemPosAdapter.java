@@ -14,14 +14,14 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * TangoListItemFragmentのListView用のAdapter
+ * TangoItemPosFragmentのListView用のAdapter
  */
 
-public class TangoListItemAdapter extends ArrayAdapter<TangoListItem> {
+public class TangoItemPosAdapter extends ArrayAdapter<TangoItemPos> {
     private LayoutInflater mLayoutInflater;
 
-    public TangoListItemAdapter(Context context, int textViewResourceId,
-                            List<TangoListItem> objects)
+    public TangoItemPosAdapter(Context context, int textViewResourceId,
+                               List<TangoItemPos> objects)
     {
         super(context, textViewResourceId, objects);
         mLayoutInflater = (LayoutInflater) context
@@ -31,11 +31,11 @@ public class TangoListItemAdapter extends ArrayAdapter<TangoListItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        final TangoListItem item = getItem(position);
+        final TangoItemPos item = getItem(position);
 
         if (null == convertView) {
             convertView = mLayoutInflater.inflate(
-                    R.layout.tlist_item, null);
+                    R.layout.titem_pos, null);
             Log.v("myData", String.valueOf(position));
         }
 

@@ -12,7 +12,7 @@ import io.realm.annotations.Required;
  * 単語カード
  * RealmObjectのサブクラスなのでそのままテーブルとして使用される
  */
-public class TangoCard extends RealmObject{
+public class TangoCard extends RealmObject implements TangoItem{
     @PrimaryKey
     private int id;
     @Required
@@ -30,6 +30,8 @@ public class TangoCard extends RealmObject{
 
     @Ignore
     private boolean isChecked;  // ListViewで選択状態を示す
+    private int pos;            // 位置、現在のグループの中(ホーム、単語帳、ボックス等）の何番目に表示されるか
+
 
     // GetSet
     // id
@@ -76,6 +78,15 @@ public class TangoCard extends RealmObject{
     public boolean isChecked() { return isChecked; }
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    @Override
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
     }
 
     // テスト用のダミーカードを取得

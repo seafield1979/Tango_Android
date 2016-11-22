@@ -179,29 +179,6 @@ public class TangoCardDao {
     }
 
     /**
-     * 指定したIDの項目を更新する
-     * @param id
-     * @param card
-     */
-    public void updateById(int id, TangoCard card) {
-        mRealm.beginTransaction();
-
-        TangoCard newCard =
-                mRealm.where(TangoCard.class)
-                        .equalTo("id", id).
-                        findFirst();
-
-        newCard.setWordA(card.getWordA());
-        newCard.setWordB(card.getWordB());
-        newCard.setHintAB(card.getHintAB());
-        newCard.setHintBA(card.getHintBA());
-        newCard.setComment(card.getComment());
-
-        mRealm.commitTransaction();
-    }
-
-
-    /**
      * IDのリストに一致する項目を全て更新する
      * @param ids
      * @param wordA  更新するA
@@ -236,12 +213,14 @@ public class TangoCardDao {
 
     /**
      * 一件更新  ユーザーが設定するデータ全て
-     * @param id
      * @param card
+     * @return true:更新成功
      */
-    public void updateOne(Integer id, TangoCard card) {
+    public boolean updateOne(TangoCard card) {
         mRealm.beginTransaction();
-        TangoCard newCard = mRealm.where(TangoCard.class).equalTo("id", id).findFirst();
+        TangoCard newCard = mRealm.where(TangoCard.class).equalTo("id", card.getId()).findFirst();
+        if (newCard == null) return false;
+
         newCard.setWordA(card.getWordA());
         newCard.setWordB(card.getWordB());
         newCard.setHintAB(card.getHintAB());
@@ -250,7 +229,10 @@ public class TangoCardDao {
         newCard.setStar(card.getStar());
         newCard.setHistory(card.getHistory());
         newCard.setUpdateTime(new Date());
+
+        mRealm.copyFromRealm(card);
         mRealm.commitTransaction();
+        return true;
     }
 
     /**

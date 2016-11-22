@@ -11,7 +11,7 @@ import io.realm.annotations.Required;
 /**
  * 単語帳データクラス
  */
-public class TangoBook extends RealmObject {
+public class TangoBook extends RealmObject implements TangoItem {
     @PrimaryKey
     private int id;
     @Required
@@ -26,7 +26,7 @@ public class TangoBook extends RealmObject {
 
     @Ignore
     private boolean isChecked;  // ListViewで選択状態を示す
-
+    private int pos;            // 位置、現在のグループの中(ホーム、単語帳、ボックス等）の何番目に表示されるか
 
     // Get/Set
     public int getId() {
@@ -93,6 +93,13 @@ public class TangoBook extends RealmObject {
         isChecked = checked;
     }
 
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
 
     // テスト用のダミーカードを取得
     public static TangoBook createDummy() {

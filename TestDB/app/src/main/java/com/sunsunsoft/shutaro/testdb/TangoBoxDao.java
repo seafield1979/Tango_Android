@@ -39,7 +39,7 @@ public class TangoBoxDao {
      * @param ids
      * @return
      */
-    public List<TangoBox>selectByIds(int[] ids) {
+    public List<TangoBox>selectByIds(Integer[] ids) {
         // Build the query looking at all users:
         RealmQuery<TangoBox> query = mRealm.where(TangoBox.class);
 

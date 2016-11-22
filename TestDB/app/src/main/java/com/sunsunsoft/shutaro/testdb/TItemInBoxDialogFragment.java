@@ -145,7 +145,8 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
             }
         }
 
-        List<TangoCard> cards = MyRealmManager.getCardDao().selectExceptIds(cardIds);
+        List<TangoCard> cards = MyRealmManager.getCardDao().selectExceptIds(cardIds.toArray(new
+                Integer[0]));
         cards = MyRealmManager.getCardDao().toChangeable(cards);
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);

@@ -28,7 +28,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
             case 4:
                 return TangoItemInBoxFragment.newInstance(Color.rgb(100,100,200));
             case 5:
-                return TangoListItemFragment.newInstance(Color.rgb(0,100,200));
+                return TangoItemPosFragment.newInstance(Color.rgb(0,100,200));
         }
         return null;
     }

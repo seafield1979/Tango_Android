@@ -1,6 +1,5 @@
-package com.sunsunsoft.shutaro.testdb;
+package com.sunsunsoft.shutaro.tangobook;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,11 +12,11 @@ import io.realm.Sort;
  * TangoItemListのDAO
  */
 
-public class TangoListItemDao  {
+public class TangoItemPosDao {
 
     private Realm mRealm;
 
-    public TangoListItemDao(Realm realm) {
+    public TangoItemPosDao(Realm realm) {
         mRealm = realm;
     }
 
@@ -25,8 +24,8 @@ public class TangoListItemDao  {
      * 全要素取得
      * @return nameのString[]
      */
-    public List<TangoListItem> selectAll() {
-        RealmResults<TangoListItem> results = mRealm.where(TangoListItem.class).findAllSorted
+    public List<TangoItemPos> selectAll() {
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class).findAllSorted
                 ("pos", Sort.ASCENDING);
         return results;
     }
@@ -36,9 +35,9 @@ public class TangoListItemDao  {
      * @param list
      * @return
      */
-    public List<TangoListItem> toChangeable(List<TangoListItem> list) {
-        LinkedList<TangoListItem> newList = new LinkedList<TangoListItem>();
-        for (TangoListItem item : list) {
+    public List<TangoItemPos> toChangeable(List<TangoItemPos> list) {
+        LinkedList<TangoItemPos> newList = new LinkedList<TangoItemPos>();
+        for (TangoItemPos item : list) {
             newList.add(mRealm.copyFromRealm(item));
         }
         return newList;
@@ -50,7 +49,7 @@ public class TangoListItemDao  {
      * @return
      */
     public boolean deleteAll() {
-        RealmResults<TangoListItem> results = mRealm.where(TangoListItem.class).findAll();
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class).findAll();
         mRealm.beginTransaction();
         boolean ret = results.deleteAllFromRealm();
         mRealm.commitTransaction();
@@ -65,7 +64,7 @@ public class TangoListItemDao  {
 
         mRealm.beginTransaction();
 
-        RealmQuery<TangoListItem> query = mRealm.where(TangoListItem.class);
+        RealmQuery<TangoItemPos> query = mRealm.where(TangoItemPos.class);
 
         // Add query conditions:
         boolean isFirst = true;
@@ -78,7 +77,7 @@ public class TangoListItemDao  {
             }
         }
         // Execute the query:
-        RealmResults<TangoListItem> results = query.findAll();
+        RealmResults<TangoItemPos> results = query.findAll();
 
         results.deleteAllFromRealm();
         mRealm.commitTransaction();
@@ -87,7 +86,7 @@ public class TangoListItemDao  {
     /**
      * 要素を追加する
      */
-    public void addOne(TangoListItem item) {
+    public void addOne(TangoItemPos item) {
         item.setPos(getNextPos(mRealm));
 
         mRealm.beginTransaction();
@@ -101,7 +100,7 @@ public class TangoListItemDao  {
      * @param newPos
      */
     public void updatePos(int oldPos, int newPos) {
-        TangoListItem item = mRealm.where(TangoListItem.class).equalTo("pos", oldPos).findFirst();
+        TangoItemPos item = mRealm.where(TangoItemPos.class).equalTo("pos", oldPos).findFirst();
         if (item == null) return;
 
         mRealm.beginTransaction();
@@ -115,8 +114,8 @@ public class TangoListItemDao  {
      * @param pos2
      */
     public void changePos(int pos1, int pos2) {
-        TangoListItem item1 = mRealm.where(TangoListItem.class).equalTo("pos", pos1).findFirst();
-        TangoListItem item2 = mRealm.where(TangoListItem.class).equalTo("pos", pos2).findFirst();
+        TangoItemPos item1 = mRealm.where(TangoItemPos.class).equalTo("pos", pos1).findFirst();
+        TangoItemPos item2 = mRealm.where(TangoItemPos.class).equalTo("pos", pos2).findFirst();
         if (item1 == null || item2 == null) return;
 
         mRealm.beginTransaction();
@@ -128,15 +127,15 @@ public class TangoListItemDao  {
     /**
      * リストの全要素を更新する
      */
-    public void updateAll(List<TangoListItem> list) {
+    public void updateAll(List<TangoItemPos> list) {
         mRealm.beginTransaction();
 
         // いったんクリア
-        RealmResults<TangoListItem> results = mRealm.where(TangoListItem.class).findAll();
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class).findAll();
         results.deleteAllFromRealm();
 
         // 全要素を追加
-        for (TangoListItem item : list) {
+        for (TangoItemPos item : list) {
             mRealm.copyToRealm(item);
         }
 
@@ -152,7 +151,7 @@ public class TangoListItemDao  {
         // 初期化
         int nextId = 1;
         // userIdの最大値を取得
-        Number maxUserId = realm.where(TangoListItem.class).max("pos");
+        Number maxUserId = realm.where(TangoItemPos.class).max("pos");
         // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
         if(maxUserId != null) {
             nextId = maxUserId.intValue() + 1;

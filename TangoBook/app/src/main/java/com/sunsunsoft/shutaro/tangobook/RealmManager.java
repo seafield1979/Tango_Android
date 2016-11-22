@@ -12,6 +12,7 @@ import io.realm.RealmConfiguration;
 public class RealmManager {
     public static Realm realm;
     public static final int Version1 = 1;
+    public static final int latestVersion = Version1;
 
 
     public static Realm getRealm() { return realm; }
@@ -21,10 +22,11 @@ public class RealmManager {
     private static TangoBoxDao boxDao;
     private static TangoCardInBookDao cardInBookDao;
     private static TangoItemInBoxDao itemInBoxDao;
+    private static TangoItemPosDao itemPosDao;
 
     public static void initRealm(Context context) {
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(context)
-                .schemaVersion(Version1)
+                .schemaVersion(latestVersion)
                 .migration(new TangoMigration())
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
@@ -35,6 +37,7 @@ public class RealmManager {
         boxDao = new TangoBoxDao(realm);
         cardInBookDao = new TangoCardInBookDao(realm);
         itemInBoxDao = new TangoItemInBoxDao(realm);
+        itemPosDao = new TangoItemPosDao(realm);
     }
 
     public static TangoCardDao getCardDao() {
@@ -56,6 +59,8 @@ public class RealmManager {
     public static TangoItemInBoxDao getItemInBoxDao() {
         return itemInBoxDao;
     }
+
+    public static TangoItemPosDao getItemPosDao() { return itemPosDao; }
 
     public static void closeRealm() {
         realm.close();

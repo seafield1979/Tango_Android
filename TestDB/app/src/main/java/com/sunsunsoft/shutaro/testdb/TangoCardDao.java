@@ -34,7 +34,7 @@ public class TangoCardDao {
      * 指定の単語帳に追加されていない単語を取得
      * @return
      */
-    public List<TangoCard> selectExceptIds(List<Integer> ids) {
+    public List<TangoCard> selectExceptIds(Integer[] ids) {
 
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 
@@ -196,6 +196,7 @@ public class TangoCardDao {
         newCard.setHintAB(card.getHintAB());
         newCard.setHintBA(card.getHintBA());
         newCard.setComment(card.getComment());
+        newCard.setUpdateTime(new Date());
 
         mRealm.commitTransaction();
     }
@@ -231,25 +232,6 @@ public class TangoCardDao {
             card.setWordB(wordB);
         }
 
-        mRealm.commitTransaction();
-    }
-
-    /**
-     * 一件更新  ユーザーが設定するデータ全て
-     * @param id
-     * @param card
-     */
-    public void updateOne(Integer id, TangoCard card) {
-        mRealm.beginTransaction();
-        TangoCard newCard = mRealm.where(TangoCard.class).equalTo("id", id).findFirst();
-        newCard.setWordA(card.getWordA());
-        newCard.setWordB(card.getWordB());
-        newCard.setHintAB(card.getHintAB());
-        newCard.setHintBA(card.getHintBA());
-        newCard.setComment(card.getComment());
-        newCard.setStar(card.getStar());
-        newCard.setHistory(card.getHistory());
-        newCard.setUpdateTime(new Date());
         mRealm.commitTransaction();
     }
 

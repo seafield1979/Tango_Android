@@ -30,8 +30,15 @@ public class MainActivity extends AppCompatActivity {
             // 画面に表示
             transaction.commit();
 
+
+            // 各種シングルトンの初期化
             UDrawManager.getInstance().init();
+
+            // ULog
             ULog.init();
+
+            // Realmの初期化
+            RealmManager.initRealm(getApplicationContext());
         }
     }
 }
