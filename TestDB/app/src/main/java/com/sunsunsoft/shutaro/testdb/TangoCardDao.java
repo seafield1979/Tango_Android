@@ -43,7 +43,7 @@ public class TangoCardDao {
      * 指定の単語帳に追加されていない単語を取得
      * @return
      */
-    public List<TangoCard> selectExceptIds(Integer[] ids) {
+    public List<TangoCard> selectExceptIds(Iterable<Integer> ids) {
 
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 
@@ -88,7 +88,7 @@ public class TangoCardDao {
      * @param ids
      * @return
      */
-    public List<TangoCard>selectByIds(Integer[] ids) {
+    public List<TangoCard> selectByIds(Integer[] ids) {
         // Build the query looking at all users:
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 

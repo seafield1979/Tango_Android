@@ -9,4 +9,5 @@ import io.realm.RealmObject;
 interface TangoItem {
     int getId();
     int getPos();
+    TangoItemType getItemType();
 }

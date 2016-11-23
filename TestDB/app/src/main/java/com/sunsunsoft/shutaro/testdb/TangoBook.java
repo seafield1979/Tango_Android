@@ -117,4 +117,11 @@ public class TangoBook extends RealmObject implements TangoItem {
 
         return book;
     }
+
+    /**
+     * TangoItem interface
+     */
+    public TangoItemType getItemType() {
+        return TangoItemType.Book;
+    }
 }

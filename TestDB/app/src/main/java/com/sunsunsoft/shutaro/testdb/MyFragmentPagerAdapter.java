@@ -30,7 +30,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
             case 5:
                 return TangoItemPosFragment.newInstance(Color.rgb(0,100,200));
         }
-        return null;
+        return TangoCardFragment.newInstance(android.R.color.holo_blue_bright);
     }
 
     @Override

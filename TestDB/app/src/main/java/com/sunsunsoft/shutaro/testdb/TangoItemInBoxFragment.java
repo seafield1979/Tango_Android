@@ -157,7 +157,7 @@ public class TangoItemInBoxFragment extends Fragment implements OnClickListener,
     }
 
     /**
-     * TCardDialogActivityからコールバックされるメソッド
+     * DialogFragmentからコールバックされるメソッド
      */
     @Override
     public void onOkClicked(Bundle args) {

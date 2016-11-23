@@ -13,13 +13,13 @@ import android.widget.ListView;
 
 import java.util.LinkedList;
 import java.util.List;
-
+import android.view.View.OnClickListener;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TItemInBoxDialogFragment extends DialogFragment implements View.OnClickListener {
+public class TItemInBoxDialogFragment extends DialogFragment implements OnClickListener {
     interface OnOkClickListener {
         void onOkClicked(Bundle args);
     }
@@ -149,7 +149,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
         }
 
         List<TangoCard> cards = MyRealmManager.getCardDao()
-                .selectExceptIds(cardIds.toArray(new Integer[0]));
+                .selectExceptIds(cardIds);
         cards = MyRealmManager.getCardDao().toChangeable(cards);
 
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
@@ -182,7 +182,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
             }
         }
 
-        List<TangoBook> books = MyRealmManager.getBookDao().selectExceptIds(bookIds);
+        List<TangoBook> books = MyRealmManager.getBookDao().selectByExceptIds(bookIds);
         books = MyRealmManager.getBookDao().toChangeable(books);
         TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
         mListView.setAdapter(adapter);
@@ -357,7 +357,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
         }
 
         if (itemPoses.size() > 0) {
-            MyRealmManager.getItemPosDao().addItemPosesToBox(itemPoses);
+            MyRealmManager.getItemPosDao().addItemPoses(itemPoses);
         }
     }
 
@@ -379,7 +379,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
         }
 
         if (bookIds != null) {
-            MyRealmManager.getItemPosDao().addItemPosesToBox(itemPoses);
+            MyRealmManager.getItemPosDao().addItemPoses(itemPoses);
         }
     }
 
@@ -402,7 +402,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
         }
 
         if (deleteItems != null) {
-            MyRealmManager.getItemPosDao().deleteItemPosesInBox(boxId, deleteItems);
+            MyRealmManager.getItemPosDao().deleteItemPoses(deleteItems);
         }
     }
 }

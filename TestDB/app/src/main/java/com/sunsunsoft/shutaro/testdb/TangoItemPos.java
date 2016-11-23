@@ -15,7 +15,7 @@ import io.realm.annotations.Ignore;
  */
 public class TangoItemPos extends RealmObject {
 
-    // 親の種類 (0:ホーム / 1:単語帳 / 2:ボックス / 3:ゴミ箱) TangoParentType
+    // 親の種類 TangoParentType(0:ホーム / 1:単語帳 / 2:ボックス / 3:ゴミ箱)
     private int parentType;
 
     // 親のID
@@ -24,7 +24,7 @@ public class TangoItemPos extends RealmObject {
     // 表示順 0...
     private int pos;
 
-    // アイテムの種類 1:カード / 2:単語帳 / 3:ボックス
+    // アイテムの種類 TangoItemType( 0:カード / 1:単語帳 / 2:ボックス)
     private int itemType;
 
     // 各アイテムのID

@@ -107,4 +107,11 @@ public class TangoBox extends RealmObject implements TangoItem {
 
         return box;
     }
+
+    /**
+     * TangoItem interface
+     */
+    public TangoItemType getItemType() {
+        return TangoItemType.Box;
+    }
 }

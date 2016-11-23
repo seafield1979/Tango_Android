@@ -27,7 +27,7 @@ public class TangoItemPosDao {
 
     /**
      * 全要素取得
-     * @return nameのString[]
+     * @return
      */
     public List<TangoItemPos> selectAll() {
         RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
@@ -45,6 +45,29 @@ public class TangoItemPosDao {
 
         }
         return results;
+    }
+
+    /**
+     * 指定の親以下にあるアイテムを全て取得する
+     */
+    public List<TangoItemPos> selectByParentType(TangoParentType parentType) {
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", parentType.ordinal())
+                .findAllSorted("pos", Sort.ASCENDING);
+        return results;
+    }
+
+
+    /**
+     * ホームのアイテムを取得
+     * @return
+     */
+    public List<TangoItem> selectItemsInHome(boolean changeable) {
+        return selectItemsByParentType(TangoParentType.Home, changeable);
+    }
+
+    public List<TangoItem> selectItemsInTrash(boolean changeable) {
+        return selectItemsByParentType(TangoParentType.Trash, changeable);
     }
 
     /**
@@ -87,6 +110,253 @@ public class TangoItemPosDao {
         List<TangoCard> cards = MyRealmManager.getCardDao().selectByIds(ids);
 
         return cards;
+    }
+
+    /**
+     * 指定の親の配下にある全てのアイテムを取得する(主にホーム用)
+     * アイテムのposでソート済みのリストを返す
+     * @param parentType
+     * @return
+     */
+    public List<TangoItem> selectItemsByParentType(
+            TangoParentType parentType, boolean changeable)
+    {
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
+                    .equalTo("parentType", parentType.ordinal())
+                    .findAll();
+//                    .findAllSorted("pos", Sort.ASCENDING);
+        if (results == null) return null;
+
+        // 格納先
+        List<TangoItem> items;
+
+        // IDのリストを作成(カード)
+        LinkedList<Integer> cardIds = new LinkedList<>();
+        LinkedList<Integer> bookIds = new LinkedList<>();
+        LinkedList<Integer> boxIds = new LinkedList<>();
+        for (TangoItemPos item : results) {
+            switch(TangoItemType.toEnum(item.getItemType())) {
+                case Card:
+                    cardIds.add(item.getId());
+                    break;
+                case Book:
+                    bookIds.add(item.getId());
+                    break;
+                case Box:
+                    boxIds.add(item.getId());
+                    break;
+            }
+        }
+
+        // 種類別にTangoItemを取得する
+        // Card
+        List<TangoCard> cards;
+        if (cardIds.size() > 0) {
+            cards = MyRealmManager.getCardDao()
+                    .selectByIds(cardIds.toArray(new Integer[0]));
+        } else {
+            cards = new LinkedList<>();
+        }
+
+        // Book
+        List<TangoBook> books;
+        if (bookIds.size() > 0) {
+            books = MyRealmManager.getBookDao()
+                    .selectByIds(bookIds);
+        } else {
+            books = new LinkedList<>();
+        }
+
+        // Box
+        List<TangoBox> boxes;
+        if (boxIds.size() > 0) {
+            boxes = MyRealmManager.getBoxDao()
+                    .selectByIds(boxIds);
+        } else {
+            boxes = new LinkedList<>();
+        }
+
+        // posの順にリストを作成
+        items = joinWithSort(cards, books, boxes);
+
+        if (changeable) {
+            items = toChangeableItem(items);
+        }
+
+        return items;
+    }
+
+    /**
+     * 指定のParentType配下の TangoItemPos のリストを取得する
+     * @param parentType
+     * @return
+     */
+    public List<TangoItemPos> selectItemPosesByParentType(TangoParentType parentType) {
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", parentType.ordinal())
+                .findAll();
+        return results;
+    }
+
+    /**
+     * 指定のアイテム(TangoItemPos)を除外したアイテムを取得する
+     * @param excludeItemPoses
+     * @param changeable
+     * @return
+     */
+    public List<TangoItem> selectItemExcludeItemPoses(
+            List<TangoItemPos> excludeItemPoses,
+            boolean changeable)
+    {
+        // 各type毎に除外IDリストを作成
+        LinkedList<Integer> cardIds = new LinkedList<>();
+        LinkedList<Integer> bookIds = new LinkedList<>();
+        LinkedList<Integer> boxIds = new LinkedList<>();
+
+        for (TangoItemPos item : excludeItemPoses) {
+            switch(TangoItemType.toEnum(item.getItemType())) {
+                case Card:
+                    cardIds.add(item.getId());
+                    break;
+                case Book:
+                    bookIds.add(item.getId());
+                    break;
+                case Box:
+                    boxIds.add(item.getId());
+                    break;
+            }
+        }
+
+        // 除外IDを使用して各Typeのリストを取得
+        // 種類別にTangoItemを取得する
+        // Card
+        List<TangoCard> cards;
+        cards = MyRealmManager.getCardDao()
+                    .selectExceptIds(cardIds);
+
+        // Book
+        List<TangoBook> books;
+        books = MyRealmManager.getBookDao()
+                    .selectByExceptIds(bookIds);
+
+        // Box
+        List<TangoBox> boxes;
+        boxes = MyRealmManager.getBoxDao()
+                    .selectByExceptIds(boxIds);
+
+
+        // posの順にリストを作成
+        List<TangoItem> items = joinWithSort(cards, books, boxes);
+        if (changeable) {
+            items = toChangeableItem(items);
+        }
+        return items;
+    }
+
+    /**
+     * ３種類のアイテムリストを結合＆posが小さい順にソートする
+     * @param cards
+     * @param books
+     * @param boxes
+     * @return
+     */
+    public List<TangoItem> joinWithSort(List<TangoCard> cards,
+                                        List<TangoBook> books,
+                                        List<TangoBox> boxes)
+    {
+        final int minInit = 10000000;
+        LinkedList<TangoItem> items = new LinkedList<>();
+
+        // posの順にリストを作成
+        // 各ループでCard,Book,Boxのアイテムの中で一番小さいposのものを出力先のリストに追加する
+        int[] indexs = new int[3];
+        int[] poses = new int[3];
+
+        for (int i=0; i<3; i++) {
+            indexs[i] = 0;
+        }
+
+        // 各アイテムの先頭のposを取得する
+        if (indexs[0] < cards.size()) {
+            poses[0] = cards.get(indexs[0]).getPos();
+        } else {
+            poses[0] = minInit;
+        }
+
+        if (indexs[1] < books.size()) {
+            poses[1] = books.get(indexs[1]).getPos();
+        } else {
+            poses[1] = minInit;
+        }
+
+        if (indexs[2] < boxes.size()) {
+            poses[2] = boxes.get(indexs[2]).getPos();
+        } else {
+            poses[2] = minInit;
+        }
+
+        int totalCount = cards.size() + books.size() + boxes.size();
+        int count = 0;
+
+        while(true) {
+            // 各アイテムリストの先頭のposを取得する
+            int posMin = minInit;
+            int gotTypeIndex = 0;
+            for (int i=0; i<3; i++) {
+                if (posMin > poses[i]) {
+                    posMin = poses[i];
+                    gotTypeIndex = i;
+                }
+            }
+            switch(gotTypeIndex) {
+                case 0:
+                    if (indexs[0] < cards.size()) {
+                        items.add(cards.get(indexs[0]));
+                        // 取得したアイテムを持つリストを１つすすめる
+                        indexs[gotTypeIndex]++;
+                        count++;
+                        if (indexs[0] < cards.size()) {
+                            poses[0] = cards.get(indexs[0]).getPos();
+                        }
+                        else {
+                            poses[0] = minInit;
+                        }
+                    }
+                    break;
+                case 1:
+                    if (indexs[1] < books.size()) {
+                        items.add(books.get(indexs[1]));
+                    }
+
+                    indexs[1]++;
+                    count++;
+                    if (indexs[1] < books.size()) {
+                        poses[1] = books.get(indexs[gotTypeIndex]).getPos();
+                    } else {
+                        poses[1] = 100000000;
+                    }
+                    break;
+                case 2:
+                    if (indexs[2] < boxes.size()) {
+                        items.add(boxes.get(indexs[2]));
+                    }
+
+                    indexs[2]++;
+                    count++;
+                    if (indexs[2] < boxes.size()) {
+                        poses[2] = boxes.get(indexs[2]).getPos();
+                    } else {
+                        poses[2] = 100000000;
+                    }
+                    break;
+            }
+
+            // 全ての要素をチェックし終わったら終了
+            if (count >= totalCount) break;
+        }
+
+        return items;
+
     }
 
     /**
@@ -335,20 +605,12 @@ public class TangoItemPosDao {
         }
     }
 
-    /**
-     * TangoItemPosのリストで削除を行う
-     * @param boxId
-     * @param items
-     */
-    public void deleteItemPosesInBox(int boxId, List<TangoItemPos> items) {
+
+    public void deleteItemPoses(List<TangoItemPos> items) {
         if (items == null) return;
         boolean isFirst = false;
 
         RealmQuery<TangoItemPos> query = mRealm.where(TangoItemPos.class);
-
-        // Add query conditions:
-        query.equalTo("parentType", TangoParentType.Box.ordinal())
-                .equalTo("parentId", boxId);
 
         for (TangoItemPos item : items) {
             if (!isFirst) {
@@ -356,18 +618,51 @@ public class TangoItemPosDao {
             } else {
                 query.or();
             }
-            query.equalTo("itemType", item.getItemType())
-                        .equalTo("id", item.getId());
+            query.equalTo("parentType", item.getParentType())
+                    .equalTo("itemType", item.getItemType())
+                    .equalTo("id", item.getId());
+}
+        RealmResults<TangoItemPos> results = query.findAll();
+        if (results == null) return;
 
-            RealmResults<TangoItemPos> results = query.findAll();
-            if (results == null) return;
-
-
-            mRealm.beginTransaction();
-            results.deleteAllFromRealm();
-            mRealm.commitTransaction();
-        }
+        mRealm.beginTransaction();
+        results.deleteAllFromRealm();
+        mRealm.commitTransaction();
     }
+
+    /**
+     * TangoItemPosのリストで削除を行う
+     * @param boxId
+     * @param items
+     */
+//    public void deleteItemPosesInBox(int boxId, List<TangoItemPos> items) {
+//        if (items == null) return;
+//        boolean isFirst = false;
+//
+//        RealmQuery<TangoItemPos> query = mRealm.where(TangoItemPos.class);
+//
+//        // Add query conditions:
+//        query.equalTo("parentType", TangoParentType.Box.ordinal())
+//                .equalTo("parentId", boxId);
+//
+//        for (TangoItemPos item : items) {
+//            if (!isFirst) {
+//                isFirst = true;
+//            } else {
+//                query.or();
+//            }
+//            query.equalTo("itemType", item.getItemType())
+//                        .equalTo("id", item.getId());
+//
+//            RealmResults<TangoItemPos> results = query.findAll();
+//            if (results == null) return;
+//
+//
+//            mRealm.beginTransaction();
+//            results.deleteAllFromRealm();
+//            mRealm.commitTransaction();
+//        }
+//    }
 
     /**
      * 単語帳にカードを追加する
@@ -423,7 +718,7 @@ public class TangoItemPosDao {
      * ボックスに要素の追加情報(TangoItemPos)を追加
      * @param itemPoses
      */
-    public void addItemPosesToBox(List<TangoItemPos> itemPoses) {
+    public void addItemPoses(List<TangoItemPos> itemPoses) {
 
         mRealm.beginTransaction();
         for (TangoItemPos itemPos : itemPoses) {

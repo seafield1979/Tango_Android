@@ -107,4 +107,11 @@ public class TangoCard extends RealmObject implements TangoItem{
         }
         return card;
     }
+
+    /**
+     * TangoItem interface
+     */
+    public TangoItemType getItemType() {
+        return TangoItemType.Card;
+    }
 }

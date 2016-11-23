@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.testdb;
 
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,34 +19,41 @@ import java.util.Random;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TangoItemPosFragment extends Fragment implements View.OnClickListener{
+public class TangoItemPosFragment extends Fragment implements View.OnClickListener, TItemPosDialogFragment.OnOkClickListener{
 
     private final static String BACKGROUND_COLOR = "background_color";
     public static final int REQUEST_CODE = 1;
 
     public static final int[] buttonIds = {
-            R.id.button,
-            R.id.button2,
-            R.id.button3,
-            R.id.button4
+            R.id.buttonHome,
+            R.id.buttonTrash,
+            R.id.buttonAddToHome,
+            R.id.buttonAddToTrash,
+            R.id.buttonDeleteFromHome,
+            R.id.buttonDeleteFromTrash
     };
+
 
     // データベースモデル
     TangoItemPosDao mItemPosDao;
 
     private ListView listView;
     private Button[] buttons = new Button[buttonIds.length];
+    // ダイアログを呼び出しモード
+    // 返り値を受け取るときに呼び出しモードに応じた処理を行う
+    private TItemPosDialogFragment.DialogMode dialogMode = TItemPosDialogFragment.DialogMode
+            .AddToHome;
 
     /**
      * 新しいFragmentを生成する
-     * @param IdRes
+     * @param color
      * @return
      */
 
-    public static TangoItemPosFragment newInstance(int IdRes) {
+    public static TangoItemPosFragment newInstance(int color) {
         TangoItemPosFragment frag = new TangoItemPosFragment();
         Bundle b = new Bundle();
-        b.putInt(BACKGROUND_COLOR, IdRes);
+        b.putInt(BACKGROUND_COLOR, color);
         frag.setArguments(b);
         return frag;
     }
@@ -60,25 +68,19 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tango_item_pos, null);
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.top_layout);
-        int hoge = getArguments().getInt(BACKGROUND_COLOR);
-//        linearLayout.setBackgroundResource(hoge);
+        linearLayout.setBackgroundColor(getArguments().getInt(BACKGROUND_COLOR));
 
         listView = (ListView) view.findViewById(R.id.listView);
 
-
-        buttons[0] = (Button) view.findViewById(R.id.button);
-        buttons[1] = (Button) view.findViewById(R.id.button2);
-        buttons[2] = (Button) view.findViewById(R.id.button3);
-        buttons[3] = (Button) view.findViewById(R.id.button4);
-
-        for (Button button : buttons) {
-            button.setOnClickListener(this);
+        // OnClickListener登録
+        for (int id : buttonIds) {
+            (view.findViewById(id)).setOnClickListener(this);
         }
 
         // DAOの準備
         mItemPosDao = MyRealmManager.getItemPosDao();
 
-        showList();
+        showHomeItems();
         return view;
     }
 
@@ -89,17 +91,23 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
      */
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button:
-                showList();
+            case R.id.buttonHome:
+                showHomeItems();
                 break;
-            case R.id.button2:
-                addItems();
+            case R.id.buttonTrash:
+                showTrashItems();
                 break;
-            case R.id.button3:
-                updateItems();
+            case R.id.buttonAddToHome:
+                addToHome();
                 break;
-            case R.id.button4:
-                deleteItems();
+            case R.id.buttonAddToTrash:
+                addToTrash();
+                break;
+            case R.id.buttonDeleteFromHome:
+                deleteFromHome();
+                break;
+            case R.id.buttonDeleteFromTrash:
+                deleteFromTrash();
                 break;
         }
     }
@@ -107,11 +115,49 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
     /**
      * ListViewを最新のレコードで更新する
      */
-    private void showList() {
-        List<TangoItemPos> items = mItemPosDao.selectAll();
+    private void showHomeItems() {
+        List<TangoItemPos> items = mItemPosDao.selectByParentType(TangoParentType.Home);
         items = mItemPosDao.toChangeableItemPos(items);
         TangoItemPosAdapter adapter = new TangoItemPosAdapter(getContext(), 0, items);
         listView.setAdapter(adapter);
+    }
+
+    private void showTrashItems() {
+        List<TangoItemPos> items = mItemPosDao.selectByParentType(TangoParentType.Trash);
+        items = mItemPosDao.toChangeableItemPos(items);
+        TangoItemPosAdapter adapter = new TangoItemPosAdapter(getContext(), 0, items);
+        listView.setAdapter(adapter);
+    }
+
+    private void launchItemPosDialog(TItemPosDialogFragment.DialogMode mode) {
+        dialogMode = mode;
+
+        DialogFragment dialogFragment = TItemPosDialogFragment.createInstance(dialogMode);
+        dialogFragment.setTargetFragment(this, 0);
+        dialogFragment.show(getFragmentManager(), "fragment_dialog");
+
+    }
+
+    /**
+     * ホームにアイテムを追加するためのダイアログを起動
+     */
+    private void addToHome() {
+        launchItemPosDialog(TItemPosDialogFragment.DialogMode.AddToHome);
+    }
+
+    /**
+     * ゴミ箱にアイテムを追加するためのダイアログを起動
+     */
+    private void addToTrash() {
+        launchItemPosDialog(TItemPosDialogFragment.DialogMode.AddToTrash);
+    }
+
+    private void deleteFromHome() {
+        launchItemPosDialog(TItemPosDialogFragment.DialogMode.DeleteFromHome);
+    }
+
+    private void deleteFromTrash() {
+        launchItemPosDialog(TItemPosDialogFragment.DialogMode.DeleteFromTrash);
     }
 
     /**
@@ -138,61 +184,13 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
             }
         }
         mItemPosDao.updateAll(items);
-        showList();
-    }
-
-    /**
-     * 全ての要素を追加する
-     */
-    private void addItems() {
-        LinkedList<TangoItemPos> items = new LinkedList<>();
-
-        int pos = 0;
-        // Card
-        List<TangoCard> cards = MyRealmManager.getCardDao().selectAll();
-        for (TangoCard card : cards) {
-            TangoItemPos item = new TangoItemPos();
-            item.setParams(pos, TangoItemType.Card.ordinal(), card.getId());
-            items.add(item);
-            pos++;
-        }
-
-        // Book
-        List<TangoBook> books = MyRealmManager.getBookDao().selectAll();
-        for (TangoBook book : books) {
-            TangoItemPos item = new TangoItemPos();
-            item.setParams(pos, TangoItemType.Book.ordinal(), book.getId());
-            items.add(item);
-            pos++;
-        }
-
-        // Box
-        List<TangoBox> boxes = MyRealmManager.getBoxDao().selectAll();
-        for (TangoBox box : boxes) {
-            TangoItemPos item = new TangoItemPos();
-            item.setParams(pos, TangoItemType.Box.ordinal(), box.getId());
-            items.add(item);
-            pos++;
-        }
-
-        mItemPosDao.updateAll(items);
-        showList();
-    }
-
-    /**
-     * チェックされた項目を削除する
-     */
-    private void deleteItems() {
-        Integer[] checkedPositions = getCheckedPositions();
-
-        mItemPosDao.deletePositions(checkedPositions);
-        showList();
+        showHomeItems();
     }
 
     /**
      * チェックされた項目のIDを取得する
      */
-    protected Integer[] getCheckedPositions() {
+    protected Integer[] getCheckedPoes() {
         // チェックされた項目のIDを取得する
         LinkedList<Integer> idsList = new LinkedList<Integer>();
         TangoItemPosAdapter adapter = (TangoItemPosAdapter) listView.getAdapter();
@@ -203,5 +201,25 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
             }
         }
         return idsList.toArray(new Integer[0]);
+    }
+
+    /**
+     * DialogFragmentからコールバックされるメソッド
+     */
+    @Override
+    public void onOkClicked(Bundle args) {
+        if (args != null) {
+            int mode = args.getInt(TItemPosDialogFragment.KEY_RET, 0);
+            switch(TItemPosDialogFragment.DialogMode.toEnum(mode)) {
+                case AddToHome:
+                case DeleteFromHome:
+                    showHomeItems();
+                    break;
+                case AddToTrash:
+                case DeleteFromTrash:
+                    showTrashItems();
+                    break;
+            }
+        }
     }
 }

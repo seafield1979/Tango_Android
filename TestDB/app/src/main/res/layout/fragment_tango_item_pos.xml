@@ -15,28 +15,47 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="home"
-            android:id="@+id/button"/>
+            android:id="@+id/buttonHome"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="trash"
+            android:id="@+id/buttonTrash"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="add"
-            android:id="@+id/button2"/>
+            android:text="add2home"
+            android:id="@+id/buttonAddToHome"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="add2trash"
+            android:id="@+id/buttonAddToTrash"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="update"
-            android:id="@+id/button3"/>
-
+            android:text="deleteHome"
+            android:id="@+id/buttonDeleteFromHome"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="delete"
-            android:id="@+id/button4"/>
+            android:text="deleteTrash"
+            android:id="@+id/buttonDeleteFromTrash"/>
+
     </LinearLayout>
 
     <ListView

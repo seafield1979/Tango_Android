@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -133,7 +134,8 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
         Integer[] idsInBook = MyRealmManager.getItemPosDao().getCardIdsByBookId
                 (mBookId);
 
-        List<TangoCard> cards = MyRealmManager.getCardDao().selectExceptIds(idsInBook);
+        List<TangoCard> cards = MyRealmManager.getCardDao()
+                .selectExceptIds(Arrays.asList(idsInBook));
         cards = MyRealmManager.getCardDao().toChangeable(cards);
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);

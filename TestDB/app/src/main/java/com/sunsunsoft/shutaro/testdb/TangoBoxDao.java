@@ -56,7 +56,7 @@ public class TangoBoxDao {
      * @param ids
      * @return
      */
-    public List<TangoBox>selectByIds(Integer[] ids) {
+    public List<TangoBox>selectByIds(Iterable<Integer> ids) {
         // Build the query looking at all users:
         RealmQuery<TangoBox> query = mRealm.where(TangoBox.class);
 
@@ -89,6 +89,22 @@ public class TangoBoxDao {
         TangoBox newBox = mRealm.copyFromRealm(box);
 
         return newBox;
+    }
+
+    /**
+     * 指定の単語帳に追加されていない単語を取得
+     * @return
+     */
+    public List<TangoBox> selectByExceptIds(Iterable<Integer> ids) {
+
+        RealmQuery<TangoBox> query = mRealm.where(TangoBox.class);
+
+        for (int id : ids) {
+            query.notEqualTo("id", id);
+        }
+        RealmResults<TangoBox> results = query.findAll();
+
+        return results;
     }
 
     /**
