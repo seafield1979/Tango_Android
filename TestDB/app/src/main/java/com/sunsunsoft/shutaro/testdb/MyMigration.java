@@ -3,14 +3,10 @@ package com.sunsunsoft.shutaro.testdb;
 import java.util.Date;
 
 import io.realm.DynamicRealm;
-import io.realm.DynamicRealmObject;
 import io.realm.FieldAttribute;
-import io.realm.Realm;
 import io.realm.RealmMigration;
 import io.realm.RealmObjectSchema;
 import io.realm.RealmSchema;
-import io.realm.annotations.Ignore;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * データベースのモデルが変更された時の処理
@@ -21,7 +17,7 @@ import io.realm.annotations.PrimaryKey;
 public class MyMigration implements RealmMigration{
     @Override
     public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
-//        Realm realm = MyRealmManager.getRealm();
+//        Realm realm = RealmManager.getRealm();
         RealmSchema schema = realm.getSchema();
 
         // Migrate from version 0 to version 1
@@ -31,7 +27,7 @@ public class MyMigration implements RealmMigration{
         }
 
         // Migrate from version 1 to version 2
-        if (oldVersion == MyRealmManager.Version1) {
+        if (oldVersion == RealmManager.Version1) {
             // マイグレーション処理
 
             // Create a new class
@@ -43,26 +39,26 @@ public class MyMigration implements RealmMigration{
                     .addField("createTime", Date.class, FieldAttribute.REQUIRED)
                     .addField("updateTime", Date.class, FieldAttribute.REQUIRED);
 
-            oldVersion = MyRealmManager.Version2;
+            oldVersion = RealmManager.Version2;
         }
 
-        if (oldVersion == MyRealmManager.Version2) {
+        if (oldVersion == RealmManager.Version2) {
             // 間違って追加した TangoBox の studyTime カラムを削除
             schema.get("TangoBox")
                     .removeField("studyTime");
 
-            oldVersion = MyRealmManager.Version21;
+            oldVersion = RealmManager.Version21;
         }
 
-        if (oldVersion == MyRealmManager.Version21) {
+        if (oldVersion == RealmManager.Version21) {
             // TangoBoxのidにプライマリーキーを追加する
             RealmObjectSchema boxSchema = schema.get("TangoBox");
             if(!boxSchema.hasPrimaryKey()) boxSchema.addPrimaryKey("id");
 
-            oldVersion = MyRealmManager.Version22;
+            oldVersion = RealmManager.Version22;
         }
 
-        if (oldVersion == MyRealmManager.Version22) {
+        if (oldVersion == RealmManager.Version22) {
             // TangoBoxのStringフィールドにnullable属性を追加
             RealmObjectSchema boxSchema = schema.get("TangoBox");
 
@@ -71,26 +67,26 @@ public class MyMigration implements RealmMigration{
             boxSchema.setNullable("createTime", true);
             boxSchema.setNullable("updateTime", true);
 
-            oldVersion = MyRealmManager.Version23;
+            oldVersion = RealmManager.Version23;
         }
 
-        if (oldVersion == MyRealmManager.Version23) {
+        if (oldVersion == RealmManager.Version23) {
             // TangoCardInBook テーブル追加
             schema.create("TangoCardInBook")
                     .addField("bookId", Integer.class)
                     .addField("cardId", String.class);
 
-            oldVersion = MyRealmManager.Version30;
+            oldVersion = RealmManager.Version30;
         }
 
-        if (oldVersion == MyRealmManager.Version30) {
+        if (oldVersion == RealmManager.Version30) {
             // TangoCardInBook テーブル追加
             schema.create("TangoItemPos")
                     .addField("pos", Integer.class)
                     .addField("itemType", Integer.class)
                     .addField("id", Integer.class);
 
-            oldVersion = MyRealmManager.Version40;
+            oldVersion = RealmManager.Version40;
         }
     }
 }

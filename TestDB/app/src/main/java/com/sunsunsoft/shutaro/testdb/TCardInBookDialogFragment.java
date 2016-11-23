@@ -7,14 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import io.realm.RealmResults;
 
 /**
  * 単語帳に含まれるカードを管理するDialogFragment
@@ -120,8 +117,8 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
      * 全てのカードを表示する
      */
     private void showAllCards() {
-        List<TangoCard> cards = MyRealmManager.getCardDao().selectAll();
-        cards = MyRealmManager.getCardDao().toChangeable(cards);
+        List<TangoCard> cards = RealmManager.getCardDao().selectAll();
+        cards = RealmManager.getCardDao().toChangeable(cards);
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);
     }
@@ -131,12 +128,12 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
      */
     private void showAddableCards() {
         // 単語帳に含まれる
-        Integer[] idsInBook = MyRealmManager.getItemPosDao().getCardIdsByBookId
+        Integer[] idsInBook = RealmManager.getItemPosDao().getCardIdsByBookId
                 (mBookId);
 
-        List<TangoCard> cards = MyRealmManager.getCardDao()
+        List<TangoCard> cards = RealmManager.getCardDao()
                 .selectExceptIds(Arrays.asList(idsInBook));
-        cards = MyRealmManager.getCardDao().toChangeable(cards);
+        cards = RealmManager.getCardDao().toChangeable(cards);
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);
     }
@@ -145,12 +142,12 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
      * 指定の単語帳に含まれるカードを表示する
      */
     private void showCards(int bookId) {
-        List<TangoCard> cards = MyRealmManager.getItemPosDao().selectCardsByBookId
+        List<TangoCard> cards = RealmManager.getItemPosDao().selectCardsByBookId
                 (bookId);
         if (cards == null) return;
 
         // 変更可能にする
-        cards = MyRealmManager.getCardDao().toChangeable(cards);
+        cards = RealmManager.getCardDao().toChangeable(cards);
 
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);
@@ -208,7 +205,7 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
         Integer[] cardIds = getCheckedCardIds();
 
         if (cardIds != null) {
-            MyRealmManager.getItemPosDao().addCardsInBook(bookId, cardIds);
+            RealmManager.getItemPosDao().addCardsInBook(bookId, cardIds);
         }
     }
 
@@ -219,7 +216,7 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
         Integer[] cardIds = getCheckedCardIds();
 
         if (cardIds != null) {
-            MyRealmManager.getItemPosDao().addCardsInBook(bookId, cardIds);
+            RealmManager.getItemPosDao().addCardsInBook(bookId, cardIds);
         }
     }
 }

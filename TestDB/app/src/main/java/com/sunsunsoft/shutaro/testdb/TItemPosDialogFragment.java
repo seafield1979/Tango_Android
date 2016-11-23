@@ -147,11 +147,11 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
      */
     private void showAddables(TangoParentType parentType) {
         // すでに登録済みの TangoItemPos のリストを取得する
-        List<TangoItemPos> itemsPoses = MyRealmManager.getItemPosDao()
+        List<TangoItemPos> itemsPoses = RealmManager.getItemPosDao()
                 .selectItemPosesByParentType(parentType);
         if (itemsPoses == null) return;
 
-        List<TangoItem> items = MyRealmManager.getItemPosDao()
+        List<TangoItem> items = RealmManager.getItemPosDao()
                 .selectItemExcludeItemPoses(itemsPoses, true);
 
         // アイテムのIDからカード、単語帳の情報を取得する
@@ -178,7 +178,7 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
      * 指定のボックスに含まれるアイテムを表示する
      */
     private void showItems(TangoParentType parentType) {
-        List<TangoItem> items = MyRealmManager.getItemPosDao()
+        List<TangoItem> items = RealmManager.getItemPosDao()
                 .selectItemsByParentType(parentType, false);
 
         TangoItemAdapter adapter = null;
@@ -264,7 +264,7 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
         }
 
         // DBに追加
-        MyRealmManager.getItemPosDao().addItemPoses(itemPoses);
+        RealmManager.getItemPosDao().addItemPoses(itemPoses);
     }
 
     /**
@@ -288,7 +288,7 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
         }
 
         // DBから削除
-        MyRealmManager.getItemPosDao().deleteItemPoses(itemPoses);
+        RealmManager.getItemPosDao().deleteItemPoses(itemPoses);
     }
 
     /**

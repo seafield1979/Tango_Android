@@ -8,7 +8,7 @@ import java.util.Random;
  * 色処理のあれこれ
  */
 
-public class MyColor {
+public class UColor {
 
     /**
      * intのColorをランダムで取得する

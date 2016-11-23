@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +132,7 @@ public class TBookDialogFragment extends DialogFragment implements View.OnClickL
     private void submit() {
         Bundle arg = new Bundle();
         arg.putString(KEY_RET_NAME, mEditName.getText().toString());
-        arg.putInt(KEY_RET_COLOR, MyColor.convStrToInt(mEditColor.getText().toString()));
+        arg.putInt(KEY_RET_COLOR, UColor.convStrToInt(mEditColor.getText().toString()));
         arg.putString(KEY_RET_COMMENT, mEditComment.getText().toString());
 
         mListener.onOkClicked(arg);
@@ -154,7 +153,7 @@ public class TBookDialogFragment extends DialogFragment implements View.OnClickL
                 mEditName.setText("Name " + randVal);
                 break;
             case R.id.buttonColor:
-                mEditColor.setText(MyColor.getRandomColorStr());
+                mEditColor.setText(UColor.getRandomColorStr());
                 break;
             case R.id.buttonComment:
                 mEditComment.setText("Comment " + randVal);
@@ -169,7 +168,7 @@ public class TBookDialogFragment extends DialogFragment implements View.OnClickL
         int randVal = rand.nextInt(1000);
 
         mEditName.setText("Name " + randVal);
-        mEditColor.setText(MyColor.getRandomColorStr());
+        mEditColor.setText(UColor.getRandomColorStr());
         mEditComment.setText("Comment " + randVal);
     }
 }

@@ -1,27 +1,17 @@
 package com.sunsunsoft.shutaro.testdb;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView.OnItemClickListener;
-
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -110,7 +100,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
      * ListViewを最新のレコードで更新する
      */
     private void showList() {
-        List<TangoBox> boxes = MyRealmManager.getBoxDao().selectAll();
+        List<TangoBox> boxes = RealmManager.getBoxDao().selectAll();
         TangoBoxAdapter adapter = new TangoBoxAdapter(getContext(), 0, boxes);
         listView.setAdapter(adapter);
     }
@@ -125,7 +115,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
 
         if (checkedIds.length <= 0) return;
 
-        MyRealmManager.getBoxDao().updateOne(checkedIds[0], box);
+        RealmManager.getBoxDao().updateOne(box);
         showList();
     }
 
@@ -135,7 +125,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
     private void deleteItems() {
         Integer[] checkedIds = getCheckedIds();
 
-        MyRealmManager.getBoxDao().deleteIds(checkedIds);
+        RealmManager.getBoxDao().deleteIds(checkedIds);
         showList();
     }
 
@@ -175,7 +165,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
         Integer[] ids = getCheckedIds();
         if (ids.length <= 0) return;
 
-        TangoBox box = MyRealmManager.getBoxDao().selectById(ids[0]);
+        TangoBox box = RealmManager.getBoxDao().selectById(ids[0]);
 
         if (box == null) return;
 
@@ -207,7 +197,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
                     box.setCreateTime(new Date());
                     box.setUpdateTime(new Date());
 
-                    MyRealmManager.getBoxDao().addOne(box);
+                    RealmManager.getBoxDao().addOne(box);
                     showList();
                 }
                 break;
@@ -217,7 +207,7 @@ public class TangoBoxFragment extends Fragment implements OnClickListener, TBoxD
                     Integer[] ids = getCheckedIds();
                     if (ids.length <= 0) return;
 
-                    TangoBox box = MyRealmManager.getBoxDao().selectById(ids[0]);
+                    TangoBox box = RealmManager.getBoxDao().selectById(ids[0]);
                     box.setName(name);
                     box.setColor(color);
                     box.setComment(comment);

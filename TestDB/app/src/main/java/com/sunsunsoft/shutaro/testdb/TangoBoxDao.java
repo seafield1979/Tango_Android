@@ -148,12 +148,11 @@ public class TangoBoxDao {
 
     /**
      * 一件更新  ユーザーが設定するデータ全て
-     * @param id
      * @param box
      */
-    public void updateOne(Integer id, TangoBox box) {
+    public void updateOne(TangoBox box) {
 
-        TangoBox newBox = mRealm.where(TangoBox.class).equalTo("id", id).findFirst();
+        TangoBox newBox = mRealm.where(TangoBox.class).equalTo("id", box.getId()).findFirst();
         if (newBox == null) return;
 
         mRealm.beginTransaction();

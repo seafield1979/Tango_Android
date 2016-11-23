@@ -1,6 +1,5 @@
 package com.sunsunsoft.shutaro.testdb;
 
-import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setViews();
 
         // Realmの初期化
-        MyRealmManager.initRealm(getApplicationContext());
+        RealmManager.initRealm(getApplicationContext());
     }
 
     private void setViews() {
@@ -90,6 +89,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        MyRealmManager.closeRealm();
+        RealmManager.closeRealm();
     }
 }

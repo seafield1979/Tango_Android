@@ -1,7 +1,6 @@
 package com.sunsunsoft.shutaro.testdb;
 
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -77,7 +76,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
         }
 
         // DAOの準備
-        mCardDao = MyRealmManager.getCardDao();
+        mCardDao = RealmManager.getCardDao();
 
         showList();
         return view;
@@ -92,7 +91,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
             case R.id.button:
 //                showList();
             {
-                MyRealmManager.getCardDao().selectAll();
+                RealmManager.getCardDao().selectAll();
             }
                 break;
             case R.id.button2:
@@ -127,7 +126,7 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
 
         if (checkedIds.length <= 0) return;
 
-        mCardDao.updateById(checkedIds[0], card);
+        mCardDao.updateOne(card);
         showList();
     }
 

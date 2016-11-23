@@ -89,7 +89,7 @@ public class TangoCardInBookFragment extends Fragment implements OnClickListener
      * ListViewを最新のレコードで更新する
      */
     private void showList() {
-        List<TangoBook> books = MyRealmManager.getBookDao().selectAll();
+        List<TangoBook> books = RealmManager.getBookDao().selectAll();
         TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
         listView.setAdapter(adapter);
     }

@@ -204,15 +204,14 @@ public class TangoCardDao {
 
     /**
      * 指定したIDの項目を更新する
-     * @param id
      * @param card
      */
-    public void updateById(int id, TangoCard card) {
+    public void updateOne(TangoCard card) {
         mRealm.beginTransaction();
 
         TangoCard newCard =
                 mRealm.where(TangoCard.class)
-                        .equalTo("id", id).
+                        .equalTo("id", card.getId()).
                         findFirst();
 
         newCard.setWordA(card.getWordA());

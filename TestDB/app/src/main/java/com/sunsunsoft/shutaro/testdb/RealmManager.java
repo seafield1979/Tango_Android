@@ -8,7 +8,7 @@ import android.content.Context;
  * Realmのオブジェクトを管理する
  */
 
-public class MyRealmManager {
+public class RealmManager {
     public static Realm realm;
     public static final int Version1 = 1;
     public static final int Version2 = 2;   // Add TangoBox

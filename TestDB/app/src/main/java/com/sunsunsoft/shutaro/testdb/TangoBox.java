@@ -101,7 +101,7 @@ public class TangoBox extends RealmObject implements TangoItem {
         TangoBox box = new TangoBox();
         box.name = "Name " + randVal;
         box.comment = "Comment " + randVal;
-        box.color = MyColor.getRandomColor();
+        box.color = UColor.getRandomColor();
         box.createTime = new Date();
         box.updateTime = new Date();
 

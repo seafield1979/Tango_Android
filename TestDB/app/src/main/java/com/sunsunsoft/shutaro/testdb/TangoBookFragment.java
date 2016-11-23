@@ -1,26 +1,19 @@
 package com.sunsunsoft.shutaro.testdb;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView.OnItemClickListener;
 
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -114,7 +107,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
      * ListViewを最新のレコードで更新する
      */
     private void showList() {
-        List<TangoBook> books = MyRealmManager.getBookDao().selectAll();
+        List<TangoBook> books = RealmManager.getBookDao().selectAll();
         TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
         listView.setAdapter(adapter);
     }
@@ -129,7 +122,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
 
         if (checkedIds.length <= 0) return;
 
-        MyRealmManager.getBookDao().updateOne(checkedIds[0], book);
+        RealmManager.getBookDao().updateOne(book);
         showList();
     }
 
@@ -139,7 +132,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
     private void deleteItems() {
         Integer[] checkedIds = getCheckedIds();
 
-        MyRealmManager.getBookDao().deleteIds(checkedIds);
+        RealmManager.getBookDao().deleteIds(checkedIds);
         showList();
     }
 
@@ -180,7 +173,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
         Integer[] ids = getCheckedIds();
         if (ids.length <= 0) return;
 
-        TangoBook book = MyRealmManager.getBookDao().selectById(ids[0]);
+        TangoBook book = RealmManager.getBookDao().selectById(ids[0]);
 
         if (book == null) return;
 
@@ -212,7 +205,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
                     book.setCreateTime(new Date());
                     book.setUpdateTime(new Date());
 
-                    MyRealmManager.getBookDao().addOne(book);
+                    RealmManager.getBookDao().addOne(book);
                     showList();
                 }
                 break;
@@ -222,7 +215,7 @@ public class TangoBookFragment extends Fragment implements OnClickListener, TBoo
                     Integer[] ids = getCheckedIds();
                     if (ids.length <= 0) return;
 
-                    TangoBook book = MyRealmManager.getBookDao().selectById(ids[0]);
+                    TangoBook book = RealmManager.getBookDao().selectById(ids[0]);
                     book.setName(name);
                     book.setColor(color);
                     book.setComment(comment);

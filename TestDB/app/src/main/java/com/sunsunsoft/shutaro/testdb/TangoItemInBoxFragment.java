@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -81,7 +80,7 @@ public class TangoItemInBoxFragment extends Fragment implements OnClickListener,
         switch (v.getId()) {
             case R.id.buttonSelectAll:
             {
-                MyRealmManager.getItemPosDao().selectAll();
+                RealmManager.getItemPosDao().selectAll();
             }
                 break;
             case R.id.buttonAddCards:
@@ -100,7 +99,7 @@ public class TangoItemInBoxFragment extends Fragment implements OnClickListener,
      * ListViewを最新のレコードで更新する
      */
     private void showList() {
-        List<TangoBox> boxes = MyRealmManager.getBoxDao().selectAll();
+        List<TangoBox> boxes = RealmManager.getBoxDao().selectAll();
         TangoBoxAdapter adapter = new TangoBoxAdapter(getContext(), 0, boxes);
         listView.setAdapter(adapter);
     }

@@ -3,7 +3,9 @@ package com.sunsunsoft.shutaro.testdb;
 import io.realm.RealmObject;
 
 /**
- * Created by shutaro on 2016/11/22.
+ * 単語帳のアイテムを同じListに入れるためのインターフェース
+ * ※RealmObjectを親クラスにしたベースクラスを作ろうとするとRealmでエラーが起きるので
+ * やむなくインターフェースで実装
  */
 
 interface TangoItem {

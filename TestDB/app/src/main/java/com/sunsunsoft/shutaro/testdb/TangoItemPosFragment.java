@@ -78,7 +78,7 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
         }
 
         // DAOの準備
-        mItemPosDao = MyRealmManager.getItemPosDao();
+        mItemPosDao = RealmManager.getItemPosDao();
 
         showHomeItems();
         return view;
@@ -183,7 +183,7 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
                 }
             }
         }
-        mItemPosDao.updateAll(items);
+        mItemPosDao.updateAll(items, TangoParentType.Home, 0);
         showHomeItems();
     }
 

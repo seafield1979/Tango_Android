@@ -133,7 +133,7 @@ public class TBoxDialogFragment extends DialogFragment implements View.OnClickLi
     private void submit() {
         Bundle arg = new Bundle();
         arg.putString(KEY_RET_NAME, mEditName.getText().toString());
-        arg.putInt(KEY_RET_COLOR, MyColor.convStrToInt(mEditColor.getText().toString()));
+        arg.putInt(KEY_RET_COLOR, UColor.convStrToInt(mEditColor.getText().toString()));
         arg.putString(KEY_RET_COMMENT, mEditComment.getText().toString());
 
         mListener.onOkClicked(arg);
@@ -154,7 +154,7 @@ public class TBoxDialogFragment extends DialogFragment implements View.OnClickLi
                 mEditName.setText("Name " + randVal);
                 break;
             case R.id.buttonColor:
-                mEditColor.setText(MyColor.getRandomColorStr());
+                mEditColor.setText(UColor.getRandomColorStr());
                 break;
             case R.id.buttonComment:
                 mEditComment.setText("Comment " + randVal);
@@ -169,7 +169,7 @@ public class TBoxDialogFragment extends DialogFragment implements View.OnClickLi
         int randVal = rand.nextInt(1000);
 
         mEditName.setText("Name " + randVal);
-        mEditColor.setText(MyColor.getRandomColorStr());
+        mEditColor.setText(UColor.getRandomColorStr());
         mEditComment.setText("Comment " + randVal);
     }
 }

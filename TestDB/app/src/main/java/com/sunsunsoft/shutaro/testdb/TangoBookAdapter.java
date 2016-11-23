@@ -1,7 +1,6 @@
 package com.sunsunsoft.shutaro.testdb;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +44,7 @@ public class TangoBookAdapter extends ArrayAdapter<TangoBook> {
         TextView textView2 = (TextView) convertView.findViewById(R.id.textView2);
         textView2.setText(item.getComment());
 
-        convertView.setBackgroundColor(MyColor.addAlpha(item.getColor(), 255));
+        convertView.setBackgroundColor(UColor.addAlpha(item.getColor(), 255));
 
         // チェックボックスにイベントリスナを登録
         CheckBox check = (CheckBox)convertView.findViewById(R.id.checkBox);

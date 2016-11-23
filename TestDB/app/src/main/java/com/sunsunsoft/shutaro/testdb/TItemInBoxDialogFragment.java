@@ -125,8 +125,8 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
      * 全てのカードを表示する
      */
     private void showAllCards() {
-        List<TangoCard> cards = MyRealmManager.getCardDao().selectAll();
-        cards = MyRealmManager.getCardDao().toChangeable(cards);
+        List<TangoCard> cards = RealmManager.getCardDao().selectAll();
+        cards = RealmManager.getCardDao().toChangeable(cards);
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);
     }
@@ -137,7 +137,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
     private void showAddableCards() {
         // すでに追加済みのカードは除外する
         // 追加済みのカードIDを取得
-        List<TangoItem> itemsInBox = MyRealmManager.getItemPosDao().selectByBoxId(mBoxId, true);
+        List<TangoItem> itemsInBox = RealmManager.getItemPosDao().selectByBoxId(mBoxId, true);
         if (itemsInBox == null) return;
 
         LinkedList<Integer> cardIds = new LinkedList<>();
@@ -148,9 +148,9 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
             }
         }
 
-        List<TangoCard> cards = MyRealmManager.getCardDao()
+        List<TangoCard> cards = RealmManager.getCardDao()
                 .selectExceptIds(cardIds);
-        cards = MyRealmManager.getCardDao().toChangeable(cards);
+        cards = RealmManager.getCardDao().toChangeable(cards);
 
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);
@@ -160,8 +160,8 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
      * 全ての単語帳を表示する
      */
     private void showAllBooks() {
-        List<TangoBook> books = MyRealmManager.getBookDao().selectAll();
-        books = MyRealmManager.getBookDao().toChangeable(books);
+        List<TangoBook> books = RealmManager.getBookDao().selectAll();
+        books = RealmManager.getBookDao().toChangeable(books);
         TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
         mListView.setAdapter(adapter);
     }
@@ -172,7 +172,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
     private void showAddableBooks() {
         // すでに追加済みのカードは除外する
         // 追加済みのカードIDを取得
-        List<TangoItem> itemsInBox = MyRealmManager.getItemPosDao().selectByBoxId(mBoxId, true);
+        List<TangoItem> itemsInBox = RealmManager.getItemPosDao().selectByBoxId(mBoxId, true);
         if (itemsInBox == null) return;
         LinkedList<Integer> bookIds = new LinkedList<>();
 
@@ -182,8 +182,8 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
             }
         }
 
-        List<TangoBook> books = MyRealmManager.getBookDao().selectByExceptIds(bookIds);
-        books = MyRealmManager.getBookDao().toChangeable(books);
+        List<TangoBook> books = RealmManager.getBookDao().selectByExceptIds(bookIds);
+        books = RealmManager.getBookDao().toChangeable(books);
         TangoBookAdapter adapter = new TangoBookAdapter(getContext(), 0, books);
         mListView.setAdapter(adapter);
     }
@@ -192,7 +192,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
      * 指定のボックスに含まれるアイテムを表示する
      */
     private void showItems(int boxId) {
-        List<TangoItem> items = MyRealmManager.getItemPosDao().selectByBoxId(boxId, true);
+        List<TangoItem> items = RealmManager.getItemPosDao().selectByBoxId(boxId, true);
         if (items == null) return;
 
         LinkedList<Integer> cardIds = new LinkedList<>();
@@ -211,9 +211,9 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
         LinkedList<TangoItemInBoxList> itemLists = new LinkedList<>();
 
         if (cardIds.size() > 0) {
-            List<TangoCard> cards = MyRealmManager.getCardDao()
+            List<TangoCard> cards = RealmManager.getCardDao()
                     .selectByIds(cardIds.toArray(new Integer[0]));
-            cards = MyRealmManager.getCardDao().toChangeable(cards);
+            cards = RealmManager.getCardDao().toChangeable(cards);
             if (cards != null) {
                 for (TangoCard card : cards) {
                     TangoItemInBoxList itemList = new TangoItemInBoxList(TangoItemType.Card,
@@ -224,9 +224,9 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
             }
         }
         if (bookIds.size() > 0) {
-            List<TangoBook> books = MyRealmManager.getBookDao()
+            List<TangoBook> books = RealmManager.getBookDao()
                     .selectByIds(bookIds);
-            books = MyRealmManager.getBookDao().toChangeable(books);
+            books = RealmManager.getBookDao().toChangeable(books);
             if (books != null) {
                 for (TangoBook book : books) {
                     TangoItemInBoxList itemList = new TangoItemInBoxList(
@@ -357,7 +357,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
         }
 
         if (itemPoses.size() > 0) {
-            MyRealmManager.getItemPosDao().addItemPoses(itemPoses);
+            RealmManager.getItemPosDao().addItemPoses(itemPoses);
         }
     }
 
@@ -379,7 +379,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
         }
 
         if (bookIds != null) {
-            MyRealmManager.getItemPosDao().addItemPoses(itemPoses);
+            RealmManager.getItemPosDao().addItemPoses(itemPoses);
         }
     }
 
@@ -402,7 +402,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements OnClickL
         }
 
         if (deleteItems != null) {
-            MyRealmManager.getItemPosDao().deleteItemPoses(deleteItems);
+            RealmManager.getItemPosDao().deleteItemPoses(deleteItems);
         }
     }
 }
