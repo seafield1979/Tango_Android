@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.view.View.OnClickListener;
 
@@ -37,20 +38,32 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
         }
     }
 
+    /**
+     * Constant
+     */
     public static final String KEY_MODE = "key_mode";
     public static final String KEY_BOX_ID = "key_box_id";
     public static final String KEY_RET = "key_ret";
     public static final int[] buttonIds = {
             R.id.buttonOK,
+            R.id.buttonSelectAll,
             R.id.buttonCancel
     };
 
+    /**
+     * Member variable
+     */
     TItemPosDialogFragment.DialogMode mMode;
     int mBoxId;
 
     private OnOkClickListener mListener;
+    private View mContentView;
     private ListView mListView;
+    private boolean allCheckSwitch;
 
+    /**
+     * Constructor
+     */
     static TItemPosDialogFragment createInstance(TItemPosDialogFragment.DialogMode mode) {
         TItemPosDialogFragment fragment = new TItemPosDialogFragment();
 
@@ -98,13 +111,14 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tcard_in_book_dialog, container, false);
+        return inflater.inflate(R.layout.fragment_titem_pos_dialog, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mContentView = view;
         // Buttons
         for (int id : buttonIds) {
             (view.findViewById(id)).setOnClickListener(this);
@@ -126,16 +140,6 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
                 showItems(TangoParentType.Trash);
                 break;
         }
-    }
-
-    /**
-     * 全てのカードを表示する
-     */
-    private void showAllCards() {
-        List<TangoCard> cards = MyRealmManager.getCardDao().selectAll();
-        cards = MyRealmManager.getCardDao().toChangeable(cards);
-        TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
-        mListView.setAdapter(adapter);
     }
 
     /**
@@ -200,6 +204,9 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
         switch(v.getId()) {
             case R.id.buttonOK:
                 submit();
+                break;
+            case R.id.buttonSelectAll:
+                checkAllItems();
                 break;
             case R.id.buttonCancel:
                 dismiss();
@@ -301,5 +308,27 @@ public class TItemPosDialogFragment extends DialogFragment implements OnClickLis
         }
 
         return list;
+    }
+
+
+    /**
+     * 全ての項目をチェックする
+     */
+    private void checkAllItems() {
+        LinkedList<TangoItemInBoxList> list = new LinkedList<>();
+        TangoItemAdapter adapter = (TangoItemAdapter) mListView.getAdapter();
+        if (adapter == null) return;
+
+        allCheckSwitch = !allCheckSwitch;
+
+
+        for (int i = 0; i < mListView.getChildCount(); i++) {
+            View view = mListView.getChildAt(i);
+
+            CheckBox checkBox = (CheckBox)view.findViewById(R.id.checkBox);
+            if (checkBox != null) {
+                checkBox.setChecked(allCheckSwitch);
+            }
+        }
     }
 }
