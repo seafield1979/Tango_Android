@@ -251,46 +251,6 @@ public class UIconWindow extends UWindow {
      * インスタンス生成後に一度だけ呼ぶ
      */
     public void init() {
-        // アイコンを追加
-        if (type == WindowType.Home) {
-//            for (int i = 0; i < RECT_ICON_NUM; i++) {
-//
-//                UIcon icon = mIconManager.addIcon(IconType.RECT, AddPos.Tail);
-//                int color = 0;
-//                switch (i % 3) {
-//                    case 0:
-//                        color = Color.rgb(255, 0, 0);
-//                        break;
-//                    case 1:
-//                        color = Color.rgb(0, 255, 0);
-//                        break;
-//                    case 2:
-//                        color = Color.rgb(0, 0, 255);
-//                        break;
-//                }
-//                icon.setColor(color);
-//            }
-//
-            for (int i = 0; i < CARD_ICON_NUM; i++) {
-                UIcon icon = mIconManager.addIcon(IconType.Card, AddPos.Tail);
-                int color = 0;
-                switch (i % 3) {
-                    case 0:
-                        color = Color.rgb(255, 0, 0);
-                        break;
-                    case 1:
-                        color = Color.rgb(0, 255, 0);
-                        break;
-                    case 2:
-                        color = Color.rgb(0, 0, 255);
-                        break;
-                }
-                icon.setColor(color);
-            }
-//            for (int i = 0; i < BOX_ICON_NUM; i++) {
-//                mIconManager.addIcon(IconType.BOX, AddPos.Tail);
-//            }
-        }
 
         sortIcons(false);
     }

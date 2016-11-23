@@ -30,8 +30,6 @@ public class TangoCard extends RealmObject implements TangoItem{
 
     @Ignore
     private boolean isChecked;  // ListViewで選択状態を示す
-    private int parentType;     // 親の種類。親は自分を保持するホーム、単語帳、ボックス
-    private int parentId;       // 親のID
     private int pos;            // 位置、現在のグループの中(ホーム、単語帳、ボックス等）の何番目に表示されるか
 
 
@@ -82,6 +80,7 @@ public class TangoCard extends RealmObject implements TangoItem{
         isChecked = checked;
     }
 
+    @Override
     public int getPos() {
         return pos;
     }
@@ -107,5 +106,12 @@ public class TangoCard extends RealmObject implements TangoItem{
             card.history[i] = 1;
         }
         return card;
+    }
+
+    /**
+     * TangoItem interface
+     */
+    public TangoItemType getItemType() {
+        return TangoItemType.Card;
     }
 }

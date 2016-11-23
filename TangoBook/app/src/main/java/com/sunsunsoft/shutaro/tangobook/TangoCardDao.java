@@ -1,6 +1,9 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.util.Log;
+
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +16,7 @@ import io.realm.RealmResults;
  * 単語帳のDAO
  */
 public class TangoCardDao {
+    public static final String TAG = "TangoCardDao";
 
     private Realm mRealm;
 
@@ -27,6 +31,12 @@ public class TangoCardDao {
     public List<TangoCard> selectAll() {
 
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
+
+        if (UDebug.debugDAO) {
+            for (TangoCard card : results) {
+                Log.d(TAG, "id:" + card.getId() + " wordA:" + card.getWordA());
+            }
+        }
         return results;
     }
 
@@ -34,7 +44,7 @@ public class TangoCardDao {
      * 指定の単語帳に追加されていない単語を取得
      * @return
      */
-    public List<TangoCard> selectExceptIds(List<Integer> ids) {
+    public List<TangoCard> selectExceptIds(Iterable<Integer> ids) {
 
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 
@@ -60,11 +70,26 @@ public class TangoCardDao {
     }
 
     /**
+     * List<TangoCard>を List<TangoItem>に変換する
+     * @param cards
+     * @return
+     */
+    public static List<TangoItem> toItems(List<TangoCard> cards) {
+        if (cards == null) return null;
+
+        LinkedList<TangoItem> items = new LinkedList<>();
+        for (TangoCard card : cards) {
+            items.add(card);
+        }
+        return items;
+    }
+
+    /**
      * 指定のIDの要素を取得
      * @param ids
      * @return
      */
-    public List<TangoCard>selectByIds(Integer[] ids) {
+    public List<TangoCard> selectByIds(Integer[] ids) {
         // Build the query looking at all users:
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 
@@ -105,7 +130,7 @@ public class TangoCardDao {
      * @param
      */
     public void add1(String wordA, String wordB) {
-        int newId = getNextUserId(mRealm);
+        int newId = getNextId();
 
         TangoCard card = new TangoCard();
         card.setId(newId);
@@ -128,7 +153,7 @@ public class TangoCardDao {
      * @param card
      */
     public void addOne(TangoCard card) {
-        card.setId(getNextUserId(mRealm));
+        card.setId(getNextId());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(card);
@@ -139,7 +164,7 @@ public class TangoCardDao {
      * ダミーのデータを一件追加
      */
     public void addDummy() {
-        int newId = getNextUserId(mRealm);
+        int newId = getNextId();
         Random rand = new Random();
         int randVal = rand.nextInt(1000);
 
@@ -179,6 +204,29 @@ public class TangoCardDao {
     }
 
     /**
+     * 指定したIDの項目を更新する
+     * @param card
+     */
+    public void updateOne(TangoCard card) {
+        mRealm.beginTransaction();
+
+        TangoCard newCard =
+                mRealm.where(TangoCard.class)
+                        .equalTo("id", card.getId()).
+                        findFirst();
+
+        newCard.setWordA(card.getWordA());
+        newCard.setWordB(card.getWordB());
+        newCard.setHintAB(card.getHintAB());
+        newCard.setHintBA(card.getHintBA());
+        newCard.setComment(card.getComment());
+        newCard.setUpdateTime(new Date());
+
+        mRealm.commitTransaction();
+    }
+
+
+    /**
      * IDのリストに一致する項目を全て更新する
      * @param ids
      * @param wordA  更新するA
@@ -209,30 +257,6 @@ public class TangoCardDao {
         }
 
         mRealm.commitTransaction();
-    }
-
-    /**
-     * 一件更新  ユーザーが設定するデータ全て
-     * @param card
-     * @return true:更新成功
-     */
-    public boolean updateOne(TangoCard card) {
-        mRealm.beginTransaction();
-        TangoCard newCard = mRealm.where(TangoCard.class).equalTo("id", card.getId()).findFirst();
-        if (newCard == null) return false;
-
-        newCard.setWordA(card.getWordA());
-        newCard.setWordB(card.getWordB());
-        newCard.setHintAB(card.getHintAB());
-        newCard.setHintBA(card.getHintBA());
-        newCard.setComment(card.getComment());
-        newCard.setStar(card.getStar());
-        newCard.setHistory(card.getHistory());
-        newCard.setUpdateTime(new Date());
-
-        mRealm.copyFromRealm(card);
-        mRealm.commitTransaction();
-        return true;
     }
 
     /**
@@ -279,14 +303,13 @@ public class TangoCardDao {
 
     /**
      * かぶらないプライマリIDを取得する
-     * @param realm
      * @return
      */
-    public int getNextUserId(Realm realm) {
+    public int getNextId() {
         // 初期化
         int nextId = 1;
         // userIdの最大値を取得
-        Number maxUserId = realm.where(TangoCard.class).max("id");
+        Number maxUserId = mRealm.where(TangoCard.class).max("id");
         // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
         if(maxUserId != null) {
             nextId = maxUserId.intValue() + 1;

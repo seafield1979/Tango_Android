@@ -121,8 +121,11 @@ public class UIconManager implements UIconCallbacks{
             case Book:
                 icon = new IconBook(mParentWindow, this);
                 break;
-            case Card:
-                icon = new IconCard(mParentWindow, this);
+            case Card: {
+                TangoCard card = TangoCard.createDummyCard();
+                RealmManager.getItemPosDao().addOne(card, TangoParentType.Home, 0);
+                icon = new IconCard(card, mParentWindow, this);
+            }
                 break;
 //            case IMAGE: {
 //                Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.hogeman);

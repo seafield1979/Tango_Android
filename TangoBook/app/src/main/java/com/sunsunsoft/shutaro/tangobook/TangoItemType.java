@@ -7,5 +7,14 @@ package com.sunsunsoft.shutaro.tangobook;
 public enum TangoItemType {
     Card,       // カード
     Book,       // 単語帳
-    Box         // 箱
+    Box,         // 箱
+    ;
+
+    // int を enumに変換する
+    public static TangoItemType toEnum(int val) {
+        if (val < values().length) {
+            return TangoItemType.values()[val];
+        }
+        return Card;
+    }
 }

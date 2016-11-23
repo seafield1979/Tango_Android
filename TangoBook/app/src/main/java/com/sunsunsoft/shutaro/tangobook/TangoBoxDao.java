@@ -1,6 +1,9 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+
 import android.content.Context;
+import android.util.Log;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,8 +17,19 @@ import io.realm.RealmResults;
  */
 
 public class TangoBoxDao {
+    /**
+     * Constract
+     */
+    public static final String TAG = "TangoBoxDao";
+
+    /**
+     * Member variables
+     */
     private Realm mRealm;
 
+    /**
+     * Constructor
+     */
     public TangoBoxDao(Realm realm) {
         mRealm = realm;
     }
@@ -31,6 +45,12 @@ public class TangoBoxDao {
             list.add(box);
         }
 
+        if (UDebug.debugDAO) {
+            for (TangoBox box : results) {
+                Log.d(TAG, "id:" + box.getId() + " name:" + box.getName());
+            }
+        }
+
         return list;
     }
 
@@ -39,7 +59,7 @@ public class TangoBoxDao {
      * @param ids
      * @return
      */
-    public List<TangoBox>selectByIds(Integer[] ids) {
+    public List<TangoBox>selectByIds(Iterable<Integer> ids) {
         // Build the query looking at all users:
         RealmQuery<TangoBox> query = mRealm.where(TangoBox.class);
 
@@ -75,11 +95,27 @@ public class TangoBoxDao {
     }
 
     /**
+     * 指定の単語帳に追加されていない単語を取得
+     * @return
+     */
+    public List<TangoBox> selectByExceptIds(Iterable<Integer> ids) {
+
+        RealmQuery<TangoBox> query = mRealm.where(TangoBox.class);
+
+        for (int id : ids) {
+            query.notEqualTo("id", id);
+        }
+        RealmResults<TangoBox> results = query.findAll();
+
+        return results;
+    }
+
+    /**
      * 要素を追加 TangoBoxオブジェクトをそのまま追加
      * @param box
      */
     public void addOne(TangoBox box) {
-        box.setId(getNextUserId(mRealm));
+        box.setId(getNextUserId());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(box);
@@ -90,7 +126,7 @@ public class TangoBoxDao {
      * ダミーのデータを一件追加
      */
     public void addDummy() {
-        int newId = getNextUserId(mRealm);
+        int newId = getNextUserId();
         Random rand = new Random();
         int randVal = rand.nextInt(1000);
 
@@ -116,12 +152,11 @@ public class TangoBoxDao {
     /**
      * 一件更新  ユーザーが設定するデータ全て
      * @param box
-     * @return true:更新成功
      */
-    public boolean updateOne(TangoBox box) {
+    public void updateOne(TangoBox box) {
 
         TangoBox newBox = mRealm.where(TangoBox.class).equalTo("id", box.getId()).findFirst();
-        if (newBox == null) return false;
+        if (newBox == null) return;
 
         mRealm.beginTransaction();
 
@@ -131,7 +166,6 @@ public class TangoBoxDao {
         newBox.setUpdateTime(new Date());
 
         mRealm.commitTransaction();
-        return true;
     }
 
     /**
@@ -164,14 +198,13 @@ public class TangoBoxDao {
 
     /**
      * かぶらないプライマリIDを取得する
-     * @param realm
      * @return
      */
-    public int getNextUserId(Realm realm) {
+    public int getNextUserId() {
         // 初期化
         int nextId = 1;
         // userIdの最大値を取得
-        Number maxUserId = realm.where(TangoBox.class).max("id");
+        Number maxUserId = mRealm.where(TangoBox.class).max("id");
         // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
         if(maxUserId != null) {
             nextId = maxUserId.intValue() + 1;

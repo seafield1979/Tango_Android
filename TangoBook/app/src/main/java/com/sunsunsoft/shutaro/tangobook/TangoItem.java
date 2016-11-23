@@ -6,7 +6,8 @@ package com.sunsunsoft.shutaro.tangobook;
  * やむなくインターフェースで実装
  */
 
-interface TangoItem{
+interface TangoItem {
+    int getId();
     int getPos();
-
+    TangoItemType getItemType();
 }

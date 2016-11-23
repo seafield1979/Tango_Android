@@ -97,7 +97,7 @@ public class TangoItemManager {
         // book
         List<TangoBook> books = null;
         if (bookIds.size() > 0) {
-            books = RealmManager.getBookDao().selectByIds(bookIds.toArray(new Integer[0]));
+            books = RealmManager.getBookDao().selectByIds(bookIds);
         }
         // booksの各要素にposを設定する処理
         posIndex = 0;
@@ -120,7 +120,7 @@ public class TangoItemManager {
         // box
         List<TangoBox> boxes = null;
         if (boxIds.size() > 0) {
-            boxes = RealmManager.getBoxDao().selectByIds(boxIds.toArray(new Integer[0]));
+            boxes = RealmManager.getBoxDao().selectByIds(boxIds);
         }
         // boxedの各要素にposを設定する処理
         posIndex = 0;
@@ -178,7 +178,7 @@ public class TangoItemManager {
             list.add(addItem);
         }
 
-        RealmManager.getItemPosDao().updateAll(list);
+        RealmManager.getItemPosDao().updateAll(list, TangoParentType.Home, 0);
     }
 
     /**
@@ -281,16 +281,5 @@ public class TangoItemManager {
      */
     public void changePos(TangoItem item1, TangoItem item2) {
         RealmManager.getItemPosDao().changePos(item1.getPos(), item2.getPos());
-    }
-
-    /**
-     * カード１枚を単語帳に移動
-     * @param card
-     * @param book
-     */
-    public void moveCardIntoBook(TangoCard card, TangoBook book) {
-        Integer[] ids = new Integer[1];
-        ids[0] = card.getId();
-        RealmManager.getCardInBookDao().addItems(book, ids);
     }
 }

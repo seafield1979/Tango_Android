@@ -84,6 +84,7 @@ public class TangoBox extends RealmObject implements TangoItem {
         isChecked = checked;
     }
 
+    @Override
     public int getPos() {
         return pos;
     }
@@ -105,5 +106,12 @@ public class TangoBox extends RealmObject implements TangoItem {
         box.updateTime = new Date();
 
         return box;
+    }
+
+    /**
+     * TangoItem interface
+     */
+    public TangoItemType getItemType() {
+        return TangoItemType.Box;
     }
 }

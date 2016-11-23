@@ -13,19 +13,18 @@ import io.realm.annotations.Ignore;
  *      ゴミ箱以下
  * posは自分が所属するグループ内での配置位置
  */
-
 public class TangoItemPos extends RealmObject {
 
-    // 親の種類 (0:ホーム / 1:単語帳 / 2:ボックス / 3:ゴミ箱) TangoParentType
+    // 親の種類 TangoParentType(0:ホーム / 1:単語帳 / 2:ボックス / 3:ゴミ箱)
     private int parentType;
 
     // 親のID
     private int parentId;
 
-    // 表示位置 0...
+    // 表示順 0...
     private int pos;
 
-    // アイテムの種類 1:カード / 2:単語帳 / 3:ボックス
+    // アイテムの種類 TangoItemType( 0:カード / 1:単語帳 / 2:ボックス)
     private int itemType;
 
     // 各アイテムのID
@@ -38,6 +37,22 @@ public class TangoItemPos extends RealmObject {
     /**
      * Get/Set
      */
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
+    public int getParentType() {
+        return parentType;
+    }
+
+    public void setParentType(int parentType) {
+        this.parentType = parentType;
+    }
+
     public int getPos() {
         return pos;
     }

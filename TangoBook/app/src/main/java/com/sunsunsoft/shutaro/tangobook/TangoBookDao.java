@@ -1,6 +1,8 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
+import android.util.Log;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +15,20 @@ import io.realm.RealmResults;
  * 単語帳(TangoBook)のDAO
  */
 public class TangoBookDao {
+    /**
+     * Constract
+     */
+    public static final String TAG = "TangoBookDao";
+
+    /**
+     * Member variables
+     */
     private Realm mRealm;
 
+
+    /**
+     * Csontructor
+     */
     public TangoBookDao(Realm realm) {
         mRealm = realm;
     }
@@ -30,23 +44,14 @@ public class TangoBookDao {
             list.add(book);
         }
 
-        return list;
-    }
-
-    /**
-     * 指定の単語帳に追加されていない単語を取得
-     * @return
-     */
-    public List<TangoBook> selectExceptIds(List<Integer> ids) {
-
-        RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
-
-        for (int id : ids) {
-            query.notEqualTo("id", id);
+        // for Debug
+        if (UDebug.debugDAO) {
+            for (TangoBook book : results) {
+                Log.d(TAG, "id:" + book.getId() + " name:" + book.getName());
+            }
         }
-        RealmResults<TangoBook> results = query.findAll();
 
-        return results;
+        return list;
     }
 
     /**
@@ -67,7 +72,7 @@ public class TangoBookDao {
      * @param ids
      * @return
      */
-    public List<TangoBook>selectByIds(Integer[] ids) {
+    public List<TangoBook>selectByIds(Iterable<Integer> ids) {
         // Build the query looking at all users:
         RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
 
@@ -102,12 +107,29 @@ public class TangoBookDao {
         return newBook;
     }
 
+
+    /**
+     * 指定の単語帳に追加されていない単語を取得
+     * @return
+     */
+    public List<TangoBook> selectByExceptIds(Iterable<Integer> ids) {
+
+        RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
+
+        for (int id : ids) {
+            query.notEqualTo("id", id);
+        }
+        RealmResults<TangoBook> results = query.findAll();
+
+        return results;
+    }
+
     /**
      * 要素を追加 TangoBookオブジェクトをそのまま追加
      * @param book
      */
     public void addOne(TangoBook book) {
-        book.setId(getNextUserId(mRealm));
+        book.setId(getNextId());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(book);
@@ -118,7 +140,7 @@ public class TangoBookDao {
      * ダミーのデータを一件追加
      */
     public void addDummy() {
-        int newId = getNextUserId(mRealm);
+        int newId = getNextId();
         Random rand = new Random();
         int randVal = rand.nextInt(1000);
 
@@ -144,11 +166,11 @@ public class TangoBookDao {
     /**
      * 一件更新  ユーザーが設定するデータ全て
      * @param book
-     * @return true:更新成功
      */
-    public boolean updateOne(TangoBook book) {
+    public void updateOne(TangoBook book) {
+
         TangoBook newBook = mRealm.where(TangoBook.class).equalTo("id", book.getId()).findFirst();
-        if (newBook == null) return false;
+        if (newBook == null) return;
 
         mRealm.beginTransaction();
 
@@ -158,7 +180,6 @@ public class TangoBookDao {
         newBook.setUpdateTime(new Date());
 
         mRealm.commitTransaction();
-        return true;
     }
 
     /**
@@ -203,15 +224,11 @@ public class TangoBookDao {
 
     /**
      * かぶらないプライマリIDを取得する
-     * @param realm
      * @return
      */
-    public int getNextUserId(Realm realm) {
-        // 初期化
+    public int getNextId() {
         int nextId = 1;
-        // userIdの最大値を取得
-        Number maxUserId = realm.where(TangoBook.class).max("id");
-        // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
+        Number maxUserId = mRealm.where(TangoBook.class).max("id");
         if(maxUserId != null) {
             nextId = maxUserId.intValue() + 1;
         }
