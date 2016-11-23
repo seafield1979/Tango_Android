@@ -1,5 +1,9 @@
 package com.sunsunsoft.shutaro.testdb;
 
+import android.util.Log;
+
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +17,7 @@ import io.realm.Sort;
  */
 
 public class TangoItemPosDao {
+    public static final String TAG = "TangoItemPosDao";
 
     private Realm mRealm;
 
@@ -25,8 +30,20 @@ public class TangoItemPosDao {
      * @return nameのString[]
      */
     public List<TangoItemPos> selectAll() {
-        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class).findAllSorted
-                ("pos", Sort.ASCENDING);
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
+                .findAllSorted("pos", Sort.ASCENDING);
+
+        for (TangoItemPos item : results) {
+            Log.d("TangoItemPosDao", ""
+                            + " parentType:" + item.getParentType()
+                            + " parentId:" + item.getParentId()
+                            + " type:" + item.getItemType()
+                            + " id:" + item.getId()
+                            + " pos:" + item.getPos()
+            );
+
+
+        }
         return results;
     }
 
@@ -75,9 +92,10 @@ public class TangoItemPosDao {
     /**
      * 指定のボックスに含まれるアイテムを取得する
      * @param boxId
+     * @param changeable
      * @return カード/単語帳 のアイテムリスト
      */
-    public TangoItem[] selectByBoxId(int boxId) {
+    public List<TangoItem> selectByBoxId(int boxId, boolean changeable) {
         RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
                 .equalTo("parentType", TangoParentType.Box.ordinal())
                 .equalTo("parentId", boxId)
@@ -85,69 +103,77 @@ public class TangoItemPosDao {
         if (results == null) return null;
 
         // 格納先を先に確保しておく
-        TangoItem[] items = new TangoItem[results.size()];
+        LinkedList<TangoItem> items = new LinkedList<>();
 
         // IDのリストを作成(カード)
-        LinkedList<Integer> ids = new LinkedList<>();
+        LinkedList<Integer> cardIds = new LinkedList<>();
+        LinkedList<Integer> bookIds = new LinkedList<>();
         for (TangoItemPos item : results) {
-            if (item.getItemType() == TangoItemType.Card.ordinal()) {
-                ids.add(item.getId());
-            }
-        }
-        if (ids.size() > 0) {
-            // カードのリストを作成
-            List<TangoCard> cards = MyRealmManager.getCardDao().selectByIds(ids.toArray(new
-                    Integer[0]));
-            if (cards != null) {
-                // posの並び順に格納
-                int posIndex = 0;
-                for (TangoCard card : cards) {
-                    while (posIndex < items.length) {
-                        TangoItemPos itemPos = results.get(posIndex);
-                        if (itemPos.getItemType() == TangoItemType.Card.ordinal() &&
-                                card.getId() == itemPos.getId()) {
-                            if (itemPos.getPos() < items.length) {
-                                items[itemPos.getPos()] = card;
-                            }
-                            posIndex++;
-                            break;
-                        }
-                        posIndex++;
-                    }
-                }
+            switch(TangoItemType.toEnum(item.getItemType())) {
+                case Card:
+                    cardIds.add(item.getId());
+                    break;
+                case Book:
+                    bookIds.add(item.getId());
+                    break;
             }
         }
 
-        // IDのリストを作成(単語帳)
-        ids.clear();
-        if (ids.size() > 0) {
-            for (TangoItemPos item : results) {
-                if (item.getItemType() == TangoItemType.Book.ordinal()) {
-                    ids.add(item.getId());
-                }
+        List<TangoCard> cards;
+        if (cardIds.size() > 0) {
+            cards = MyRealmManager.getCardDao()
+                    .selectByIds(cardIds.toArray(new Integer[0]));
+        } else {
+            cards = new LinkedList<>();
+        }
+
+        List<TangoBook> books;
+        if (bookIds.size() > 0) {
+            books = MyRealmManager.getBookDao()
+                    .selectByIds(bookIds);
+        } else {
+            books = new LinkedList<>();
+        }
+
+        // posの順にリストを作成
+        int cardIndex = 0;
+        int bookIndex = 0;
+        int cardPos;
+        int bookPos;
+        while(true) {
+            if (cardIndex < cards.size()) {
+                cardPos = cards.get(cardIndex).getPos();
+            } else {
+                cardPos = -1;
             }
 
-            // カードのリストを作成
-            List<TangoBook> books = MyRealmManager.getBookDao().selectByIds(ids.toArray(new
-                    Integer[0]));
-            if (books != null) {
-                // posの並び順に格納
-                int posIndex = 0;
-                for (TangoBook book : books) {
-                    while (posIndex < items.length) {
-                        TangoItemPos itemPos = results.get(posIndex);
-                        if (itemPos.getItemType() == TangoItemType.Book.ordinal() &&
-                                book.getId() == itemPos.getId()) {
-                            if (itemPos.getPos() < items.length) {
-                                items[itemPos.getPos()] = book;
-                            }
-                            posIndex++;
-                            break;
-                        }
-                        posIndex++;
-                    }
-                }
+            if (bookIndex < books.size()) {
+                bookPos = books.get(bookIndex).getPos();
+            } else {
+                bookPos = -1;
             }
+
+            if (cardPos > bookPos) {
+                items.add(cards.get(cardIndex));
+                cardIndex++;
+            } else {
+                items.add(books.get(bookIndex));
+                bookIndex++;
+            }
+            if (cardIndex >= cards.size() &&
+                    bookIndex >= books.size())
+            {
+                break;
+            }
+        }
+        // チェック
+        if (cardIndex + bookIndex != items.size()) {
+            Log.d(TAG, "not enoght!! cardIndex:" + cardIndex
+            + " bookIndex:" + bookIndex);
+        }
+
+        if (changeable) {
+            items = toChangeableItem(items);
         }
 
         return items;
@@ -164,10 +190,11 @@ public class TangoItemPosDao {
 
     /**
      * 変更不可なRealmのオブジェクトを変更可能なリストに変換する
+     * TangoItemPos
      * @param list
      * @return
      */
-    public List<TangoItemPos> toChangeable(List<TangoItemPos> list) {
+    public List<TangoItemPos> toChangeableItemPos(List<TangoItemPos> list) {
         LinkedList<TangoItemPos> newList = new LinkedList<TangoItemPos>();
         for (TangoItemPos item : list) {
             newList.add(mRealm.copyFromRealm(item));
@@ -175,6 +202,29 @@ public class TangoItemPosDao {
         return newList;
     }
 
+    /**
+     * 変更不可なRealmのオブジェクトを変更可能なリストに変換する
+     * TangoItem
+     * @param list
+     * @return
+     */
+    public LinkedList<TangoItem> toChangeableItem(List<TangoItem> list) {
+        LinkedList<TangoItem> newList = new LinkedList<>();
+        for (TangoItem item : list) {
+            // TangoItemのインスタンス別に処理する
+            if (item instanceof TangoCard) {
+                TangoCard _item = (TangoCard)item;
+                newList.add((mRealm.copyFromRealm(_item)));
+            } else if (item instanceof TangoBook) {
+                TangoBook _item = (TangoBook)item;
+                newList.add((mRealm.copyFromRealm(_item)));
+            } else if (item instanceof TangoBox) {
+                TangoBox _item = (TangoBox) item;
+                newList.add((mRealm.copyFromRealm(_item)));
+            }
+        }
+        return newList;
+    }
 
     /**
      * 全要素削除
@@ -285,16 +335,38 @@ public class TangoItemPosDao {
         }
     }
 
-
     /**
-     * 要素を追加する
+     * TangoItemPosのリストで削除を行う
+     * @param boxId
+     * @param items
      */
-    public void addOne(TangoItemPos item) {
-        item.setPos(getNextPos(mRealm));
+    public void deleteItemPosesInBox(int boxId, List<TangoItemPos> items) {
+        if (items == null) return;
+        boolean isFirst = false;
 
-        mRealm.beginTransaction();
-        mRealm.copyToRealm(item);
-        mRealm.commitTransaction();
+        RealmQuery<TangoItemPos> query = mRealm.where(TangoItemPos.class);
+
+        // Add query conditions:
+        query.equalTo("parentType", TangoParentType.Box.ordinal())
+                .equalTo("parentId", boxId);
+
+        for (TangoItemPos item : items) {
+            if (!isFirst) {
+                isFirst = true;
+            } else {
+                query.or();
+            }
+            query.equalTo("itemType", item.getItemType())
+                        .equalTo("id", item.getId());
+
+            RealmResults<TangoItemPos> results = query.findAll();
+            if (results == null) return;
+
+
+            mRealm.beginTransaction();
+            results.deleteAllFromRealm();
+            mRealm.commitTransaction();
+        }
     }
 
     /**
@@ -311,7 +383,7 @@ public class TangoItemPosDao {
             itemPos.setParentId(bookId);
             itemPos.setItemType(TangoItemType.Card.ordinal());
             itemPos.setId(id);
-            itemPos.setPos(pos);
+            itemPos.setPos(getNextPosInBook(bookId));
 
             mRealm.beginTransaction();
             mRealm.copyToRealm(itemPos);
@@ -325,7 +397,7 @@ public class TangoItemPosDao {
      * @param boxId
      * @param items
      */
-    public void addItemsInBox(int boxId, List<TangoItem> items) {
+    public void addItemsToBox(int boxId, List<TangoItem> items) {
         int itemType = 0;
 
         for (TangoItem item : items) {
@@ -339,12 +411,40 @@ public class TangoItemPosDao {
             }
             itemPos.setItemType(itemType);
             itemPos.setId(item.getId());
-            itemPos.setPos(item.getPos());
+            itemPos.setPos(getNextPosInBox(boxId));
 
             mRealm.beginTransaction();
             mRealm.copyToRealm(itemPos);
             mRealm.commitTransaction();
         }
+    }
+
+    /**
+     * ボックスに要素の追加情報(TangoItemPos)を追加
+     * @param itemPoses
+     */
+    public void addItemPosesToBox(List<TangoItemPos> itemPoses) {
+
+        mRealm.beginTransaction();
+        for (TangoItemPos itemPos : itemPoses) {
+            switch(TangoParentType.toEnum(itemPos.getParentType())) {
+                case Home:
+                    itemPos.setPos(getNextPos(TangoParentType.Home.ordinal()));
+                    break;
+                case Book:
+                    itemPos.setPos(getNextPosInBook(itemPos.getParentId()));
+                    break;
+                case Box:
+                    itemPos.setPos(getNextPosInBox(itemPos.getParentId()));
+                    break;
+                case Trash:
+                    itemPos.setPos(getNextPos(TangoParentType.Trash.ordinal()));
+                    break;
+            }
+
+            mRealm.copyToRealm(itemPos);
+        }
+        mRealm.commitTransaction();
     }
 
     /**
@@ -397,18 +497,44 @@ public class TangoItemPosDao {
 
     /**
      * かぶらないposを取得する
-     * @param realm
      * @return
      */
-    public int getNextPos(Realm realm) {
+    public int getNextPos(int parentType) {
         // 初期化
-        int nextId = 1;
-        // userIdの最大値を取得
-        Number maxUserId = realm.where(TangoItemPos.class).max("pos");
+        int nextPos = 1;
+        // 最大値を取得
+        Number maxPos = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", parentType)
+                .max("pos");
         // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
-        if(maxUserId != null) {
-            nextId = maxUserId.intValue() + 1;
+        if(maxPos != null) {
+            nextPos = maxPos.intValue() + 1;
         }
-        return nextId;
+        return nextPos;
+    }
+
+
+    public int getNextPosInBook(int bookId) {
+        int nextPos = 1;
+        Number maxPos = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", TangoParentType.Book.ordinal())
+                .equalTo("parentId", bookId)
+                .max("pos");
+        if(maxPos != null) {
+            nextPos = maxPos.intValue() + 1;
+        }
+        return nextPos;
+    }
+
+    public int getNextPosInBox(int boxId) {
+        int nextPos = 1;
+        Number maxPos = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", TangoParentType.Box.ordinal())
+                .equalTo("parentId", boxId)
+                .max("pos");
+        if(maxPos != null) {
+            nextPos = maxPos.intValue() + 1;
+        }
+        return nextPos;
     }
 }

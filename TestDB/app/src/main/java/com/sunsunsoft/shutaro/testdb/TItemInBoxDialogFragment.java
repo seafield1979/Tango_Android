@@ -135,19 +135,23 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
      * ボックスに未追加のカード番号を表示する
      */
     private void showAddableCards() {
-        List<TangoItemInBox> itemsInBox = MyRealmManager.getItemInBoxDao().selectByBoxId
-                (mBoxId);
+        // すでに追加済みのカードは除外する
+        // 追加済みのカードIDを取得
+        List<TangoItem> itemsInBox = MyRealmManager.getItemPosDao().selectByBoxId(mBoxId, true);
+        if (itemsInBox == null) return;
+
         LinkedList<Integer> cardIds = new LinkedList<>();
 
-        for (TangoItemInBox item : itemsInBox) {
-            if(item.getItemType() == TangoItemType.Card.ordinal()) {
-                cardIds.add(item.getItemId());
+        for (TangoItem item : itemsInBox) {
+            if(item instanceof TangoCard) {
+                cardIds.add(item.getId());
             }
         }
 
-        List<TangoCard> cards = MyRealmManager.getCardDao().selectExceptIds(cardIds.toArray(new
-                Integer[0]));
+        List<TangoCard> cards = MyRealmManager.getCardDao()
+                .selectExceptIds(cardIds.toArray(new Integer[0]));
         cards = MyRealmManager.getCardDao().toChangeable(cards);
+
         TangoCardAdapter adapter = new TangoCardAdapter(getContext(), 0, cards);
         mListView.setAdapter(adapter);
     }
@@ -166,13 +170,15 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
      * ボックスに未追加の単語帳を表示する
      */
     private void showAddableBooks() {
-        List<TangoItemInBox> itemsInBox = MyRealmManager.getItemInBoxDao().selectByBoxId
-                (mBoxId);
+        // すでに追加済みのカードは除外する
+        // 追加済みのカードIDを取得
+        List<TangoItem> itemsInBox = MyRealmManager.getItemPosDao().selectByBoxId(mBoxId, true);
+        if (itemsInBox == null) return;
         LinkedList<Integer> bookIds = new LinkedList<>();
 
-        for (TangoItemInBox item : itemsInBox) {
-            if(item.getItemType() == TangoItemType.Book.ordinal()) {
-                bookIds.add(item.getItemId());
+        for (TangoItem item : itemsInBox) {
+            if(item instanceof TangoBook) {
+                bookIds.add(item.getId());
             }
         }
 
@@ -183,21 +189,20 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
     }
 
     /**
-     * 指定の単語帳に含まれるカードを表示する
+     * 指定のボックスに含まれるアイテムを表示する
      */
     private void showItems(int boxId) {
-        List<TangoItemInBox> items = MyRealmManager.getItemInBoxDao().selecteByBoxId(boxId);
-
-        if (items.size() <= 0) return;
+        List<TangoItem> items = MyRealmManager.getItemPosDao().selectByBoxId(boxId, true);
+        if (items == null) return;
 
         LinkedList<Integer> cardIds = new LinkedList<>();
         LinkedList<Integer> bookIds = new LinkedList<>();
 
-        for (TangoItemInBox item : items) {
-            if (item.getItemType() == TangoItemType.Card.ordinal()) {
-                cardIds.add(item.getItemId());
-            } else {
-                bookIds.add(item.getItemId());
+        for (TangoItem item : items) {
+            if (item instanceof TangoCard) {
+                cardIds.add(item.getId());
+            } else if (item instanceof  TangoBook){
+                bookIds.add(item.getId());
             }
         }
 
@@ -208,7 +213,7 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
         if (cardIds.size() > 0) {
             List<TangoCard> cards = MyRealmManager.getCardDao()
                     .selectByIds(cardIds.toArray(new Integer[0]));
-            //cards = MyRealmManager.getCardDao().toChangeable(cards);
+            cards = MyRealmManager.getCardDao().toChangeable(cards);
             if (cards != null) {
                 for (TangoCard card : cards) {
                     TangoItemInBoxList itemList = new TangoItemInBoxList(TangoItemType.Card,
@@ -220,8 +225,8 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
         }
         if (bookIds.size() > 0) {
             List<TangoBook> books = MyRealmManager.getBookDao()
-                    .selectByIds(bookIds.toArray(new Integer[0]));
-            //books = MyRealmManager.getBookDao().toChangeable(books);
+                    .selectByIds(bookIds);
+            books = MyRealmManager.getBookDao().toChangeable(books);
             if (books != null) {
                 for (TangoBook book : books) {
                     TangoItemInBoxList itemList = new TangoItemInBoxList(
@@ -340,9 +345,19 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
      */
     protected void addCardsToBox(int boxId) {
         Integer[] cardIds = getCheckedCardIds();
+        LinkedList<TangoItemPos> itemPoses = new LinkedList<>();
+        for (int id : cardIds) {
+            TangoItemPos itemPos = new TangoItemPos();
+            itemPos.setParentType(TangoParentType.Box.ordinal());
+            itemPos.setParentId(boxId);
+            itemPos.setItemType(TangoItemType.Card.ordinal());
+            itemPos.setId(id);
 
-        if (cardIds != null) {
-            MyRealmManager.getItemInBoxDao().addCards(boxId, cardIds);
+            itemPoses.add(itemPos);
+        }
+
+        if (itemPoses.size() > 0) {
+            MyRealmManager.getItemPosDao().addItemPosesToBox(itemPoses);
         }
     }
 
@@ -352,8 +367,19 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
     protected void addBooksToBox(int boxId) {
         Integer[] bookIds = getCheckedBookIds();
 
+        LinkedList<TangoItemPos> itemPoses = new LinkedList<>();
+        for (int id : bookIds) {
+            TangoItemPos itemPos = new TangoItemPos();
+            itemPos.setParentType(TangoParentType.Box.ordinal());
+            itemPos.setParentId(boxId);
+            itemPos.setItemType(TangoItemType.Book.ordinal());
+            itemPos.setId(id);
+
+            itemPoses.add(itemPos);
+        }
+
         if (bookIds != null) {
-            MyRealmManager.getItemInBoxDao().addBooks(boxId, bookIds);
+            MyRealmManager.getItemPosDao().addItemPosesToBox(itemPoses);
         }
     }
 
@@ -362,9 +388,21 @@ public class TItemInBoxDialogFragment extends DialogFragment implements View.OnC
      */
     protected void deleteItemsFromBox(int boxId) {
         TangoItemInBoxList[] items = getCheckedItems();
+        if (items == null || items.length <= 0) return;
 
-        if (items != null) {
-            MyRealmManager.getItemInBoxDao().deleteByItems(boxId, items);
+        LinkedList<TangoItemPos> deleteItems = new LinkedList<>();
+        for (TangoItemInBoxList item : items) {
+            TangoItemPos deleteItem = new TangoItemPos();
+            deleteItem.setParentType(TangoParentType.Box.ordinal());
+            deleteItem.setParentId(boxId);
+            deleteItem.setItemType(item.getType().ordinal());
+            deleteItem.setId(item.getItemId());
+
+            deleteItems.add(deleteItem);
+        }
+
+        if (deleteItems != null) {
+            MyRealmManager.getItemPosDao().deleteItemPosesInBox(boxId, deleteItems);
         }
     }
 }

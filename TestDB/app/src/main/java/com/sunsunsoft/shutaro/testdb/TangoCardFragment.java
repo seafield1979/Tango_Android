@@ -90,7 +90,10 @@ public class TangoCardFragment extends Fragment implements OnClickListener, TCar
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button:
-                showList();
+//                showList();
+            {
+                MyRealmManager.getCardDao().selectAll();
+            }
                 break;
             case R.id.button2:
                 addItemByDialog();

@@ -217,7 +217,7 @@ public class TCardInBookDialogFragment extends DialogFragment implements View.On
         Integer[] cardIds = getCheckedCardIds();
 
         if (cardIds != null) {
-            MyRealmManager.getCardInBookDao().deleteByCardIds(bookId, cardIds);
+            MyRealmManager.getItemPosDao().addCardsInBook(bookId, cardIds);
         }
     }
 }

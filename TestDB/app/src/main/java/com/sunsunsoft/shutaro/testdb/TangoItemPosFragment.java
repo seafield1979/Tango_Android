@@ -109,7 +109,7 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
      */
     private void showList() {
         List<TangoItemPos> items = mItemPosDao.selectAll();
-        items = mItemPosDao.toChangeable(items);
+        items = mItemPosDao.toChangeableItemPos(items);
         TangoItemPosAdapter adapter = new TangoItemPosAdapter(getContext(), 0, items);
         listView.setAdapter(adapter);
     }
@@ -121,7 +121,7 @@ public class TangoItemPosFragment extends Fragment implements View.OnClickListen
         List<TangoItemPos> items = mItemPosDao.selectAll();
         if (items != null && items.size() > 0) {
             Random rand = new Random();
-            items = mItemPosDao.toChangeable(items);
+            items = mItemPosDao.toChangeableItemPos(items);
             int size = items.size();
             boolean[] setFlag = new boolean[items.size()];
 

@@ -1,6 +1,9 @@
 package com.sunsunsoft.shutaro.testdb;
 
+import android.util.Log;
+
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +16,7 @@ import io.realm.RealmResults;
  * 単語帳のDAO
  */
 public class TangoCardDao {
+    public static final String TAG = "TangoCardDao";
 
     private Realm mRealm;
 
@@ -27,6 +31,11 @@ public class TangoCardDao {
     public List<TangoCard> selectAll() {
 
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
+
+        for (TangoCard card : results) {
+            Log.d(TAG, "id:" + card.getId() + " wordA:" + card.getWordA());
+        }
+
         return results;
     }
 
@@ -57,6 +66,21 @@ public class TangoCardDao {
             newList.add(mRealm.copyFromRealm(card));
         }
         return newList;
+    }
+
+    /**
+     * List<TangoCard>を List<TangoItem>に変換する
+     * @param cards
+     * @return
+     */
+    public static List<TangoItem> toItems(List<TangoCard> cards) {
+        if (cards == null) return null;
+
+        LinkedList<TangoItem> items = new LinkedList<>();
+        for (TangoCard card : cards) {
+            items.add(card);
+        }
+        return items;
     }
 
     /**
@@ -105,7 +129,7 @@ public class TangoCardDao {
      * @param
      */
     public void add1(String wordA, String wordB) {
-        int newId = getNextUserId(mRealm);
+        int newId = getNextId();
 
         TangoCard card = new TangoCard();
         card.setId(newId);
@@ -128,7 +152,7 @@ public class TangoCardDao {
      * @param card
      */
     public void addOne(TangoCard card) {
-        card.setId(getNextUserId(mRealm));
+        card.setId(getNextId());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(card);
@@ -139,7 +163,7 @@ public class TangoCardDao {
      * ダミーのデータを一件追加
      */
     public void addDummy() {
-        int newId = getNextUserId(mRealm);
+        int newId = getNextId();
         Random rand = new Random();
         int randVal = rand.nextInt(1000);
 
@@ -279,14 +303,13 @@ public class TangoCardDao {
 
     /**
      * かぶらないプライマリIDを取得する
-     * @param realm
      * @return
      */
-    public int getNextUserId(Realm realm) {
+    public int getNextId() {
         // 初期化
         int nextId = 1;
         // userIdの最大値を取得
-        Number maxUserId = realm.where(TangoCard.class).max("id");
+        Number maxUserId = mRealm.where(TangoCard.class).max("id");
         // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
         if(maxUserId != null) {
             nextId = maxUserId.intValue() + 1;

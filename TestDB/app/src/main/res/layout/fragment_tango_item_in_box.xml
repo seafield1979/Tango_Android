@@ -15,6 +15,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="select all"
+            android:id="@+id/buttonSelectAll"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="add Cards"
             android:id="@+id/buttonAddCards"/>
         <Button

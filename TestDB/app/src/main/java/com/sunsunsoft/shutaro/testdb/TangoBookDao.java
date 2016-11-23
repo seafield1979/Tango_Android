@@ -1,6 +1,8 @@
 package com.sunsunsoft.shutaro.testdb;
 
 import android.content.Context;
+import android.util.Log;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +15,20 @@ import io.realm.RealmResults;
  * 単語帳(TangoBook)のDAO
  */
 public class TangoBookDao {
+    /**
+     * Constract
+     */
+    public static final String TAG = "TangoBookDao";
+
+    /**
+     * Member variables
+     */
     private Realm mRealm;
 
+
+    /**
+     * Csontructor
+     */
     public TangoBookDao(Realm realm) {
         mRealm = realm;
     }
@@ -28,6 +42,10 @@ public class TangoBookDao {
         LinkedList<TangoBook> list = new LinkedList<>();
         for (TangoBook book : results) {
             list.add(book);
+        }
+
+        for (TangoBook book : results) {
+            Log.d(TAG, "id:" + book.getId() + " name:" + book.getName());
         }
 
         return list;
@@ -67,7 +85,7 @@ public class TangoBookDao {
      * @param ids
      * @return
      */
-    public List<TangoBook>selectByIds(Integer[] ids) {
+    public List<TangoBook>selectByIds(Iterable<Integer> ids) {
         // Build the query looking at all users:
         RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
 
@@ -107,7 +125,7 @@ public class TangoBookDao {
      * @param book
      */
     public void addOne(TangoBook book) {
-        book.setId(getNextUserId(mRealm));
+        book.setId(getNextId());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(book);
@@ -118,7 +136,7 @@ public class TangoBookDao {
      * ダミーのデータを一件追加
      */
     public void addDummy() {
-        int newId = getNextUserId(mRealm);
+        int newId = getNextId();
         Random rand = new Random();
         int randVal = rand.nextInt(1000);
 
@@ -203,15 +221,11 @@ public class TangoBookDao {
 
     /**
      * かぶらないプライマリIDを取得する
-     * @param realm
      * @return
      */
-    public int getNextUserId(Realm realm) {
-        // 初期化
+    public int getNextId() {
         int nextId = 1;
-        // userIdの最大値を取得
-        Number maxUserId = realm.where(TangoBook.class).max("id");
-        // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
+        Number maxUserId = mRealm.where(TangoBook.class).max("id");
         if(maxUserId != null) {
             nextId = maxUserId.intValue() + 1;
         }

@@ -13,18 +13,23 @@ import android.widget.ListView;
 
 import java.util.LinkedList;
 import java.util.List;
-
+import android.view.View.OnClickListener;
 
 /**
  * ボックス(TangoBox)に含まれる単語,単語帳のテストを行うフラグメント
  */
-public class TangoItemInBoxFragment extends Fragment implements View.OnClickListener, TItemInBoxDialogFragment.OnOkClickListener{
+public class TangoItemInBoxFragment extends Fragment implements OnClickListener, TItemInBoxDialogFragment.OnOkClickListener{
 
     private final static String BACKGROUND_COLOR = "background_color";
     public static final int REQUEST_CODE = 1;
+    private static final int[] buttonIds = {
+            R.id.buttonSelectAll,
+            R.id.buttonAddCards,
+            R.id.buttonAddBooks,
+            R.id.buttonDelete
+    };
 
     private ListView listView;
-    private Button[] buttons = new Button[3];
 
     // ダイアログを呼び出しモード
     // 返り値を受け取るときに呼び出しモードに応じた処理を行う
@@ -59,12 +64,8 @@ public class TangoItemInBoxFragment extends Fragment implements View.OnClickList
 
         listView = (ListView) view.findViewById(R.id.listView);
 
-        buttons[0] = (Button) view.findViewById(R.id.buttonAddCards);
-        buttons[1] = (Button) view.findViewById(R.id.buttonAddBooks);
-        buttons[2] = (Button) view.findViewById(R.id.buttonDelete);
-
-        for (Button button : buttons) {
-            button.setOnClickListener(this);
+        for (int id : buttonIds) {
+            (view.findViewById(id)).setOnClickListener(this);
         }
 
         showList();
@@ -78,6 +79,11 @@ public class TangoItemInBoxFragment extends Fragment implements View.OnClickList
      */
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.buttonSelectAll:
+            {
+                MyRealmManager.getItemPosDao().selectAll();
+            }
+                break;
             case R.id.buttonAddCards:
                 addItemsByDialog(TItemInBoxDialogFragment.DialogMode.AddCards);
                 break;

@@ -80,7 +80,7 @@ public class TCardDialogFragment extends DialogFragment implements OnClickListen
             args.putString(KEY_COMMENT, "Comment " + randVal);
         }
         fragment.setArguments(args);
-        
+
         return fragment;
     }
 
