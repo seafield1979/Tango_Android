@@ -9,19 +9,17 @@ import java.util.List;
 /**
  * デバッグ用のダイアログを管理するクラス
  *
- * デバッグダイアログの表示
- * ダイアログのボタンが押された時の処理
+ * 機能
+ *  デバッグダイアログの表示(showDialog)
+ *  ダイアログのボタンが押された時の処理(UButtonCallbacksのメソッド)
+ *
  */
 
 public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
     enum DialogType {
-        TestDao,
+        SelectDao,
+        DeleteDao,
     }
-
-    /**
-     * Consts
-     */
-    public static final String TAG = "DebugDialogs";
 
     // buttonIds
     enum DialogButtons {
@@ -29,20 +27,37 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
         SelectBook(102),
         SelectBox(103),
         SelectItemPos(104),
+
+        DeleteCardAll(201),
+        DeleteBookAll(202),
+        DeleteBoxAll(203),
+        DeleteItemPosAll(204),
         None(0)
         ;
 
         private final int id;
 
-        private DialogButtons(final int id) {
+        DialogButtons(final int id) {
             this.id = id;
         }
-        static List<DialogButtons> test1Values() {
+
+        // リストを返す
+        // Select
+        static List<DialogButtons> selectValues() {
             LinkedList<DialogButtons> ids = new LinkedList<>();
             ids.add(SelectCard);
             ids.add(SelectBook);
             ids.add(SelectBox);
             ids.add(SelectItemPos);
+            return ids;
+        }
+        // Delete
+        static List<DialogButtons> deleteValues() {
+            LinkedList<DialogButtons> ids = new LinkedList<>();
+            ids.add(DeleteCardAll);
+            ids.add(DeleteBookAll);
+            ids.add(DeleteBoxAll);
+            ids.add(DeleteItemPosAll);
             return ids;
         }
 
@@ -60,6 +75,12 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
             return None;
         }
     }
+
+    /**
+     * Consts
+     */
+    public static final String TAG = "DebugDialogs";
+
 
 
     /**
@@ -88,26 +109,48 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
             mDialog = null;
         }
 
+        // Daoデバッグ用のダイアログを表示
+        mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                this,
+                this,
+                UDialogWindow.ButtonDir.Vertical,
+                false,
+                mParentView.getWidth(), mParentView.getHeight(),
+                Color.rgb(200,100,100), Color.WHITE);
+
         switch(type) {
-            case TestDao:
+            case SelectDao:
             {
-                // Daoデバッグ用のダイアログを表示
-                mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                        this,
-                        this,
-                        UDialogWindow.ButtonDir.Vertical,
-                        false,
-                        mParentView.getWidth(), mParentView.getHeight(),
-                        Color.rgb(200,100,100), Color.WHITE);
-                for (DialogButtons id : DialogButtons.test1Values()) {
+                // タイトル
+                mDialog.setTitle("Select Dao");
+                // ボタンを追加
+                for (DialogButtons id : DialogButtons.selectValues()) {
+                    mDialog.addButton(id.getInt(), id.toString(), Color.WHITE, Color.rgb(150, 80,
+                            80));
+
+
+                }
+                mDialog.addCloseButton(null);
+                // 描画マネージャに登録
+                mDialog.setDrawPriority(DrawPriority.Dialog.p());
+            }
+            break;
+
+            case DeleteDao:
+            {
+                // タイトル
+                mDialog.setTitle("Delete Dao");
+                // ボタンを追加
+                for (DialogButtons id : DialogButtons.deleteValues()) {
                     mDialog.addButton(id.getInt(), id.toString(), Color.WHITE, Color.rgb(150, 80,
                             80));
 
                 }
                 mDialog.addCloseButton(null);
+                // 描画マネージャに登録
                 mDialog.setDrawPriority(DrawPriority.Dialog.p());
             }
-            break;
+                break;
         }
 
     }
@@ -133,9 +176,22 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
             case SelectItemPos:
                 RealmManager.getItemPosDao().selectAll();
                 break;
+
+            case DeleteCardAll:
+                RealmManager.getCardDao().deleteAll();
+                break;
+            case DeleteBookAll:
+                RealmManager.getBookDao().deleteAll();
+                break;
+            case DeleteBoxAll:
+                RealmManager.getBoxDao().deleteAll();
+                break;
+            case DeleteItemPosAll:
+                RealmManager.getItemPosDao().deleteAll();
+                break;
         }
     }
-    
+
     public void UButtonLongClick(int id) {
     }
 

@@ -34,7 +34,7 @@ public class IconBook extends UIcon {
 
         this.book = book;
         this.title = book.getName().substring(0, DISP_TITLE_LEN);
-        color = Color.rgb(0,255,255);
+        setColor(Color.rgb(0,255,255));
     }
 
     public void drawIcon(Canvas canvas,Paint paint, PointF offset) {

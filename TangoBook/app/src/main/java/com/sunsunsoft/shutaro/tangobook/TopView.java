@@ -269,9 +269,11 @@ public class TopView extends View
                 invalidate();
                 break;
             case Debug2:
-                debugDialogs.showDialog(DebugDialogs.DialogType.TestDao);
+                debugDialogs.showDialog(DebugDialogs.DialogType.SelectDao);
                 break;
             case Debug3:
+                debugDialogs.showDialog(DebugDialogs.DialogType.DeleteDao);
+
                 break;
         }
         ULog.print(TAG, "menu item clicked " + id);

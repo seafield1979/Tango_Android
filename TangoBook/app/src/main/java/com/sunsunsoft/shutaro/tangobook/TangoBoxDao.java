@@ -198,6 +198,19 @@ public class TangoBoxDao {
     }
 
     /**
+     * 全要素削除
+     *
+     * @return
+     */
+    public boolean deleteAll() {
+        RealmResults<TangoBox> results = mRealm.where(TangoBox.class).findAll();
+        mRealm.beginTransaction();
+        boolean ret = results.deleteAllFromRealm();
+        mRealm.commitTransaction();
+        return ret;
+    }
+
+    /**
      * かぶらないプライマリIDを取得する
      * @return
      */

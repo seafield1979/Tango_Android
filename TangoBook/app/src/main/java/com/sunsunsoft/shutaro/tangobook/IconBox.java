@@ -39,9 +39,9 @@ public class IconBox extends UIcon{
         super(parent, iconCallbacks, IconType.Card,
                 x, y, ICON_W, ICON_H);
 
-        color = Color.rgb(0,255,255);
         this.box = box;
         this.title = box.getName().substring(0, DISP_TITLE_LEN);
+        setColor(Color.rgb(0,255,255));
     }
 
     /**

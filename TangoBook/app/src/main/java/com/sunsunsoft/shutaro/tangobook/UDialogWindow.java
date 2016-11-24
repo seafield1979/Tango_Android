@@ -87,6 +87,25 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     LinkedList<UButton> buttons = new LinkedList<>();
 
     /**
+     * Get/Set
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    /**
      * Constructor
      */
     public UDialogWindow(int x, int y, int width, int height, int color) {
@@ -440,7 +459,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     /**
      * UButtonCallbacks
      */
-    public void click(int id) {
+    public void UButtonClick(int id) {
         switch(id) {
             case CloseDialogId:
                 if (isAnimation) {
@@ -451,7 +470,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                 break;
         }
     }
-    public void longClick(int id) {
+    public void UButtonLongClick(int id) {
 
     }
 }

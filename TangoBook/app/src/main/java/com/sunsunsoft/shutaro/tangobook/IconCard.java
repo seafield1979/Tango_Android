@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.util.Log;
 
 /**
  * 単語カードのアイコン
@@ -18,6 +19,7 @@ public class IconCard extends UIcon{
     private static final int DISP_TITLE_LEN = 6;
     private static final int TEXT_PAD_X = 10;
     private static final int TEXT_PAD_Y = 10;
+    private static final int TEXT_SIZE = 40;
 
     /**
      * Member Variables
@@ -40,9 +42,9 @@ public class IconCard extends UIcon{
         super(parent, iconCallbacks, IconType.Card,
                 x, y, ICON_W, ICON_H);
 
-        color = Color.rgb(0,255,255);
         this.card = card;
         this.title = card.getWordA().substring(0, DISP_TITLE_LEN);
+        setColor(Color.rgb(0,255,255));
     }
 
     /**
@@ -57,6 +59,7 @@ public class IconCard extends UIcon{
      * @param offset
      */
     public void drawIcon(Canvas canvas, Paint paint, PointF offset) {
+
         // 内部を塗りつぶし
         paint.setStyle(Paint.Style.FILL);
 
@@ -88,6 +91,10 @@ public class IconCard extends UIcon{
 
         canvas.drawRect( drawPos.x, drawPos.y,
                 drawPos.x + ICON_W, drawPos.y + ICON_H, paint);
-        canvas.drawText( title, drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_PAD_Y, paint);
+
+        // text
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(TEXT_SIZE);
+        canvas.drawText( title, drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_SIZE + TEXT_PAD_Y, paint);
     }
 }

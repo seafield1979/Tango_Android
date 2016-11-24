@@ -251,16 +251,17 @@ public class UIconWindow extends UWindow {
      * インスタンス生成後に一度だけ呼ぶ
      */
     public void init() {
-        // データベースから情報を読み込む
-        List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(TangoParentType
-                .Home, true);
-        if (items != null) {
-            for (TangoItem item : items) {
-                mIconManager.addIcon(item, AddPos.Tail);
+        if (type == WindowType.Home) {
+            // データベースから情報を読み込む
+            List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(TangoParentType
+                    .Home, true);
+            if (items != null) {
+                for (TangoItem item : items) {
+                    mIconManager.addIcon(item, AddPos.Tail);
+                }
             }
+            sortIcons(true);
         }
-
-        sortIcons(true);
     }
 
     /**

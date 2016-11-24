@@ -289,6 +289,20 @@ public class TangoCardDao {
     }
 
     /**
+     * 全要素削除
+     *
+     * @return
+     */
+    public boolean deleteAll() {
+        RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
+        mRealm.beginTransaction();
+        boolean ret = results.deleteAllFromRealm();
+        mRealm.commitTransaction();
+        return ret;
+    }
+
+
+    /**
      * 学習履歴(OK/NG)を追加する
      */
     public void addHistory() {

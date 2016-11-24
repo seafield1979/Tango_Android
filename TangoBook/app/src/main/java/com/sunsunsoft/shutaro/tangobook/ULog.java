@@ -7,6 +7,8 @@ import java.util.HashMap;
  * タグ毎のON/OFFを設定できる
  */
 public class ULog {
+    private static final boolean isCount = false;
+
     // タグ毎のON/OFF情報をMap(Dictionary)で持つ
     private static HashMap<String,Boolean> enables = new HashMap<>();
     private static HashMap<String,Integer> counters = new HashMap<>();
@@ -24,6 +26,7 @@ public class ULog {
         setEnable(UScrollBar.TAG, true);
         setEnable(UIconWindow.TAG, true);
         setEnable(UButton.TAG, true);
+        setEnable(UColor.TAG, false);
     }
 
     // ログ出力
@@ -42,9 +45,20 @@ public class ULog {
      * start - count ... - end
      */
     public static void startCount(String tag) {
+        if (!isCount) return;
+
         counters.put(tag, 0);
     }
+    public static void startAllCount() {
+        if (!isCount) return;
+
+        for (String tag : counters.keySet()) {
+            counters.put(tag, 0);
+        }
+    }
     public static void count(String tag) {
+        if (!isCount) return;
+
         Integer count = counters.get(tag);
         if (count == null) {
             count = 0;
@@ -52,13 +66,22 @@ public class ULog {
         count = count + 1;
         counters.put(tag, count);
     }
-    public static void endCount(String tag) {
+    public static void showCount(String tag) {
+        if (!isCount) return;
+
         // 有効無効判定
         Boolean enable = enables.get(tag);
         if (enable != null && !enable) {
             // 出力しない
         } else {
             Log.d(tag, "count:" + counters.get(tag));
+        }
+    }
+    public static void showAllCount() {
+        if (!isCount) return;
+
+        for (String tag : counters.keySet()) {
+            showCount(tag);
         }
     }
 }

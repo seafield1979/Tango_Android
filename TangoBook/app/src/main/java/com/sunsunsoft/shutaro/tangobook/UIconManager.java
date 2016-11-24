@@ -122,6 +122,7 @@ public class UIconManager implements UIconCallbacks{
                 break;
             case Card: {
                 TangoCard card = TangoCard.createDummyCard();
+                RealmManager.getCardDao().addOne(card);
                 RealmManager.getItemPosDao().addOne(card, TangoParentType.Home, 0);
                 icon = new IconCard(card, mParentWindow, this);
             }

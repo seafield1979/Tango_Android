@@ -212,6 +212,20 @@ public class TangoBookDao {
     }
 
     /**
+     * 全要素削除
+     *
+     * @return
+     */
+    public boolean deleteAll() {
+        RealmResults<TangoBook> results = mRealm.where(TangoBook.class).findAll();
+        mRealm.beginTransaction();
+        boolean ret = results.deleteAllFromRealm();
+        mRealm.commitTransaction();
+        return ret;
+    }
+
+
+    /**
      * 学習日付を更新する
      */
     private void updateStudyTime(Integer id) {

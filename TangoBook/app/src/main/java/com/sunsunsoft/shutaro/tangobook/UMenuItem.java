@@ -176,10 +176,11 @@ public class UMenuItem extends UDrawable {
      * @return
      */
     public boolean checkClick(ViewTouch vt, float clickX, float clickY) {
+        if (vt.type != TouchType.Click) return false;
+
         if (pos.x <= clickX && clickX <= pos.x + ITEM_W &&
                 pos.y <= clickY && clickY <= pos.y + ITEM_H)
         {
-            if (vt.type != TouchType.Click) return false;
 
             // 子要素を持っていたら Open/Close
             if (childItems != null) {

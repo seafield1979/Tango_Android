@@ -179,13 +179,13 @@ public class UDrawManager {
         // 削除要求のかかったオブジェクトを削除する
         removeRequestedList();
 
-        ULog.startCount(TAG);
+        ULog.startAllCount();
         for (DrawList list : lists.descendingMap().values()) {
             if (list.draw(canvas, paint) ) {
                 redraw = true;
             }
         }
-        ULog.endCount(TAG);
+        ULog.showAllCount();
         return redraw;
     }
 
@@ -273,7 +273,7 @@ class DrawList
             if (obj.animate()) {
                 allDone = false;
             }
-            ULog.count(UDrawManager.TAG);
+            ULog.count(UDrawManager.TAG + "_" + priority);
             PointF offset = obj.getDrawOffset();
             obj.draw(canvas, paint, offset);
             drawId(canvas, paint, obj.getRect(), priority);
@@ -318,6 +318,10 @@ class DrawList
     protected boolean touchEvent(ViewTouch vt) {
         UDrawManager manager = UDrawManager.getInstance();
 
+        if (vt.isTouchUp()) {
+            manager.setTouchingObj(null);
+        }
+
         // タッチを放すまではタッチしたオブジェクトのみ処理する
         if (manager.getTouchingObj() != null &&
                 vt.type != TouchType.Touch)
@@ -332,9 +336,8 @@ class DrawList
             UDrawable obj = (UDrawable)it.previous();
             if (obj.touchEvent(vt)) {
                 if (vt.type == TouchType.Touch) {
-                    UDrawManager.getInstance().setTouchingObj(obj);
-                } else if (vt.isTouchUp()) {
-                    UDrawManager.getInstance().setTouchingObj(null);
+                    manager.setTouchingObj(obj);
+
                 }
                 return true;
             }
