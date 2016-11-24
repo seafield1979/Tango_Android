@@ -29,6 +29,7 @@ public class IconBox extends UIcon{
      */
     protected TangoBox box;
     protected UIconManager mIconManager;
+    private View mParentView;
 
     // ボックスの中身を表示しているウィンドウ
     protected UIconWindow subWindow;
@@ -60,7 +61,11 @@ public class IconBox extends UIcon{
 
         this.box = box;
         this.title = box.getName().substring(0, DISP_TITLE_LEN);
+        this.mParentView = parentView;
         setColor(box.getColor());
+
+        UIconWindows windows = parentWindow.getWindows();
+        subWindow = windows.getSubWindow();
 
         // Box以下に表示するアイコンを管理するIconManagerを生成
         mIconManager = UIconManager.createInstance(parentView, subWindow, iconCallbacks);

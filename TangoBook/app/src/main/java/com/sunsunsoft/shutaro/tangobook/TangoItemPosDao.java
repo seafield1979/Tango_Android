@@ -416,13 +416,13 @@ public class TangoItemPosDao {
             if (cardIndex < cards.size()) {
                 cardPos = cards.get(cardIndex).getPos();
             } else {
-                cardPos = -1;
+                cardPos = 10000000;
             }
 
             if (bookIndex < books.size()) {
                 bookPos = books.get(bookIndex).getPos();
             } else {
-                bookPos = -1;
+                bookPos = 10000000;
             }
 
             if (cardPos < bookPos) {
