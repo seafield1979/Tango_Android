@@ -10,17 +10,30 @@ import android.graphics.Rect;
  * 単語帳アイコン
  */
 public class IconBook extends UIcon {
+
+    /**
+     * Constant
+     */
     public static final String TAG = "UIconRect";
     private static final int ICON_W = 200;
     private static final int ICON_H = 150;
+    private static final int DISP_TITLE_LEN = 6;
 
-    public IconBook(UIconWindow parent, UIconCallbacks iconCallbacks) {
-        this(parent, iconCallbacks, 0, 0, ICON_W, ICON_H);
+    /**
+     * Member variable
+     */
+    protected TangoBook book;
+
+    public IconBook(TangoBook book, UIconWindow parent, UIconCallbacks iconCallbacks) {
+        this(book, parent, iconCallbacks, 0, 0, ICON_W, ICON_H);
     }
 
-    public IconBook(UIconWindow parent, UIconCallbacks iconCallbacks, int x, int y, int width, int height) {
+    public IconBook(TangoBook book, UIconWindow parent, UIconCallbacks iconCallbacks, int x, int y,
+                    int width, int height) {
         super(parent, iconCallbacks, IconType.Book, x,y,width,height);
 
+        this.book = book;
+        this.title = book.getName().substring(0, DISP_TITLE_LEN);
         color = Color.rgb(0,255,255);
     }
 

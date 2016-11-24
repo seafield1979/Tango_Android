@@ -46,6 +46,7 @@ public class TangoBookDao {
 
         // for Debug
         if (UDebug.debugDAO) {
+            Log.d(TAG, "TangoBook selectAll");
             for (TangoBook book : results) {
                 Log.d(TAG, "id:" + book.getId() + " name:" + book.getName());
             }

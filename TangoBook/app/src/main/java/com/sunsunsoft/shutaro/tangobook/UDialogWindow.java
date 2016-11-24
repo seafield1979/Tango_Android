@@ -172,7 +172,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     /**
      * ダイアログを閉じる
      */
-    public void close() {
+    public void closeDialog() {
         isShow = false;
         UDrawManager.getInstance().removeDrawable(this);
         dialogCallbacks.dialogClosed(this);
@@ -433,7 +433,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
     public void endAnimation() {
         if (animationType == AnimationType.Closing) {
-            close();
+            closeDialog();
         }
     }
 
@@ -446,7 +446,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                 if (isAnimation) {
                     startClosing();
                 } else {
-                    close();
+                    closeDialog();
                 }
                 break;
         }

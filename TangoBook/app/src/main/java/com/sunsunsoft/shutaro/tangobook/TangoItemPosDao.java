@@ -33,6 +33,7 @@ public class TangoItemPosDao {
                 .findAllSorted("pos", Sort.ASCENDING);
 
         if (UDebug.debugDAO) {
+            Log.d(TAG, "TangoItem selectAll");
             for (TangoItemPos item : results) {
                 Log.d("TangoItemPosDao", ""
                         + " parentType:" + item.getParentType()

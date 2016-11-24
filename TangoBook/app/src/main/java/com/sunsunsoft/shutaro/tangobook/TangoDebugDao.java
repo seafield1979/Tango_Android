@@ -14,5 +14,4 @@ public class TangoDebugDao {
     public TangoDebugDao(Realm realm) {
         mRealm = realm;
     }
-
 }

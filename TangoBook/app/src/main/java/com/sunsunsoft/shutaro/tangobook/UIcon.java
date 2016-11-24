@@ -47,6 +47,7 @@ abstract public class UIcon extends UDrawable {
     protected int touchedColor;
     protected int longPressedColor;
 
+    protected String title;
     protected IconType type;
 
     /**

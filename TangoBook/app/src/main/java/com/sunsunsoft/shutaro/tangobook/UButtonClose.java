@@ -121,7 +121,7 @@ public class UButtonClose extends UButton {
             case LongClick:
                 isPressed = false;
                 if (contains((int)vt.touchX(-offset.x), (int)vt.touchY(-offset.y))) {
-                    buttonCallback.click(id);
+                    buttonCallback.UButtonClick(id);
                     done = true;
                 }
                 break;

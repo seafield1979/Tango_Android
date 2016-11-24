@@ -319,7 +319,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * UButtonCallbacks
      */
 
-    public void click(int id) {
+    public void UButtonClick(int id) {
         switch (id) {
             case CloseButtonId:
                 // 閉じるボタンを押したら自身のWindowを閉じてから呼び出し元の閉じる処理を呼び出す
@@ -330,7 +330,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
                 break;
         }
     }
-    public void longClick(int id) {
+    public void UButtonLongClick(int id) {
 
     }
 }

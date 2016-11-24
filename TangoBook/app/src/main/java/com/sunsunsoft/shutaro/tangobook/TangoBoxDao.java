@@ -46,6 +46,7 @@ public class TangoBoxDao {
         }
 
         if (UDebug.debugDAO) {
+            Log.d(TAG, "TangoBox selectAll");
             for (TangoBox box : results) {
                 Log.d(TAG, "id:" + box.getId() + " name:" + box.getName());
             }

@@ -20,9 +20,9 @@ enum TopMenu {
 enum MenuItemId {
     AddTop,
     AddCard,
-    AddCard1,
-    AddCard2,
-    AddCard3,
+//    AddCard1,
+//    AddCard2,
+//    AddCard3,
     AddBook,
     AddBox,
     SortTop,
@@ -104,9 +104,9 @@ public class UMenuBar extends UWindow {
         // Add
         item = addTopMenuItem(TopMenu.Add, MenuItemId.AddTop, R.drawable.hogeman);
         item2 = addMenuItem(item, MenuItemId.AddCard, R.drawable.hogeman);
-        addMenuItem(item2, MenuItemId.AddCard1, R.drawable.hogeman);
-        addMenuItem(item2, MenuItemId.AddCard2, R.drawable.hogeman);
-        addMenuItem(item2, MenuItemId.AddCard3, R.drawable.hogeman);
+//        addMenuItem(item2, MenuItemId.AddCard1, R.drawable.hogeman);
+//        addMenuItem(item2, MenuItemId.AddCard2, R.drawable.hogeman);
+//        addMenuItem(item2, MenuItemId.AddCard3, R.drawable.hogeman);
 
         addMenuItem(item, MenuItemId.AddBook, R.drawable.hogeman);
         addMenuItem(item, MenuItemId.AddBox, R.drawable.hogeman);

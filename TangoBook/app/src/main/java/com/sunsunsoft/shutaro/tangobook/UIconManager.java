@@ -114,12 +114,11 @@ public class UIconManager implements UIconCallbacks{
      * @param addPos
      * @return
      */
-    public UIcon addIcon(IconType type, AddPos addPos) {
+    public UIcon addNewIcon(IconType type, AddPos addPos) {
 
         UIcon icon = null;
         switch (type) {
             case Book:
-                icon = new IconBook(mParentWindow, this);
                 break;
             case Card: {
                 TangoCard card = TangoCard.createDummyCard();
@@ -127,11 +126,6 @@ public class UIconManager implements UIconCallbacks{
                 icon = new IconCard(card, mParentWindow, this);
             }
                 break;
-//            case IMAGE: {
-//                Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.hogeman);
-//                icon = new UIconBmp(mParentWindow, this, bmp);
-//                break;
-//            }
 //            case BOX:
 //                icon = new UIconBox(mParentView, mParentWindow, this);
 //                break;
@@ -144,6 +138,44 @@ public class UIconManager implements UIconCallbacks{
             icons.add(icon);
         }
 
+        return icon;
+    }
+
+    /**
+     * TangoItemを元にアイコンを追加する
+     * @param item
+     * @return
+     */
+    public UIcon addIcon(TangoItem item, AddPos addPos) {
+        UIcon icon = null;
+
+        switch(item.getItemType()) {
+            case Card:
+                if (item instanceof  TangoCard) {
+                    TangoCard card = (TangoCard) item;
+                    icon = new IconCard(card, mParentWindow, this);
+                }
+                break;
+            case Book:
+                if (item instanceof  TangoBook) {
+                    TangoBook book = (TangoBook) item;
+                    icon = new IconBook(book, mParentWindow, this);
+                }
+                break;
+            case Box:
+                if (item instanceof  TangoBox) {
+                    TangoBox box = (TangoBox) item;
+                    icon = new IconBox(box, mParentWindow, this);
+                }
+                break;
+        }
+        if (icon == null) return null;
+
+        if (addPos == AddPos.Top) {
+            icons.push(icon);
+        } else {
+            icons.add(icon);
+        }
         return icon;
     }
 

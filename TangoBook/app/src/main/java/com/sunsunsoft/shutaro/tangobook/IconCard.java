@@ -13,7 +13,6 @@ public class IconCard extends UIcon{
     /**
      * Consts
      */
-
     private static final int ICON_W = 150;
     private static final int ICON_H = 100;
     private static final int DISP_TITLE_LEN = 6;
@@ -24,7 +23,6 @@ public class IconCard extends UIcon{
      * Member Variables
      */
     protected TangoCard card;
-    protected String title;
 
     /**
      * Get/Set

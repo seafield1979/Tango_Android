@@ -23,7 +23,9 @@ enum WindowType {
  * 単語帳編集ページ
  */
 
-public class TopView extends View implements View.OnTouchListener, UMenuItemCallbacks, UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks {
+public class TopView extends View
+        implements View.OnTouchListener, UMenuItemCallbacks,
+        UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks{
 
     public static final String TAG = "TopView";
 
@@ -34,6 +36,9 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
 
     // MessageWindow
     private ULogWindow mLogWin;
+
+    // Dialog
+    private DebugDialogs debugDialogs;
 
     // メニューバー
     private UMenuBar mMenuBar;
@@ -70,6 +75,9 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
     private void initWindows(int width, int height) {
         // 描画オブジェクトクリア
         UDrawManager.getInstance().init();
+
+        // DebugDialogs
+        debugDialogs = new DebugDialogs(this);
 
         // UIconWindow
         PointF pos1, pos2;
@@ -231,6 +239,9 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
             case AddTop:
                 break;
             case AddCard:
+            {
+                addCardIcon();
+            }
                 break;
             case AddBook:
                 break;
@@ -258,7 +269,7 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
                 invalidate();
                 break;
             case Debug2:
-                mLogWin.addLog("hoge", UColor.getRandomColor());
+                debugDialogs.showDialog(DebugDialogs.DialogType.TestDao);
                 break;
             case Debug3:
                 break;
@@ -269,6 +280,39 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
     public void menuItemCallback2() {
         ULog.print(TAG, "menu item moved");
     }
+
+    /**
+     * Add icons
+     */
+    private void addCardIcon() {
+        UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
+        iconManager.addNewIcon(IconType.Card, AddPos.Tail);
+        mIconWindows.getMainWindow().sortIcons(true);
+
+        invalidate();
+    }
+
+    private void addBookIcon() {
+
+    }
+
+    private void addBoxIcon() {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * UIconCallbacks
@@ -330,4 +374,15 @@ public class TopView extends View implements View.OnTouchListener, UMenuItemCall
             }
         }
     }
+
+    /**
+     * UButtonCallbacks
+     */
+    public void UButtonClick(int id) {
+
+    }
+    public void UButtonLongClick(int id) {
+
+    }
+
 }

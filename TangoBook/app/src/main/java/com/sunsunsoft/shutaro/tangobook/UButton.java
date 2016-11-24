@@ -7,8 +7,8 @@ import android.graphics.RectF;
 import android.util.Log;
 
 interface UButtonCallbacks {
-    void click(int id);
-    void longClick(int id);
+    void UButtonClick(int id);
+    void UButtonLongClick(int id);
 }
 
 
@@ -180,7 +180,7 @@ public class UButton extends UDrawable {
     public void click() {
         Log.v(TAG, "click");
         if (buttonCallback != null) {
-            buttonCallback.click(id);
+            buttonCallback.UButtonClick(id);
         }
     }
 

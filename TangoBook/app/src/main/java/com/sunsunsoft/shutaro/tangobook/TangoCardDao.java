@@ -33,6 +33,7 @@ public class TangoCardDao {
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
 
         if (UDebug.debugDAO) {
+            Log.d(TAG, "TangoCard selectAll");
             for (TangoCard card : results) {
                 Log.d(TAG, "id:" + card.getId() + " wordA:" + card.getWordA());
             }
