@@ -104,10 +104,9 @@ public class TangoItemPosDao {
         if (results == null) return null;
 
         // IDのリストを作成
-        Integer[] ids = new Integer[results.size()];
-        for (int i = 0; i < results.size(); i++) {
-            TangoItemPos item = results.get(i);
-            ids[i] = item.getItemId();
+        LinkedList<Integer> ids = new LinkedList<>();
+        for (TangoItemPos itemPos : results) {
+            ids.add(itemPos.getItemId());
         }
         List<TangoCard> cards = RealmManager.getCardDao().selectByIds(ids);
 
@@ -155,7 +154,7 @@ public class TangoItemPosDao {
         List<TangoCard> cards;
         if (cardIds.size() > 0) {
             cards = RealmManager.getCardDao()
-                    .selectByIds(cardIds.toArray(new Integer[0]));
+                    .selectByIds(cardIds);
         } else {
             cards = new LinkedList<>();
         }
@@ -395,7 +394,7 @@ public class TangoItemPosDao {
         List<TangoCard> cards;
         if (cardIds.size() > 0) {
             cards = RealmManager.getCardDao()
-                    .selectByIds(cardIds.toArray(new Integer[0]));
+                    .selectByIds(cardIds);
         } else {
             cards = new LinkedList<>();
         }
@@ -426,11 +425,15 @@ public class TangoItemPosDao {
                 bookPos = -1;
             }
 
-            if (cardPos > bookPos) {
-                items.add(cards.get(cardIndex));
+            if (cardPos < bookPos) {
+                if (cardIndex < cards.size()) {
+                    items.add(cards.get(cardIndex));
+                }
                 cardIndex++;
             } else {
-                items.add(books.get(bookIndex));
+                if (bookIndex < books.size()) {
+                    items.add(books.get(bookIndex));
+                }
                 bookIndex++;
             }
             if (cardIndex >= cards.size() &&
@@ -512,8 +515,6 @@ public class TangoItemPosDao {
         mRealm.commitTransaction();
         return ret;
     }
-
-
 
     /**
      * IDの位置リストに一致する項目を全て削除する
@@ -965,7 +966,7 @@ public class TangoItemPosDao {
      * @param parentType 移動先のParentType
      * @param parentId   移動先のParentId
      */
-    public boolean moveCard(TangoCard card, TangoParentType parentType, int parentId) {
-        return moveItem(card, parentType.ordinal(), parentId);
+    public boolean moveCard(TangoCard card, int parentType, int parentId) {
+        return moveItem(card, parentType, parentId);
     }
 }

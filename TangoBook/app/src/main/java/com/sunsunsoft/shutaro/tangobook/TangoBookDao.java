@@ -73,7 +73,9 @@ public class TangoBookDao {
      * @param ids
      * @return
      */
-    public List<TangoBook>selectByIds(Iterable<Integer> ids) {
+    public List<TangoBook>selectByIds(List<Integer> ids) {
+        if (ids.size() <= 0) return null;
+
         // Build the query looking at all users:
         RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
 

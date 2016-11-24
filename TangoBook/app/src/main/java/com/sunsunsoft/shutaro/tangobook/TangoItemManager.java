@@ -74,7 +74,7 @@ public class TangoItemManager {
         // card
         List<TangoCard> cards = null;
         if (cardIds.size() > 0) {
-            cards = RealmManager.getCardDao().selectByIds(cardIds.toArray(new Integer[0]));
+            cards = RealmManager.getCardDao().selectByIds(cardIds);
         }
         // cardsの各要素にposを設定する処理
         int posIndex = 0;

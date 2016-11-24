@@ -612,25 +612,6 @@ public class UIconWindow extends UWindow {
         return isDone;
     }
 
-
-    /**
-     * ドラッグ終了時の処理（通常時)
-     * @param vt
-     * @return trueならViewを再描画
-     */
-    private boolean dragEnd(ViewTouch vt) {
-        if (state == WindowState.drag) {
-            if (dragEndNormal(vt)) {
-                return true;
-            }
-        } else {
-            if (dragEndChecking(vt)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * ドラッグ終了時の処理（通常時)
      * @param vt
@@ -690,7 +671,22 @@ public class UIconWindow extends UWindow {
                             moving = IconMovingType.Exchange;
                             isDroped = true;
                             break;
-//                        case Book:
+                        case Book:
+                        case Box:
+                            // Bookの中に挿入する　
+//                            if (dragedIcon.type != IconType.Book) {
+
+                                moveIconsIn(dragedIcon, dropIcon);
+
+                                for (UIconWindow win : windows.getWindows()) {
+                                    UIconManager manager = win.getIconManager();
+                                    if (manager != null) {
+                                        manager.updateBlockRect();
+                                    }
+                                }
+                                isDroped = true;
+//                            }
+                              break;
 //                        case BOX:
 //                            if (dragedIcon.type != IconType.BOX) {
 //                                UIconBox box = (UIconBox) dropIcon;
@@ -1099,28 +1095,57 @@ public class UIconWindow extends UWindow {
     /**
      * アイコンを移動する
      * アイコンを別のボックスタイプのアイコンにドロップした時に使用する
-     * @param icon1 ドロップ元のIcon
-     * @param icon2 ドロップ先のIcon
+     * @param icon1 ドロップ元のIcon(Card/Book)
+     * @param icon2 ドロップ先のIcon(Book/Box)
      */
-    private void moveIconIntoBox(UIcon icon1, UIcon icon2)
+    private void moveIconsIn(UIcon icon1, UIcon icon2)
     {
 
-//        if (icon2 instanceof UIconBox) {
-//            UIconBox box = (UIconBox)icon2;
-//
-//            UIconWindow window1 = icon1.parentWindow;
-//            UIconWindow window2 = box.getSubWindow();
-//            List<UIcon> icons1 = window1.getIcons();
-//            List<UIcon> icons2 = box.getIcons();
-//
-//            icons1.remove(icon1);
-//            icons2.add(icon1);
-//
-//            if (window2 != null) {
-//                window2.sortIcons(false);
-//                icon1.setParentWindow(window2);
-//            }
-//        }
+        if ((icon1 instanceof IconCard) && (icon2 instanceof IconBook)) {
+            // Card -> Book
+
+            IconBook iconBook = (IconBook)icon2;
+
+            UIconWindow window1 = icon1.parentWindow;
+            UIconWindow window2 = iconBook.getSubWindow();
+            List<UIcon> icons1 = window1.getIcons();
+            List<UIcon> icons2 = iconBook.getIcons();
+
+            icons1.remove(icon1);
+            icons2.add(icon1);
+
+            if (window2 != null) {
+                window2.sortIcons(false);
+                icon1.setParentWindow(window2);
+            }
+            // データベース更新
+            RealmManager.getItemPosDao().moveItem(icon1.getTangoItem(),
+                    TangoParentType.Book.ordinal(),
+                    iconBook.book.getId());
+
+        } else if (!(icon1 instanceof IconBox) && (icon2 instanceof IconBox)) {
+            // Card/Book -> Box
+
+            IconBox box = (IconBox)icon2;
+
+            UIconWindow window1 = icon1.parentWindow;
+            UIconWindow window2 = box.getSubWindow();
+            List<UIcon> icons1 = window1.getIcons();
+            List<UIcon> icons2 = box.getIcons();
+
+            icons1.remove(icon1);
+            icons2.add(icon1);
+
+            if (window2 != null) {
+                window2.sortIcons(false);
+                icon1.setParentWindow(window2);
+            }
+
+            // データベース更新
+            RealmManager.getItemPosDao().moveItem(icon1.getTangoItem(),
+                    TangoParentType.Box.ordinal(),
+                    icon2.getTangoItem().getId());
+        }
 
         sortIcons(true);
     }

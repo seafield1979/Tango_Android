@@ -90,7 +90,9 @@ public class TangoCardDao {
      * @param ids
      * @return
      */
-    public List<TangoCard> selectByIds(Integer[] ids) {
+    public List<TangoCard> selectByIds(List<Integer> ids) {
+        if (ids.size() <= 0) return null;
+
         // Build the query looking at all users:
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 

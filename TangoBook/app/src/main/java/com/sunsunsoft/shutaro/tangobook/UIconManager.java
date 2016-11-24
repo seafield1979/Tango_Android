@@ -130,14 +130,14 @@ public class UIconManager implements UIconCallbacks{
                 TangoBook book = TangoBook.createDummyBook();
                 RealmManager.getBookDao().addOne(book);
                 RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
-                icon = new IconBook(book, mParentWindow, this);
+                icon = new IconBook(book, mParentView, mParentWindow, this);
             }
                 break;
             case Box: {
                 TangoBox box = TangoBox.createDummyBox();
                 RealmManager.getBoxDao().addOne(box);
                 RealmManager.getItemPosDao().addOne(box, TangoParentType.Home, 0);
-                icon = new IconBox(box, mParentWindow, this);
+                icon = new IconBox(box, mParentView, mParentWindow, this);
             }
                 break;
         }
@@ -171,13 +171,13 @@ public class UIconManager implements UIconCallbacks{
             case Book:
                 if (item instanceof  TangoBook) {
                     TangoBook book = (TangoBook) item;
-                    icon = new IconBook(book, mParentWindow, this);
+                    icon = new IconBook(book, mParentView, mParentWindow, this);
                 }
                 break;
             case Box:
                 if (item instanceof  TangoBox) {
                     TangoBox box = (TangoBox) item;
-                    icon = new IconBox(box, mParentWindow, this);
+                    icon = new IconBox(box, mParentView, mParentWindow, this);
                 }
                 break;
         }

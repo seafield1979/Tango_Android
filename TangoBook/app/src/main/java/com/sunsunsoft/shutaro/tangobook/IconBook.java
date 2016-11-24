@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.view.View;
+
+import java.util.List;
 
 /**
  * 単語帳アイコン
@@ -31,6 +34,11 @@ public class IconBook extends UIcon {
      */
     protected TangoBook book;
 
+    // Bookの中身を表示しているウィンドウ
+    protected UIconWindow subWindow;
+    protected View mParentView;
+    protected UIconManager mIconManager;
+
     /**
      * Get/Set
      */
@@ -38,20 +46,41 @@ public class IconBook extends UIcon {
         return book;
     }
 
+    public UIconManager getIconManager() {
+        return mIconManager;
+    }
+    public List<UIcon> getIcons() {
+        return mIconManager.getIcons();
+    }
+
+    public UIconWindow getSubWindow() {
+        return subWindow;
+    }
+
+
     /**
      * Constructor
      */
-    public IconBook(TangoBook book, UIconWindow parent, UIconCallbacks iconCallbacks) {
-        this(book, parent, iconCallbacks, 0, 0, ICON_W, ICON_H);
-    }
-
-    public IconBook(TangoBook book, UIconWindow parent, UIconCallbacks iconCallbacks, int x, int y,
-                    int width, int height) {
-        super(parent, iconCallbacks, IconType.Book, x,y,width,height);
+    public IconBook(TangoBook book, View parentView, UIconWindow parent, UIconCallbacks iconCallbacks) {
+        super(parent, iconCallbacks, IconType.Book, 0, 0, ICON_W, ICON_H);
 
         this.book = book;
         this.title = book.getName().substring(0, DISP_TITLE_LEN);
         setColor(ICON_COLOR);
+
+        UIconWindows windows = parentWindow.getWindows();
+        subWindow = windows.getSubWindow();
+
+        // Bookに表示するCardのアイコンを管理する
+        mIconManager = UIconManager.createInstance(parentView, subWindow, iconCallbacks);
+
+        // データベースから配下のCardを読み込む
+        List<TangoCard> cards = RealmManager.getItemPosDao().selectCardsByBookId(book.getId());
+        if (cards != null) {
+            for (TangoItem item : cards) {
+                mIconManager.addIcon(item, AddPos.Tail);
+            }
+        }
     }
 
     public void drawIcon(Canvas canvas,Paint paint, PointF offset) {
@@ -92,6 +121,13 @@ public class IconBook extends UIcon {
         paint.setColor(Color.WHITE);
         paint.setTextSize(TEXT_SIZE);
         canvas.drawText( title, drawRect.left + TEXT_PAD_X, drawRect.top + TEXT_SIZE + TEXT_PAD_Y, paint);
+
+        // 穴
+        paint.setColor(Color.BLACK);
+        float cx = drawRect.left + ICON_W - 30;
+        float cy = drawRect.centerY();
+        canvas.drawCircle( cx, cy, 15, paint);
+
 
     }
 

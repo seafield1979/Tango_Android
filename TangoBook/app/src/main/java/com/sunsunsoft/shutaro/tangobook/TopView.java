@@ -324,26 +324,35 @@ public class TopView extends View
     public void clickIcon(UIcon icon) {
         ULog.print(TAG, "clickIcon");
         switch(icon.type) {
-//            case CIRCLE:
-//                break;
-//            case RECT:
-//                break;
-//            case BOX: {
-//                // 配下のアイコンをSubWindowに表示する
-//                if (icon instanceof UIconBox) {
-//                    UIconWindow window = mIconWindows.getSubWindow();
-//                    UIconBox box = (UIconBox)icon;
-//                    window.setIconManager(box.getIconManager());
-//                    window.sortIcons(false);
-//
-//                    // SubWindowを画面外から移動させる
-//                    mIconWindows.showWindow(window, true);
-//                    invalidate();
-//                }
-//            }
-//            break;
-//            case IMAGE:
-//                break;
+            case Card:
+                break;
+            case Book:
+                // 配下のアイコンをSubWindowに表示する
+                if (icon instanceof IconBook) {
+                    UIconWindow window = mIconWindows.getSubWindow();
+                    IconBook book = (IconBook)icon;
+                    window.setIconManager(book.getIconManager());
+                    window.sortIcons(false);
+
+                    // SubWindowを画面外から移動させる
+                    mIconWindows.showWindow(window, true);
+                    invalidate();
+                }
+                break;
+            case Box: {
+                // 配下のアイコンをSubWindowに表示する
+                if (icon instanceof IconBox) {
+                    UIconWindow window = mIconWindows.getSubWindow();
+                    IconBox box = (IconBox)icon;
+                    window.setIconManager(box.getIconManager());
+                    window.sortIcons(false);
+
+                    // SubWindowを画面外から移動させる
+                    mIconWindows.showWindow(window, true);
+                    invalidate();
+                }
+            }
+            break;
         }
     }
     public void longClickIcon(UIcon icon) {

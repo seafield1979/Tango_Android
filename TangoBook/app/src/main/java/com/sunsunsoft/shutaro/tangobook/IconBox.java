@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.view.View;
+
+import java.util.List;
 
 /**
  * Created by shutaro on 2016/11/21.
@@ -13,8 +16,8 @@ public class IconBox extends UIcon{
     /**
      * Consts
      */
-    private static final int ICON_W = 150;
-    private static final int ICON_H = 100;
+    private static final int ICON_W = 120;
+    private static final int ICON_H = 120;
     private static final int DISP_TITLE_LEN = 6;
     private static final int TEXT_PAD_X = 10;
     private static final int TEXT_PAD_Y = 10;
@@ -25,6 +28,10 @@ public class IconBox extends UIcon{
      * Member Variables
      */
     protected TangoBox box;
+    protected UIconManager mIconManager;
+
+    // ボックスの中身を表示しているウィンドウ
+    protected UIconWindow subWindow;
 
     /**
      * Get/Set
@@ -33,20 +40,38 @@ public class IconBox extends UIcon{
         return box;
     }
 
+    public UIconManager getIconManager() {
+        return mIconManager;
+    }
+    public List<UIcon> getIcons() {
+        return mIconManager.getIcons();
+    }
+
+    public UIconWindow getSubWindow() {
+        return subWindow;
+    }
+
     /**
      * Constructor
      */
-    public IconBox(TangoBox box, UIconWindow parent, UIconCallbacks iconCallbacks) {
-        this(box, parent, iconCallbacks, 0, 0);
-    }
-
-    public IconBox(TangoBox box, UIconWindow parent, UIconCallbacks iconCallbacks, int x, int y) {
-        super(parent, iconCallbacks, IconType.Card,
-                x, y, ICON_W, ICON_H);
+    public IconBox(TangoBox box, View parentView, UIconWindow parent, UIconCallbacks iconCallbacks) {
+        super(parent, iconCallbacks, IconType.Box,
+                0, 0, ICON_W, ICON_H);
 
         this.box = box;
         this.title = box.getName().substring(0, DISP_TITLE_LEN);
-        setColor(ICON_COLOR);
+        setColor(box.getColor());
+
+        // Box以下に表示するアイコンを管理するIconManagerを生成
+        mIconManager = UIconManager.createInstance(parentView, subWindow, iconCallbacks);
+
+        // データベースから配下のアイテムをロード
+        List<TangoItem> items = RealmManager.getItemPosDao().selectByBoxId(box.getId(), true);
+        if (items != null) {
+            for (TangoItem item : items) {
+                mIconManager.addIcon(item, AddPos.Tail);
+            }
+        }
     }
 
     /**
