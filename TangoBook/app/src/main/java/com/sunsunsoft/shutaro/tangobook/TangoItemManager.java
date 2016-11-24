@@ -60,13 +60,13 @@ public class TangoItemManager {
         for (TangoItemPos pos : itemPos) {
             switch(TangoItemType.values()[pos.getItemType()]) {
                 case Card:
-                    cardIds.add(pos.getId());
+                    cardIds.add(pos.getItemId());
                     break;
                 case Book:
-                    bookIds.add(pos.getId());
+                    bookIds.add(pos.getItemId());
                     break;
                 case Box:
-                    boxIds.add(pos.getId());
+                    boxIds.add(pos.getItemId());
                     break;
             }
         }
@@ -82,7 +82,7 @@ public class TangoItemManager {
             while(posIndex < itemPos.size()) {
                 TangoItemPos item = itemPos.get(posIndex);
                 if (item.getItemType() == TangoItemType.Card.ordinal() &&
-                        card.getId() == item.getId())
+                        card.getId() == item.getItemId())
                 {
                     if (item.getPos() < items.length) {
                         items[item.getPos()] = card;
@@ -105,7 +105,7 @@ public class TangoItemManager {
             while(posIndex < itemPos.size()) {
                 TangoItemPos item = itemPos.get(posIndex);
                 if (item.getItemType() == TangoItemType.Book.ordinal() &&
-                        book.getId() == item.getId())
+                        book.getId() == item.getItemId())
                 {
                     if (item.getPos() < items.length) {
                         items[item.getPos()] = book;
@@ -128,7 +128,7 @@ public class TangoItemManager {
             while(posIndex < itemPos.size()) {
                 TangoItemPos item = itemPos.get(posIndex);
                 if (item.getItemType() == TangoItemType.Box.ordinal() &&
-                        box.getId() == item.getId())
+                        box.getId() == item.getItemId())
                 {
                     if (item.getPos() < items.length) {
                         items[item.getPos()] = box;
@@ -174,7 +174,7 @@ public class TangoItemManager {
                 id = box.getId();
             }
             addItem.setPos(pos);
-            addItem.setId(id);
+            addItem.setItemId(id);
             list.add(addItem);
         }
 
@@ -280,6 +280,6 @@ public class TangoItemManager {
      * @param item2
      */
     public void changePos(TangoItem item1, TangoItem item2) {
-        RealmManager.getItemPosDao().changePos(item1.getPos(), item2.getPos());
+        RealmManager.getItemPosDao().changePos(item1, item2);
     }
 }

@@ -211,6 +211,24 @@ public class TangoBoxDao {
     }
 
     /**
+     * １件削除する
+     * @param id
+     * @return
+     */
+    public boolean deleteById(int id) {
+        TangoBox result = mRealm.where(TangoBox.class)
+                .equalTo("id", id)
+                .findFirst();
+        if (result == null) return false;
+
+        mRealm.beginTransaction();
+        result.deleteFromRealm();
+        mRealm.commitTransaction();
+
+        return true;
+    }
+
+    /**
      * かぶらないプライマリIDを取得する
      * @return
      */

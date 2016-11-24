@@ -20,6 +20,7 @@ public class IconCard extends UIcon{
     private static final int TEXT_PAD_X = 10;
     private static final int TEXT_PAD_Y = 10;
     private static final int TEXT_SIZE = 40;
+    private static final int ICON_COLOR = Color.rgb(100,100,200);
 
     /**
      * Member Variables
@@ -29,6 +30,10 @@ public class IconCard extends UIcon{
     /**
      * Get/Set
      */
+
+    public TangoItem getTangoItem() {
+        return card;
+    }
 
     /**
      * Constructor
@@ -44,7 +49,7 @@ public class IconCard extends UIcon{
 
         this.card = card;
         this.title = card.getWordA().substring(0, DISP_TITLE_LEN);
-        setColor(Color.rgb(0,255,255));
+        setColor(ICON_COLOR);
     }
 
     /**

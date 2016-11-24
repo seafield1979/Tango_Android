@@ -224,6 +224,24 @@ public class TangoBookDao {
         return ret;
     }
 
+    /**
+     * １件削除する
+     * @param id
+     * @return
+     */
+    public boolean deleteById(int id) {
+        TangoBook result = mRealm.where(TangoBook.class)
+                .equalTo("id", id)
+                .findFirst();
+        if (result == null) return false;
+
+        mRealm.beginTransaction();
+        result.deleteFromRealm();
+        mRealm.commitTransaction();
+
+        return true;
+    }
+
 
     /**
      * 学習日付を更新する

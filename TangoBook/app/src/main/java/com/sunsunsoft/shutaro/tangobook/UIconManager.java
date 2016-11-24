@@ -109,7 +109,7 @@ public class UIconManager implements UIconCallbacks{
     }
 
     /**
-     * 指定タイプのアイコンを追加
+     * 指定タイプのアイコンを作成してから追加
      * @param type
      * @param addPos
      * @return
@@ -118,8 +118,6 @@ public class UIconManager implements UIconCallbacks{
 
         UIcon icon = null;
         switch (type) {
-            case Book:
-                break;
             case Card: {
                 TangoCard card = TangoCard.createDummyCard();
                 RealmManager.getCardDao().addOne(card);
@@ -127,12 +125,25 @@ public class UIconManager implements UIconCallbacks{
                 icon = new IconCard(card, mParentWindow, this);
             }
                 break;
-//            case BOX:
-//                icon = new UIconBox(mParentView, mParentWindow, this);
-//                break;
+            case Book:
+            {
+                TangoBook book = TangoBook.createDummyBook();
+                RealmManager.getBookDao().addOne(book);
+                RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
+                icon = new IconBook(book, mParentWindow, this);
+            }
+                break;
+            case Box: {
+                TangoBox box = TangoBox.createDummyBox();
+                RealmManager.getBoxDao().addOne(box);
+                RealmManager.getItemPosDao().addOne(box, TangoParentType.Home, 0);
+                icon = new IconBox(box, mParentWindow, this);
+            }
+                break;
         }
         if (icon == null) return null;
 
+        // リストに追加
         if (addPos == AddPos.Top) {
             icons.push(icon);
         } else {
@@ -196,10 +207,25 @@ public class UIconManager implements UIconCallbacks{
     }
 
     /**
-     * アイコンを削除
+     * アイコンを削除(データベースからも削除）
      * @param icon
      */
     public void removeIcon(UIcon icon) {
+        TangoItem item = icon.getTangoItem();
+        if (item == null) return;
+
+        switch(icon.getType()) {
+            case Card:
+                RealmManager.getCardDao().deleteById(item.getId());
+                break;
+            case Book:
+                RealmManager.getBookDao().deleteById(item.getId());
+                break;
+            case Box:
+                RealmManager.getBoxDao().deleteById(item.getId());
+                break;
+        }
+        RealmManager.getItemPosDao().deleteItem(icon.getTangoItem());
         icons.remove(icon);
     }
 

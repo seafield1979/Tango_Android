@@ -15,15 +15,32 @@ public class IconBook extends UIcon {
      * Constant
      */
     public static final String TAG = "UIconRect";
-    private static final int ICON_W = 200;
-    private static final int ICON_H = 150;
+    private static final int ICON_W = 150;
+    private static final int ICON_H = 100;
+
+    // アイコンの上のテキストのPadding
+    private static final int TEXT_PAD_X = 10;
+    private static final int TEXT_PAD_Y = 10;
+
     private static final int DISP_TITLE_LEN = 6;
+    private static final int TEXT_SIZE = 40;
+    private static final int ICON_COLOR = Color.rgb(100,200,100);
 
     /**
      * Member variable
      */
     protected TangoBook book;
 
+    /**
+     * Get/Set
+     */
+    public TangoItem getTangoItem() {
+        return book;
+    }
+
+    /**
+     * Constructor
+     */
     public IconBook(TangoBook book, UIconWindow parent, UIconCallbacks iconCallbacks) {
         this(book, parent, iconCallbacks, 0, 0, ICON_W, ICON_H);
     }
@@ -34,7 +51,7 @@ public class IconBook extends UIcon {
 
         this.book = book;
         this.title = book.getName().substring(0, DISP_TITLE_LEN);
-        setColor(Color.rgb(0,255,255));
+        setColor(ICON_COLOR);
     }
 
     public void drawIcon(Canvas canvas,Paint paint, PointF offset) {
@@ -70,6 +87,12 @@ public class IconBook extends UIcon {
             drawRect = rect;
         }
         canvas.drawRect(drawRect, paint);
+
+        // Text
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(TEXT_SIZE);
+        canvas.drawText( title, drawRect.left + TEXT_PAD_X, drawRect.top + TEXT_SIZE + TEXT_PAD_Y, paint);
+
     }
 
     @Override

@@ -239,13 +239,13 @@ public class TopView extends View
             case AddTop:
                 break;
             case AddCard:
-            {
                 addCardIcon();
-            }
                 break;
             case AddBook:
+                addBookIcon();
                 break;
             case AddBox:
+                addBoxIcon();
                 break;
             case SortTop:
                 break;
@@ -286,6 +286,7 @@ public class TopView extends View
     /**
      * Add icons
      */
+    // card
     private void addCardIcon() {
         UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
         iconManager.addNewIcon(IconType.Card, AddPos.Tail);
@@ -294,22 +295,23 @@ public class TopView extends View
         invalidate();
     }
 
+    // book
     private void addBookIcon() {
+        UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
+        iconManager.addNewIcon(IconType.Book, AddPos.Tail);
+        mIconWindows.getMainWindow().sortIcons(true);
 
+        invalidate();
     }
 
+    // box
     private void addBoxIcon() {
+        UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
+        iconManager.addNewIcon(IconType.Box, AddPos.Tail);
+        mIconWindows.getMainWindow().sortIcons(true);
 
+        invalidate();
     }
-
-
-
-
-
-
-
-
-
 
 
 

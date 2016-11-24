@@ -105,7 +105,7 @@ public class TangoBook extends RealmObject implements TangoItem {
     }
 
     // テスト用のダミーカードを取得
-    public static TangoBook createDummy() {
+    public static TangoBook createDummyBook() {
         Random rand = new Random();
         int randVal = rand.nextInt(1000);
 

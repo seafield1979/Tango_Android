@@ -28,7 +28,7 @@ public class TangoItemPos extends RealmObject {
     private int itemType;
 
     // 各アイテムのID
-    private int id;
+    private int itemId;
 
     @Ignore
     private boolean isChecked;
@@ -69,12 +69,12 @@ public class TangoItemPos extends RealmObject {
         this.itemType = itemType;
     }
 
-    public int getId() {
-        return id;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setItemId(int id) {
+        this.itemId = id;
     }
 
     public boolean isChecked() {
@@ -88,6 +88,6 @@ public class TangoItemPos extends RealmObject {
     public void setParams(int pos, int type, int id) {
         this.pos = pos;
         this.itemType = type;
-        this.id = id;
+        this.itemId = id;
     }
 }

@@ -94,7 +94,7 @@ public class TangoBox extends RealmObject implements TangoItem {
     }
 
     // テスト用のダミーカードを取得
-    public static TangoBox createDummy() {
+    public static TangoBox createDummyBox() {
         Random rand = new Random();
         int randVal = rand.nextInt(1000);
 

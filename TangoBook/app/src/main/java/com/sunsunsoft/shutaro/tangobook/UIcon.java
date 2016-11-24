@@ -60,6 +60,9 @@ abstract public class UIcon extends UDrawable {
         isDraging = false;
     }
 
+    // 保持するTangoItemを返す
+    abstract public TangoItem getTangoItem();
+
     /**
      * Constructor
      */

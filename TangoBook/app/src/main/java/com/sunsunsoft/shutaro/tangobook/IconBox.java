@@ -18,6 +18,8 @@ public class IconBox extends UIcon{
     private static final int DISP_TITLE_LEN = 6;
     private static final int TEXT_PAD_X = 10;
     private static final int TEXT_PAD_Y = 10;
+    private static final int TEXT_SIZE = 40;
+    private static final int ICON_COLOR = Color.rgb(200,100,100);
 
     /**
      * Member Variables
@@ -27,6 +29,9 @@ public class IconBox extends UIcon{
     /**
      * Get/Set
      */
+    public TangoItem getTangoItem() {
+        return box;
+    }
 
     /**
      * Constructor
@@ -41,7 +46,7 @@ public class IconBox extends UIcon{
 
         this.box = box;
         this.title = box.getName().substring(0, DISP_TITLE_LEN);
-        setColor(Color.rgb(0,255,255));
+        setColor(ICON_COLOR);
     }
 
     /**
@@ -87,6 +92,10 @@ public class IconBox extends UIcon{
 
         canvas.drawRect( drawPos.x, drawPos.y,
                 drawPos.x + ICON_W, drawPos.y + ICON_H, paint);
-        canvas.drawText( title, drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_PAD_Y, paint);
+
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(TEXT_SIZE);
+        canvas.drawText( title, drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_SIZE + TEXT_PAD_Y, paint);
+
     }
 }

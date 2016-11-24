@@ -303,6 +303,23 @@ public class TangoCardDao {
 
 
     /**
+     * カードを削除する
+     * @param id
+     * @return
+     */
+    public boolean deleteById(int id) {
+        TangoCard result = mRealm.where(TangoCard.class)
+                .equalTo("id", id)
+                .findFirst();
+        if (result == null) return false;
+
+        mRealm.beginTransaction();
+        result.deleteFromRealm();
+        mRealm.commitTransaction();
+        return true;
+    }
+
+    /**
      * 学習履歴(OK/NG)を追加する
      */
     public void addHistory() {
