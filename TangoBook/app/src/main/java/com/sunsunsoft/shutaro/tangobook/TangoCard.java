@@ -30,7 +30,7 @@ public class TangoCard extends RealmObject implements TangoItem{
 
     @Ignore
     private boolean isChecked;  // ListViewで選択状態を示す
-    private int pos;            // 位置、現在のグループの中(ホーム、単語帳、ボックス等）の何番目に表示されるか
+    private TangoItemPos itemPos;   // どこにあるか？
 
     // GetSet
     // id
@@ -79,13 +79,23 @@ public class TangoCard extends RealmObject implements TangoItem{
         isChecked = checked;
     }
 
+    public TangoItemPos getItemPos() {
+        return itemPos;
+    }
+
+    public void setItemPos(TangoItemPos itemPos) {
+        this.itemPos = itemPos;
+    }
+
     @Override
     public int getPos() {
-        return pos;
+        if (itemPos == null) return 0;
+        return itemPos.getPos();
     }
 
     public void setPos(int pos) {
-        this.pos = pos;
+        if (itemPos == null) return;
+        itemPos.setPos(pos);
     }
 
     // テスト用のダミーカードを取得

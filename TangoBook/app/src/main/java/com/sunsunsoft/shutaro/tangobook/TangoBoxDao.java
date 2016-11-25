@@ -57,24 +57,24 @@ public class TangoBoxDao {
 
     /**
      * 指定のIDの要素を取得
-     * @param ids
+     * @param itemPoses
      * @return
      */
-    public List<TangoBox>selectByIds(List<Integer> ids, boolean changeable) {
-        if (ids.size() <= 0) return null;
+    public List<TangoBox>selectByIds(List<TangoItemPos> itemPoses, boolean changeable) {
+        if (itemPoses.size() <= 0) return null;
 
         // Build the query looking at all users:
         RealmQuery<TangoBox> query = mRealm.where(TangoBox.class);
 
         // Add query conditions:
         boolean isFirst = true;
-        for (int id : ids) {
+        for (TangoItemPos itemPos : itemPoses) {
             if (isFirst) {
                 isFirst = false;
-                query.equalTo("id", id);
             } else {
-                query.or().equalTo("id", id);
+                query.or();
             }
+            query.equalTo("id", itemPos.getItemId());
         }
         // Execute the query:
         RealmResults<TangoBox> results = query.findAll();

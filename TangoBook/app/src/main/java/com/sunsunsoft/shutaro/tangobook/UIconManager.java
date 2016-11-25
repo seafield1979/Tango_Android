@@ -123,7 +123,7 @@ public class UIconManager implements UIconCallbacks{
                 RealmManager.getCardDao().addOne(card);
                 TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, TangoParentType
                         .Home, 0);
-                card.setPos(itemPos.getPos());
+                card.setItemPos(itemPos);
                 icon = new IconCard(card, mParentWindow, this);
             }
                 break;
@@ -132,7 +132,7 @@ public class UIconManager implements UIconCallbacks{
                 TangoBook book = TangoBook.createDummyBook();
                 RealmManager.getBookDao().addOne(book);
                 TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
-                book.setPos(itemPos.getPos());
+                book.setItemPos(itemPos);
                 icon = new IconBook(book, mParentView, mParentWindow, this);
             }
                 break;
@@ -140,7 +140,7 @@ public class UIconManager implements UIconCallbacks{
                 TangoBox box = TangoBox.createDummyBox();
                 RealmManager.getBoxDao().addOne(box);
                 TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(box, TangoParentType.Home, 0);
-                box.setPos(itemPos.getPos());
+                box.setItemPos(itemPos);
                 icon = new IconBox(box, mParentView, mParentWindow, this);
             }
                 break;

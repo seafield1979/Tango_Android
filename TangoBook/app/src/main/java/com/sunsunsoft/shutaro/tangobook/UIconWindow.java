@@ -262,8 +262,8 @@ public class UIconWindow extends UWindow {
     public void init() {
         if (type == WindowType.Home) {
             // データベースから情報を読み込む
-            List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(TangoParentType
-                    .Home, true);
+            List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(
+                    TangoParentType.Home, 0, true);
             if (items != null) {
                 for (TangoItem item : items) {
                     mIconManager.addIcon(item, AddPos.Tail);
@@ -1013,9 +1013,6 @@ public class UIconWindow extends UWindow {
 
         // データベース更新
         RealmManager.getItemPosDao().changePos(icon1.getTangoItem(), icon2.getTangoItem());
-        int pos1 = icon1.getTangoItem().getPos();
-        icon1.getTangoItem().setPos( icon2.getTangoItem().getPos() );
-        icon2.getTangoItem().setPos( pos1 );
 
         // 再配置
         if (icons1 != icons2) {
@@ -1066,18 +1063,29 @@ public class UIconWindow extends UWindow {
         }
 
         // 再配置
-        if (animate) {
-            if (window1 != window2) {
-                // 親の付け替え
-                icon1.setParentWindow(window2);
-                icon2.setParentWindow(window1);
+        if (icons1 != icons2) {
+            // 親の付け替え
+            icon1.setParentWindow(window2);
+            icon2.setParentWindow(window1);
 
-                // ドロップアイコンの座標系を変換
-                dragedIcon.setPos(icon1.pos.x + window2.pos.x - window1.pos.x,
-                        icon1.pos.y + window2.pos.y - window1.pos.y);
-                window2.sortIcons(animate);
-            }
+            // ドロップアイコンの座標系を変換
+            dragedIcon.setPos(icon1.pos.x + window2.pos.x - window1.pos.x,
+                    icon1.pos.y + window2.pos.y - window1.pos.y);
+            window2.sortIcons(animate);
+
+            // データベース更新
+            // 挿入位置以降の全てのposを更新
+            RealmManager.getItemPosDao().updatePoses(icons1, icons1.get(index1).getTangoItem()
+                    .getPos());
+            RealmManager.getItemPosDao().updatePoses(icons2, icons2.get(index2).getTangoItem()
+                    .getPos());
+        } else {
+            // データベース更新
+            // 挿入位置でずれた先頭以降のposを更新
+            int startPos = (index1 < index2) ? index1 : index2;
+            RealmManager.getItemPosDao().updatePoses(icons1, startPos);
         }
+
         window1.sortIcons(animate);
     }
 

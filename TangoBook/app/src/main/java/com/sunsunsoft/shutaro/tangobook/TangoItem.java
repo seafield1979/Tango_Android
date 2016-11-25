@@ -11,4 +11,7 @@ interface TangoItem {
     int getPos();
     void setPos(int pos);
     TangoItemType getItemType();
+
+    void setItemPos(TangoItemPos itemPos);
+    TangoItemPos getItemPos();
 }
