@@ -773,9 +773,17 @@ public class TangoItemPosDao {
 
         mRealm.beginTransaction();
 
-        for (UIcon icon : icons) {
-            TangoItemPos itemPos = mRealm.copyToRealm(icon.getTangoItem().getItemPos());
-            itemPos.setPos(pos);
+        //for (UIcon icon : icons) {
+        for (int i=startPos; i<icons.size(); i++) {
+            UIcon icon = icons.get(i);
+            TangoItemPos result = mRealm.where(TangoItemPos.class)
+                    .equalTo("itemType", icon.getTangoItem().getItemType().ordinal())
+                    .equalTo("itemId", icon.getTangoItem().getId())
+                    .findFirst();
+            if (result == null) continue;
+
+            result.setPos(pos);
+            icon.getTangoItem().setPos(pos);
             pos++;
         }
 

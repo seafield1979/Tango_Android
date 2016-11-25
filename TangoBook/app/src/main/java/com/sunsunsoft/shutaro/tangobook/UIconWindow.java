@@ -774,12 +774,28 @@ public class UIconWindow extends UWindow {
                     if (dragedIcon.type == IconType.Box && window == windows.getSubWindow()) {
                         continue;
                     }
+
+                    int startPos = srcIcons.indexOf(dragedIcon);
+
                     // 最後のアイコンの後の空きスペースにドロップされた場合
                     // ドラッグ中のアイコンをリストの最後に移動
                     srcIcons.remove(dragedIcon);
                     dstIcons.add(dragedIcon);
                     // 親の付け替え
                     dragedIcon.setParentWindow(window);
+
+                    // データベース更新
+                    if (srcIcons == dstIcons) {
+                        // データベース更新
+                        // 挿入位置でずれた先頭以降のposを更新
+                        RealmManager.getItemPosDao().updatePoses(srcIcons, startPos);
+                    } else {
+                        // 挿入位置以降の全てのposを更新
+                        RealmManager.getItemPosDao().updatePoses(srcIcons,
+                                srcIcons.get(startPos).getTangoItem().getPos());
+                        RealmManager.getItemPosDao().updatePoses(dstIcons,
+                                dstIcons.size() - 1);
+                    }
                 }
             }
 
