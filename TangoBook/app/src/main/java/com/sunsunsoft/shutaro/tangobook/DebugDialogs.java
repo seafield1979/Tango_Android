@@ -19,19 +19,25 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
     enum DialogType {
         SelectDao,
         DeleteDao,
+        Icons
     }
 
     // buttonIds
     enum DialogButtons {
+        // SelectDao のボタン
         SelectCard(101),
         SelectBook(102),
         SelectBox(103),
         SelectItemPos(104),
 
+        // DeleteDao のボタン
         DeleteCardAll(201),
         DeleteBookAll(202),
         DeleteBoxAll(203),
         DeleteItemPosAll(204),
+
+        // Iconsのボタン
+        IconsShowAll(301),
         None(0)
         ;
 
@@ -58,6 +64,13 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
             ids.add(DeleteBookAll);
             ids.add(DeleteBoxAll);
             ids.add(DeleteItemPosAll);
+            return ids;
+        }
+
+        // Icons
+        static List<DialogButtons> iconsValues() {
+            LinkedList<DialogButtons> ids = new LinkedList<>();
+            ids.add(IconsShowAll);
             return ids;
         }
 
@@ -151,6 +164,21 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
                 mDialog.setDrawPriority(DrawPriority.Dialog.p());
             }
                 break;
+            case Icons:
+            {
+                // タイトル
+                mDialog.setTitle("Icons");
+                // ボタンを追加
+                for (DialogButtons id : DialogButtons.iconsValues()) {
+                    mDialog.addButton(id.getInt(), id.toString(), Color.WHITE, Color.rgb(150, 80,
+                            80));
+
+                }
+                mDialog.addCloseButton(null);
+                // 描画マネージャに登録
+                mDialog.setDrawPriority(DrawPriority.Dialog.p());
+            }
+                break;
         }
 
     }
@@ -188,6 +216,10 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
                 break;
             case DeleteItemPosAll:
                 RealmManager.getItemPosDao().deleteAll();
+                break;
+
+            case IconsShowAll:
+                UIconWindows.getPublicInstance().showAllIconsInfo();
                 break;
         }
     }

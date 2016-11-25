@@ -48,7 +48,9 @@ public class IconCard extends UIcon{
                 x, y, ICON_W, ICON_H);
 
         this.card = card;
-        this.title = card.getWordA().substring(0, DISP_TITLE_LEN);
+        int len = (card.getWordA().length() < DISP_TITLE_LEN) ? card.getWordA().length() :
+                DISP_TITLE_LEN;
+        this.title = card.getWordA().substring(0, len);
         setColor(ICON_COLOR);
     }
 

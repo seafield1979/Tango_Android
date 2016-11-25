@@ -9,5 +9,6 @@ package com.sunsunsoft.shutaro.tangobook;
 interface TangoItem {
     int getId();
     int getPos();
+    void setPos(int pos);
     TangoItemType getItemType();
 }

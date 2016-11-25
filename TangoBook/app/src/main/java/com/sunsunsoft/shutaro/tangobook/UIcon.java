@@ -63,6 +63,10 @@ abstract public class UIcon extends UDrawable {
     // 保持するTangoItemを返す
     abstract public TangoItem getTangoItem();
 
+    public String getTitle() {
+        return title;
+    }
+
     /**
      * Constructor
      */

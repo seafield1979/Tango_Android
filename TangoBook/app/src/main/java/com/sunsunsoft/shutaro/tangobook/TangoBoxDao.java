@@ -60,7 +60,7 @@ public class TangoBoxDao {
      * @param ids
      * @return
      */
-    public List<TangoBox>selectByIds(List<Integer> ids) {
+    public List<TangoBox>selectByIds(List<Integer> ids, boolean changeable) {
         if (ids.size() <= 0) return null;
 
         // Build the query looking at all users:
@@ -78,6 +78,10 @@ public class TangoBoxDao {
         }
         // Execute the query:
         RealmResults<TangoBox> results = query.findAll();
+
+        if (results != null && changeable) {
+            return toChangeable(results);
+        }
 
         return results;
     }
@@ -101,7 +105,7 @@ public class TangoBoxDao {
      * 指定の単語帳に追加されていない単語を取得
      * @return
      */
-    public List<TangoBox> selectByExceptIds(Iterable<Integer> ids) {
+    public List<TangoBox> selectByExceptIds(Iterable<Integer> ids, boolean changeable) {
 
         RealmQuery<TangoBox> query = mRealm.where(TangoBox.class);
 
@@ -110,7 +114,24 @@ public class TangoBoxDao {
         }
         RealmResults<TangoBox> results = query.findAll();
 
+        if (results != null && changeable) {
+            return results;
+        }
+
         return results;
+    }
+
+    /**
+     * 変更不可なRealmのオブジェクトを変更可能なリストに変換する
+     * @param list
+     * @return
+     */
+    public List<TangoBox> toChangeable(List<TangoBox> list) {
+        LinkedList<TangoBox> newList = new LinkedList<>();
+        for (TangoBox box : list) {
+            newList.add(mRealm.copyFromRealm(box));
+        }
+        return newList;
     }
 
     /**

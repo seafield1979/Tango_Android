@@ -674,35 +674,16 @@ public class UIconWindow extends UWindow {
                         case Book:
                         case Box:
                             // Bookの中に挿入する　
-//                            if (dragedIcon.type != IconType.Book) {
+                            moveIconsIn(dragedIcon, dropIcon);
 
-                                moveIconsIn(dragedIcon, dropIcon);
-
-                                for (UIconWindow win : windows.getWindows()) {
-                                    UIconManager manager = win.getIconManager();
-                                    if (manager != null) {
-                                        manager.updateBlockRect();
-                                    }
+                            for (UIconWindow win : windows.getWindows()) {
+                                UIconManager manager = win.getIconManager();
+                                if (manager != null) {
+                                    manager.updateBlockRect();
                                 }
-                                isDroped = true;
-//                            }
+                            }
+                            isDroped = true;
                               break;
-//                        case BOX:
-//                            if (dragedIcon.type != IconType.BOX) {
-//                                UIconBox box = (UIconBox) dropIcon;
-//                                if (box.getIcons() != null) {
-//                                    moveIconIntoBox(dragedIcon, dropIcon);
-//                                    mIconManager.updateBlockRect();
-//                                    for (UIconWindow win : windows.getWindows()) {
-//                                        UIconManager manager = win.getIconManager();
-//                                        if (manager != null) {
-//                                            manager.updateBlockRect();
-//                                        }
-//                                    }
-//                                    isDroped = true;
-//                                }
-//                            }
-//                            break;
                     }
                     break;
                 } else {
@@ -1030,8 +1011,14 @@ public class UIconWindow extends UWindow {
         icons2.remove(icon2);
         icons1.add(index2, icon2);
 
+        // データベース更新
+        RealmManager.getItemPosDao().changePos(icon1.getTangoItem(), icon2.getTangoItem());
+        int pos1 = icon1.getTangoItem().getPos();
+        icon1.getTangoItem().setPos( icon2.getTangoItem().getPos() );
+        icon2.getTangoItem().setPos( pos1 );
+
         // 再配置
-        if (window1 != window2) {
+        if (icons1 != icons2) {
             // 親の付け替え
             icon1.setParentWindow(window2);
             icon2.setParentWindow(window1);
@@ -1045,7 +1032,9 @@ public class UIconWindow extends UWindow {
             icon2.setPos(icon2.pos.x + window2.pos.x - this.pos.x,
                     icon2.pos.y + window2.pos.y - this.pos.y);
             window2.sortIcons(true);
+
         }
+
         window1.sortIcons(true);
     }
 

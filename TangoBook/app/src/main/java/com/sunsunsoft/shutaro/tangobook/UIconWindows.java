@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 複数のUIconWindowを管理する
@@ -16,6 +17,7 @@ public class UIconWindows implements UWindowCallbacks {
     /**
      * Consts
      */
+    public static final String TAG = "UIconWindows";
     public static final int MOVING_FRAME = 12;
 
     /**
@@ -26,6 +28,8 @@ public class UIconWindows implements UWindowCallbacks {
     private UIconWindow subWindow;
     private Size size;
     private DirectionType directionType;
+
+    public static UIconWindows publicInstance;
 
     /**
      * Get/Set
@@ -40,6 +44,11 @@ public class UIconWindows implements UWindowCallbacks {
 
     public LinkedList<UIconWindow> getWindows() {
         return windows;
+    }
+
+    // デバッグ用のどこからでも参照できるインスタンス
+    public static UIconWindows getPublicInstance() {
+        return publicInstance;
     }
 
     /**
@@ -69,6 +78,9 @@ public class UIconWindows implements UWindowCallbacks {
         } else {
             subWindow.setPos(0, screenH);
         }
+
+        publicInstance = instance;
+
         return instance;
     }
 
@@ -163,6 +175,26 @@ public class UIconWindows implements UWindowCallbacks {
             }
         }
     }
+
+    /**
+     * 全てのアイコンの情報を表示する for Debug
+     */
+    public void showAllIconsInfo() {
+        for (UIconWindow window : windows) {
+            List<UIcon> icons = window.getIcons();
+            int pos = 1;
+            if (icons == null) continue;
+            for (UIcon icon : icons) {
+                ULog.print(TAG, "pos:" + pos +
+                        " iconType:" + icon.getType() +
+                        " iconId:" + icon.getTangoItem().getId() +
+                        " itemPos:" + icon.getTangoItem().getPos() +
+                " title:" + icon.getTitle());
+                pos++;
+            }
+        }
+    }
+
 
     /**
      * UWindowCallbacks

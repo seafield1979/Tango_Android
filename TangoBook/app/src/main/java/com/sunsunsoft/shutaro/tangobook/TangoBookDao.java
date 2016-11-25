@@ -73,7 +73,7 @@ public class TangoBookDao {
      * @param ids
      * @return
      */
-    public List<TangoBook>selectByIds(List<Integer> ids) {
+    public List<TangoBook>selectByIds(List<Integer> ids, boolean changeable) {
         if (ids.size() <= 0) return null;
 
         // Build the query looking at all users:
@@ -91,6 +91,10 @@ public class TangoBookDao {
         }
         // Execute the query:
         RealmResults<TangoBook> results = query.findAll();
+
+        if (results != null && changeable) {
+            return toChangeable(results);
+        }
 
         return results;
     }
@@ -115,7 +119,7 @@ public class TangoBookDao {
      * 指定の単語帳に追加されていない単語を取得
      * @return
      */
-    public List<TangoBook> selectByExceptIds(Iterable<Integer> ids) {
+    public List<TangoBook> selectByExceptIds(Iterable<Integer> ids, boolean changeable) {
 
         RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
 
@@ -123,6 +127,10 @@ public class TangoBookDao {
             query.notEqualTo("id", id);
         }
         RealmResults<TangoBook> results = query.findAll();
+
+        if (results != null && changeable) {
+            return toChangeable(results);
+        }
 
         return results;
     }

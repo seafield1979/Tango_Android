@@ -273,7 +273,9 @@ public class TopView extends View
                 break;
             case Debug3:
                 debugDialogs.showDialog(DebugDialogs.DialogType.DeleteDao);
-
+                break;
+            case Debug4:
+                debugDialogs.showDialog(DebugDialogs.DialogType.Icons);
                 break;
         }
         ULog.print(TAG, "menu item clicked " + id);

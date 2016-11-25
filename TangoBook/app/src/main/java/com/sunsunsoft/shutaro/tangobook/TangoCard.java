@@ -94,11 +94,11 @@ public class TangoCard extends RealmObject implements TangoItem{
         int randVal = rand.nextInt(1000);
 
         TangoCard card = new TangoCard();
-        card.wordA = "WordA " + randVal;
-        card.wordB = "WordB " + randVal;
-        card.hintAB = "HintAB " + randVal;
-        card.hintBA = "HintBA " + randVal;
-        card.comment = "Comment " + randVal;
+        card.wordA = "A " + randVal;
+        card.wordB = "B " + randVal;
+        card.hintAB = "HB " + randVal;
+        card.hintBA = "HA " + randVal;
+        card.comment = "C " + randVal;
         card.star = true;
         card.history = new byte[3];
         for (int i = 0; i < card.history.length; i++) {
