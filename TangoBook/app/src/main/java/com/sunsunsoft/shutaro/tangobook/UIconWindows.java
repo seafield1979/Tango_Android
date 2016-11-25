@@ -153,6 +153,7 @@ public class UIconWindows implements UWindowCallbacks {
                     subWindow.setPos(0, size.height);
                     subWindow.startMoving(0, height, width, height, MOVING_FRAME);
                 }
+
             } else {
                 // disappear
                 if (directionType == DirectionType.Landscape) {

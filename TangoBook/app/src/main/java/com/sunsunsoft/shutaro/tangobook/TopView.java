@@ -112,11 +112,9 @@ public class TopView extends View
         subWindow.init();
 
         // UMenuBar
-        if (mMenuBar == null) {
-            mMenuBar = UMenuBar.createInstance(this, this, width, height,
-                    Color.BLACK);
-            mWindows[WindowType.MenuBar.ordinal()] = mMenuBar;
-        }
+        mMenuBar = UMenuBar.createInstance(this, this, width, height,
+                Color.BLACK);
+        mWindows[WindowType.MenuBar.ordinal()] = mMenuBar;
 
         // ULogWindow
         if (mLogWin == null) {
@@ -276,6 +274,10 @@ public class TopView extends View
                 break;
             case Debug4:
                 debugDialogs.showDialog(DebugDialogs.DialogType.Icons);
+                break;
+            case Debug5:
+                initWindows(getWidth(), getHeight());
+                invalidate();
                 break;
         }
         ULog.print(TAG, "menu item clicked " + id);

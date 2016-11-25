@@ -12,7 +12,7 @@ import java.util.List;
  * Created by shutaro on 2016/11/21.
  */
 
-public class IconBox extends UIcon{
+public class IconBox extends IconContainer {
     /**
      * Consts
      */
@@ -28,12 +28,6 @@ public class IconBox extends UIcon{
      * Member Variables
      */
     protected TangoBox box;
-    protected UIconManager mIconManager;
-    private View mParentView;
-
-    // ボックスの中身を表示しているウィンドウ
-    protected UIconWindow subWindow;
-
     /**
      * Get/Set
      */
@@ -41,15 +35,8 @@ public class IconBox extends UIcon{
         return box;
     }
 
-    public UIconManager getIconManager() {
-        return mIconManager;
-    }
-    public List<UIcon> getIcons() {
-        return mIconManager.getIcons();
-    }
-
-    public UIconWindow getSubWindow() {
-        return subWindow;
+    public TangoParentType getParentType() {
+        return TangoParentType.Box;
     }
 
     /**

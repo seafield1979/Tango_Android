@@ -324,7 +324,7 @@ public class UIconWindow extends UWindow {
                     }
                 }
                 if (allFinished) {
-                    iconMovingEnd();
+                    endIconMoving();
                 }
                 redraw = true;
             }
@@ -667,6 +667,7 @@ public class UIconWindow extends UWindow {
             float winX = window.toWinX(vt.getX());
             float winY = window.toWinY(vt.getY());
 
+            // 全アイコンに対してドロップをチェックする
             for (int i=0; i<dstIcons.size(); i++) {
                 UIcon dropIcon = dstIcons.get(i);
                 if (dropIcon == dragedIcon) continue;
@@ -687,7 +688,7 @@ public class UIconWindow extends UWindow {
                     }
                 }
 
-
+                // ドロップ処理をチェックする
                 if (dropIcon.checkDrop(winX, winY)) {
                     switch (dropIcon.getType()) {
                         case Card:
@@ -699,7 +700,7 @@ public class UIconWindow extends UWindow {
                         case Book:
                         case Box:
                             // Bookの中に挿入する　
-                            moveIconsIn(dragedIcon, dropIcon);
+                            moveIconIn(dragedIcon, dropIcon);
 
                             for (UIconWindow win : windows.getWindows()) {
                                 UIconManager manager = win.getIconManager();
@@ -771,8 +772,10 @@ public class UIconWindow extends UWindow {
             // 移動あり
             if (isDroped && dropedIcon != null) {
                 if (moving == IconMovingType.Insert) {
+                    // ドロップ先の位置に挿入
                     insertIcons(dragedIcon, dropedIcon, true);
                 } else {
+                    // ドロップ先のアイコンと場所交換
                     changeIcons(dragedIcon, dropedIcon);
                 }
             }
@@ -780,6 +783,8 @@ public class UIconWindow extends UWindow {
             // その他の場所にドロップされた場合
             if (!isDroped && dstIcons != null ) {
                 boolean isMoved = false;
+
+                // 最後のアイコン以降の領域
                 if (dstIcons.size() > 0) {
                     UIcon lastIcon = dstIcons.get(dstIcons.size() - 1);
                     if ((lastIcon.getY() <= winY &&
@@ -823,23 +828,11 @@ public class UIconWindow extends UWindow {
                         RealmManager.getItemPosDao().saveIcons(dstIcons,
                                 window.parentType, window.parentId);
                     }
-
-//                    if (srcIcons == dstIcons) {
-//                        // データベース更新
-//                        // 挿入位置でずれた先頭以降のposを更新
-//                        RealmManager.getItemPosDao().updatePoses(srcIcons, startPos);
-//                    } else {
-//                        // 挿入位置以降の全てのposを更新
-//                        RealmManager.getItemPosDao().updatePoses(srcIcons,
-//                                srcIcons.get(startPos).getTangoItem().getPos());
-//                        RealmManager.getItemPosDao().updatePoses(dstIcons,
-//                                dstIcons.size() - 1);
-//                    }
                 }
             }
 
             // 再配置
-            if (srcIcons != dstIcons) {
+            if (this != window) {
                 // 座標系変換(移動元Windowから移動先Window)
                 if (isDroped) {
                     dragedIcon.setPos(win1ToWin2X(dragedIcon.pos.x, this, window), win1ToWin2Y(dragedIcon.pos.y, this, window));
@@ -882,30 +875,30 @@ public class UIconWindow extends UWindow {
             float winY = window.toWinY(vt.getY());
 
             UIcon dropIcon = null;
-//            for (UIcon icon : dstIcons) {
-//                if (checkedIcons.contains(icon) || icon.getType() != IconType.BOX) {
-//                    continue;
-//                }
-//
-//                if (icon.getRect().contains((int) winX, (int) winY)) {
-//                    dropIcon = icon;
-//                    break;
-//                }
-//            }
-//            if (dropIcon != null) {
-//                UIconBox box = (UIconBox) dropIcon;
-//                if (box.getIcons() != null) {
-//                    moveIconsIntoBox(box);
-//
-//                    for (UIconWindow win : windows.getWindows()) {
-//                        UIconManager manager = win.getIconManager();
-//                        if (manager != null) {
-//                            manager.updateBlockRect();
-//                        }
-//                    }
-//                    isDroped = true;
-//                }
-//            }
+            for (UIcon icon : dstIcons) {
+                // ドロップ先が自身のアイコンかCardタイプならスキップ
+                if (checkedIcons.contains(icon) || icon.getType() == IconType.Card) {
+                    continue;
+                }
+
+                if (icon.getRect().contains((int) winX, (int) winY)) {
+                    dropIcon = icon;
+                    break;
+                }
+            }
+            if (dropIcon != null) {
+
+                moveIconsIntoBox(dropIcon);
+
+                for (UIconWindow win : windows.getWindows()) {
+                    UIconManager manager = win.getIconManager();
+                    if (manager != null) {
+                        manager.updateBlockRect();
+                    }
+                }
+                isDroped = true;
+
+            }
 
             // その他の場所にドロップされた場合
             if (!isDroped && dstIcons != null ) {
@@ -1035,7 +1028,7 @@ public class UIconWindow extends UWindow {
     /**
      * アイコンの移動が完了
      */
-    private void iconMovingEnd() {
+    private void endIconMoving() {
         setState(nextState);
         mIconManager.updateBlockRect();
         changeIconCheckingAll(false);
@@ -1150,12 +1143,10 @@ public class UIconWindow extends UWindow {
      * @param icon1 ドロップ元のIcon(Card/Book)
      * @param icon2 ドロップ先のIcon(Book/Box)
      */
-    private void moveIconsIn(UIcon icon1, UIcon icon2)
+    private void moveIconIn(UIcon icon1, UIcon icon2)
     {
-
         if ((icon1 instanceof IconCard) && (icon2 instanceof IconBook)) {
             // Card -> Book
-
             IconBook iconBook = (IconBook)icon2;
 
             UIconWindow window1 = icon1.parentWindow;
@@ -1203,34 +1194,52 @@ public class UIconWindow extends UWindow {
     }
 
     /**
-     * チェックされた複数のアイコンをボックスの中に移動する
+     * チェックされた複数のアイコンをBook/Boxの中に移動する
      * @param dropedIcon
      */
-//    private void moveIconsIntoBox(UIconBox dropedIcon) {
-//        // チェックされたアイコンのリストを作成
-//        List<UIcon> checkedIcons = mIconManager.getCheckedIcons();
-//        if (checkedIcons.size() <= 0) return;
-//
-//        UIcon dragIcon = checkedIcons.get(0);
-//
-//        UIconWindow window1 = dragIcon.parentWindow;
-//        UIconWindow window2 = dropedIcon.getSubWindow();
-//        List<UIcon> icons1 = window1.getIcons();
-//        List<UIcon> icons2 = dropedIcon.getIcons();
-//
-//        icons1.removeAll(checkedIcons);
-//        if (icons2 != null) {
-//            icons2.addAll(checkedIcons);
-//
-//            window2.sortIcons(false);
-//            for (UIcon icon : checkedIcons) {
-//                icon.isChecking = false;
-//                icon.setParentWindow(window2);
-//            }
-//        }
-//        // 箱の中に入れた後のアイコン整列後にチェックを解除したいのでフラグを持っておく
-//        isDropInBox = true;
-//    }
+    private void moveIconsIntoBox(UIcon dropedIcon) {
+
+        if (!(dropedIcon instanceof IconContainer)) {
+            return;
+        }
+        IconContainer _dropedIcon = (IconContainer)dropedIcon;
+
+        // チェックされたアイコンのリストを作成
+        List<UIcon> checkedIcons = mIconManager.getCheckedIcons();
+        if (checkedIcons.size() <= 0) return;
+
+        // 最初のチェックアイコン
+        UIcon dragIcon = checkedIcons.get(0);
+
+        UIconWindow window1 = dragIcon.parentWindow;
+        UIconWindow window2 = _dropedIcon.getSubWindow();
+        List<UIcon> icons1 = window1.getIcons();
+        List<UIcon> icons2 = _dropedIcon.getIcons();
+
+        icons1.removeAll(checkedIcons);
+        if (icons2 != null) {
+            icons2.addAll(checkedIcons);
+
+            window2.sortIcons(false);
+            for (UIcon icon : checkedIcons) {
+                icon.isChecking = false;
+                icon.setParentWindow(window2);
+            }
+        }
+
+        // DB更新
+        LinkedList<TangoItem> items = new LinkedList<>();
+        for (UIcon icon : checkedIcons) {
+            items.add(icon.getTangoItem());
+
+        }
+
+        RealmManager.getItemPosDao().moveItems(items, _dropedIcon.getParentType().ordinal(),
+                _dropedIcon.getTangoItem().getId());
+
+        // 箱の中に入れた後のアイコン整列後にチェックを解除したいのでフラグを持っておく
+        isDropInBox = true;
+    }
 
 
     /**
@@ -1297,6 +1306,16 @@ public class UIconWindow extends UWindow {
         } else {
             isShow = false;
         }
+        mScrollBarH.setShow(true);
+        mScrollBarV.setShow(true);
+    }
+
+
+    public void startMoving() {
+        super.startMoving();
+
+        mScrollBarH.setShow(false);
+        mScrollBarV.setShow(false);
     }
 
 

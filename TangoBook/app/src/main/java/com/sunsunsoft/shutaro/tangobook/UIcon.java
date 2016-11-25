@@ -71,9 +71,7 @@ abstract public class UIcon extends UDrawable {
      * Constructor
      */
     public UIcon(UIconWindow parentWindow, UIconCallbacks iconCallbacks, IconType type, float x,
-                 float y, int
-                         width, int
-                         height)
+                 float y, int width, int height)
     {
         super(DRAW_PRIORITY, x, y, width, height);
         this.parentWindow = parentWindow;

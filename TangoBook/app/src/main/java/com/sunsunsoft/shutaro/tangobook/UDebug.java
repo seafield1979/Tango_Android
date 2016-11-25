@@ -5,7 +5,9 @@ package com.sunsunsoft.shutaro.tangobook;
  */
 
 public class UDebug {
-    public static final boolean DRAW_ICON_BLOCK_RECT = true;
+    // IconをまとめたブロックのRECTを描画するかどうか
+    public static final boolean DRAW_ICON_BLOCK_RECT = false;
+
     public static boolean drawIconId = false;
 
     public static boolean debugDAO = true;

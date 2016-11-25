@@ -31,11 +31,19 @@ enum ScrollBarInOut {
  *  指定のViewに張り付くように配置
  */
 public class UScrollBar {
+
+    /**
+     * Constants
+     */
     public static final String TAG = "UScrollBar";
 
+    /**
+     * Member variables
+     */
     private ScrollBarType type;
     private ScrollBarInOut inOut;
 
+    protected boolean isShow;
     private PointF pos = new PointF();
     private int contentLen;       // コンテンツ領域のサイズ
     private int viewLen;          // 表示画面のサイズ
@@ -47,8 +55,19 @@ public class UScrollBar {
 
     private float barPos;        // バーの座標（縦ならy,横ならx)
     private int barLength;       // バーの長さ(縦バーなら高さ、横バーなら幅)
-
     private int bgColor, barColor;
+
+    /**
+     * Get/Set
+     */
+
+    public boolean isShow() {
+        return isShow;
+    }
+
+    public void setShow(boolean show) {
+        isShow = show;
+    }
 
     // 縦のスクロールバーか
     private boolean isVertical() {
@@ -59,9 +78,6 @@ public class UScrollBar {
         return (type == ScrollBarType.Top || type == ScrollBarType.Bottom);
     }
 
-    /**
-     * Get/Set
-     */
     public void setBgColor(int bgColor) {
         this.bgColor = bgColor;
     }
@@ -89,6 +105,11 @@ public class UScrollBar {
         return bgWidth;
     }
 
+
+
+    /**
+     * Constructor
+     */
     /**
      * コンストラクタ
      * 指定のViewに張り付くタイプのスクロールバーを作成
@@ -226,6 +247,8 @@ public class UScrollBar {
     }
 
     public void draw(Canvas canvas, Paint paint) {
+        if (!isShow) return;
+        
         if (barLength == 0) return;
 
         paint.setStyle(Paint.Style.FILL);

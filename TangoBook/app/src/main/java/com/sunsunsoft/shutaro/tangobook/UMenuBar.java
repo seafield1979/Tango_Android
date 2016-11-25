@@ -20,9 +20,6 @@ enum TopMenu {
 enum MenuItemId {
     AddTop,
     AddCard,
-//    AddCard1,
-//    AddCard2,
-//    AddCard3,
     AddBook,
     AddBox,
     SortTop,
@@ -37,7 +34,8 @@ enum MenuItemId {
     Debug1,
     Debug2,
     Debug3,
-    Debug4
+    Debug4,
+    Debug5
 }
 
 
@@ -104,10 +102,7 @@ public class UMenuBar extends UWindow {
 
         // Add
         item = addTopMenuItem(TopMenu.Add, MenuItemId.AddTop, R.drawable.hogeman);
-        item2 = addMenuItem(item, MenuItemId.AddCard, R.drawable.hogeman);
-//        addMenuItem(item2, MenuItemId.AddCard1, R.drawable.hogeman);
-//        addMenuItem(item2, MenuItemId.AddCard2, R.drawable.hogeman);
-//        addMenuItem(item2, MenuItemId.AddCard3, R.drawable.hogeman);
+        addMenuItem(item, MenuItemId.AddCard, R.drawable.hogeman);
 
         addMenuItem(item, MenuItemId.AddBook, R.drawable.hogeman);
         addMenuItem(item, MenuItemId.AddBox, R.drawable.hogeman);
@@ -128,6 +123,7 @@ public class UMenuBar extends UWindow {
         addMenuItem(item, MenuItemId.Debug2, R.drawable.debug);
         addMenuItem(item, MenuItemId.Debug3, R.drawable.debug);
         addMenuItem(item, MenuItemId.Debug4, R.drawable.debug);
+        addMenuItem(item, MenuItemId.Debug5, R.drawable.debug);
 
         mDrawList = UDrawManager.getInstance().addDrawable(this);
         updateBGSize();

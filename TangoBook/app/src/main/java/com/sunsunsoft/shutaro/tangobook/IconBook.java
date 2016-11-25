@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 単語帳アイコン
  */
-public class IconBook extends UIcon {
+public class IconBook extends IconContainer {
 
     /**
      * Constant
@@ -34,11 +34,6 @@ public class IconBook extends UIcon {
      */
     protected TangoBook book;
 
-    // Bookの中身を表示しているウィンドウ
-    protected UIconWindow subWindow;
-    protected View mParentView;
-    protected UIconManager mIconManager;
-
     /**
      * Get/Set
      */
@@ -46,17 +41,9 @@ public class IconBook extends UIcon {
         return book;
     }
 
-    public UIconManager getIconManager() {
-        return mIconManager;
+    public TangoParentType getParentType() {
+        return TangoParentType.Book;
     }
-    public List<UIcon> getIcons() {
-        return mIconManager.getIcons();
-    }
-
-    public UIconWindow getSubWindow() {
-        return subWindow;
-    }
-
 
     /**
      * Constructor
@@ -130,6 +117,8 @@ public class IconBook extends UIcon {
 
 
     }
+
+
 
     @Override
     public void click() {

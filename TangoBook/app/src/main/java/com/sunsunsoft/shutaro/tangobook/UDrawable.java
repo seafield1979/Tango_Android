@@ -34,6 +34,7 @@ abstract public class UDrawable {
     protected boolean isMoving;
     protected boolean isMovingPos;
     protected boolean isMovingSize;
+    protected boolean isShow;
     protected int movingFrame;
     protected int movingFrameMax;
     protected PointF srcPos = new PointF();
@@ -56,6 +57,7 @@ abstract public class UDrawable {
 
         this.drawPriority = priority;
         this.color = Color.rgb(0,0,0);
+        isShow = true;
     }
 
     /**
@@ -156,6 +158,13 @@ abstract public class UDrawable {
         this.color = color;
     }
 
+    public boolean isShow() {
+        return isShow;
+    }
+
+    public void setShow(boolean show) {
+        isShow = show;
+    }
 
     /**
      * 描画処理
@@ -184,6 +193,13 @@ abstract public class UDrawable {
     }
 
     /**
+     * startMovingの最初に呼ばれる処理
+     * サブクラスでオーバーライドして使用する
+     */
+    public void startMoving() {
+    }
+
+    /**
      * 自動移動(座標)
      * @param dstX  目的x
      * @param dstY  目的y
@@ -194,6 +210,7 @@ abstract public class UDrawable {
             // 移動不要
             return;
         }
+        startMoving();
 
         isMoving = true;
         isMovingPos = true;
@@ -224,6 +241,7 @@ abstract public class UDrawable {
             // 移動不要
             return;
         }
+        startMoving();
 
         isMoving = true;
         isMovingPos = false;
@@ -253,6 +271,8 @@ abstract public class UDrawable {
      */
     public void startMoving(float dstX, float dstY, int dstW, int dstH, int frame) {
         boolean noMoving = true;
+
+        startMoving();
 
         if (setMovingPos(dstX, dstY)) {
             noMoving = false;
