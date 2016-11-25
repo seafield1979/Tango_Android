@@ -86,10 +86,12 @@ public class UIconWindow extends UWindow {
     // ドラッグで他のWindowにアイコンを移動するのに使用する
     private UIconWindows windows;
 
+    // Windowの親のタイプ
+    private TangoParentType parentType;
+    private int parentId;
+
     // ドラッグ中のアイコン
     private UIcon dragedIcon;
-    // ドロップ中のアイコン
-//    private UIcon dropedIcon;
 
     private WindowState state = WindowState.none;
     private WindowState nextState = WindowState.none;
@@ -208,7 +210,28 @@ public class UIconWindow extends UWindow {
         this.state = state;
     }
 
+    /**
+     * Windowに表示するアイコンを設定する
+     * どのアイコンを表示するかはどの親をもつアイコンを表示するかで指定する
+     * @param parentType
+     * @param parentId
+     */
+    public void setIcons(TangoParentType parentType, int parentId) {
 
+        this.parentType = parentType;
+        this.parentId= parentId;
+
+        List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(
+                parentType, parentId, true
+        );
+        mIconManager.getIcons().clear();
+
+        for (TangoItem item : items) {
+            mIconManager.addIcon(item, AddPos.Tail);
+        }
+
+        sortIcons(false);
+    }
 
 
 
@@ -241,11 +264,11 @@ public class UIconWindow extends UWindow {
         UIconWindow instance = new UIconWindow(x, y, width, height, bgColor);
         if (isHome) {
             instance.type = WindowType.Home;
-            instance.mIconManager = UIconManager.createInstance(parent, instance, iconCallbacks);
         } else {
             instance.type = WindowType.Sub;
             instance.addCloseButton();
         }
+        instance.mIconManager = UIconManager.createInstance(parent, instance, iconCallbacks);
         instance.windowCallbacks = windowCallbacks;
         instance.dir = dir;
 
@@ -261,15 +284,17 @@ public class UIconWindow extends UWindow {
      */
     public void init() {
         if (type == WindowType.Home) {
+            setIcons(TangoParentType.Home, 0);
             // データベースから情報を読み込む
-            List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(
-                    TangoParentType.Home, 0, true);
-            if (items != null) {
-                for (TangoItem item : items) {
-                    mIconManager.addIcon(item, AddPos.Tail);
-                }
-            }
-            sortIcons(true);
+//
+//            List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(
+//                    TangoParentType.Home, 0, true);
+//            if (items != null) {
+//                for (TangoItem item : items) {
+//                    mIconManager.addIcon(item, AddPos.Tail);
+//                }
+//            }
+//            sortIcons(true);
         }
     }
 
@@ -785,17 +810,31 @@ public class UIconWindow extends UWindow {
                     dragedIcon.setParentWindow(window);
 
                     // データベース更新
-                    if (srcIcons == dstIcons) {
-                        // データベース更新
-                        // 挿入位置でずれた先頭以降のposを更新
-                        RealmManager.getItemPosDao().updatePoses(srcIcons, startPos);
+                    if (this == window) {
+                        RealmManager.getItemPosDao().saveIcons(srcIcons,
+                                parentType, parentId);
                     } else {
-                        // 挿入位置以降の全てのposを更新
-                        RealmManager.getItemPosDao().updatePoses(srcIcons,
-                                srcIcons.get(startPos).getTangoItem().getPos());
-                        RealmManager.getItemPosDao().updatePoses(dstIcons,
-                                dstIcons.size() - 1);
+                        TangoItemPos itemPos = dragedIcon.getTangoItem().getItemPos();
+                        itemPos.setParentType(window.parentType.ordinal());
+                        itemPos.setParentId(window.parentId);
+
+                        RealmManager.getItemPosDao().saveIcons(srcIcons,
+                                parentType, parentId);
+                        RealmManager.getItemPosDao().saveIcons(dstIcons,
+                                window.parentType, window.parentId);
                     }
+
+//                    if (srcIcons == dstIcons) {
+//                        // データベース更新
+//                        // 挿入位置でずれた先頭以降のposを更新
+//                        RealmManager.getItemPosDao().updatePoses(srcIcons, startPos);
+//                    } else {
+//                        // 挿入位置以降の全てのposを更新
+//                        RealmManager.getItemPosDao().updatePoses(srcIcons,
+//                                srcIcons.get(startPos).getTangoItem().getPos());
+//                        RealmManager.getItemPosDao().updatePoses(dstIcons,
+//                                dstIcons.size() - 1);
+//                    }
                 }
             }
 

@@ -332,9 +332,7 @@ public class TopView extends View
                 // 配下のアイコンをSubWindowに表示する
                 if (icon instanceof IconBook) {
                     UIconWindow window = mIconWindows.getSubWindow();
-                    IconBook book = (IconBook)icon;
-                    window.setIconManager(book.getIconManager());
-                    window.sortIcons(false);
+                    window.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
 
                     // SubWindowを画面外から移動させる
                     mIconWindows.showWindow(window, true);
@@ -345,9 +343,7 @@ public class TopView extends View
                 // 配下のアイコンをSubWindowに表示する
                 if (icon instanceof IconBox) {
                     UIconWindow window = mIconWindows.getSubWindow();
-                    IconBox box = (IconBox)icon;
-                    window.setIconManager(box.getIconManager());
-                    window.sortIcons(false);
+                    window.setIcons(TangoParentType.Box, icon.getTangoItem().getId());
 
                     // SubWindowを画面外から移動させる
                     mIconWindows.showWindow(window, true);

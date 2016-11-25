@@ -835,13 +835,13 @@ public class TangoItemPosDao {
      * リストの全要素を更新する
      * ParentIdを指定しないHome/Trash用
      *
-     * @param itemPoses 新しい配置
+     * @param items アイコンのリスト
      */
-    public void updateAll(List<TangoItemPos> itemPoses,
+    public void updateAll(List<TangoItem> items,
                           TangoParentType parentType, int parentId) {
-        // Home/Trash以外なら処理しない
-        RealmResults<TangoItemPos> results = null;
-        if (parentType == TangoParentType.Home && parentType == TangoParentType.Trash) {
+
+        RealmResults<TangoItemPos> results;
+        if (parentType == TangoParentType.Home || parentType == TangoParentType.Trash) {
             results = mRealm.where(TangoItemPos.class)
                     .equalTo("parentType", parentType.ordinal())
                     .findAll();
@@ -852,15 +852,16 @@ public class TangoItemPosDao {
                     .findAll();
         }
 
-        // いったんクリア
         if (results == null) return;
 
         mRealm.beginTransaction();
+
+        // いったんクリア
         results.deleteAllFromRealm();
 
         // 全要素を追加
-        for (TangoItemPos item : itemPoses) {
-            mRealm.copyToRealm(item);
+        for (TangoItem item : items) {
+            mRealm.copyToRealm(item.getItemPos());
         }
 
         mRealm.commitTransaction();
@@ -1001,41 +1002,33 @@ public class TangoItemPosDao {
     }
 
     /**
-     * Homeのアイコン情報を元にTangoItemPosを更新
-     * @param items
+     * アイコンリストに含まれるアイテムを保存
+     * 並び順はアイコンリストと同じ
+     * @param icons
+     * @param parentType
+     * @param parentId
      */
-    public void saveHomeIcons(TangoItem[] items) {
-        LinkedList<TangoItemPos> list = new LinkedList<>();
+    public void saveIcons(List<UIcon> icons, TangoParentType parentType,
+                              int parentId)
+    {
+        LinkedList<TangoItem> items = new LinkedList<>();
 
         int pos = 0;
-        int id = 0;
-        for (TangoItem item : items) {
-            TangoItemPos addItem = new TangoItemPos();
-
-            // card
-            if (item instanceof TangoCard) {
-                TangoCard card = (TangoCard)item;
-                addItem.setItemType(TangoItemType.Card.ordinal());
-                id = card.getId();
-            }
-            // book
-            if (item instanceof TangoBook) {
-                TangoBook book = (TangoBook)item;
-                addItem.setItemType(TangoItemType.Book.ordinal());
-                id = book.getId();
-            }
-            // box
-            if (item instanceof TangoBox) {
-                TangoBox box = (TangoBox)item;
-                addItem.setItemType(TangoItemType.Box.ordinal());
-                id = box.getId();
-            }
-            addItem.setPos(pos);
-            addItem.setItemId(id);
-            list.add(addItem);
+        for (UIcon icon : icons) {
+            items.add(icon.getTangoItem());
+            icon.getTangoItem().getItemPos().setPos(pos);
+            pos++;
         }
 
-        RealmManager.getItemPosDao().updateAll(list, TangoParentType.Home, 0);
+        RealmManager.getItemPosDao().updateAll(items, parentType, parentId);
+    }
+
+    /**
+     * Homeのアイコン情報を元にTangoItemPosを更新
+     * @param icons
+     */
+    public void saveHomeIcons(List<UIcon> icons) {
+        saveIcons(icons, TangoParentType.Home, 0);
     }
 
 }
