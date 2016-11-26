@@ -21,7 +21,6 @@ enum MenuItemId {
     AddTop,
     AddCard,
     AddBook,
-    AddBox,
     SortTop,
     Sort1,
     Sort2,
@@ -103,9 +102,7 @@ public class UMenuBar extends UWindow {
         // Add
         item = addTopMenuItem(TopMenu.Add, MenuItemId.AddTop, R.drawable.hogeman);
         addMenuItem(item, MenuItemId.AddCard, R.drawable.hogeman);
-
         addMenuItem(item, MenuItemId.AddBook, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.AddBox, R.drawable.hogeman);
 
         // Sort
         item = addTopMenuItem(TopMenu.Sort, MenuItemId.SortTop, R.drawable.hogeman);

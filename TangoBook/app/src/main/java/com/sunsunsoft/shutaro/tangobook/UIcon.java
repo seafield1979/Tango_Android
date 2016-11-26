@@ -44,6 +44,7 @@ abstract public class UIcon extends UDrawable {
     protected boolean isTouched;        // タッチ中
     protected boolean isLongTouched;    // 長押し中
 
+    protected boolean clickAnimEnable;  // クリック時の
     protected int touchedColor;
     protected int longPressedColor;
 
@@ -101,8 +102,6 @@ abstract public class UIcon extends UDrawable {
     }
 
     public void click() {
-        Log.v(TAG, "click");
-
         startAnim();
         if (isChecking) {
             if(isChecked) {
@@ -119,7 +118,6 @@ abstract public class UIcon extends UDrawable {
         }
     }
     public void longClick() {
-        Log.v(TAG, "long click");
         if (callbacks != null) {
             callbacks.longClickIcon(this);
         }

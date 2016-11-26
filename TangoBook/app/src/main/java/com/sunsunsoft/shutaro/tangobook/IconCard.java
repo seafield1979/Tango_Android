@@ -48,9 +48,7 @@ public class IconCard extends UIcon{
                 x, y, ICON_W, ICON_H);
 
         this.card = card;
-        int len = (card.getWordA().length() < DISP_TITLE_LEN) ? card.getWordA().length() :
-                DISP_TITLE_LEN;
-        this.title = card.getWordA().substring(0, len);
+        updateTitle();
         setColor(ICON_COLOR);
     }
 
@@ -103,5 +101,14 @@ public class IconCard extends UIcon{
         paint.setColor(Color.WHITE);
         paint.setTextSize(TEXT_SIZE);
         canvas.drawText( title, drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_SIZE + TEXT_PAD_Y, paint);
+    }
+
+    /**
+     * タイトルに表示する文字列を更新
+     */
+    public void updateTitle() {
+        int len = (card.getWordA().length() < DISP_TITLE_LEN) ? card.getWordA().length() :
+                DISP_TITLE_LEN;
+        this.title = card.getWordA().substring(0, len);
     }
 }

@@ -256,7 +256,9 @@ public class UIconManager implements UIconCallbacks{
      * UIconCallbacks
      */
     public void clickIcon(UIcon icon) {
-        selectedIcon = icon;
+        if (getParentWindow().getType() == UIconWindow.WindowType.Home) {
+            selectedIcon = icon;
+        }
         if (mIconCallbacks != null) {
             mIconCallbacks.clickIcon(icon);
         }

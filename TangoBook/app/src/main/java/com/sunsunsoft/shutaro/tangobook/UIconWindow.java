@@ -221,6 +221,7 @@ public class UIconWindow extends UWindow {
         this.parentType = parentType;
         this.parentId= parentId;
 
+        // DBからホームに表示するアイコンをロード
         List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(
                 parentType, parentId, true
         );
@@ -232,14 +233,6 @@ public class UIconWindow extends UWindow {
 
         sortIcons(false);
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -285,16 +278,6 @@ public class UIconWindow extends UWindow {
     public void init() {
         if (type == WindowType.Home) {
             setIcons(TangoParentType.Home, 0);
-            // データベースから情報を読み込む
-//
-//            List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(
-//                    TangoParentType.Home, 0, true);
-//            if (items != null) {
-//                for (TangoItem item : items) {
-//                    mIconManager.addIcon(item, AddPos.Tail);
-//                }
-//            }
-//            sortIcons(true);
         }
     }
 
@@ -927,6 +910,17 @@ public class UIconWindow extends UWindow {
                         icon.setParentWindow(window);
                     }
                     isDropInBox = true;
+
+                    // DB更新処理
+                    if (this == window) {
+                        RealmManager.getItemPosDao().saveIcons(srcIcons,
+                                parentType, parentId);
+                    } else {
+                        RealmManager.getItemPosDao().saveIcons(srcIcons,
+                                parentType, parentId);
+                        RealmManager.getItemPosDao().saveIcons(dstIcons,
+                                window.parentType, window.parentId);
+                    }
                 }
             }
             // 再配置

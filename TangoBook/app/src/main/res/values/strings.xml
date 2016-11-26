@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">TangoBook</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="edit_title_word_a">英語</string>
+    <string name="edit_title_word_b">日本語</string>
+    <string name="edit_title_hint_ab">ヒント 英 -> 日</string>
+    <string name="edit_title_hint_ba">ヒント 日 -> 英</string>
+    <string name="edit_title_comment">コメント</string>
+    <string name="edit_title_book_name">単語帳の名前</string>
+    <string name="edit_title_book_color">単語帳の色</string>
+
 </resources>

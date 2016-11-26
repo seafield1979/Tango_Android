@@ -7,10 +7,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.os.Bundle;
 import android.support.v4.view.NestedScrollingParent;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.LinkedList;
 
 enum WindowType {
     Icon1,
@@ -25,7 +29,8 @@ enum WindowType {
 
 public class TopView extends View
         implements View.OnTouchListener, UMenuItemCallbacks,
-        UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks{
+        UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks,
+        EditCardDialogCallbacks, EditBookDialogCallbacks {
 
     public static final String TAG = "TopView";
 
@@ -237,13 +242,10 @@ public class TopView extends View
             case AddTop:
                 break;
             case AddCard:
-                addCardIcon();
+                addCardDialog();
                 break;
             case AddBook:
-                addBookIcon();
-                break;
-            case AddBox:
-                addBoxIcon();
+                addBookDialog();
                 break;
             case SortTop:
                 break;
@@ -290,6 +292,23 @@ public class TopView extends View
     /**
      * Add icons
      */
+
+    // Card追加用のダイアログを表示
+    private void addCardDialog() {
+        EditCardDialogFragment dialogFragment = EditCardDialogFragment.createInstance(this);
+
+        dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
+                "fragment_dialog");
+    }
+
+    // Book追加用のダイアログを表示
+    private void addBookDialog() {
+        EditBookDialogFragment dialogFragment = EditBookDialogFragment.createInstance(this);
+
+        dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
+                "fragment_dialog");
+    }
+
     // card
     private void addCardIcon() {
         UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
@@ -316,8 +335,6 @@ public class TopView extends View
 
         invalidate();
     }
-
-
 
 
 
@@ -398,4 +415,68 @@ public class TopView extends View
 
     }
 
+    /**
+     * EditCardDialogCallbacks
+     */
+    public void submitEditCard(Bundle args) {
+        if (args == null) return;
+
+        UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
+        IconCard cardIcon = (IconCard)(iconManager.addNewIcon(IconType.Card, AddPos.Tail));
+        if (cardIcon == null) {
+            return;
+        }
+        TangoCard card = (TangoCard)cardIcon.getTangoItem();
+
+        // 戻り値を取得
+        card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
+        card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
+        card.setHintAB(args.getString(EditCardDialogFragment.KEY_HINT_AB, ""));
+        card.setHintBA(args.getString(EditCardDialogFragment.KEY_HINT_BA, ""));
+        card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+
+        cardIcon.updateTitle();
+
+        // DB更新
+        RealmManager.getCardDao().updateOne(card);
+
+        // アイコン整列
+        mIconWindows.getMainWindow().sortIcons(false);
+        invalidate();
+    }
+
+    public void cancelEditCard() {
+
+    }
+
+
+    /**
+     * EditBookDialogCallbacks
+     */
+    public void submitEditBook(Bundle args) {
+        if (args == null) return;
+
+        UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
+        IconBook bookIcon = (IconBook)(iconManager.addNewIcon(IconType.Book, AddPos.Tail));
+        if (bookIcon == null) {
+            return;
+        }
+        TangoBook book = (TangoBook)bookIcon.getTangoItem();
+
+        // 戻り値を取得
+        book.setName(args.getString(EditBookDialogFragment.KEY_NAME, ""));
+        book.setComment(args.getString(EditBookDialogFragment.KEY_COMMENT, ""));
+        book.setColor(args.getInt(EditBookDialogFragment.KEY_COLOR, 0));
+        bookIcon.updateTitle();
+
+        // DB更新
+        RealmManager.getBookDao().updateOne(book);
+
+        // アイコン整列
+        mIconWindows.getMainWindow().sortIcons(false);
+        invalidate();
+    }
+    public void cancelEditBook() {
+
+    }
 }

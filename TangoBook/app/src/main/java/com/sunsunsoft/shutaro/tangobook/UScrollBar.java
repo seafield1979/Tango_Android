@@ -248,7 +248,7 @@ public class UScrollBar {
 
     public void draw(Canvas canvas, Paint paint) {
         if (!isShow) return;
-        
+
         if (barLength == 0) return;
 
         paint.setStyle(Paint.Style.FILL);

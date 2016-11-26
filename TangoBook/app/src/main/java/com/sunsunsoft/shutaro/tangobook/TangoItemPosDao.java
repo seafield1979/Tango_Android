@@ -141,7 +141,7 @@ public class TangoItemPosDao {
         // 種類別にItemPosのリストを作成(カード)
         LinkedList<TangoItemPos> cardPoses = new LinkedList<>();
         LinkedList<TangoItemPos> bookPoses = new LinkedList<>();
-        LinkedList<TangoItemPos> boxPoses = new LinkedList<>();
+//        LinkedList<TangoItemPos> boxPoses = new LinkedList<>();
 
         for (TangoItemPos item : itemPoses) {
             switch (TangoItemType.toEnum(item.getItemType())) {
@@ -151,9 +151,9 @@ public class TangoItemPosDao {
                 case Book:
                     bookPoses.add(item);
                     break;
-                case Box:
-                    boxPoses.add(item);
-                    break;
+//                case Box:
+//                    boxPoses.add(item);
+//                    break;
             }
         }
 
@@ -205,30 +205,30 @@ public class TangoItemPosDao {
         }
 
         // Box
-        List<TangoBox> boxes;
-        if (boxPoses.size() > 0) {
-            boxes = RealmManager.getBoxDao()
-                    .selectByIds(boxPoses, changeable);
-            // posが小さい順にソート
-            LinkedList<TangoBox> sortedBoxes = new LinkedList<>();
-            for (TangoItemPos itemPos : boxPoses) {
-                for (int i=0; i<boxes.size(); i++) {
-                    TangoBox box = boxes.get(i);
-                    box.setItemPos(itemPos);
-                    if (box.getId() == itemPos.getItemId()) {
-                        sortedBoxes.add(box);
-                        boxes.remove(i);
-                        break;
-                    }
-                }
-            }
-            boxes = sortedBoxes;
-        } else {
-            boxes = new LinkedList<>();
-        }
+//        List<TangoBox> boxes;
+//        if (boxPoses.size() > 0) {
+//            boxes = RealmManager.getBoxDao()
+//                    .selectByIds(boxPoses, changeable);
+//            // posが小さい順にソート
+//            LinkedList<TangoBox> sortedBoxes = new LinkedList<>();
+//            for (TangoItemPos itemPos : boxPoses) {
+//                for (int i=0; i<boxes.size(); i++) {
+//                    TangoBox box = boxes.get(i);
+//                    box.setItemPos(itemPos);
+//                    if (box.getId() == itemPos.getItemId()) {
+//                        sortedBoxes.add(box);
+//                        boxes.remove(i);
+//                        break;
+//                    }
+//                }
+//            }
+//            boxes = sortedBoxes;
+//        } else {
+//            boxes = new LinkedList<>();
+//        }
 
         // posの順にリストを作成
-        items = joinWithSort(cards, books, boxes);
+        items = joinWithSort(cards, books);
 
         return items;
     }
@@ -318,7 +318,7 @@ public class TangoItemPosDao {
 
 
         // posの順にリストを作成
-        List<TangoItem> items = joinWithSort(cards, books, boxes);
+        List<TangoItem> items = joinWithSort(cards, books);
 
         return items;
     }
@@ -328,21 +328,20 @@ public class TangoItemPosDao {
      *
      * @param cards
      * @param books
-     * @param boxes
      * @return
      */
     public List<TangoItem> joinWithSort(List<TangoCard> cards,
-                                        List<TangoBook> books,
-                                        List<TangoBox> boxes) {
+                                        List<TangoBook> books
+                                        ) {
         final int minInit = 10000000;
         LinkedList<TangoItem> items = new LinkedList<>();
 
         // posの順にリストを作成
         // 各ループでCard,Book,Boxのアイテムの中で一番小さいposのものを出力先のリストに追加する
-        int[] indexs = new int[3];
-        int[] poses = new int[3];
+        int[] indexs = new int[2];
+        int[] poses = new int[2];
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             indexs[i] = 0;
         }
 
@@ -359,20 +358,20 @@ public class TangoItemPosDao {
             poses[1] = minInit;
         }
 
-        if (indexs[2] < boxes.size()) {
-            poses[2] = boxes.get(indexs[2]).getPos();
-        } else {
-            poses[2] = minInit;
-        }
+//        if (indexs[2] < boxes.size()) {
+//            poses[2] = boxes.get(indexs[2]).getPos();
+//        } else {
+//            poses[2] = minInit;
+//        }
 
-        int totalCount = cards.size() + books.size() + boxes.size();
+        int totalCount = cards.size() + books.size();
         int count = 0;
 
         while (true) {
             // 各アイテムリストの先頭のposを取得する
             int posMin = minInit;
             int gotTypeIndex = 0;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
                 if (posMin > poses[i]) {
                     posMin = poses[i];
                     gotTypeIndex = i;
@@ -410,21 +409,21 @@ public class TangoItemPosDao {
                         poses[1] = 100000000;
                     }
                     break;
-                case 2:
-                    if (indexs[2] < boxes.size()) {
-                        TangoBox box = boxes.get(indexs[2]);
-                        box.setPos(items.size());
-                        items.add(box);
-                    }
-
-                    indexs[2]++;
-                    count++;
-                    if (indexs[2] < boxes.size()) {
-                        poses[2] = boxes.get(indexs[2]).getPos();
-                    } else {
-                        poses[2] = 100000000;
-                    }
-                    break;
+//                case 2:
+//                    if (indexs[2] < boxes.size()) {
+//                        TangoBox box = boxes.get(indexs[2]);
+//                        box.setPos(items.size());
+//                        items.add(box);
+//                    }
+//
+//                    indexs[2]++;
+//                    count++;
+//                    if (indexs[2] < boxes.size()) {
+//                        poses[2] = boxes.get(indexs[2]).getPos();
+//                    } else {
+//                        poses[2] = 100000000;
+//                    }
+//                    break;
             }
 
             // 全ての要素をチェックし終わったら終了

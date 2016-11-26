@@ -52,7 +52,7 @@ public class IconBook extends IconContainer {
         super(parent, iconCallbacks, IconType.Book, 0, 0, ICON_W, ICON_H);
 
         this.book = book;
-        this.title = book.getName().substring(0, DISP_TITLE_LEN);
+        updateTitle();
         setColor(ICON_COLOR);
 
         UIconWindows windows = parentWindow.getWindows();
@@ -118,7 +118,14 @@ public class IconBook extends IconContainer {
 
     }
 
-
+    /**
+     * タイトルを更新する
+     */
+    public void updateTitle() {
+        int len = (book.getName().length() < DISP_TITLE_LEN) ? book.getName().length() :
+                DISP_TITLE_LEN;
+        this.title = book.getName().substring(0, len);
+    }
 
     @Override
     public void click() {
