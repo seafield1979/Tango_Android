@@ -94,7 +94,7 @@ public class CardIconInfoDialog extends IconInfoDialog {
         instance.mCard = card;
 
         // 初期化処理
-        instance.addCloseIcon(CloseButtonPos.RightTop);
+        instance.addCloseIcon(CloseIconPos.RightTop);
         UDrawManager.getInstance().addDrawable(instance);
 
         return instance;
@@ -120,8 +120,8 @@ public class CardIconInfoDialog extends IconInfoDialog {
                 ratio = (float)Math.cos(animeRatio * 90 * RAD);
                 ULog.print(TAG, "cos ratio:" + ratio);
             }
-            float width = dialogSize.width * ratio;
-            float height = dialogSize.height * ratio;
+            float width = size.width * ratio;
+            float height = size.height * ratio;
             float x = (size.width - width) / 2;
             float y = (size.height - height) / 2;
             RectF _rect = new RectF(x, y, x + width, y + height);
@@ -131,13 +131,14 @@ public class CardIconInfoDialog extends IconInfoDialog {
             // BG
             UDraw.drawRoundRectFill(canvas, paint, getDialogRect(), 20, dialogColor);
 
-            textWordA.draw(canvas, paint, dialogPos);
-            textWordB.draw(canvas, paint, dialogPos);
+            textWordA.draw(canvas, paint, pos);
+            textWordB.draw(canvas, paint, pos);
             // Buttons
             for (UButtonImage button : imageButtons) {
-                button.draw(canvas, paint, dialogPos);
+                button.draw(canvas, paint, pos);
             }
         }
+
     }
 
     /**
@@ -181,15 +182,14 @@ public class CardIconInfoDialog extends IconInfoDialog {
         }
         y += ICON_W + MARGIN_V;
 
-        dialogSize.height = y;
-        dialogSize.width = width;
+        setSize(width, y);
 
         // 座標補正
-        if ( dialogPos.x + dialogSize.width > mParentView.getWidth() - DLG_MARGIN) {
-            dialogPos.x = mParentView.getWidth() - dialogSize.width - DLG_MARGIN;
+        if ( pos.x + size.width > mParentView.getWidth() - DLG_MARGIN) {
+            pos.x = mParentView.getWidth() - size.width - DLG_MARGIN;
         }
-        if (dialogPos.y + dialogSize.height > mParentView.getHeight() - DLG_MARGIN) {
-            dialogPos.y = mParentView.getHeight() - dialogSize.height - DLG_MARGIN;
+        if (pos.y + size.height > mParentView.getHeight() - DLG_MARGIN) {
+            pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
         }
     }
 
@@ -200,7 +200,11 @@ public class CardIconInfoDialog extends IconInfoDialog {
     /**
      * UButtonCallbacks
      */
-    public void UButtonClick(int id) {
+    public boolean UButtonClick(int id) {
+        if (super.UButtonClick(id)) {
+            return true;
+        }
+
         switch(ActionIcons.toEnum(id)) {
             case Edit:
 
@@ -212,10 +216,11 @@ public class CardIconInfoDialog extends IconInfoDialog {
             case Favorite:
                 break;
         }
+        return false;
     }
 
-    public void UButtonLongClick(int id) {
-
+    public boolean UButtonLongClick(int id) {
+        return false;
     }
 
 }

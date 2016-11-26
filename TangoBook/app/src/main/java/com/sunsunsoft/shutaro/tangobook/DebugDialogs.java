@@ -189,41 +189,44 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
     /**
      * UButtonCallbacks
      */
-    public void UButtonClick(int id) {
+    public boolean UButtonClick(int id) {
+
         switch (DialogButtons.toEnum(id)) {
             case SelectCard:
                 RealmManager.getCardDao().selectAll();
-                break;
+                return true;
             case SelectBook:
                 RealmManager.getBookDao().selectAll();
-                break;
+                return true;
             case SelectBox:
                 RealmManager.getBoxDao().selectAll();
-                break;
+                return true;
             case SelectItemPos:
                 RealmManager.getItemPosDao().selectAll();
-                break;
+                return true;
 
             case DeleteCardAll:
                 RealmManager.getCardDao().deleteAll();
-                break;
+                return true;
             case DeleteBookAll:
                 RealmManager.getBookDao().deleteAll();
-                break;
+                return true;
             case DeleteBoxAll:
                 RealmManager.getBoxDao().deleteAll();
-                break;
+                return true;
             case DeleteItemPosAll:
                 RealmManager.getItemPosDao().deleteAll();
-                break;
+                return true;
 
             case IconsShowAll:
                 UIconWindows.getPublicInstance().showAllIconsInfo();
-                break;
+                return true;
         }
+        return false;
     }
 
-    public void UButtonLongClick(int id) {
+    public boolean UButtonLongClick(int id) {
+        return false;
     }
 
     /**

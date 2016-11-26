@@ -7,8 +7,8 @@ import android.graphics.RectF;
 import android.util.Log;
 
 interface UButtonCallbacks {
-    void UButtonClick(int id);
-    void UButtonLongClick(int id);
+    boolean UButtonClick(int id);
+    boolean UButtonLongClick(int id);
 }
 
 

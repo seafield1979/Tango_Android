@@ -20,7 +20,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     /**
      * Enums
      */
-    enum CloseButtonPos {
+    enum CloseIconPos {
         LeftTop,
         RightTop
     }
@@ -30,7 +30,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * Consts
      */
     public static final String TAG = "UWindow";
-    private static final int CloseButtonId = 1000123;
+    public static final int CloseButtonId = 1000123;
 
     protected static final int SCROLL_BAR_W = 100;
 
@@ -49,7 +49,8 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     protected PointF contentTop = new PointF();  // 画面に表示する領域の左上の座標
     protected UScrollBar mScrollBarH;
     protected UScrollBar mScrollBarV;
-    protected UButtonClose closeButton;         // 閉じるボタン
+    protected UButtonClose closeIcon;            // 閉じるボタン
+    protected CloseIconPos closeIconPos;     // 閉じるボタンの位置
 
     public boolean isShow() {
         return isShow;
@@ -180,6 +181,9 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
             mScrollBarH.updateSize(width, height);
             contentTop.x = mScrollBarH.updateContent(contentSize);
         }
+
+        // 閉じるボタン
+        updateCloseIconPos();
     }
 
     /**
@@ -230,8 +234,8 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      */
     public void drawFrame(Canvas canvas, Paint paint) {
         // Close Button
-        if (closeButton != null) {
-            closeButton.draw(canvas, paint, pos);
+        if (closeIcon != null) {
+            closeIcon.draw(canvas, paint, pos);
         }
 
         // スクロールバー
@@ -287,8 +291,8 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * @return true:再描画
      */
     public boolean touchEvent(ViewTouch vt) {
-        if (closeButton != null) {
-            if (closeButton.touchEvent(vt, pos)) {
+        if (closeIcon != null) {
+            if (closeIcon.touchEvent(vt, pos)) {
                 return true;
             }
         }
@@ -309,23 +313,33 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * アイコンタイプの閉じるボタンを追加する
      */
     protected void addCloseIcon() {
-        this.addCloseIcon(CloseButtonPos.LeftTop);
+        this.addCloseIcon(CloseIconPos.LeftTop);
     }
-    protected void addCloseIcon(CloseButtonPos pos) {
-        if (closeButton != null) return;
+    protected void addCloseIcon(CloseIconPos pos) {
+        if (closeIcon != null) return;
+
+        closeIconPos = pos;
+
+        closeIcon = new UButtonClose(this, UButtonType.Press, CloseButtonId, 0, 0, 0,
+                Color.rgb(255,0,0));
+        updateCloseIconPos();
+    }
+
+    /**
+     * 閉じるボタンの座標を変更
+     */
+    protected void updateCloseIconPos() {
+        if (closeIcon == null) return;
 
         float x, y;
         y = UButtonClose.BUTTON_RADIUS * 2;
-
-        if (pos == CloseButtonPos.LeftTop) {
+        if (closeIconPos == CloseIconPos.LeftTop) {
             x = UButtonClose.BUTTON_RADIUS * 2;
         } else {
             x = size.width - UButtonClose.BUTTON_RADIUS * 2;
         }
 
-        closeButton = new UButtonClose(this, UButtonType.Press, CloseButtonId, 0,
-                x, y,
-                Color.rgb(255,0,0));
+        closeIcon.setPos(x, y);
     }
 
     /**
@@ -339,18 +353,19 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * UButtonCallbacks
      */
 
-    public void UButtonClick(int id) {
+    public boolean UButtonClick(int id) {
         switch (id) {
             case CloseButtonId:
                 // 閉じるボタンを押したら自身のWindowを閉じてから呼び出し元の閉じる処理を呼び出す
+                closeWindow();
                 if (windowCallbacks != null) {
-                    closeWindow();
                     windowCallbacks.windowClose(this);
                 }
-                break;
+                return true;
         }
+        return false;
     }
-    public void UButtonLongClick(int id) {
-
+    public boolean UButtonLongClick(int id) {
+        return false;
     }
 }

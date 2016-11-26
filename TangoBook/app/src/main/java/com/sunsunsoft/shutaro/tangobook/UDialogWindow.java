@@ -62,8 +62,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     protected DialogType type;
     protected DialogPosType posType;
     protected ButtonDir buttonDir;
-    protected PointF dialogPos;
-    protected Size dialogSize;
 
     protected String title;
     protected String message;
@@ -117,7 +115,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                          int textColor, int dialogColor)
     {
         super(null, DrawPriority.Dialog.p(), x, y, screenW, screenH, dialogColor);
-        dialogSize = new Size(screenW - MARGIN_H * 2, screenH - MARGIN_H * 2);
+        size = new Size(screenW - MARGIN_H * 2, screenH - MARGIN_H * 2);
         this.type = type;
         this.posType = posType;
         this.buttonDir = dir;
@@ -129,11 +127,11 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         this.isAnimation = isAnimation;
 
         if (posType == DialogPosType.Center) {
-            dialogPos = new PointF(
-                    (screenW - dialogSize.width) / 2,
-                    (screenH - dialogSize.height) / 2 );
+            pos = new PointF(
+                    (screenW - size.width) / 2,
+                    (screenH - size.height) / 2 );
         } else {
-            dialogPos = new PointF(x,y);
+            pos = new PointF(x,y);
         }
     }
 
@@ -198,8 +196,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     }
 
     public void setDialogPosCenter() {
-        pos.x = (size.width - dialogSize.width) / 2;
-        pos.y = (size.height - dialogSize.height) / 2;
+        pos.x = (size.width - size.width) / 2;
+        pos.y = (size.height - size.height) / 2;
     }
 
     public boolean doAction() {
@@ -291,8 +289,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         if (title != null && titleView == null) {
             titleView = UTextView.createInstance(title, 70, 0, UDraw.UAlignment.CenterX,
                     canvas.getWidth(), true,
-                    dialogSize.width / 2, y,
-                    dialogSize.width - 100, color, 0);
+                    size.width / 2, y,
+                    size.width - 100, color, 0);
             Size titleSize = titleView.getTextSize(getWidth());
             y += titleSize.height + BUTTON_MARGIN_H;
         }
@@ -301,8 +299,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             messageView = UTextView.createInstance(message, MESSAGE_TEXT_SIZE, 0,
                     UDraw.UAlignment.CenterX,
                     canvas.getWidth(), true,
-                    dialogSize.width / 2, y,
-                    dialogSize.width - 100, color, 0);
+                    size.width / 2, y,
+                    size.width - 100, color, 0);
             Size messageSize = messageView.getTextSize(getWidth());
             y += messageSize.height + BUTTON_MARGIN_H;
         }
@@ -322,7 +320,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                 }
             }
 
-            int buttonW = (dialogSize.width - (((num + 1) * BUTTON_MARGIN_H) + imagesWidth)) / (num - imageNum);
+            int buttonW = (size.width - (((num + 1) * BUTTON_MARGIN_H) + imagesWidth)) / (num - imageNum);
             float x = BUTTON_MARGIN_H;
             int heightMax = 0;
             int _height;
@@ -351,20 +349,20 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             for (int i=0; i<num; i++) {
                 UButton button = buttons.get(i);
                 if (button instanceof UButtonImage) {
-                    button.setPos((dialogSize.width - button.size.width) / 2, y);
+                    button.setPos((size.width - button.size.width) / 2, y);
                     y += button.size.height + BUTTON_MARGIN_V;
                 } else {
                     button.setPos(BUTTON_MARGIN_H, y);
-                    button.setSize(dialogSize.width - BUTTON_MARGIN_H * 2, BUTTON_H);
+                    button.setSize(size.width - BUTTON_MARGIN_H * 2, BUTTON_H);
                     y += BUTTON_H + BUTTON_MARGIN_V;
                 }
             }
         }
-        dialogSize.height = y;
+        size.height = y;
 
         // センタリング
-        dialogPos.x = (size.width - dialogSize.width) / 2;
-        dialogPos.y = (size.height - dialogSize.height) / 2;
+        pos.x = (size.width - size.width) / 2;
+        pos.y = (size.height - size.height) / 2;
     }
 
     /**
@@ -409,8 +407,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                 ratio = (float)Math.cos(animeRatio * 90 * RAD);
                 ULog.print(TAG, "cos ratio:" + ratio);
             }
-            float width = dialogSize.width * ratio;
-            float height = dialogSize.height * ratio;
+            float width = size.width * ratio;
+            float height = size.height * ratio;
             float x = (size.width - width) / 2;
             float y = (size.height - height) / 2;
             RectF _rect = new RectF(x, y, x + width, y + height);
@@ -421,7 +419,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             UDraw.drawRoundRectFill(canvas, paint, getDialogRect(), 20, dialogColor);
 
             // Title, Message
-            PointF _offset = dialogPos;
+            PointF _offset = pos;
             if (titleView != null) {
                 titleView.draw(canvas, paint, _offset);
             }
@@ -437,8 +435,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     }
 
     public RectF getDialogRect() {
-        return new RectF(dialogPos.x, dialogPos.y, dialogPos.x + dialogSize.width, dialogPos
-                .y + dialogSize.height);
+        return new RectF(pos.x, pos.y, pos.x + size.width, pos.y + size.height);
     }
 
     /**
@@ -447,7 +444,11 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * @return
      */
     public boolean touchEvent(ViewTouch vt) {
-        PointF offset = dialogPos;
+        PointF offset = pos;
+
+        if (super.touchEvent(vt)) {
+            return true;
+        }
 
         for (UButton button : buttons) {
             if (button.touchEvent(vt, offset)) {
@@ -492,18 +493,23 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     /**
      * UButtonCallbacks
      */
-    public void UButtonClick(int id) {
+    public boolean UButtonClick(int id) {
         switch(id) {
+            case CloseButtonId:
             case CloseDialogId:
                 if (isAnimation) {
                     startClosing();
                 } else {
                     closeDialog();
                 }
-                break;
+                return true;
         }
+        if (super.UButtonClick(id)) {
+            return true;
+        }
+        return false;
     }
-    public void UButtonLongClick(int id) {
-
+    public boolean UButtonLongClick(int id) {
+        return false;
     }
 }

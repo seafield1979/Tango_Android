@@ -203,6 +203,16 @@ public class UDrawManager {
         }
         return false;
     }
+
+    /**
+     * 全ての描画オブジェクト情報を出力する
+     */
+    public void showAllList() {
+        for (DrawList list : lists.descendingMap().values()) {
+            ULog.print(TAG, "- " + list.toString());
+            list.showAllDrawable();
+        }
+    }
 }
 
 /**
@@ -274,8 +284,11 @@ class DrawList
                 allDone = false;
             }
             ULog.count(UDrawManager.TAG + "_" + priority);
+
             PointF offset = obj.getDrawOffset();
             obj.draw(canvas, paint, offset);
+            ULog.print(UDrawManager.TAG, "draw:" + obj.toString());
+
             drawId(canvas, paint, obj.getRect(), priority);
 
             if (priority == UIconWindow.DRAG_ICON_PRIORITY) {
@@ -334,6 +347,8 @@ class DrawList
 
         for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();){
             UDrawable obj = (UDrawable)it.previous();
+            if (!obj.isShow) continue;
+            ULog.print(UDrawManager.TAG, "touchEvent:" + obj.toString());
             if (obj.touchEvent(vt)) {
                 if (vt.type == TouchType.Touch) {
                     manager.setTouchingObj(obj);
@@ -343,5 +358,14 @@ class DrawList
             }
         }
         return false;
+    }
+
+    /**
+     * for Debug
+     */
+    public void showAllDrawable() {
+        for (UDrawable obj : list) {
+            ULog.print(UDrawManager.TAG, obj.toString() + " isShow:" + obj.isShow);
+        }
     }
 }

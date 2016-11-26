@@ -34,7 +34,8 @@ enum MenuItemId {
     Debug2,
     Debug3,
     Debug4,
-    Debug5
+    Debug5,
+    Debug6
 }
 
 
@@ -121,6 +122,7 @@ public class UMenuBar extends UWindow {
         addMenuItem(item, MenuItemId.Debug3, R.drawable.debug);
         addMenuItem(item, MenuItemId.Debug4, R.drawable.debug);
         addMenuItem(item, MenuItemId.Debug5, R.drawable.debug);
+        addMenuItem(item, MenuItemId.Debug6, R.drawable.debug);
 
         mDrawList = UDrawManager.getInstance().addDrawable(this);
         updateBGSize();

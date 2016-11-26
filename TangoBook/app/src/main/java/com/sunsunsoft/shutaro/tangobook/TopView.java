@@ -291,6 +291,9 @@ public class TopView extends View
                 initWindows(getWidth(), getHeight());
                 invalidate();
                 break;
+            case Debug6:
+                UDrawManager.getInstance().showAllList();
+                break;
         }
         ULog.print(TAG, "menu item clicked " + id);
     }
@@ -373,26 +376,26 @@ public class TopView extends View
             case Book:
                 // 配下のアイコンをSubWindowに表示する
                 if (icon instanceof IconBook) {
-                    UIconWindow window = mIconWindows.getSubWindow();
-                    window.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
-
-                    // SubWindowを画面外から移動させる
-                    mIconWindows.showWindow(window, true);
-                    invalidate();
+//                    UIconWindow window = mIconWindows.getSubWindow();
+//                    window.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
+//
+//                    // SubWindowを画面外から移動させる
+//                    mIconWindows.showWindow(window, true);
+//                    invalidate();
                 }
                 break;
-            case Box: {
-                // 配下のアイコンをSubWindowに表示する
-                if (icon instanceof IconBox) {
-                    UIconWindow window = mIconWindows.getSubWindow();
-                    window.setIcons(TangoParentType.Box, icon.getTangoItem().getId());
-
-                    // SubWindowを画面外から移動させる
-                    mIconWindows.showWindow(window, true);
-                    invalidate();
-                }
-            }
-            break;
+//            case Box: {
+//                // 配下のアイコンをSubWindowに表示する
+//                if (icon instanceof IconBox) {
+//                    UIconWindow window = mIconWindows.getSubWindow();
+//                    window.setIcons(TangoParentType.Box, icon.getTangoItem().getId());
+//
+//                    // SubWindowを画面外から移動させる
+//                    mIconWindows.showWindow(window, true);
+//                    invalidate();
+//                }
+//            }
+//            break;
         }
     }
     public void longClickIcon(UIcon icon) {
@@ -434,11 +437,11 @@ public class TopView extends View
     /**
      * UButtonCallbacks
      */
-    public void UButtonClick(int id) {
-
+    public boolean UButtonClick(int id) {
+        return false;
     }
-    public void UButtonLongClick(int id) {
-
+    public boolean UButtonLongClick(int id) {
+        return false;
     }
 
     /**
