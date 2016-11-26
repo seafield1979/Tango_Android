@@ -259,7 +259,7 @@ public class UIconWindow extends UWindow {
             instance.type = WindowType.Home;
         } else {
             instance.type = WindowType.Sub;
-            instance.addCloseButton();
+            instance.addCloseIcon();
         }
         instance.mIconManager = UIconManager.createInstance(parent, instance, iconCallbacks);
         instance.windowCallbacks = windowCallbacks;

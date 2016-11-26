@@ -31,7 +31,7 @@ public class UButton extends UDrawable {
      */
     public static final String TAG = "UButton";
     protected static final int PRESS_Y = 12;
-    protected static final int BUTTON_RADIUS = 20;
+    protected static final int BUTTON_RADIUS = 16;
 
     /**
      * Member Variables

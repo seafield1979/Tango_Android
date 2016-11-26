@@ -17,7 +17,7 @@ public class UButtonClose extends UButton {
      * Consts
      */
     private static final int X_LINE_WIDTH = 15;
-    private static final int RADIUS = 60;
+    private static final int RADIUS = 50;
 
     /**
      * Member Variables

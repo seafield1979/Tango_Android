@@ -29,11 +29,17 @@ enum WindowType {
 
 public class TopView extends View
         implements View.OnTouchListener, UMenuItemCallbacks,
-        UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks,
-        EditCardDialogCallbacks, EditBookDialogCallbacks {
+        UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks, UButtonCallbacks,
+        EditCardDialogCallbacks, EditBookDialogCallbacks, UDialogCallbacks {
 
+    /**
+     * Constants
+     */
     public static final String TAG = "TopView";
 
+    /**
+     * Member varialbes
+     */
     // Windows
     private UWindow[] mWindows = new UWindow[WindowType.values().length];
     // UIconWindow
@@ -54,13 +60,17 @@ public class TopView extends View
     // クリック判定の仕組み
     private ViewTouch vt = new ViewTouch(this);
 
+
+    private IconInfoDialog mIconInfoDlg;
+
     private Context mContext;
     private NestedScrollingParent mNestedScrollingParent;
     private Paint paint = new Paint();
 
 
-
-    // get/set
+    /**
+     * Get/Set
+     */
     public TopView(Context context) {
         this(context, null);
     }
@@ -337,8 +347,6 @@ public class TopView extends View
     }
 
 
-
-
     /**
      * UIconCallbacks
      */
@@ -346,6 +354,21 @@ public class TopView extends View
         ULog.print(TAG, "clickIcon");
         switch(icon.type) {
             case Card:
+            {
+                if (mIconInfoDlg == null) {
+                    int x = (int) icon.getX();
+                    int y = (int) icon.getY();
+                    TangoCard card = (TangoCard) icon.getTangoItem();
+
+                    mIconInfoDlg = CardIconInfoDialog.createInstance( this, this, this,
+                            x, y, getWidth(), getHeight(), card);
+
+                } else {
+                    mIconInfoDlg.closeDialog();
+                    mIconInfoDlg = null;
+                }
+                invalidate();
+            }
                 break;
             case Book:
                 // 配下のアイコンをSubWindowに表示する
@@ -402,6 +425,9 @@ public class TopView extends View
                 mIconWindows.hideWindow(_window, true);
                 break;
             }
+        }
+        if (mIconInfoDlg == window) {
+            mIconInfoDlg = null;
         }
     }
 
@@ -478,5 +504,14 @@ public class TopView extends View
     }
     public void cancelEditBook() {
 
+    }
+
+    /**
+     * UDialogCallbacks
+     */
+    public void dialogClosed(UDialogWindow dialog) {
+        if (dialog == mIconInfoDlg) {
+            mIconInfoDlg = null;
+        }
     }
 }

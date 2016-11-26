@@ -21,8 +21,12 @@ public class RealmManager {
     private static TangoBookDao bookDao;
     private static TangoBoxDao boxDao;
     private static TangoItemPosDao itemPosDao;
+    private static boolean initFlag;
 
     public static void initRealm(Context context) {
+        if (initFlag) return;
+        initFlag = true;
+
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(context)
                 .schemaVersion(latestVersion)
                 .migration(new TangoMigration())

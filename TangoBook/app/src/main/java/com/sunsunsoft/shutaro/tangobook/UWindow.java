@@ -17,6 +17,14 @@ interface UWindowCallbacks {
  * 座標、サイズを持ち自由に配置が行える
  */
 abstract public class UWindow extends UDrawable implements UButtonCallbacks{
+    /**
+     * Enums
+     */
+    enum CloseButtonPos {
+        LeftTop,
+        RightTop
+    }
+
 
     /**
      * Consts
@@ -180,7 +188,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     public void closeWindow() {
         // 描画オブジェクトから削除する
         if (drawList != null) {
-//            UDrawManager.getInstance().removeDrawable(this);
+            UDrawManager.getInstance().removeDrawable(this);
 //            drawList = null;
         }
     }
@@ -298,13 +306,25 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     }
 
     /**
-     * 閉じるボタンを追加する
+     * アイコンタイプの閉じるボタンを追加する
      */
-    protected void addCloseButton() {
+    protected void addCloseIcon() {
+        this.addCloseIcon(CloseButtonPos.LeftTop);
+    }
+    protected void addCloseIcon(CloseButtonPos pos) {
         if (closeButton != null) return;
 
+        float x, y;
+        y = UButtonClose.BUTTON_RADIUS * 2;
+
+        if (pos == CloseButtonPos.LeftTop) {
+            x = UButtonClose.BUTTON_RADIUS * 2;
+        } else {
+            x = size.width - UButtonClose.BUTTON_RADIUS * 2;
+        }
+
         closeButton = new UButtonClose(this, UButtonType.Press, CloseButtonId, 0,
-                UButtonClose.BUTTON_RADIUS * 2, UButtonClose.BUTTON_RADIUS * 2,
+                x, y,
                 Color.rgb(255,0,0));
     }
 

@@ -108,22 +108,48 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     /**
      * Constructor
      */
-    public UDialogWindow(int x, int y, int width, int height, int color) {
-        super(null, DrawPriority.Dialog.p(), 0, 0, width, height, color);
+    public UDialogWindow(DialogType type, UButtonCallbacks buttonCallbacks,
+                         UDialogCallbacks dialogCallbacks,
+                         ButtonDir dir, DialogPosType posType,
+                         boolean isAnimation,
+                         float x, float y,
+                         int screenW, int screenH,
+                         int textColor, int dialogColor)
+    {
+        super(null, DrawPriority.Dialog.p(), x, y, screenW, screenH, dialogColor);
+        dialogSize = new Size(screenW - MARGIN_H * 2, screenH - MARGIN_H * 2);
+        this.type = type;
+        this.posType = posType;
+        this.buttonDir = dir;
+        this.paint = new Paint();
+        this.textColor = textColor;
+        this.dialogColor = dialogColor;
+        this.buttonCallbacks = buttonCallbacks;
+        this.dialogCallbacks = dialogCallbacks;
+        this.isAnimation = isAnimation;
 
+        if (posType == DialogPosType.Center) {
+            dialogPos = new PointF(
+                    (screenW - dialogSize.width) / 2,
+                    (screenH - dialogSize.height) / 2 );
+        } else {
+            dialogPos = new PointF(x,y);
+        }
     }
 
     // 座標指定タイプ
     public static UDialogWindow createInstance(DialogType type, UButtonCallbacks buttonCallbacks,
                                                UDialogCallbacks dialogCallbacks,
-                                               ButtonDir dir,
+                                               ButtonDir dir, DialogPosType posType,
                                                boolean isAnimation,
                                                float x, float y,
                                                int screenW, int screenH,
                                                int textColor, int dialogColor)
     {
-        UDialogWindow instance = createInstance(type, buttonCallbacks,
-                dialogCallbacks, dir, isAnimation, screenW, screenH, textColor, dialogColor);
+        UDialogWindow instance = createInstance(type,
+                buttonCallbacks, dialogCallbacks,
+                dir, posType, isAnimation,
+                screenW, screenH, textColor, dialogColor);
         instance.posType = DialogPosType.Point;
         instance.pos.x = x;
         instance.pos.y = y;
@@ -134,17 +160,16 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     // 中央に表示するタイプ
     public static UDialogWindow createInstance(DialogType type, UButtonCallbacks buttonCallbacks,
                                                UDialogCallbacks dialogCallbacks,
-                                               ButtonDir dir,
+                                               ButtonDir dir, DialogPosType posType,
                                                boolean isAnimation,
                                                int screenW, int screenH,
                                                int textColor, int dialogColor)
     {
-        UDialogWindow instance = new UDialogWindow(0, 0, screenW, screenH, 0);
+        UDialogWindow instance = new UDialogWindow( type, buttonCallbacks,
+                dialogCallbacks, dir, posType, isAnimation, 0, 0, screenW, screenH,
+                textColor, dialogColor);
         // ダミーのサイズ
-        instance.dialogSize = new Size(screenW - MARGIN_H * 2, screenH - MARGIN_H * 2);
-        instance.dialogPos = new PointF(
-                (screenW - instance.dialogSize.width) / 2,
-                (screenH - instance.dialogSize.height) / 2 );
+
         instance.type = type;
         instance.posType = DialogPosType.Center;
         instance.buttonDir = dir;
@@ -194,14 +219,20 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     public void closeDialog() {
         isShow = false;
         UDrawManager.getInstance().removeDrawable(this);
-        dialogCallbacks.dialogClosed(this);
+        if (dialogCallbacks != null) {
+            dialogCallbacks.dialogClosed(this);
+        }
     }
 
     /**
      * 閉じるアニメーション開始
      */
     public void startClosing() {
-        startAnimation(AnimationType.Closing);
+        if (isAnimation) {
+            startAnimation(AnimationType.Closing);
+        } else {
+            closeDialog();
+        }
     }
 
     /**
@@ -254,7 +285,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * レイアウトを更新
      * ボタンの数によってレイアウトは自動で変わる
      */
-    private void updateLayout(Canvas canvas) {
+    protected void updateLayout(Canvas canvas) {
         // タイトル、メッセージ
         int y = TEXT_MARGIN_V;
         if (title != null && titleView == null) {
@@ -355,7 +386,10 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                     .height), bgColor);
         }
 
-        drawContent(canvas, paint);
+        super.draw(canvas, paint, offset);
+
+
+//        drawContent(canvas, paint);
     }
 
     /**
@@ -422,9 +456,9 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         }
 
         // 範囲外をタッチしたら閉じる
-        if (vt.type == TouchType.Touch) {
+        if (type == DialogType.Normal) {
+            if (vt.type == TouchType.Touch) {
             if (!getDialogRect().contains(vt.touchX(), vt.touchY())) {
-                if (type == DialogType.Normal) {
                     startClosing();
                     return true;
                 }
@@ -437,7 +471,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                     vt.type == TouchType.Click ||
                     vt.type == TouchType.LongClick )
             {
-                ULog.print(TAG, "hoge");
                 return true;
             }
         }

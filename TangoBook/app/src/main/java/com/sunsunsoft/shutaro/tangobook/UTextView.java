@@ -74,10 +74,13 @@ public class UTextView extends UDrawable {
 
         // テキストを描画した時のサイズを取得
         Size size = getTextSize(canvasW);
-        if (isDrawBG) {
-            size = addBGPadding(size);
+        size = addBGPadding(size);
+
+        if (width == 0) {
+            setSize(size.width, size.height);
+        } else {
+            setSize(width, size.height);
         }
-        setSize(size.width, size.height);
     }
 
     public static UTextView createInstance(String text, int textSize, int priority,

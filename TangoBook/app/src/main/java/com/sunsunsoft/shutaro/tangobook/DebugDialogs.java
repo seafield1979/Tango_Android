@@ -124,9 +124,8 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
 
         // Daoデバッグ用のダイアログを表示
         mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                this,
-                this,
-                UDialogWindow.ButtonDir.Vertical,
+                this, this,
+                UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
                 false,
                 mParentView.getWidth(), mParentView.getHeight(),
                 Color.rgb(200,100,100), Color.WHITE);
