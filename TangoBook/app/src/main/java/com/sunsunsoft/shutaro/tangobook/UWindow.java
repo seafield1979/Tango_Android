@@ -38,7 +38,6 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * Member Variables
      */
     protected UWindowCallbacks windowCallbacks;
-    protected boolean isShow = true;
     protected int bgColor;
 
     /**
@@ -67,7 +66,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
             updateRect();
         }
     }
-
+    
     public PointF getContentTop() {
         return contentTop;
     }

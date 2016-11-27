@@ -134,7 +134,7 @@ public class TopView extends View
         // ULogWindow
         if (mLogWin == null) {
             mLogWin = ULogWindow.createInstance(getContext(), this, LogWindowType.AutoDisappear,
-                    0, 0, width / 2, height);
+                    0, 0, width, height);
             mWindows[WindowType.Log.ordinal()] = mLogWin;
         }
     }
@@ -292,7 +292,7 @@ public class TopView extends View
                 invalidate();
                 break;
             case Debug6:
-                UDrawManager.getInstance().showAllList();
+                UDrawManager.getInstance().showAllList(true, false);
                 break;
         }
         ULog.print(TAG, "menu item clicked " + id);

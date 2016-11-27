@@ -207,10 +207,11 @@ public class UDrawManager {
     /**
      * 全ての描画オブジェクト情報を出力する
      */
-    public void showAllList() {
+    public void showAllList(boolean ascending, boolean isShowOnly) {
+        ULog.print(TAG, " ++ showAllList ++");
         for (DrawList list : lists.descendingMap().values()) {
-            ULog.print(TAG, "- " + list.toString());
-            list.showAllDrawable();
+            ULog.print(TAG, " + priority:" + list.getPriority());
+            list.showAll(ascending, isShowOnly);
         }
     }
 }
@@ -287,7 +288,6 @@ class DrawList
 
             PointF offset = obj.getDrawOffset();
             obj.draw(canvas, paint, offset);
-            ULog.print(UDrawManager.TAG, "draw:" + obj.toString());
 
             drawId(canvas, paint, obj.getRect(), priority);
 
@@ -348,7 +348,6 @@ class DrawList
         for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();){
             UDrawable obj = (UDrawable)it.previous();
             if (!obj.isShow) continue;
-            ULog.print(UDrawManager.TAG, "touchEvent:" + obj.toString());
             if (obj.touchEvent(vt)) {
                 if (vt.type == TouchType.Touch) {
                     manager.setTouchingObj(obj);
@@ -363,9 +362,30 @@ class DrawList
     /**
      * for Debug
      */
-    public void showAllDrawable() {
-        for (UDrawable obj : list) {
-            ULog.print(UDrawManager.TAG, obj.toString() + " isShow:" + obj.isShow);
+    /**
+     * 描画オブジェクトをすべて出力する
+     */
+    public void showAll(boolean ascending, boolean isShowOnly) {
+        // パッケージ名を除去
+        final String packageName = DrawList.class.getPackage().getName();
+
+        if (ascending) {
+            for (UDrawable obj : list) {
+                if (!isShowOnly || obj.isShow) {
+                    String objStr = obj.toString();
+                    objStr = objStr.replace(packageName + ".", "");
+                    ULog.print(UDrawManager.TAG, objStr + " isShow:" + obj.isShow);
+                }
+            }
+        } else {
+            for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();){
+                UDrawable obj = (UDrawable)it.previous();
+                if (!isShowOnly || obj.isShow) {
+                    String objStr = obj.toString();
+                    objStr = objStr.replace(packageName + ".", "");
+                    ULog.print(UDrawManager.TAG, objStr + " isShow:" + obj.isShow);
+                }
+            }
         }
     }
 }

@@ -36,7 +36,8 @@ public class ULog {
         if (enable != null && !enable) {
             // 出力しない
         } else {
-            Log.v(tag, msg);
+//            Log.v(tag, msg);
+            System.out.println(msg);
         }
     }
 

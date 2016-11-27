@@ -19,7 +19,8 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
     enum DialogType {
         SelectDao,
         DeleteDao,
-        Icons
+        Icons,
+        DrawManager
     }
 
     // buttonIds
@@ -38,6 +39,11 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
 
         // Iconsのボタン
         IconsShowAll(301),
+
+        // UDrawManagerのボタン
+        DrawManagerShowAll(401),
+        DrawManagerShowAllReverse(402),
+        DrawManagerShowDrawables(403),
         None(0)
         ;
 
@@ -71,6 +77,15 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
         static List<DialogButtons> iconsValues() {
             LinkedList<DialogButtons> ids = new LinkedList<>();
             ids.add(IconsShowAll);
+            return ids;
+        }
+
+        // DrawManager
+        static List<DialogButtons> drawManagerValues() {
+            LinkedList<DialogButtons> ids = new LinkedList<>();
+            ids.add(DrawManagerShowAll);
+            ids.add(DrawManagerShowAllReverse);
+            ids.add(DrawManagerShowDrawables);
             return ids;
         }
 
@@ -178,6 +193,19 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
                 mDialog.setDrawPriority(DrawPriority.Dialog.p());
             }
                 break;
+            case DrawManager:
+
+                // タイトル
+                mDialog.setTitle("DrawManager");
+                // ボタンを追加
+                for (DialogButtons id : DialogButtons.drawManagerValues()) {
+                    mDialog.addButton(id.getInt(), id.toString(), Color.WHITE, Color.rgb(150, 80,
+                            80));
+                }
+                mDialog.addCloseButton(null);
+                // 描画マネージャに登録
+                mDialog.setDrawPriority(DrawPriority.Dialog.p());
+                break;
         }
 
     }
@@ -192,6 +220,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
     public boolean UButtonClick(int id) {
 
         switch (DialogButtons.toEnum(id)) {
+            // Dao
             case SelectCard:
                 RealmManager.getCardDao().selectAll();
                 return true;
@@ -205,6 +234,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
                 RealmManager.getItemPosDao().selectAll();
                 return true;
 
+            // Delete
             case DeleteCardAll:
                 RealmManager.getCardDao().deleteAll();
                 return true;
@@ -218,9 +248,21 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
                 RealmManager.getItemPosDao().deleteAll();
                 return true;
 
+            // Icons
             case IconsShowAll:
                 UIconWindows.getPublicInstance().showAllIconsInfo();
                 return true;
+
+            // DrawManager
+            case DrawManagerShowAll:
+                UDrawManager.getInstance().showAllList(true, false);
+                break;
+            case DrawManagerShowAllReverse:
+                UDrawManager.getInstance().showAllList(false, false);
+                break;
+            case DrawManagerShowDrawables:
+                UDrawManager.getInstance().showAllList(false, true);
+                break;
         }
         return false;
     }

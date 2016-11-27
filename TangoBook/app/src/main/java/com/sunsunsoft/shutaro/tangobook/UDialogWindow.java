@@ -79,6 +79,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     protected boolean isAnimation;
     protected Paint paint;
 
+    protected Size screenSize = new Size();
+
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
 
     // ボタン
@@ -126,13 +128,9 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         this.dialogCallbacks = dialogCallbacks;
         this.isAnimation = isAnimation;
 
-        if (posType == DialogPosType.Center) {
-            pos = new PointF(
-                    (screenW - size.width) / 2,
-                    (screenH - size.height) / 2 );
-        } else {
-            pos = new PointF(x,y);
-        }
+        screenSize.width = screenW;
+        screenSize.height = screenH;
+
     }
 
     // 座標指定タイプ
@@ -361,8 +359,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         size.height = y;
 
         // センタリング
-        pos.x = (size.width - size.width) / 2;
-        pos.y = (size.height - size.height) / 2;
+        pos.x = (screenSize.width - size.width) / 2;
+        pos.y = (screenSize.height - size.height) / 2;
     }
 
     /**
@@ -380,8 +378,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
         // BG
         if (type == DialogType.Mordal) {
-            UDraw.drawRectFill(canvas, paint, new Rect(0,0,size.width,size
-                    .height), bgColor);
+            UDraw.drawRectFill(canvas, paint,
+                    new Rect(0,0,screenSize.width, screenSize.height), bgColor);
         }
 
         super.draw(canvas, paint, offset);
