@@ -279,6 +279,8 @@ class DrawList
         // 分けるのが面倒なのでアニメーションと描画を同時に処理する
         boolean allDone = true;
         for (UDrawable obj : list) {
+            if (obj.isShow() == false) continue;
+
             Rect objRect = obj.getRect();
 
             if (obj.animate()) {

@@ -39,11 +39,6 @@ enum MenuItemId {
 }
 
 
-interface UMenuItemCallbacks {
-    void menuItemClicked(MenuItemId id);
-    void menuItemCallback2();
-}
-
 /**
  * メニューバー
  * メニューに表示する項目を管理する
@@ -101,28 +96,27 @@ public class UMenuBar extends UWindow {
         UMenuItem item2 = null;
 
         // Add
-        item = addTopMenuItem(TopMenu.Add, MenuItemId.AddTop, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.AddCard, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.AddBook, R.drawable.hogeman);
+        item = addTopMenuItem(TopMenu.Add, MenuItemId.AddTop, R.drawable.add);
+        addMenuItem(item, MenuItemId.AddCard, R.drawable.file);
+        addMenuItem(item, MenuItemId.AddBook, R.drawable.folder);
 
         // Sort
-        item = addTopMenuItem(TopMenu.Sort, MenuItemId.SortTop, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.Sort1, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.Sort2, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.Sort3, R.drawable.hogeman);
+        item = addTopMenuItem(TopMenu.Sort, MenuItemId.SortTop, R.drawable.sort);
+        addMenuItem(item, MenuItemId.Sort1, R.drawable.sort_by_alphabet2_asc);
+        addMenuItem(item, MenuItemId.Sort2, R.drawable.sort_by_alphabet2_desc);
+
         // ListType
-        item = addTopMenuItem(TopMenu.ListType, MenuItemId.ListTypeTop, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.ListType1, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.ListType2, R.drawable.hogeman);
-        addMenuItem(item, MenuItemId.ListType3, R.drawable.hogeman);
+        item = addTopMenuItem(TopMenu.ListType, MenuItemId.ListTypeTop, R.drawable.list);
+        addMenuItem(item, MenuItemId.ListType1, R.drawable.list1);
+        addMenuItem(item, MenuItemId.ListType2, R.drawable.grid_icons);
         // Debug
         item = addTopMenuItem(TopMenu.Debug, MenuItemId.DebugTop, R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug1, R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug2, R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug3, R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug4, R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug5, R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug6, R.drawable.debug);
+        addMenuItem(item, MenuItemId.Debug1, R.drawable.number_1);
+        addMenuItem(item, MenuItemId.Debug2, R.drawable.number_2);
+        addMenuItem(item, MenuItemId.Debug3, R.drawable.number_3);
+        addMenuItem(item, MenuItemId.Debug4, R.drawable.number_4);
+        addMenuItem(item, MenuItemId.Debug5, R.drawable.number_5);
+        addMenuItem(item, MenuItemId.Debug6, R.drawable.number_6);
 
         mDrawList = UDrawManager.getInstance().addDrawable(this);
         updateBGSize();
@@ -145,6 +139,7 @@ public class UMenuBar extends UWindow {
 
         topItems[topId.ordinal()] = item;
         items[menuId.ordinal()] = item;
+        item.setShow(true);
 
         // 座標設定
         item.setPos(MARGIN_LR + (UMenuItem.ITEM_W + MARGIN_LR) * topId.ordinal(), MARGIN_TOP);
@@ -164,6 +159,9 @@ public class UMenuBar extends UWindow {
         item.setCallbacks(mCallbackClass);
         item.setParentItem(parent);
         parent.addItem(item);
+
+        // 子要素は初期状態では非表示。オープン時に表示される
+        item.setShow(false);
 
         items[menuId.ordinal()] = item;
         return item;
@@ -278,7 +276,7 @@ public class UMenuBar extends UWindow {
 
         // トップのアイテムから描画
         for (UMenuItem item : topItems) {
-            if (item != null) {
+            if (item != null && item.isShow) {
                 item.draw(canvas, paint, pos);
             }
         }

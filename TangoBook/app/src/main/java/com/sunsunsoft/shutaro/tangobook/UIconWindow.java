@@ -254,7 +254,7 @@ public class UIconWindow extends UWindow {
                                              boolean isHome, WindowDir dir,
                                              float x, float y, int width, int height, int bgColor)
     {
-        UIconWindow instance = new UIconWindow(x, y, width, height, bgColor);
+        UIconWindow instance = new UIconWindow(0, 0, width, height, bgColor);
         if (isHome) {
             instance.type = WindowType.Home;
         } else {

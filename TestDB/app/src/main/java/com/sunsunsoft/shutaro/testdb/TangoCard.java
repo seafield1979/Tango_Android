@@ -12,7 +12,7 @@ import io.realm.annotations.Required;
  * 単語カード
  * RealmObjectのサブクラスなのでそのままテーブルとして使用される
  */
-public class TangoCard extends RealmObject implements TangoItem{
+public class TangoCard extends RealmObject implements TangoItem {
     @PrimaryKey
     private int id;
     @Required

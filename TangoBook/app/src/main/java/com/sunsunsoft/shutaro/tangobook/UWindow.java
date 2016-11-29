@@ -66,7 +66,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
             updateRect();
         }
     }
-    
+
     public PointF getContentTop() {
         return contentTop;
     }
