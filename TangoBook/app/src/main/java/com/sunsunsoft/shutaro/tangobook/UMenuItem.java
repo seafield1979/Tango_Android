@@ -137,7 +137,7 @@ public class UMenuItem extends UDrawable {
         if (childItems != null) {
             for (UMenuItem item : childItems) {
                 if (!item.isShow) continue;
-                
+
                 item.draw(canvas, paint, drawPos);
             }
         }

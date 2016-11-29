@@ -1311,6 +1311,4 @@ public class UIconWindow extends UWindow {
         mScrollBarH.setShow(false);
         mScrollBarV.setShow(false);
     }
-
-
 }

@@ -10,5 +10,8 @@ public class UDebug {
 
     public static boolean drawIconId = false;
 
+    // UDrawableオブジェクトの描画範囲をライン描画
+    public static boolean drawRectLine = true;
+
     public static boolean debugDAO = true;
 }

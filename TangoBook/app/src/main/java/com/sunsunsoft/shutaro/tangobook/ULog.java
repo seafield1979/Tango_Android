@@ -1,4 +1,5 @@
 package com.sunsunsoft.shutaro.tangobook;
+import android.graphics.Rect;
 import android.util.Log;
 import java.util.HashMap;
 
@@ -7,6 +8,8 @@ import java.util.HashMap;
  * タグ毎のON/OFFを設定できる
  */
 public class ULog {
+    public static final String TAG = "ULog";
+
     private static final boolean isCount = false;
 
     // タグ毎のON/OFF情報をMap(Dictionary)で持つ
@@ -85,4 +88,19 @@ public class ULog {
             showCount(tag);
         }
     }
+
+
+    /**
+     * Static Methods
+     */
+    public static void showRect(Rect rect) {
+        ULog.print(TAG, "Rect left:" + rect.left + " top:" + rect.top +
+                    " right:" + rect.right + " bottom:" + rect.bottom);
+    }
+
+    public static void showRectF(Rect rect) {
+        ULog.print(TAG, "Rect left:" + rect.left + " top:" + rect.top +
+                " right:" + rect.right + " bottom:" + rect.bottom);
+    }
+
 }

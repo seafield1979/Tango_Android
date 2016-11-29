@@ -5,13 +5,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
 import java.util.LinkedList;
 
 /**
- * カードアイコンを作成する
+ * カードアイコンをクリックした際に表示されるダイアログ
+ * カードの情報(WordA,WordB)とアクションアイコン(ActionIcons)を表示する
  */
 public class CardIconInfoDialog extends IconInfoDialog {
     /**
@@ -21,18 +23,28 @@ public class CardIconInfoDialog extends IconInfoDialog {
         Edit,
         MoveToTrash,
         Copy,
-        Favorite,
-        None
+        Favorite
         ;
 
-        public static int size() {
-            return values().length - 1;
-        }
+        private static final int[] iconImageIds = {
+                R.drawable.edit,
+                R.drawable.trash,
+                R.drawable.copy,
+                R.drawable.favorites
+        };
+
         public static ActionIcons toEnum(int value) {
             if (value >= values().length) {
-                return None;
+                return Edit;
             }
             return values()[value];
+        }
+
+        /**
+         * アイコン用の画像IDを取得
+         */
+        public int getImageId() {
+            return iconImageIds[this.ordinal()];
         }
     }
 
@@ -48,6 +60,7 @@ public class CardIconInfoDialog extends IconInfoDialog {
     private static final int ICON_W = 120;
     private static final int ICON_MARGIN_H = 30;
     private static final int MARGIN_V = 40;
+    private static final int MARGIN_H = 40;
     private static final int TEXT_SIZE = 50;
 
     private static final int TEXT_COLOR = Color.BLACK;
@@ -56,6 +69,9 @@ public class CardIconInfoDialog extends IconInfoDialog {
     /**
      * Member Variables
      */
+    private View mParentView;
+    private UButtonCallbacks mButtonCallbacks;
+    protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private UTextView textWordA;
     private UTextView textWordB;
     private TangoCard mCard;
@@ -69,28 +85,23 @@ public class CardIconInfoDialog extends IconInfoDialog {
      * Constructor
      */
     public CardIconInfoDialog(View parentView,
-                              UButtonCallbacks buttonCallbacks, UDialogCallbacks dialogCallbacks,
-                              ButtonDir dir,
+                              UButtonCallbacks buttonCallbacks, UWindowCallbacks windowCallbacks,
                               float x, float y,
-                              int screenW, int screenH,
-                              int textColor, int dialogColor)
+                              int color)
     {
-        // width, height はinit内で計算するのでここでは0を設定
-        super( buttonCallbacks, dialogCallbacks, dir, false, x, y,
-                screenW, screenH, textColor, dialogColor);
+        super( parentView, buttonCallbacks, windowCallbacks, x, y, color);
         mParentView = parentView;
+        mButtonCallbacks = buttonCallbacks;
     }
 
     public static CardIconInfoDialog createInstance(
             View parentView,
-            UButtonCallbacks buttonCallbacks, UDialogCallbacks dialogCallbacks,
+            UButtonCallbacks buttonCallbacks, UWindowCallbacks windowCallbacks,
             float x, float y,
-            int screenW, int screenH,
             TangoCard card)
     {
         CardIconInfoDialog instance = new CardIconInfoDialog( parentView,
-                buttonCallbacks, dialogCallbacks, ButtonDir.Horizontal, x, y,
-                screenW, screenH, TEXT_COLOR, BG_COLOR);
+                buttonCallbacks, windowCallbacks, x, y, BG_COLOR);
         instance.mCard = card;
 
         // 初期化処理
@@ -110,35 +121,20 @@ public class CardIconInfoDialog extends IconInfoDialog {
      * @param paint
      */
     public void drawContent(Canvas canvas, Paint paint) {
-        if (isAnimating) {
-            // Open/Close animatin
-            float ratio;
-            if (animationType == AnimationType.Opening) {
-                ratio = (float)Math.sin(animeRatio * 90 * RAD);
-                ULog.print(TAG, "ratio:" + ratio);
-            } else {
-                ratio = (float)Math.cos(animeRatio * 90 * RAD);
-                ULog.print(TAG, "cos ratio:" + ratio);
-            }
-            float width = size.width * ratio;
-            float height = size.height * ratio;
-            float x = (size.width - width) / 2;
-            float y = (size.height - height) / 2;
-            RectF _rect = new RectF(x, y, x + width, y + height);
-            UDraw.drawRoundRectFill(canvas, paint, _rect, 20, dialogColor);
-
-        } else {
-            // BG
-            UDraw.drawRoundRectFill(canvas, paint, getDialogRect(), 20, dialogColor);
-
-            textWordA.draw(canvas, paint, pos);
-            textWordB.draw(canvas, paint, pos);
-            // Buttons
-            for (UButtonImage button : imageButtons) {
-                button.draw(canvas, paint, pos);
-            }
+        if (isUpdate) {
+            isUpdate = false;
+            updateLayout(canvas);
         }
 
+        // BG
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20, bgColor);
+
+        textWordA.draw(canvas, paint, pos);
+        textWordB.draw(canvas, paint, pos);
+        // Buttons
+        for (UButtonImage button : imageButtons) {
+            button.draw(canvas, paint, pos);
+        }
     }
 
     /**
@@ -149,7 +145,8 @@ public class CardIconInfoDialog extends IconInfoDialog {
 
         int y = TOP_ITEM_Y;
 
-        int width = ICON_W * ActionIcons.size() + ICON_MARGIN_H * (ActionIcons.size() + 1);
+        int width = ICON_W * ActionIcons.values().length +
+                ICON_MARGIN_H * (ActionIcons.values().length + 1);
 
         // WordA
         textWordA = UTextView.createInstance( mCard.getWordA(), TEXT_SIZE, 0,
@@ -167,16 +164,16 @@ public class CardIconInfoDialog extends IconInfoDialog {
 
         // アクションボタン
         int x = ICON_MARGIN_H;
-        Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.hogeman);
-        Bitmap bmp2 = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.hogeman2);
+        for (ActionIcons icon : ActionIcons.values()) {
+            Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(),
+                    icon.getImageId());
 
-        for (int i=0; i<ActionIcons.size(); i++) {
             UButtonImage imageButton = UButtonImage.createButton( this,
-                            ActionIcons.Edit.ordinal(), 0,
+                            icon.ordinal(), 0,
                             x, y,
-                            ICON_W, ICON_W, bmp, bmp2);
+                            ICON_W, ICON_W, bmp, null);
             imageButtons.add(imageButton);
-            buttons.add(imageButton);
+            ULog.showRect(imageButton.getRect());
 
             x += ICON_W + ICON_MARGIN_H;
         }
@@ -191,6 +188,39 @@ public class CardIconInfoDialog extends IconInfoDialog {
         if (pos.y + size.height > mParentView.getHeight() - DLG_MARGIN) {
             pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
         }
+        updateRect();
+
+    }
+
+    public boolean touchEvent(ViewTouch vt) {
+        PointF offset = pos;
+
+        if (super.touchEvent(vt)) {
+            return true;
+        }
+
+        for (UButtonImage button : imageButtons) {
+            if (button.touchEvent(vt, offset)) {
+                return true;
+            }
+        }
+
+        // 範囲外をクリックしたら閉じる
+        if (vt.type == TouchType.Click) {
+
+            if (getRect().contains((int)vt.touchX(), (int)vt.touchY())) {
+
+            } else {
+                closeWindow();
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean doAction() {
+        return false;
     }
 
     /**
@@ -205,16 +235,17 @@ public class CardIconInfoDialog extends IconInfoDialog {
             return true;
         }
 
+        ULog.print(TAG, "UButtonCkick:" + id);
         switch(ActionIcons.toEnum(id)) {
             case Edit:
 
                 break;
-            case MoveToTrash:
-                break;
-            case Copy:
-                break;
-            case Favorite:
-                break;
+//            case MoveToTrash:
+//                break;
+//            case Copy:
+//                break;
+//            case Favorite:
+//                break;
         }
         return false;
     }

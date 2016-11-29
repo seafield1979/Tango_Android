@@ -30,7 +30,7 @@ enum WindowType {
 public class TopView extends View
         implements View.OnTouchListener, UMenuItemCallbacks,
         UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks, UButtonCallbacks,
-        EditCardDialogCallbacks, EditBookDialogCallbacks, UDialogCallbacks {
+        EditCardDialogCallbacks, EditBookDialogCallbacks {
 
     /**
      * Constants
@@ -59,7 +59,6 @@ public class TopView extends View
 
     // クリック判定の仕組み
     private ViewTouch vt = new ViewTouch(this);
-
 
     private IconInfoDialog mIconInfoDlg;
 
@@ -364,10 +363,10 @@ public class TopView extends View
                     TangoCard card = (TangoCard) icon.getTangoItem();
 
                     mIconInfoDlg = CardIconInfoDialog.createInstance( this, this, this,
-                            x, y, getWidth(), getHeight(), card);
+                            x, y,  card);
 
                 } else {
-                    mIconInfoDlg.closeDialog();
+                    mIconInfoDlg.closeWindow();
                     mIconInfoDlg = null;
                 }
                 invalidate();
@@ -509,12 +508,8 @@ public class TopView extends View
 
     }
 
+
     /**
-     * UDialogCallbacks
+     *
      */
-    public void dialogClosed(UDialogWindow dialog) {
-        if (dialog == mIconInfoDlg) {
-            mIconInfoDlg = null;
-        }
-    }
 }

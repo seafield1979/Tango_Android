@@ -2,9 +2,11 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  * Created by shutaro on 2016/11/17.
@@ -53,7 +55,6 @@ public class UButtonImage extends UButton {
      * Methods
      */
 
-
     /**
      * UDrawable
      */
@@ -72,21 +73,28 @@ public class UButtonImage extends UButton {
             _pos.y += offset.y;
         }
 
+        _image = image;
+        Rect _rect = new Rect((int)_pos.x, (int)_pos.y,
+                        (int)_pos.x + size.width,(int)_pos.y + size.height);
         if (isPressed) {
             if (pressedImage != null) {
                 _image = pressedImage;
             } else {
-                paint.setColor(0x80000000);
-                _image = image;
+                // BGの矩形を配置
+                UDraw.drawRoundRectFill(canvas, paint,
+                        new RectF(_rect.left - 10, _rect.top - 10,
+                                _rect.right + 10, _rect.bottom + 10),
+                        10, Color.argb(255,255,100,100));
             }
-        } else {
-            _image = image;
         }
 
         // 領域の幅に合わせて伸縮
         canvas.drawBitmap(_image, new Rect(0,0,_image.getWidth(), _image.getHeight()),
-                new Rect((int)_pos.x, (int)_pos.y, (int)_pos.x + size.width,(int)_pos.y + size.height),
+                _rect,
                 paint);
 
+        if (UDebug.drawRectLine) {
+            this.drawRectLine(canvas, paint, offset, Color.YELLOW);
+        }
     }
 }

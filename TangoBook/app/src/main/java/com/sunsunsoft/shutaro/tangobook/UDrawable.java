@@ -175,6 +175,17 @@ abstract public class UDrawable {
     abstract void draw(Canvas canvas, Paint paint, PointF offset);
 
     /**
+     * Rectをライン描画する for Debug
+     */
+    public void drawRectLine(Canvas canvas, Paint paint, PointF offset, int color) {
+        Rect _rect = new Rect(rect.left + (int)offset.x,
+                rect.top + (int)offset.y,
+                rect.right + (int)offset.x,
+                rect.bottom + (int)offset.y );
+        UDraw.drawRect(canvas, paint, _rect, 2, color);
+    }
+
+    /**
      * タッチ処理
      * @param vt
      * @return

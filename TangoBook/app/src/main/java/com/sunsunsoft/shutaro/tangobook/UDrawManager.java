@@ -20,7 +20,7 @@ enum DrawPriority {
     ;
     private final int priority;
 
-    private DrawPriority(final int priority) {
+    DrawPriority(final int priority) {
         this.priority = priority;
     }
 

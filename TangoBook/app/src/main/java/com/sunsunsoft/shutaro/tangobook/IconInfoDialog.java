@@ -5,7 +5,7 @@ import android.view.View;
 /**
  * アイコンをクリックしたときに表示されるダイアログ
  */
-abstract public class IconInfoDialog extends UDialogWindow{
+abstract public class IconInfoDialog extends UWindow{
     /**
      * Consts
      */
@@ -14,6 +14,7 @@ abstract public class IconInfoDialog extends UDialogWindow{
      * Member Variables
      */
     protected View mParentView;
+    protected UButtonCallbacks mButtonCallbacks;
 
     /**
      * Get/Set
@@ -24,16 +25,17 @@ abstract public class IconInfoDialog extends UDialogWindow{
      */
 
 
-    public IconInfoDialog(UButtonCallbacks buttonCallbacks, UDialogCallbacks dialogCallbacks,
-                          ButtonDir dir,
-                          boolean isAnimation,
+    public IconInfoDialog(View parentView,
+                        UButtonCallbacks buttonCallbacks, UWindowCallbacks windowCallbacks,
                           float x, float y,
-                          int screenW, int screenH,
-                          int textColor, int dialogColor)
+                          int color)
     {
-        super(DialogType.Normal, buttonCallbacks, dialogCallbacks,
-                dir, DialogPosType.Point, isAnimation,
-                x, y, screenW, screenH, textColor, dialogColor);
+        // width, height はinit内で計算するのでここでは0を設定
+        super(windowCallbacks, DrawPriority.Dialog.p(), x, y, 0, 0, color);
+
+        mParentView = parentView;
+        mButtonCallbacks = buttonCallbacks;
+
     }
 
 

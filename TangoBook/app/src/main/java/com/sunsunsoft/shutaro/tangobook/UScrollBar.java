@@ -96,8 +96,10 @@ public class UScrollBar {
             // 表示領域よりコンテンツの領域が小さいので表示不要
             barLength = 0;
             topPos = 0;
+            isShow = false;
         } else {
             barLength = (int) (this.bgLength * ((float) viewLen / (float) contentLen));
+            isShow = true;
         }
     }
 
@@ -343,6 +345,8 @@ public class UScrollBar {
      * @return
      */
     public boolean touchEvent(ViewTouch tv) {
+        if (!isShow) return false;
+
         switch(tv.type) {
             case Touch:
                 if (touchDown(tv)) {

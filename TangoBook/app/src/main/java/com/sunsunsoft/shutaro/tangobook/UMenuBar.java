@@ -93,7 +93,6 @@ public class UMenuBar extends UWindow {
      */
     private void initMenuBar() {
         UMenuItem item = null;
-        UMenuItem item2 = null;
 
         // Add
         item = addTopMenuItem(TopMenu.Add, MenuItemId.AddTop, R.drawable.add);

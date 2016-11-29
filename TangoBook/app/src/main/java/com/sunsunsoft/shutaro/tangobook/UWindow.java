@@ -25,7 +25,6 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         RightTop
     }
 
-
     /**
      * Consts
      */
@@ -135,7 +134,8 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * インスタンス生成には createWindow を使うべし
      */
     protected UWindow(UWindowCallbacks callbacks, int priority, float x, float y, int width, int
-            height, int color) {
+            height, int color)
+    {
         super(priority, x,y,width,height);
         this.windowCallbacks = callbacks;
         this.bgColor = color;
@@ -193,6 +193,9 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         if (drawList != null) {
             UDrawManager.getInstance().removeDrawable(this);
 //            drawList = null;
+        }
+        if (windowCallbacks != null) {
+            windowCallbacks.windowClose(this);
         }
     }
 
@@ -290,18 +293,18 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * @return true:再描画
      */
     public boolean touchEvent(ViewTouch vt) {
-        if (closeIcon != null) {
+        if (closeIcon != null && closeIcon.isShow()) {
             if (closeIcon.touchEvent(vt, pos)) {
                 return true;
             }
         }
 
         // スクロールバーのタッチ処理
-        if (mScrollBarV.touchEvent(vt)) {
+        if (mScrollBarV.touchEvent(vt) && mScrollBarV.isShow()) {
             contentTop.y = mScrollBarV.getTopPos();
             return true;
         }
-        if (mScrollBarH.touchEvent(vt)) {
+        if (mScrollBarH.touchEvent(vt) && mScrollBarH.isShow()) {
             contentTop.x = mScrollBarH.getTopPos();
             return true;
         }
@@ -357,9 +360,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
             case CloseButtonId:
                 // 閉じるボタンを押したら自身のWindowを閉じてから呼び出し元の閉じる処理を呼び出す
                 closeWindow();
-                if (windowCallbacks != null) {
-                    windowCallbacks.windowClose(this);
-                }
+
                 return true;
         }
         return false;
