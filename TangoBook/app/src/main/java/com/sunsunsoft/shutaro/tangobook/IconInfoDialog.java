@@ -2,6 +2,41 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.view.View;
 
+
+/**
+ * アイコン情報ダイアログのアクションアイコン
+ */
+enum IconInfoAction {
+    EditCard,
+    Trash,
+    CopyCard,
+    Favorite
+}
+
+/**
+ * IconInfoDialogのコールバック
+ */
+interface IconInfoDialogCallbacks {
+    /**
+     * ダイアログで表示しているアイコンの内容を編集
+     * @param icon
+     */
+    void editIcon(UIcon icon);
+
+    /**
+     * ダイアログで表示しているアイコンをコピー
+     * @param icon
+     */
+    void copyIcon(UIcon icon);
+
+    /**
+     * ダイアログで表示しているアイコンをゴミ箱に移動
+     * @param icon
+     */
+    void throwIcon(UIcon icon);
+}
+
+
 /**
  * アイコンをクリックしたときに表示されるダイアログ
  */
@@ -14,7 +49,10 @@ abstract public class IconInfoDialog extends UWindow{
      * Member Variables
      */
     protected View mParentView;
-    protected UButtonCallbacks mButtonCallbacks;
+    protected IconInfoDialogCallbacks mIconInfoCallbacks;
+
+    // ダイアログに情報を表示元のアイコン
+    protected UIcon mIcon;
 
     /**
      * Get/Set
@@ -26,7 +64,9 @@ abstract public class IconInfoDialog extends UWindow{
 
 
     public IconInfoDialog(View parentView,
-                        UButtonCallbacks buttonCallbacks, UWindowCallbacks windowCallbacks,
+                          IconInfoDialogCallbacks iconInfoCallbacks,
+                          UWindowCallbacks windowCallbacks,
+                          UIcon icon,
                           float x, float y,
                           int color)
     {
@@ -34,8 +74,8 @@ abstract public class IconInfoDialog extends UWindow{
         super(windowCallbacks, DrawPriority.Dialog.p(), x, y, 0, 0, color);
 
         mParentView = parentView;
-        mButtonCallbacks = buttonCallbacks;
-
+        mIconInfoCallbacks = iconInfoCallbacks;
+        mIcon = icon;
     }
 
 

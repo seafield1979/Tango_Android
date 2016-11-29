@@ -19,6 +19,21 @@ interface EditCardDialogCallbacks {
     void cancelEditCard();
 }
 
+enum EditCardDialogMode {
+    Create,     // 新しくアイコンを作成する
+    Edit        // 既存のアイコンを編集する
+    ;
+
+    public static EditCardDialogMode toEnum(int value) {
+        for (EditCardDialogMode id : values()) {
+            if (id.ordinal() == value) {
+                return id;
+            }
+        }
+        return EditCardDialogMode.Create;
+    }
+}
+
 /**
  * 複数の入力項目があるダイアログ
  *
@@ -29,6 +44,7 @@ public class EditCardDialogFragment extends DialogFragment {
      * Constract
      */
     // key names
+    public static final String KEY_MODE = "key_mode";
     public static final String KEY_WORD_A = "key_word_a";
     public static final String KEY_WORD_B = "key_word_b";
     public static final String KEY_HINT_AB = "key_hint_ab";
@@ -39,6 +55,7 @@ public class EditCardDialogFragment extends DialogFragment {
      * Member variables
      */
     private EditCardDialogCallbacks dialogCallbacks;
+    private int mMode;
     private EditText mEditWordA;
     private EditText mEditWordB;
     private EditText mEditHintAB;
@@ -68,8 +85,12 @@ public class EditCardDialogFragment extends DialogFragment {
         dialog.dialogCallbacks = callbacks;
 
         // set arguments
+        Bundle args = new Bundle();
+
         if (card != null) {
-            Bundle args = new Bundle();
+
+            args.putInt(KEY_MODE, EditCardDialogMode.Edit.ordinal());
+
             if (card.getWordA() != null) {
                 args.putString(KEY_WORD_A, card.getWordA());
             }
@@ -86,8 +107,10 @@ public class EditCardDialogFragment extends DialogFragment {
                 args.putString(KEY_COMMENT, card.getComment());
             }
 
-            dialog.setArguments(args);
+        } else {
+            args.putInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
         }
+        dialog.setArguments(args);
 
         return dialog;
     }
@@ -100,6 +123,7 @@ public class EditCardDialogFragment extends DialogFragment {
         // 引数を取得
         Bundle args = getArguments();
         if (args != null) {
+            mMode = args.getInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
             mWordA = args.getString(KEY_WORD_A, "");
             mWordB = args.getString(KEY_WORD_B, "");
             mHintAB = args.getString(KEY_HINT_AB, "");
@@ -162,7 +186,7 @@ public class EditCardDialogFragment extends DialogFragment {
      */
     private void submit() {
         Bundle args = new Bundle();
-
+        args.putInt(KEY_MODE, mMode);
         args.putString(KEY_WORD_A, mEditWordA.getText().toString());
         args.putString(KEY_WORD_B, mEditWordB.getText().toString());
         args.putString(KEY_HINT_AB, mEditHintAB.getText().toString());

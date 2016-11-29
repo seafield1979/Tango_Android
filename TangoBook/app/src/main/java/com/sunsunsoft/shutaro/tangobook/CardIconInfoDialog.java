@@ -70,7 +70,6 @@ public class CardIconInfoDialog extends IconInfoDialog {
      * Member Variables
      */
     private View mParentView;
-    private UButtonCallbacks mButtonCallbacks;
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private UTextView textWordA;
     private UTextView textWordB;
@@ -85,24 +84,33 @@ public class CardIconInfoDialog extends IconInfoDialog {
      * Constructor
      */
     public CardIconInfoDialog(View parentView,
-                              UButtonCallbacks buttonCallbacks, UWindowCallbacks windowCallbacks,
+                              IconInfoDialogCallbacks iconInfoDialogCallbacks,
+                              UWindowCallbacks windowCallbacks,
+                              UIcon icon,
                               float x, float y,
                               int color)
     {
-        super( parentView, buttonCallbacks, windowCallbacks, x, y, color);
+        super( parentView, iconInfoDialogCallbacks, windowCallbacks, icon, x, y, color);
         mParentView = parentView;
-        mButtonCallbacks = buttonCallbacks;
+        if (icon instanceof IconCard) {
+            IconCard cardIcon = (IconCard)icon;
+            mCard = (TangoCard)cardIcon.getTangoItem();
+        }
     }
 
+    /**
+     * createInstance
+     */
     public static CardIconInfoDialog createInstance(
             View parentView,
-            UButtonCallbacks buttonCallbacks, UWindowCallbacks windowCallbacks,
-            float x, float y,
-            TangoCard card)
+            IconInfoDialogCallbacks iconInfoDialogCallbacks,
+            UWindowCallbacks windowCallbacks,
+            UIcon icon,
+            float x, float y)
     {
         CardIconInfoDialog instance = new CardIconInfoDialog( parentView,
-                buttonCallbacks, windowCallbacks, x, y, BG_COLOR);
-        instance.mCard = card;
+                iconInfoDialogCallbacks, windowCallbacks, icon,
+                x, y, BG_COLOR);
 
         // 初期化処理
         instance.addCloseIcon(CloseIconPos.RightTop);
@@ -238,14 +246,20 @@ public class CardIconInfoDialog extends IconInfoDialog {
         ULog.print(TAG, "UButtonCkick:" + id);
         switch(ActionIcons.toEnum(id)) {
             case Edit:
-
+                mIconInfoCallbacks.editIcon(mIcon);
+                closeWindow();
                 break;
-//            case MoveToTrash:
-//                break;
-//            case Copy:
-//                break;
-//            case Favorite:
-//                break;
+            case MoveToTrash:
+                mIconInfoCallbacks.throwIcon(mIcon);
+                closeWindow();
+                break;
+            case Copy:
+                mIconInfoCallbacks.copyIcon(mIcon);
+                closeWindow();
+                break;
+            case Favorite:
+                //mIconInfoCallbacks.favoriteIcon(mIcon);
+                break;
         }
         return false;
     }

@@ -30,7 +30,8 @@ enum WindowType {
 public class TopView extends View
         implements View.OnTouchListener, UMenuItemCallbacks,
         UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks, UButtonCallbacks,
-        EditCardDialogCallbacks, EditBookDialogCallbacks {
+        EditCardDialogCallbacks, EditBookDialogCallbacks, IconInfoDialogCallbacks
+{
 
     /**
      * Constants
@@ -65,6 +66,9 @@ public class TopView extends View
     private Context mContext;
     private NestedScrollingParent mNestedScrollingParent;
     private Paint paint = new Paint();
+
+    // Fragmentで内容を編集中のアイコン
+    private IconCard editingIcon;
 
 
     /**
@@ -302,7 +306,7 @@ public class TopView extends View
     }
 
     /**
-     * Add icons
+     * Add icon
      */
 
     // Card追加用のダイアログを表示
@@ -321,10 +325,44 @@ public class TopView extends View
                 "fragment_dialog");
     }
 
+    /**
+     * Edit icon
+     */
+    private void editCardDialog(IconCard iconCard) {
+        EditCardDialogFragment dialogFragment =
+                EditCardDialogFragment.createInstance(this, (TangoCard)iconCard.getTangoItem());
+
+        dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
+                "fragment_dialog");
+    }
+
+    private void editBookDialog(IconBook iconBook) {
+        EditBookDialogFragment dialogFragment =
+                EditBookDialogFragment.createInstance(this, (TangoBook)iconBook.getTangoItem());
+
+        dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
+                "fragment_dialog");
+    }
+
+    /**
+     * Copy icon
+     */
+    private void copyCardIcon(IconCard iconCard) {
+        UIconManager iconManager =  iconCard.parentWindow.getIconManager();
+
+        // コピー先のカードアイコンを作成
+        IconCard newIcon = (IconCard)(iconManager
+                .addNewIcon(IconType.Card, iconCard.getTangoItem(), AddPos.Tail));
+        if (newIcon == null) {
+            return;
+        }
+        iconCard.parentWindow.sortIcons(true);
+    }
+
     // card
     private void addCardIcon() {
         UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
-        iconManager.addNewIcon(IconType.Card, AddPos.Tail);
+        iconManager.addNewIcon(IconType.Card, null, AddPos.Tail);
         mIconWindows.getMainWindow().sortIcons(true);
 
         invalidate();
@@ -333,21 +371,11 @@ public class TopView extends View
     // book
     private void addBookIcon() {
         UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
-        iconManager.addNewIcon(IconType.Book, AddPos.Tail);
+        iconManager.addNewIcon(IconType.Book, null, AddPos.Tail);
         mIconWindows.getMainWindow().sortIcons(true);
 
         invalidate();
     }
-
-    // box
-    private void addBoxIcon() {
-        UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
-        iconManager.addNewIcon(IconType.Box, AddPos.Tail);
-        mIconWindows.getMainWindow().sortIcons(true);
-
-        invalidate();
-    }
-
 
     /**
      * UIconCallbacks
@@ -360,10 +388,9 @@ public class TopView extends View
                 if (mIconInfoDlg == null) {
                     int x = (int) icon.getX();
                     int y = (int) icon.getY();
-                    TangoCard card = (TangoCard) icon.getTangoItem();
 
-                    mIconInfoDlg = CardIconInfoDialog.createInstance( this, this, this,
-                            x, y,  card);
+                    mIconInfoDlg = CardIconInfoDialog.createInstance( this, this, this, icon,
+                            x, y);
 
                 } else {
                     mIconInfoDlg.closeWindow();
@@ -449,27 +476,48 @@ public class TopView extends View
     public void submitEditCard(Bundle args) {
         if (args == null) return;
 
-        UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
-        IconCard cardIcon = (IconCard)(iconManager.addNewIcon(IconType.Card, AddPos.Tail));
-        if (cardIcon == null) {
-            return;
+        int mode = args.getInt(EditCardDialogFragment.KEY_MODE, EditCardDialogMode.Create.ordinal
+                ());
+        if (mode == EditCardDialogMode.Create.ordinal()) {
+            // 新たにアイコンを追加する
+
+            UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
+            IconCard iconCard = (IconCard)(iconManager
+                    .addNewIcon(IconType.Card, null, AddPos.Tail));
+            if (iconCard == null) {
+                return;
+            }
+            TangoCard card = (TangoCard)iconCard.getTangoItem();
+
+            // 戻り値を取得
+            card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
+            card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
+            card.setHintAB(args.getString(EditCardDialogFragment.KEY_HINT_AB, ""));
+            card.setHintBA(args.getString(EditCardDialogFragment.KEY_HINT_BA, ""));
+            card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+
+            iconCard.updateTitle();
+
+            // DB更新
+            RealmManager.getCardDao().updateOne(card);
+
+            // アイコン整列
+            mIconWindows.getMainWindow().sortIcons(false);
+        } else {
+            // 既存のアイコンを編集する
+
+            TangoCard card = (TangoCard)editingIcon.getTangoItem();
+            card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
+            card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
+            card.setHintAB(args.getString(EditCardDialogFragment.KEY_HINT_AB, ""));
+            card.setHintBA(args.getString(EditCardDialogFragment.KEY_HINT_BA, ""));
+            card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+
+            editingIcon.updateTitle();
+            // DB更新
+            RealmManager.getCardDao().updateOne(card);
         }
-        TangoCard card = (TangoCard)cardIcon.getTangoItem();
 
-        // 戻り値を取得
-        card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
-        card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
-        card.setHintAB(args.getString(EditCardDialogFragment.KEY_HINT_AB, ""));
-        card.setHintBA(args.getString(EditCardDialogFragment.KEY_HINT_BA, ""));
-        card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
-
-        cardIcon.updateTitle();
-
-        // DB更新
-        RealmManager.getCardDao().updateOne(card);
-
-        // アイコン整列
-        mIconWindows.getMainWindow().sortIcons(false);
         invalidate();
     }
 
@@ -485,7 +533,7 @@ public class TopView extends View
         if (args == null) return;
 
         UIconManager iconManager = mIconWindows.getMainWindow().getIconManager();
-        IconBook bookIcon = (IconBook)(iconManager.addNewIcon(IconType.Book, AddPos.Tail));
+        IconBook bookIcon = (IconBook)(iconManager.addNewIcon(IconType.Book, null, AddPos.Tail));
         if (bookIcon == null) {
             return;
         }
@@ -508,8 +556,22 @@ public class TopView extends View
 
     }
 
-
     /**
-     *
+     * IconInfoDialogCallbacks
      */
+    public void editIcon(UIcon icon) {
+        if (icon instanceof IconCard) {
+            editingIcon = (IconCard) icon;
+            editCardDialog(editingIcon);
+        }
+    }
+    public void copyIcon(UIcon icon) {
+        copyCardIcon(editingIcon);
+    }
+    public void throwIcon(UIcon icon) {
+
+    }
+    public void favoriteIcon(UIcon icon) {
+
+    }
 }

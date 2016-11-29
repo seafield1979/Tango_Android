@@ -15,6 +15,14 @@ interface UWindowCallbacks {
 /**
  * Viewの中に表示できるWindow
  * 座標、サイズを持ち自由に配置が行える
+ *
+ * メモ
+ *   size
+ *      表示上のサイズ
+ *   contenSize
+ *      コンテンツのサイズ。ウィンドウの中身、ウィンドウサイズよりも大きいサイズを設定可能
+ *   clientSize
+ *      クライアントサイズ。コンテンツサイズから枠、スクロールバー、トップバーの領域を除いた領域）はclientSize
  */
 abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     /**
@@ -119,13 +127,6 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         return win1Y + win1.pos.y - win1.contentTop.y - win2.pos.y + win2.contentTop.y;
     }
 
-    public PointF getWin1ToWin2(UWindow win1, UWindow win2) {
-        return new PointF(
-                win1.pos.x - win1.contentTop.x - win2.pos.x + win2.contentTop.x,
-                win1.pos.y - win1.contentTop.y - win2.pos.y + win2.contentTop.y
-        );
-    }
-
     /**
      * Constructor
      */
@@ -192,7 +193,6 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         // 描画オブジェクトから削除する
         if (drawList != null) {
             UDrawManager.getInstance().removeDrawable(this);
-//            drawList = null;
         }
         if (windowCallbacks != null) {
             windowCallbacks.windowClose(this);

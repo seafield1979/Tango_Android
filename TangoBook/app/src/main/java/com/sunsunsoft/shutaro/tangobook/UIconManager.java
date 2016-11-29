@@ -111,15 +111,21 @@ public class UIconManager implements UIconCallbacks{
     /**
      * 指定タイプのアイコンを作成してから追加
      * @param type
+     * @param copySrc  コピー元のTangoItem
      * @param addPos
      * @return
      */
-    public UIcon addNewIcon(IconType type, AddPos addPos) {
+    public UIcon addNewIcon(IconType type, TangoItem copySrc, AddPos addPos) {
 
         UIcon icon = null;
         switch (type) {
             case Card: {
-                TangoCard card = TangoCard.createDummyCard();
+                TangoCard card;
+                if (copySrc == null) {
+                    card = TangoCard.createDummyCard();
+                } else {
+                    card = (TangoCard)copySrc;
+                }
                 RealmManager.getCardDao().addOne(card);
                 TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, TangoParentType
                         .Home, 0);
@@ -129,19 +135,16 @@ public class UIconManager implements UIconCallbacks{
                 break;
             case Book:
             {
-                TangoBook book = TangoBook.createDummyBook();
+                TangoBook book;
+                if (copySrc == null) {
+                    book = TangoBook.createDummyBook();
+                } else {
+                    book = (TangoBook)copySrc;
+                }
                 RealmManager.getBookDao().addOne(book);
                 TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
                 book.setItemPos(itemPos);
                 icon = new IconBook(book, mParentView, mParentWindow, this);
-            }
-                break;
-            case Box: {
-                TangoBox box = TangoBox.createDummyBox();
-                RealmManager.getBoxDao().addOne(box);
-                TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(box, TangoParentType.Home, 0);
-                box.setItemPos(itemPos);
-                icon = new IconBox(box, mParentView, mParentWindow, this);
             }
                 break;
         }
