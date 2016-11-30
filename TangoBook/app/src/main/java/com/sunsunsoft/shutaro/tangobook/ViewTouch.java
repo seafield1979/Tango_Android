@@ -87,6 +87,10 @@ public class ViewTouch {
         isTouchUp = touchUp;
     }
 
+    public void setTouching(boolean touching) {
+        isTouching = touching;
+    }
+
     public ViewTouch() {
         this(null);
         innerType = TouchType.None;
@@ -130,35 +134,36 @@ public class ViewTouch {
             case MotionEvent.ACTION_CANCEL:
             {
                 ULog.print(TAG, "Up");
-                isTouching = false;
 
                 timer.cancel();
 
                 isTouchUp = true;
-
-                if (innerType == TouchType.Moving) {
-                    ULog.print(TAG, "MoveEnd");
-                    type = innerType = TouchType.MoveEnd;
-                    return type;
-                } else {
-                    float x = (e.getX() - touchX);
-                    float y = (e.getY() - touchY);
-                    float dist = (float) Math.sqrt(x * x + y * y);
-
-                    if (dist <= CLICK_DISTANCE) {
-                        long time = System.currentTimeMillis() - touchTime;
-
-                        if (time <= LONG_CLICK_TIME) {
-                            type = TouchType.Click;
-                            ULog.print(TAG, "SingleClick");
-                        } else {
-                            type = TouchType.LongClick;
-                            ULog.print(TAG, "LongClick");
-                        }
+                if (isTouching) {
+                    if (innerType == TouchType.Moving) {
+                        ULog.print(TAG, "MoveEnd");
+                        type = innerType = TouchType.MoveEnd;
+                        return type;
                     } else {
-                        type = TouchType.None;
+                        float x = (e.getX() - touchX);
+                        float y = (e.getY() - touchY);
+                        float dist = (float) Math.sqrt(x * x + y * y);
+
+                        if (dist <= CLICK_DISTANCE) {
+                            long time = System.currentTimeMillis() - touchTime;
+
+                            if (time <= LONG_CLICK_TIME) {
+                                type = TouchType.Click;
+                                ULog.print(TAG, "SingleClick");
+                            } else {
+                                type = TouchType.LongClick;
+                                ULog.print(TAG, "LongClick");
+                            }
+                        } else {
+                            type = TouchType.None;
+                        }
                     }
                 }
+                isTouching = false;
             }
             break;
             case MotionEvent.ACTION_MOVE:

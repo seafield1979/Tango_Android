@@ -54,7 +54,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
     private static final String TAG = "IconInfoDialogCard";
     private static final int BG_COLOR = Color.LTGRAY;
     private static final int DLG_MARGIN = 100;
-    private static final int TOP_ITEM_Y = 50;
+    private static final int TOP_ITEM_Y = 100;
     private static final int TEXT_VIEW_W = 300;
     private static final int TEXT_VIEW_H = 100;
     private static final int ICON_W = 120;
@@ -156,20 +156,6 @@ public class IconInfoDialogCard extends IconInfoDialog {
         int width = ICON_W * ActionIcons.values().length +
                 ICON_MARGIN_H * (ActionIcons.values().length + 1);
 
-        // WordA
-        textWordA = UTextView.createInstance( mCard.getWordA(), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), true,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
-
-        y += TEXT_VIEW_H + MARGIN_V;
-
-        // WordB
-        textWordB = UTextView.createInstance( mCard.getWordB(), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, TEXT_VIEW_W, true,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
-
-        y += TEXT_VIEW_H + MARGIN_V + 50;
-
         // アクションボタン
         int x = ICON_MARGIN_H;
         for (ActionIcons icon : ActionIcons.values()) {
@@ -185,7 +171,21 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
             x += ICON_W + ICON_MARGIN_H;
         }
-        y += ICON_W + MARGIN_V;
+        y += ICON_W + MARGIN_V + 50;
+
+        // WordA
+        textWordA = UTextView.createInstance( mCard.getWordA(), TEXT_SIZE, 0,
+                UDraw.UAlignment.None, canvas.getWidth(), true,
+                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+
+        y += TEXT_VIEW_H + MARGIN_V;
+
+        // WordB
+        textWordB = UTextView.createInstance( mCard.getWordB(), TEXT_SIZE, 0,
+                UDraw.UAlignment.None, TEXT_VIEW_W, true,
+                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+
+        y += TEXT_VIEW_H + MARGIN_V + 50;
 
         setSize(width, y);
 
@@ -213,8 +213,10 @@ public class IconInfoDialogCard extends IconInfoDialog {
             }
         }
 
-        // 範囲外をクリックしたら閉じる
-        if (vt.type == TouchType.Click) {
+        // 範囲外をタッチしたら閉じる
+        if (vt.type == TouchType.Touch) {
+            // 閉じた後にすぐにクリックが発生しないようにする
+            vt.setTouching(false);
             if (getRect().contains((int)vt.touchX(), (int)vt.touchY())) {
             } else {
                 if (windowCallbacks != null) {
