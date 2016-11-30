@@ -7,6 +7,5 @@ package com.sunsunsoft.shutaro.tangobook;
 public enum IconType {
     Card,
     Book,
-    Box,
-    Trashbox
+    Trash
 }

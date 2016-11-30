@@ -14,7 +14,6 @@ import io.realm.Realm;
 class HomeTangoItems {
     public List<TangoCard> cards;
     public List<TangoBook> books;
-    public List<TangoBox> boxes;
 }
 
 /**
@@ -229,29 +228,6 @@ public class TangoItemManager {
     }
 
     /**
-     * ボックスを追加する
-     */
-    /**
-     * 単語帳を追加する
-     */
-    public TangoBox addBox() {
-        return addBox("new", null, Color.WHITE);
-    }
-
-    public TangoBox addBox(String name, String comment, int color)
-    {
-        TangoBox box = new TangoBox();
-        box.setName(name);
-        box.setComment(comment);
-        box.setColor(color);
-
-        // DBに保存
-        RealmManager.getBoxDao().addOne(box);
-
-        return box;
-    }
-
-    /**
      * カードを更新する
      * @return
      */
@@ -265,13 +241,6 @@ public class TangoItemManager {
      */
     public void udpateBook(TangoBook book) {
         RealmManager.getBookDao().updateOne(book);
-    }
-
-    /**
-     * ボックスを更新する
-     */
-    public void updateBox(TangoBox box) {
-        RealmManager.getBoxDao().updateOne(box);
     }
 
     /**

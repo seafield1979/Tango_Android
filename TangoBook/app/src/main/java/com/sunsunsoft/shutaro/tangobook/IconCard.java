@@ -122,10 +122,7 @@ public class IconCard extends UIcon{
         // ドロップ座標がアイコンの中に含まれているかチェック
         if (!dstIcon.checkDrop(dropX, dropY)) return false;
 
-        if (dstIcon.type == IconType.Book) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**
@@ -136,8 +133,6 @@ public class IconCard extends UIcon{
     public boolean droped(UIcon dstIcon, float dropX, float dropY) {
         // 全面的にドロップはできない
         if (!canDrop(dstIcon, dropX, dropY)) return false;
-
-
 
         return true;
     }

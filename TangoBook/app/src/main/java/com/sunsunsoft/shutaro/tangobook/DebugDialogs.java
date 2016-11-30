@@ -227,9 +227,6 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
             case SelectBook:
                 RealmManager.getBookDao().selectAll();
                 return true;
-            case SelectBox:
-                RealmManager.getBoxDao().selectAll();
-                return true;
             case SelectItemPos:
                 RealmManager.getItemPosDao().selectAll();
                 return true;
@@ -240,9 +237,6 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
                 return true;
             case DeleteBookAll:
                 RealmManager.getBookDao().deleteAll();
-                return true;
-            case DeleteBoxAll:
-                RealmManager.getBoxDao().deleteAll();
                 return true;
             case DeleteItemPosAll:
                 RealmManager.getItemPosDao().deleteAll();

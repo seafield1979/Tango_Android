@@ -68,8 +68,8 @@ public class UIconWindow extends UWindow {
     private static final int CARD_ICON_NUM = 200;
     private static final int BOX_ICON_NUM = 10;
 
-    private static final int ICON_W = 200;
-    private static final int ICON_H = 150;
+    public static final int ICON_W = 200;
+    public static final int ICON_H = 200;
     private static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 
     private static final int MOVING_TIME = 10;
@@ -225,7 +225,11 @@ public class UIconWindow extends UWindow {
         List<TangoItem> items = RealmManager.getItemPosDao().selectItemsByParentType(
                 parentType, parentId, true
         );
+        // 今あるアイコンはクリアしておく
         mIconManager.getIcons().clear();
+
+        // ゴミ箱を配置
+        mIconManager.addNewIcon(IconType.Trash, null, AddPos.Top);
 
         for (TangoItem item : items) {
             mIconManager.addIcon(item, AddPos.Tail);
@@ -233,9 +237,6 @@ public class UIconWindow extends UWindow {
 
         sortIcons(false);
     }
-
-
-
 
     /**
      * Constructor
@@ -605,12 +606,6 @@ public class UIconWindow extends UWindow {
             } else {
                 List<UIcon> checkedIcons = mIconManager.getCheckedIcons();
                 dropIcon = manager.getOverlappedIcon(dragPos, checkedIcons);
-                // 箱以外のアイコンにドロップできない
-//                if (dropIcon != null &&
-//                        dropIcon.type != IconType.BOX)
-//                {
-//                    dropIcon = null;
-//                }
             }
             if (dropIcon != null) {
                 isDone = true;
@@ -685,8 +680,8 @@ public class UIconWindow extends UWindow {
                             isDroped = true;
                             break;
                         case Book:
-                        case Box:
-                            // Bookの中に挿入する　
+                        case Trash:
+                            // Containerの中に挿入する　
                             moveIconIn(dragedIcon, dropIcon);
 
                             for (UIconWindow win : windows.getWindows()) {
@@ -696,7 +691,7 @@ public class UIconWindow extends UWindow {
                                 }
                             }
                             isDroped = true;
-                              break;
+                            break;
                     }
                     break;
                 } else {
@@ -787,8 +782,8 @@ public class UIconWindow extends UWindow {
                 }
 
                 if (isMoved) {
-                    // ボックスタイプのアイコンをサブWindowに移動できない
-                    if (dragedIcon.type == IconType.Box && window == windows.getSubWindow()) {
+                    // BookタイプのアイコンをサブWindowに移動できない
+                    if (dragedIcon.type == IconType.Book && window == windows.getSubWindow()) {
                         continue;
                     }
 
@@ -1143,28 +1138,34 @@ public class UIconWindow extends UWindow {
      */
     private void moveIconIn(UIcon icon1, UIcon icon2)
     {
-        if ((icon1 instanceof IconCard) && (icon2 instanceof IconBook)) {
-            // Card -> Book
-            IconBook iconBook = (IconBook)icon2;
-
-            UIconWindow window1 = icon1.parentWindow;
-            UIconWindow window2 = iconBook.getSubWindow();
-            List<UIcon> icons1 = window1.getIcons();
-            List<UIcon> icons2 = iconBook.getIcons();
-
-            icons1.remove(icon1);
-            icons2.add(icon1);
-
-            if (window2 != null) {
-                window2.sortIcons(false);
-                icon1.setParentWindow(window2);
-            }
-            // データベース更新
-            RealmManager.getItemPosDao().moveItem(icon1.getTangoItem(),
-                    TangoParentType.Book.ordinal(),
-                    iconBook.book.getId());
-
+        // Cardの中には挿入できない
+        if (!(icon2 instanceof IconContainer)) {
+            return;
         }
+
+        IconContainer container = (IconContainer)icon2;
+
+        UIconWindow window1 = icon1.parentWindow;
+        UIconWindow window2 = container.getSubWindow();
+        List<UIcon> icons1 = window1.getIcons();
+        List<UIcon> icons2 = container.getIcons();
+
+        icons1.remove(icon1);
+        icons2.add(icon1);
+
+        if (window2 != null) {
+            window2.sortIcons(false);
+            icon1.setParentWindow(window2);
+        }
+        // データベース更新
+        // 位置情報(TangoItemPos)を書き換える
+        int itemId = 0;
+        if (container.getParentType() == TangoParentType.Book) {
+            itemId = container.getTangoItem().getId();
+        }
+        RealmManager.getItemPosDao().moveItem(icon1.getTangoItem(),
+                container.getParentType().ordinal(),
+                itemId);
 
         sortIcons(true);
     }

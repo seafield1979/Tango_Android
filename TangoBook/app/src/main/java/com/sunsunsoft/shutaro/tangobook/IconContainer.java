@@ -31,16 +31,20 @@ abstract public class IconContainer extends UIcon {
         return subWindow;
     }
 
-    // 自分が親になるときのParentTypeを返す
+    // 自分が親になるとき(内包するアイコンがあるとき）の自分のParentTypeを返す
     abstract public TangoParentType getParentType();
 
     /**
      * Constructor
      */
-    public IconContainer(UIconWindow parentWindow, UIconCallbacks iconCallbacks, IconType type, float x,
+    public IconContainer(View parentView, UIconWindow parentWindow, UIconCallbacks iconCallbacks,
+                         IconType type, float x,
                  float y, int width, int height)
     {
         super(parentWindow, iconCallbacks, type, x, y, width, height);
+        mParentView = parentView;
 
+        // 内包するアイコン
+        mIconManager = UIconManager.createInstance(parentView, subWindow, iconCallbacks);
     }
 }

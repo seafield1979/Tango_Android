@@ -48,8 +48,9 @@ public class IconBook extends IconContainer {
     /**
      * Constructor
      */
-    public IconBook(TangoBook book, View parentView, UIconWindow parent, UIconCallbacks iconCallbacks) {
-        super(parent, iconCallbacks, IconType.Book, 0, 0, ICON_W, ICON_H);
+    public IconBook(TangoBook book, View parentView, UIconWindow parentWindow, UIconCallbacks
+            iconCallbacks) {
+        super(parentView, parentWindow, iconCallbacks, IconType.Book, 0, 0, ICON_W, ICON_H);
 
         this.book = book;
         updateTitle();
@@ -57,9 +58,6 @@ public class IconBook extends IconContainer {
 
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
-
-        // Bookに表示するCardのアイコンを管理する
-        mIconManager = UIconManager.createInstance(parentView, subWindow, iconCallbacks);
 
         // データベースから配下のCardを読み込む
         List<TangoCard> cards = RealmManager.getItemPosDao().selectCardsByBookId(book.getId());
@@ -131,8 +129,11 @@ public class IconBook extends IconContainer {
      * @param dstIcon
      * @return
      */
-    public boolean canDrop(UIcon dstIcon, float x, float y) {
-        return false;
+    public boolean canDrop(UIcon dstIcon, float dropX, float dropY) {
+        // ドロップ座標がアイコンの中に含まれているかチェック
+        if (!dstIcon.checkDrop(dropX, dropY)) return false;
+
+        return true;
     }
 
     /**
@@ -140,9 +141,10 @@ public class IconBook extends IconContainer {
      * @param dstIcon
      * @return 何かしら処理をした（再描画あり）
      */
-    public boolean droped(UIcon dstIcon, float x, float y) {
+    public boolean droped(UIcon dstIcon, float dropX, float dropY) {
         // 全面的にドロップはできない
-        if (canDrop(dstIcon, x, y)) {
+        if (canDrop(dstIcon, dropX, dropY)) {
+            return true;
         }
         return false;
     }

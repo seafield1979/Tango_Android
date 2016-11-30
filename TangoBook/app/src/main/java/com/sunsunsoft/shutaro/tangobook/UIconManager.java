@@ -147,6 +147,11 @@ public class UIconManager implements UIconCallbacks{
                 icon = new IconBook(book, mParentView, mParentWindow, this);
             }
                 break;
+            case Trash:
+            {
+                icon = new IconTrash(mParentView, mParentWindow, this);
+            }
+                break;
         }
         if (icon == null) return null;
 
@@ -240,9 +245,6 @@ public class UIconManager implements UIconCallbacks{
                 break;
             case Book:
                 RealmManager.getBookDao().deleteById(item.getId());
-                break;
-            case Box:
-                RealmManager.getBoxDao().deleteById(item.getId());
                 break;
         }
         RealmManager.getItemPosDao().deleteItem(icon.getTangoItem());

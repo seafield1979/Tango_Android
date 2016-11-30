@@ -6,8 +6,7 @@ package com.sunsunsoft.shutaro.tangobook;
 public enum TangoParentType {
     Home,           // ホーム画面
     Book,           // 単語帳
-    Box,            // ボックス
-    Trash,           // ゴミ箱
+    Trash,          // ゴミ箱
     ;
 
     // int を enumに変換する

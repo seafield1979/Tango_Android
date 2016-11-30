@@ -244,19 +244,6 @@ public class TangoItemPosDao {
         return selectItemsByParentType(TangoParentType.Book, bookId, changeable);
     }
 
-
-    /**
-     * 指定のボックスに含まれるアイテムを取得する
-     *
-     * @param boxId
-     * @param changeable
-     * @return カード/単語帳 のアイテムリスト
-     */
-    public List<TangoItem> selectByBoxId(int boxId, boolean changeable) {
-        return selectItemsByParentType(TangoParentType.Box, boxId, changeable);
-    }
-
-
     /**
      * 指定のParentType配下の TangoItemPos のリストを取得する
      *
@@ -293,9 +280,6 @@ public class TangoItemPosDao {
                 case Book:
                     bookIds.add(item.getItemId());
                     break;
-                case Box:
-                    boxIds.add(item.getItemId());
-                    break;
             }
         }
 
@@ -310,12 +294,6 @@ public class TangoItemPosDao {
         List<TangoBook> books;
         books = RealmManager.getBookDao()
                 .selectByExceptIds(bookIds, changeable);
-
-        // Box
-        List<TangoBox> boxes;
-        boxes = RealmManager.getBoxDao()
-                .selectByExceptIds(boxIds, changeable);
-
 
         // posの順にリストを作成
         List<TangoItem> items = joinWithSort(cards, books);
@@ -476,9 +454,6 @@ public class TangoItemPosDao {
             } else if (item instanceof TangoBook) {
                 TangoBook _item = (TangoBook) item;
                 newList.add((mRealm.copyFromRealm(_item)));
-            } else if (item instanceof TangoBox) {
-                TangoBox _item = (TangoBox) item;
-                newList.add((mRealm.copyFromRealm(_item)));
             }
         }
         return newList;
@@ -555,44 +530,6 @@ public class TangoItemPosDao {
         mRealm.beginTransaction();
         results.deleteAllFromRealm();
         mRealm.commitTransaction();
-    }
-
-    /**
-     * 指定のボックスに含まれるアイテムを削除する
-     *
-     * @param boxId
-     * @param items
-     */
-    public void deleteItemsInBox(int boxId, List<TangoItem> items) {
-        if (items == null) return;
-        boolean isFirst = false;
-
-        RealmQuery<TangoItemPos> query = mRealm.where(TangoItemPos.class);
-
-        // Add query conditions:
-        query.equalTo("parentType", TangoParentType.Box.ordinal())
-                .equalTo("parentId", boxId);
-
-        for (TangoItem item : items) {
-            if (!isFirst) {
-                isFirst = true;
-            } else {
-                query.or();
-            }
-            if (item instanceof TangoCard) {
-                query.equalTo("itemType", TangoItemType.Card.ordinal())
-                        .equalTo("itemId", item.getId());
-            } else if (item instanceof TangoBook) {
-                query.equalTo("itemType", TangoItemType.Book.ordinal())
-                        .equalTo("itemId", item.getId());
-            }
-            RealmResults<TangoItemPos> results = query.findAll();
-            if (results == null) return;
-
-            mRealm.beginTransaction();
-            results.deleteAllFromRealm();
-            mRealm.commitTransaction();
-        }
     }
 
     /**
@@ -682,34 +619,6 @@ public class TangoItemPosDao {
     }
 
     /**
-     * ボックスに要素(カード、単語帳)を追加する
-     *
-     * @param boxId
-     * @param items
-     */
-    public void addItemsToBox(int boxId, List<TangoItem> items) {
-        int itemType = 0;
-
-        for (TangoItem item : items) {
-            TangoItemPos itemPos = new TangoItemPos();
-            itemPos.setParentType(TangoParentType.Box.ordinal());
-            itemPos.setParentId(boxId);
-            if (item instanceof TangoCard) {
-                itemType = TangoItemType.Card.ordinal();
-            } else if (item instanceof TangoBook) {
-                itemType = TangoItemType.Book.ordinal();
-            }
-            itemPos.setItemType(itemType);
-            itemPos.setItemId(item.getId());
-            itemPos.setPos(getNextPosInBox(boxId));
-
-            mRealm.beginTransaction();
-            mRealm.copyToRealm(itemPos);
-            mRealm.commitTransaction();
-        }
-    }
-
-    /**
      * ボックスに要素の追加情報(TangoItemPos)を追加
      *
      * @param itemPoses
@@ -738,8 +647,6 @@ public class TangoItemPosDao {
                 return getNextPos(TangoParentType.Home.ordinal());
             case Book:
                 return getNextPosInBook(parentId);
-            case Box:
-                return getNextPosInBox(parentId);
             case Trash:
                 return getNextPos(TangoParentType.Trash.ordinal());
         }
@@ -775,14 +682,28 @@ public class TangoItemPosDao {
         //for (UIcon icon : icons) {
         for (int i=startPos; i<icons.size(); i++) {
             UIcon icon = icons.get(i);
+
+            TangoItem tangoItem = icon.getTangoItem();
+            int itemType;
+            int itemId;
+
+            if (tangoItem == null && icon.getType() == IconType.Trash) {
+                // ゴミ箱はアイコンにTangoItemを持たないので直接値を設定
+                itemType = TangoItemType.Trash.ordinal();
+                itemId = 0;
+            } else {
+                itemType = tangoItem.getItemType().ordinal();
+                itemId = tangoItem.getId();
+            }
+
             TangoItemPos result = mRealm.where(TangoItemPos.class)
-                    .equalTo("itemType", icon.getTangoItem().getItemType().ordinal())
-                    .equalTo("itemId", icon.getTangoItem().getId())
+                    .equalTo("itemType", itemType)
+                    .equalTo("itemId", itemId)
                     .findFirst();
             if (result == null) continue;
 
             result.setPos(pos);
-            icon.getTangoItem().setPos(pos);
+            tangoItem.setPos(pos);
             pos++;
         }
 
@@ -898,18 +819,6 @@ public class TangoItemPosDao {
         return nextPos;
     }
 
-    public int getNextPosInBox(int boxId) {
-        int nextPos = 1;
-        Number maxPos = mRealm.where(TangoItemPos.class)
-                .equalTo("parentType", TangoParentType.Box.ordinal())
-                .equalTo("parentId", boxId)
-                .max("pos");
-        if (maxPos != null) {
-            nextPos = maxPos.intValue() + 1;
-        }
-        return nextPos;
-    }
-
     /**
      * 移動系
      */
@@ -1014,8 +923,13 @@ public class TangoItemPosDao {
 
         int pos = 0;
         for (UIcon icon : icons) {
-            items.add(icon.getTangoItem());
-            icon.getTangoItem().getItemPos().setPos(pos);
+            TangoItem item = icon.getTangoItem();
+            if (item == null && icon.getType() == IconType.Trash) {
+                
+            } else {
+                items.add(item);
+                icon.getTangoItem().getItemPos().setPos(pos);
+            }
             pos++;
         }
 

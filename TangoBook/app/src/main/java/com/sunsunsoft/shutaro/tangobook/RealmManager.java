@@ -19,7 +19,6 @@ public class RealmManager {
 
     private static TangoCardDao cardDao;
     private static TangoBookDao bookDao;
-    private static TangoBoxDao boxDao;
     private static TangoItemPosDao itemPosDao;
     private static boolean initFlag;
 
@@ -36,7 +35,6 @@ public class RealmManager {
 
         cardDao = new TangoCardDao(realm);
         bookDao = new TangoBookDao(realm);
-        boxDao = new TangoBoxDao(realm);
         itemPosDao = new TangoItemPosDao(realm);
     }
 
@@ -46,10 +44,6 @@ public class RealmManager {
 
     public static TangoBookDao getBookDao() {
         return bookDao;
-    }
-
-    public static TangoBoxDao getBoxDao() {
-        return boxDao;
     }
 
     public static TangoItemPosDao getItemPosDao() { return itemPosDao; }
