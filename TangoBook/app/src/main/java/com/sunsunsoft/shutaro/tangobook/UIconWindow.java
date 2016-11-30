@@ -229,7 +229,9 @@ public class UIconWindow extends UWindow {
         mIconManager.getIcons().clear();
 
         // ゴミ箱を配置
-        mIconManager.addNewIcon(IconType.Trash, null, AddPos.Top);
+        if (parentType == TangoParentType.Home) {
+            mIconManager.addNewIcon(IconType.Trash, AddPos.Top);
+        }
 
         for (TangoItem item : items) {
             mIconManager.addIcon(item, AddPos.Tail);
@@ -1294,4 +1296,9 @@ public class UIconWindow extends UWindow {
         mScrollBarH.setShow(false);
         mScrollBarV.setShow(false);
     }
+
+    /**
+     * UButtonCallbacks
+     */
+
 }

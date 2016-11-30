@@ -68,6 +68,8 @@ abstract public class UIcon extends UDrawable {
         return title;
     }
 
+    abstract public void updateTitle();
+
     /**
      * Constructor
      */

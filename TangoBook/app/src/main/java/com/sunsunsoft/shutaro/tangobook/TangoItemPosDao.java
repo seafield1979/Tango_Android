@@ -925,7 +925,7 @@ public class TangoItemPosDao {
         for (UIcon icon : icons) {
             TangoItem item = icon.getTangoItem();
             if (item == null && icon.getType() == IconType.Trash) {
-                
+
             } else {
                 items.add(item);
                 icon.getTangoItem().getItemPos().setPos(pos);

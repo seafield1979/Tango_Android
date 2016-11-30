@@ -194,9 +194,6 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         if (drawList != null) {
             UDrawManager.getInstance().removeDrawable(this);
         }
-        if (windowCallbacks != null) {
-            windowCallbacks.windowClose(this);
-        }
     }
 
     /**
@@ -359,8 +356,11 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         switch (id) {
             case CloseButtonId:
                 // 閉じるボタンを押したら自身のWindowを閉じてから呼び出し元の閉じる処理を呼び出す
-                closeWindow();
-
+                if (windowCallbacks != null) {
+                    windowCallbacks.windowClose(this);
+                } else {
+                    closeWindow();
+                }
                 return true;
         }
         return false;

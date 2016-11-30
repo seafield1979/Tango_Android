@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * カードアイコンをクリックした際に表示されるダイアログ
  * カードの情報(WordA,WordB)とアクションアイコン(ActionIcons)を表示する
  */
-public class CardIconInfoDialog extends IconInfoDialog {
+public class IconInfoDialogCard extends IconInfoDialog {
     /**
      * Enums
      */
@@ -51,7 +51,7 @@ public class CardIconInfoDialog extends IconInfoDialog {
     /**
      * Consts
      */
-    private static final String TAG = "CardIconInfoDialog";
+    private static final String TAG = "IconInfoDialogCard";
     private static final int BG_COLOR = Color.LTGRAY;
     private static final int DLG_MARGIN = 100;
     private static final int TOP_ITEM_Y = 50;
@@ -83,7 +83,7 @@ public class CardIconInfoDialog extends IconInfoDialog {
     /**
      * Constructor
      */
-    public CardIconInfoDialog(View parentView,
+    public IconInfoDialogCard(View parentView,
                               IconInfoDialogCallbacks iconInfoDialogCallbacks,
                               UWindowCallbacks windowCallbacks,
                               UIcon icon,
@@ -101,14 +101,14 @@ public class CardIconInfoDialog extends IconInfoDialog {
     /**
      * createInstance
      */
-    public static CardIconInfoDialog createInstance(
+    public static IconInfoDialogCard createInstance(
             View parentView,
             IconInfoDialogCallbacks iconInfoDialogCallbacks,
             UWindowCallbacks windowCallbacks,
             UIcon icon,
             float x, float y)
     {
-        CardIconInfoDialog instance = new CardIconInfoDialog( parentView,
+        IconInfoDialogCard instance = new IconInfoDialogCard( parentView,
                 iconInfoDialogCallbacks, windowCallbacks, icon,
                 x, y, BG_COLOR);
 
@@ -246,15 +246,15 @@ public class CardIconInfoDialog extends IconInfoDialog {
         ULog.print(TAG, "UButtonCkick:" + id);
         switch(ActionIcons.toEnum(id)) {
             case Edit:
-                mIconInfoCallbacks.editIcon(mIcon);
+                mIconInfoCallbacks.IconInfoEditIcon(mIcon);
                 closeWindow();
                 break;
             case MoveToTrash:
-                mIconInfoCallbacks.throwIcon(mIcon);
+                mIconInfoCallbacks.IconInfoThrowIcon(mIcon);
                 closeWindow();
                 break;
             case Copy:
-                mIconInfoCallbacks.copyIcon(mIcon);
+                mIconInfoCallbacks.IconInfoCopyIcon(mIcon);
                 closeWindow();
                 break;
             case Favorite:

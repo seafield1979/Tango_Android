@@ -46,6 +46,7 @@ public class IconTrash extends IconContainer {
     public TangoParentType getParentType() {
         return TangoParentType.Trash;
     }
+    public void updateTitle(){}
 
     /**
      * Constructor

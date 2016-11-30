@@ -21,19 +21,25 @@ interface IconInfoDialogCallbacks {
      * ダイアログで表示しているアイコンの内容を編集
      * @param icon
      */
-    void editIcon(UIcon icon);
+    void IconInfoEditIcon(UIcon icon);
 
     /**
-     * ダイアログで表示しているアイコンをコピー
+     * アイコンをコピー
      * @param icon
      */
-    void copyIcon(UIcon icon);
+    void IconInfoCopyIcon(UIcon icon);
 
     /**
-     * ダイアログで表示しているアイコンをゴミ箱に移動
+     * アイコンをゴミ箱に移動
      * @param icon
      */
-    void throwIcon(UIcon icon);
+    void IconInfoThrowIcon(UIcon icon);
+
+    /**
+     * アイコンを開く
+     * @param icon
+     */
+    void IconInfoOpenIcon(UIcon icon);
 }
 
 

@@ -20,6 +20,21 @@ interface EditBookDialogCallbacks {
     void cancelEditBook();
 }
 
+enum EditBookDialogMode {
+    Create,     // 新しくアイコンを作成する
+    Edit        // 既存のアイコンを編集する
+    ;
+
+    public static EditBookDialogMode toEnum(int value) {
+        for (EditBookDialogMode id : values()) {
+            if (id.ordinal() == value) {
+                return id;
+            }
+        }
+        return EditBookDialogMode.Create;
+    }
+}
+
 /**
  * 複数の入力項目があるダイアログ
  *
@@ -32,6 +47,7 @@ public class EditBookDialogFragment extends DialogFragment {
      */
 
     // key names
+    public static final String KEY_MODE = "key_mode";
     public static final String KEY_NAME = "key_name";
     public static final String KEY_COMMENT = "key_comment";
     public static final String KEY_COLOR = "key_color";
@@ -40,6 +56,7 @@ public class EditBookDialogFragment extends DialogFragment {
      * Member variables
      */
     private EditBookDialogCallbacks dialogCallbacks;
+    private int mMode;
 
     private String mName;
     private String mComment;
@@ -64,8 +81,11 @@ public class EditBookDialogFragment extends DialogFragment {
         dialog.dialogCallbacks = callbacks;
 
         // set arguments
+        Bundle args = new Bundle();
+
         if (book != null) {
-            Bundle args = new Bundle();
+            args.putInt(KEY_MODE, EditCardDialogMode.Edit.ordinal());
+
             if (book.getName() != null) {
                 args.putString(KEY_NAME, book.getName());
             }
@@ -74,6 +94,8 @@ public class EditBookDialogFragment extends DialogFragment {
             }
             args.putInt(KEY_COLOR, book.getColor());
             dialog.setArguments(args);
+        } else {
+            args.putInt(KEY_MODE, EditBookDialogMode.Create.ordinal());
         }
 
         return dialog;
@@ -87,6 +109,7 @@ public class EditBookDialogFragment extends DialogFragment {
         // 引数を取得
         Bundle args = getArguments();
         if (args != null) {
+            mMode = args.getInt(KEY_MODE, EditBookDialogMode.Create.ordinal());
             mName = args.getString(KEY_NAME, "");
             mComment = args.getString(KEY_COMMENT, "");
         }
@@ -141,6 +164,7 @@ public class EditBookDialogFragment extends DialogFragment {
     private void submit() {
         Bundle args = new Bundle();
 
+        args.putInt(KEY_MODE, mMode);
         args.putString(KEY_NAME, mEditName.getText().toString());
         args.putString(KEY_COMMENT, mEditName.getText().toString());
 
