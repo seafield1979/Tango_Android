@@ -338,5 +338,25 @@ abstract public class UIcon extends UDrawable {
 
         return done;
     }
+
+
+    /**
+     * Drag & Drop
+     */
+
+    /**
+     * ドロップ可能かどうか
+     * ドラッグ中のアイコンを他のアイコンの上に重ねたときにドロップ可能かを判定してアイコンの色を変えたりする
+     * @param dstIcon
+     * @return
+     */
+    abstract public boolean canDrop(UIcon dstIcon, float x, float y);
+
+    /**
+     * ドロップ時の処理
+     * @param dstIcon
+     * @return 何かしら処理をした（再描画あり）
+     */
+    abstract public boolean droped(UIcon dstIcon, float x, float y);
 }
 

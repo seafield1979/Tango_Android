@@ -111,4 +111,34 @@ public class IconCard extends UIcon{
                 DISP_TITLE_LEN;
         this.title = card.getWordA().substring(0, len);
     }
+
+    /**
+     * ドロップ可能かどうか
+     * ドラッグ中のアイコンを他のアイコンの上に重ねたときにドロップ可能かを判定してアイコンの色を変えたりする
+     * @param dstIcon
+     * @return
+     */
+    public boolean canDrop(UIcon dstIcon, float dropX, float dropY) {
+        // ドロップ座標がアイコンの中に含まれているかチェック
+        if (!dstIcon.checkDrop(dropX, dropY)) return false;
+
+        if (dstIcon.type == IconType.Book) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * ドロップ時の処理
+     * @param dstIcon
+     * @return 何かしら処理をした（再描画あり）
+     */
+    public boolean droped(UIcon dstIcon, float dropX, float dropY) {
+        // 全面的にドロップはできない
+        if (!canDrop(dstIcon, dropX, dropY)) return false;
+
+
+
+        return true;
+    }
 }

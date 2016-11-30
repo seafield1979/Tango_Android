@@ -596,6 +596,7 @@ public class UIconWindow extends UWindow {
             if (manager == null) continue;
 
             // ドラッグ先のアイコンと重なっているアイコンを取得する
+            // 高速化のために幾つかのアイコンをセットにしたブロックと判定する処理(getOverLappedIcon()内)を使用する
             UIcon dropIcon;
             if (state == WindowState.drag) {
                 LinkedList<UIcon> exceptIcons = new LinkedList<>();
@@ -613,7 +614,10 @@ public class UIconWindow extends UWindow {
             }
             if (dropIcon != null) {
                 isDone = true;
-                mIconManager.setDropedIcon(dropIcon);
+                if (dragedIcon.canDrop(dropIcon, dragPos.x, dragPos.y)) {
+                    mIconManager.setDropedIcon(dropIcon);
+                }
+                break;
             }
         }
 
@@ -672,7 +676,7 @@ public class UIconWindow extends UWindow {
                 }
 
                 // ドロップ処理をチェックする
-                if (dropIcon.checkDrop(winX, winY)) {
+                if (dragedIcon.canDrop(dropIcon, winX, winY)) {
                     switch (dropIcon.getType()) {
                         case Card:
                             // ドラッグ位置のアイコンと場所を交換する
@@ -1160,28 +1164,6 @@ public class UIconWindow extends UWindow {
                     TangoParentType.Book.ordinal(),
                     iconBook.book.getId());
 
-        } else if (!(icon1 instanceof IconBox) && (icon2 instanceof IconBox)) {
-            // Card/Book -> Box
-
-            IconBox box = (IconBox)icon2;
-
-            UIconWindow window1 = icon1.parentWindow;
-            UIconWindow window2 = box.getSubWindow();
-            List<UIcon> icons1 = window1.getIcons();
-            List<UIcon> icons2 = box.getIcons();
-
-            icons1.remove(icon1);
-            icons2.add(icon1);
-
-            if (window2 != null) {
-                window2.sortIcons(false);
-                icon1.setParentWindow(window2);
-            }
-
-            // データベース更新
-            RealmManager.getItemPosDao().moveItem(icon1.getTangoItem(),
-                    TangoParentType.Box.ordinal(),
-                    icon2.getTangoItem().getId());
         }
 
         sortIcons(true);

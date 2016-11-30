@@ -352,7 +352,7 @@ public class TopView extends View
 
         // コピー先のカードアイコンを作成
         IconCard newIcon = (IconCard)(iconManager
-                .addNewIcon(IconType.Card, iconCard.getTangoItem(), AddPos.Tail));
+                .addNewIcon(IconType.Card, iconCard, AddPos.Tail));
         if (newIcon == null) {
             return;
         }
@@ -410,18 +410,6 @@ public class TopView extends View
 //                    invalidate();
                 }
                 break;
-//            case Box: {
-//                // 配下のアイコンをSubWindowに表示する
-//                if (icon instanceof IconBox) {
-//                    UIconWindow window = mIconWindows.getSubWindow();
-//                    window.setIcons(TangoParentType.Box, icon.getTangoItem().getId());
-//
-//                    // SubWindowを画面外から移動させる
-//                    mIconWindows.showWindow(window, true);
-//                    invalidate();
-//                }
-//            }
-//            break;
         }
     }
     public void longClickIcon(UIcon icon) {
@@ -566,7 +554,10 @@ public class TopView extends View
         }
     }
     public void copyIcon(UIcon icon) {
-        copyCardIcon(editingIcon);
+        if (icon instanceof IconCard) {
+            IconCard iconCard = (IconCard) icon;
+            copyCardIcon(iconCard);
+        }
     }
     public void throwIcon(UIcon icon) {
 
