@@ -40,6 +40,12 @@ interface IconInfoDialogCallbacks {
      * @param icon
      */
     void IconInfoOpenIcon(UIcon icon);
+
+    /**
+     * コンテナタイプのアイコン以下をクリーンアップ(全削除)する
+     * @param icon
+     */
+    void IconInfoCleanup(UIcon icon);
 }
 
 

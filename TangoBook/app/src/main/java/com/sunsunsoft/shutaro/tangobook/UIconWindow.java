@@ -352,7 +352,7 @@ public class UIconWindow extends UWindow {
         if (mIconManager.getSelectedIcon() != null) {
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(mIconManager.getSelectedIcon().getRectWithOffset
-                            (_offset, 5)), 10.0f, Color.argb(160, 255, 0, 0));
+                            (_offset, 5)), 10.0f, Color.argb(128, 255, 100, 100));
         }
         for (UIcon icon : mIconManager.getIcons()) {
             if (icon == dragedIcon) continue;

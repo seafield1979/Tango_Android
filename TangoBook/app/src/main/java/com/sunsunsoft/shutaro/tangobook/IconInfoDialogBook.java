@@ -74,6 +74,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
     private View mParentView;
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private UTextView textName;
+    private UTextView textCount;
     private TangoBook mBook;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
 
@@ -139,6 +140,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
         UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20, bgColor);
 
         textName.draw(canvas, paint, pos);
+        textCount.draw(canvas, paint, pos);
 
         // Buttons
         for (UButtonImage button : imageButtons) {
@@ -159,6 +161,16 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
         // Name
         textName = UTextView.createInstance( mBook.getName(), TEXT_SIZE, 0,
+                UDraw.UAlignment.None, canvas.getWidth(), true,
+                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+
+        y += TEXT_VIEW_H + MARGIN_V;
+
+        // Card count
+        long count = RealmManager.getItemPosDao().countInParentType(
+                TangoParentType.Book, mIcon.getTangoItem().getId()
+        );
+        textCount = UTextView.createInstance( "Count:" + count, TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), true,
                 MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
@@ -210,9 +222,10 @@ public class IconInfoDialogBook extends IconInfoDialog {
         if (vt.type == TouchType.Click) {
 
             if (getRect().contains((int)vt.touchX(), (int)vt.touchY())) {
-
             } else {
-                closeWindow();
+                if (windowCallbacks != null) {
+                    windowCallbacks.windowClose(this);
+                }
             }
             return true;
         }

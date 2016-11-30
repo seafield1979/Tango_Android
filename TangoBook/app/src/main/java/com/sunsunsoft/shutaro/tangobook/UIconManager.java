@@ -123,7 +123,7 @@ public class UIconManager implements UIconCallbacks{
                 TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, TangoParentType
                         .Home, 0);
                 card.setItemPos(itemPos);
-                icon = new IconCard(card, mParentWindow, this);
+                icon = new IconCard(card, mParentView, mParentWindow, this);
             }
             break;
             case Book:
@@ -181,7 +181,7 @@ public class UIconManager implements UIconCallbacks{
                 TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, TangoParentType
                         .Home, 0);
                 card.setItemPos(itemPos);
-                icon = new IconCard(card, mParentWindow, this);
+                icon = new IconCard(card, mParentView, mParentWindow, this);
             }
                 break;
             case Book:
@@ -230,7 +230,7 @@ public class UIconManager implements UIconCallbacks{
             case Card:
                 if (item instanceof  TangoCard) {
                     TangoCard card = (TangoCard) item;
-                    icon = new IconCard(card, mParentWindow, this);
+                    icon = new IconCard(card, mParentView, mParentWindow, this);
                 }
                 break;
             case Book:

@@ -1,10 +1,13 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.view.View;
 
 import java.util.List;
@@ -18,8 +21,8 @@ public class IconBook extends IconContainer {
      * Constant
      */
     public static final String TAG = "UIconRect";
-    private static final int ICON_W = 150;
-    private static final int ICON_H = 100;
+    private static final int ICON_W = 120;
+    private static final int ICON_H = 120;
 
     // アイコンの上のテキストのPadding
     private static final int TEXT_PAD_X = 10;
@@ -33,6 +36,7 @@ public class IconBook extends IconContainer {
      * Member variable
      */
     protected TangoBook book;
+    protected Bitmap image;
 
     /**
      * Get/Set
@@ -59,6 +63,8 @@ public class IconBook extends IconContainer {
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
+        image = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.notebook);
+
         // データベースから配下のCardを読み込む
         List<TangoCard> cards = RealmManager.getItemPosDao().selectCardsByBookId(book.getId());
         if (cards != null) {
@@ -68,50 +74,45 @@ public class IconBook extends IconContainer {
         }
     }
 
+    /**
+     * アイコンの描画
+     * @param canvas
+     * @param paint
+     * @param offset
+     */
     public void drawIcon(Canvas canvas,Paint paint, PointF offset) {
+        PointF drawPos;
+        if (offset != null) {
+            drawPos = new PointF(pos.x + offset.x, pos.y + offset.y);
+        } else {
+            drawPos = pos;
+        }
 
-        // 内部を塗りつぶし
-        paint.setStyle(Paint.Style.FILL);
-        // 色
-        if (isLongTouched) {
-            paint.setColor(longPressedColor);
-        }
-        else if (isTouched) {
-            paint.setColor(touchedColor);
-        }
-        else if (isDroping) {
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(2);
-            paint.setColor(Color.BLACK);
+        if (isLongTouched || isTouched || isDroping) {
+            // 長押し、タッチ、ドロップ中はBGを表示
+            UDraw.drawRoundRectFill(canvas, paint,
+                    new RectF(drawPos.x, drawPos.y, drawPos.x + ICON_W, drawPos.y + ICON_H),
+                    10, touchedColor);
         } else if (isAnimating) {
+            // 点滅
             double v1 = ((double)animeFrame / (double)animeFrameMax) * 180;
             int alpha = (int)((1.0 -  Math.sin(v1 * RAD)) * 255);
             paint.setColor((alpha << 24) | (color & 0xffffff));
         } else {
             paint.setColor(color);
         }
-
-        Rect drawRect = null;
-        if (offset != null) {
-            drawRect = new Rect(rect.left + (int)offset.x,
-                    rect.top + (int)offset.y,
-                    rect.right + (int)offset.x,
-                    rect.bottom + (int)offset.y);
-        } else {
-            drawRect = rect;
-        }
-        canvas.drawRect(drawRect, paint);
+        // icon
+        // 領域の幅に合わせて伸縮
+        canvas.drawBitmap(image, new Rect(0,0,image.getWidth(), image.getHeight()),
+                new Rect((int)drawPos.x, (int)drawPos.y,
+                        (int)drawPos.x + ICON_W,(int)drawPos.y + ICON_H),
+                paint);
 
         // Text
-        paint.setColor(Color.WHITE);
-        paint.setTextSize(TEXT_SIZE);
-        canvas.drawText( title, drawRect.left + TEXT_PAD_X, drawRect.top + TEXT_SIZE + TEXT_PAD_Y, paint);
-
-        // 穴
         paint.setColor(Color.BLACK);
-        float cx = drawRect.left + ICON_W - 30;
-        float cy = drawRect.centerY();
-        canvas.drawCircle( cx, cy, 15, paint);
+        paint.setTextSize(TEXT_SIZE);
+        canvas.drawText( title, drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_SIZE + ICON_H,
+                paint);
     }
 
     /**

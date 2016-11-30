@@ -141,7 +141,6 @@ public class TangoItemPosDao {
         // 種類別にItemPosのリストを作成(カード)
         LinkedList<TangoItemPos> cardPoses = new LinkedList<>();
         LinkedList<TangoItemPos> bookPoses = new LinkedList<>();
-//        LinkedList<TangoItemPos> boxPoses = new LinkedList<>();
 
         for (TangoItemPos item : itemPoses) {
             switch (TangoItemType.toEnum(item.getItemType())) {
@@ -151,9 +150,6 @@ public class TangoItemPosDao {
                 case Book:
                     bookPoses.add(item);
                     break;
-//                case Box:
-//                    boxPoses.add(item);
-//                    break;
             }
         }
 
@@ -203,29 +199,6 @@ public class TangoItemPosDao {
         } else {
             books = new LinkedList<>();
         }
-
-        // Box
-//        List<TangoBox> boxes;
-//        if (boxPoses.size() > 0) {
-//            boxes = RealmManager.getBoxDao()
-//                    .selectByIds(boxPoses, changeable);
-//            // posが小さい順にソート
-//            LinkedList<TangoBox> sortedBoxes = new LinkedList<>();
-//            for (TangoItemPos itemPos : boxPoses) {
-//                for (int i=0; i<boxes.size(); i++) {
-//                    TangoBox box = boxes.get(i);
-//                    box.setItemPos(itemPos);
-//                    if (box.getId() == itemPos.getItemId()) {
-//                        sortedBoxes.add(box);
-//                        boxes.remove(i);
-//                        break;
-//                    }
-//                }
-//            }
-//            boxes = sortedBoxes;
-//        } else {
-//            boxes = new LinkedList<>();
-//        }
 
         // posの順にリストを作成
         items = joinWithSort(cards, books);
@@ -944,4 +917,23 @@ public class TangoItemPosDao {
         saveIcons(icons, TangoParentType.Home, 0);
     }
 
+
+    /**
+     * 指定のParentType、ParentIdの要素数を取得
+     * @param parentType
+     * @param parentId
+     * @return
+     */
+    public long countInParentType(TangoParentType parentType, int parentId) {
+
+        RealmQuery query = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", parentType.ordinal());
+
+        if (parentId > 0) {
+             query = query.equalTo("parentId", parentId);
+        }
+        long count = query.count();
+
+        return count;
+    }
 }

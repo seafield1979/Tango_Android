@@ -215,11 +215,11 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         // 範囲外をクリックしたら閉じる
         if (vt.type == TouchType.Click) {
-
             if (getRect().contains((int)vt.touchX(), (int)vt.touchY())) {
-
             } else {
-                closeWindow();
+                if (windowCallbacks != null) {
+                    windowCallbacks.windowClose(this);
+                }
             }
             return true;
         }
@@ -247,15 +247,12 @@ public class IconInfoDialogCard extends IconInfoDialog {
         switch(ActionIcons.toEnum(id)) {
             case Edit:
                 mIconInfoCallbacks.IconInfoEditIcon(mIcon);
-                closeWindow();
                 break;
             case MoveToTrash:
                 mIconInfoCallbacks.IconInfoThrowIcon(mIcon);
-                closeWindow();
                 break;
             case Copy:
                 mIconInfoCallbacks.IconInfoCopyIcon(mIcon);
-                closeWindow();
                 break;
             case Favorite:
                 //mIconInfoCallbacks.favoriteIcon(mIcon);

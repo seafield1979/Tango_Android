@@ -28,7 +28,8 @@ enum WindowType {
 public class TopView extends View
         implements View.OnTouchListener, UMenuItemCallbacks,
         UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks, UButtonCallbacks,
-        EditCardDialogCallbacks, EditBookDialogCallbacks, IconInfoDialogCallbacks
+        EditCardDialogCallbacks, EditBookDialogCallbacks, IconInfoDialogCallbacks,
+        UDialogCallbacks
 {
 
     /**
@@ -49,6 +50,7 @@ public class TopView extends View
 
     // Dialog
     private DebugDialogs debugDialogs;
+    private UDialogWindow mDialog;
 
     // メニューバー
     private UMenuBar mMenuBar;
@@ -389,32 +391,35 @@ public class TopView extends View
      */
     public void clickIcon(UIcon icon) {
         ULog.print(TAG, "clickIcon");
-        switch(icon.type) {
-            case Card:
-            case Book:
-            {
-                if (mIconInfoDlg == null) {
-                    int x = (int) icon.getX();
-                    int y = (int) icon.getY();
-                    if (icon.type == IconType.Card) {
-                        mIconInfoDlg = IconInfoDialogCard.createInstance(this, this, this, icon,
-                                x, y);
-                    } else {
-                        mIconInfoDlg = IconInfoDialogBook.createInstance(this, this, this, icon,
-                                x, y);
-                    }
-
-                } else {
-                    mIconInfoDlg.closeWindow();
-                }
-                invalidate();
+        if (mIconInfoDlg == null) {
+            PointF winPos = icon.parentWindow.getPos();
+            float x = winPos.x + icon.getX();
+            float y = winPos.y + icon.getY();
+            switch (icon.type) {
+                case Card:
+                    mIconInfoDlg = IconInfoDialogCard.createInstance(this, this, this, icon,
+                            x, y);
+                    break;
+                case Book:
+                    mIconInfoDlg = IconInfoDialogBook.createInstance(this, this, this, icon,
+                            x, y);
+                    break;
+                case Trash:
+                    mIconInfoDlg = IconInfoDialogTrash.createInstance(this, this, this, icon,
+                            x, y);
+                    break;
             }
-                break;
+        } else {
+            mIconInfoDlg.closeWindow();
+            mIconInfoDlg = null;
         }
+        invalidate();
     }
+
     public void longClickIcon(UIcon icon) {
         ULog.print(TAG, "longClickIcon");
     }
+
     public void dropToIcon(UIcon icon) {
         ULog.print(TAG, "dropToIcon");
     }
@@ -437,6 +442,15 @@ public class TopView extends View
                 invalidate();
             }
                 break;
+            case Trash:
+            {
+                UIconWindow window = mIconWindows.getSubWindow();
+                window.setIcons(TangoParentType.Trash, 0);
+
+                // SubWindowを画面外から移動させる
+                mIconWindows.showWindow(window, true);
+                invalidate();
+            }
         }
     }
 
@@ -474,6 +488,12 @@ public class TopView extends View
      * UButtonCallbacks
      */
     public boolean UButtonClick(int id) {
+        switch (id) {
+            case CleanupDialogButtonOK:
+                break;
+            case UDialogWindow.CloseDialogId:
+                break;
+        }
         return false;
     }
     public boolean UButtonLongClick(int id) {
@@ -624,5 +644,45 @@ public class TopView extends View
         openIcon(icon);
         mIconInfoDlg.closeWindow();
         mIconInfoDlg = null;
+    }
+
+    /**
+     * アイコン配下をクリーンアップする
+     */
+    public static final int CleanupDialogButtonOK = 101;
+
+    public void IconInfoCleanup(UIcon icon) {
+        if (icon.getType() == IconType.Trash) {
+            if (mDialog != null) {
+                mDialog.closeDialog();
+                mDialog = null;
+            }
+            // Daoデバッグ用のダイアログを表示
+            mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                    this, this,
+                    UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                    false,
+                    getWidth(), getHeight(),
+                    Color.rgb(200,100,100), Color.WHITE);
+
+
+            // 確認のダイアログを表示する
+            mDialog.setTitle("Do you clean up?");
+
+            // ボタンを追加
+            mDialog.addButton(CleanupDialogButtonOK, "OK", Color.WHITE,
+                    Color.rgb(150, 80, 80));
+            mDialog.addCloseButton("Cancel");
+
+            // 描画マネージャに登録
+            mDialog.setDrawPriority(DrawPriority.Dialog.p());
+        }
+    }
+
+    /**
+     * UDialogCallbacks
+     */
+    public void dialogClosed(UDialogWindow dialog) {
+
     }
 }

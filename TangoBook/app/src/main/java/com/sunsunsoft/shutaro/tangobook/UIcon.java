@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.Log;
+import android.view.View;
 
 import static com.sunsunsoft.shutaro.tangobook.UDebug.drawIconId;
 
@@ -32,6 +33,7 @@ abstract public class UIcon extends UDrawable {
     protected UIconWindow parentWindow;
     private UIconCallbacks callbacks;
     protected DrawList drawList;
+    protected View mParentView;
 
     // アニメーション用
     public static final int ANIME_FRAME = 20;
@@ -73,10 +75,12 @@ abstract public class UIcon extends UDrawable {
     /**
      * Constructor
      */
-    public UIcon(UIconWindow parentWindow, UIconCallbacks iconCallbacks, IconType type, float x,
+    public UIcon(View parentView, UIconWindow parentWindow, UIconCallbacks iconCallbacks, IconType
+            type, float x,
                  float y, int width, int height)
     {
         super(DRAW_PRIORITY, x, y, width, height);
+        mParentView = parentView;
         this.parentWindow = parentWindow;
         this.callbacks = iconCallbacks;
         this.id = count;

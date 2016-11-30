@@ -18,7 +18,6 @@ abstract public class IconContainer extends UIcon {
      * Memver variable
      */
     protected UIconWindow subWindow;
-    protected View mParentView;
     protected UIconManager mIconManager;
 
     /**
@@ -41,8 +40,7 @@ abstract public class IconContainer extends UIcon {
                          IconType type, float x,
                  float y, int width, int height)
     {
-        super(parentWindow, iconCallbacks, type, x, y, width, height);
-        mParentView = parentView;
+        super(parentView, parentWindow, iconCallbacks, type, x, y, width, height);
 
         // 内包するアイコン
         mIconManager = UIconManager.createInstance(parentView, subWindow, iconCallbacks);
