@@ -27,8 +27,8 @@ enum LogWindowType {
  */
 public class ULogWindow extends UWindow {
     public static final int SHOW_TIME = 3000;
-    public static final int MESSAGE_MAX = 30;
     public static final int DRAW_PRIORITY = 5;
+    private static final int TEXT_SIZE = 30;
 
     private LinkedList<LogData> logs = new LinkedList<>();
     private DrawList mDrawList;
@@ -37,6 +37,7 @@ public class ULogWindow extends UWindow {
     private Context context;
     private LogWindowType type;
     private int count = 1;
+    private int maxLog;
 
     private ULogWindow(float x, float y, int width, int height, int color)
     {
@@ -45,6 +46,7 @@ public class ULogWindow extends UWindow {
         if (type == LogWindowType.AutoDisappear) {
             startTimer(SHOW_TIME);
         }
+        maxLog = height / TEXT_SIZE + 1;
     }
 
     /**
@@ -72,6 +74,8 @@ public class ULogWindow extends UWindow {
         if (type == LogWindowType.Fix) {
             isShow = true;
         }
+        addCloseIcon(CloseIconPos.RightTop);
+
         // 描画はDrawManagerに任せるのでDrawManagerに登録
         mDrawList = UDrawManager.getInstance().addDrawable(this);
     }
@@ -87,10 +91,10 @@ public class ULogWindow extends UWindow {
     public void addLog(String text, int color) {
         LogData msg = new LogData("" + count + ": " + text, color);
         logs.push(msg);
-        if (logs.size() > MESSAGE_MAX) {
+        if (logs.size() > maxLog) {
             logs.removeLast();
         }
-        setShow(true);
+
         if (type == LogWindowType.AutoDisappear) {
             startTimer(SHOW_TIME);
         }
@@ -144,6 +148,9 @@ public class ULogWindow extends UWindow {
      */
     public boolean touchEvent(ViewTouch vt) {
         if (!isShow) return false;
+        if (super.touchEvent(vt)) {
+            return true;
+        }
 
         // 範囲外なら除外
         if (!(rect.contains((int)vt.getX(), (int)vt.getY()))) {
@@ -213,7 +220,7 @@ public class ULogWindow extends UWindow {
         canvas.drawRect(rect, paint);
 
         // テキスト表示
-        paint.setTextSize(30);
+        paint.setTextSize(TEXT_SIZE);
         paint.setAntiAlias(true);
 
         float drawX = 0;
@@ -221,8 +228,19 @@ public class ULogWindow extends UWindow {
         for (LogData msg : logs) {
             paint.setColor(msg.color);
             canvas.drawText(msg.text, pos.x + drawX, pos.y + drawY, paint);
-            drawY += 30;
+            drawY += TEXT_SIZE;
         }
+    }
+    /**
+     * UButtonCallback
+     */
+    public boolean UButtonClick(int id) {
+        switch (id) {
+            case CloseButtonId:
+                toggle();
+                return true;
+        }
+        return false;
     }
 }
 

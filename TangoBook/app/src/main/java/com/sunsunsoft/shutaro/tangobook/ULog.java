@@ -8,19 +8,35 @@ import java.util.HashMap;
  * タグ毎のON/OFFを設定できる
  */
 public class ULog {
-    public static final String TAG = "ULog";
 
+    /**
+     * Constants
+     */
+    public static final String TAG = "ULog";
     private static final boolean isCount = false;
 
+    /**
+     * Static variables
+     */
     // タグ毎のON/OFF情報をMap(Dictionary)で持つ
     private static HashMap<String,Boolean> enables = new HashMap<>();
     private static HashMap<String,Integer> counters = new HashMap<>();
+    private static ULogWindow logWindow;
 
+    /**
+     * Get/Set
+     */
     // タグのON/OFFを設定する
     public static void setEnable(String tag, boolean enable) {
         enables.put(tag, enable);
     }
+    public static void setLogWindow(ULogWindow _logWindow) {
+        logWindow = _logWindow;
+    }
 
+    /**
+     * Init
+     */
     // 初期化、アプリ起動時に１回だけ呼ぶ
     public static void init() {
         setEnable(ViewTouch.TAG, true);
@@ -39,8 +55,10 @@ public class ULog {
         if (enable != null && !enable) {
             // 出力しない
         } else {
-//            Log.v(tag, msg);
-            System.out.println(msg);
+            Log.v(tag, msg);
+            if (logWindow != null) {
+                logWindow.addLog(msg);
+            }
         }
     }
 
@@ -78,7 +96,7 @@ public class ULog {
         if (enable != null && !enable) {
             // 出力しない
         } else {
-            Log.d(tag, "count:" + counters.get(tag));
+            ULog.print(tag, "count:" + counters.get(tag));
         }
     }
     public static void showAllCount() {

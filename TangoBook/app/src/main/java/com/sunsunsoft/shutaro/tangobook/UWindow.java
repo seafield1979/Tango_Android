@@ -351,7 +351,6 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     /**
      * UButtonCallbacks
      */
-
     public boolean UButtonClick(int id) {
         switch (id) {
             case CloseButtonId:

@@ -136,9 +136,10 @@ public class TopView extends View
 
         // ULogWindow
         if (mLogWin == null) {
-            mLogWin = ULogWindow.createInstance(getContext(), this, LogWindowType.AutoDisappear,
+            mLogWin = ULogWindow.createInstance(getContext(), this, LogWindowType.Fix,
                     0, 0, width, height);
             mWindows[WindowType.Log.ordinal()] = mLogWin;
+            ULog.setLogWindow(mLogWin);
         }
     }
 
