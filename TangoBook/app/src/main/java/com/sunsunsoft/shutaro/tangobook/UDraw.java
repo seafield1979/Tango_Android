@@ -66,10 +66,18 @@ public class UDraw {
      * @param rect
      * @param color
      */
-    public static void drawRectFill(Canvas canvas, Paint paint, Rect rect, int color) {
+    public static void drawRectFill(Canvas canvas, Paint paint, Rect rect, int color,
+                                    int strokeWidth, int strokeColor) {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color);
         canvas.drawRect(rect, paint);
+
+        if (strokeWidth > 0) {
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(strokeWidth);
+            paint.setColor(strokeColor);
+            canvas.drawRect(rect, paint);
+        }
     }
 
     /**
@@ -77,16 +85,26 @@ public class UDraw {
      * @param canvas
      * @param paint
      * @param rect
+     * @param strokeWidth
+     * @param strokeColor
      * @param radius    角の半径
      * @param color
      */
-    public static void drawRoundRectFill(Canvas canvas, Paint paint, RectF rect, float radius, int
-            color) {
+    public static void drawRoundRectFill(Canvas canvas, Paint paint, RectF rect,
+                                         float radius, int color,
+                                         int strokeWidth, int strokeColor)
+    {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color);
         canvas.drawRoundRect(rect, radius, radius, paint);
-    }
 
+        if (strokeWidth > 0) {
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(strokeWidth);
+            paint.setColor(strokeColor);
+            canvas.drawRoundRect(rect, radius, radius, paint);
+        }
+    }
     /**
      * 円描画(線)
      * @param canvas
@@ -196,7 +214,7 @@ public class UDraw {
 
         if (isChecked) {
             // 枠
-            drawRoundRectFill(canvas, paint, rect, 10, color );
+            drawRoundRectFill(canvas, paint, rect, 10, color, 0, 0 );
 
             // チェック
             Path path = new Path();
@@ -250,6 +268,8 @@ public class UDraw {
                 break;
         }
 
+        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeWidth(1);
         paint.setColor(color);
         paint.setTextSize(textSize);
         canvas.drawText(_text, x, y, paint);
@@ -297,6 +317,8 @@ public class UDraw {
         canvas.translate(x, y);
 
         ///テキストの描画位置の指定
+        textPaint.setStyle(Paint.Style.STROKE);
+        textPaint.setStrokeWidth(1);
         textPaint.setColor(color);
         mTextLayout.draw(canvas);
         canvas.restore();

@@ -84,7 +84,7 @@ public class UButtonImage extends UButton {
                 UDraw.drawRoundRectFill(canvas, paint,
                         new RectF(_rect.left - 10, _rect.top - 10,
                                 _rect.right + 10, _rect.bottom + 10),
-                        10, Color.argb(255,255,100,100));
+                        10, Color.argb(255,255,100,100), 0, 0);
             }
         }
 

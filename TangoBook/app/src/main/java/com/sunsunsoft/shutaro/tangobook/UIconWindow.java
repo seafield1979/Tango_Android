@@ -64,10 +64,6 @@ public class UIconWindow extends UWindow {
 
     public static final int ICON_MARGIN = 30;
 
-    private static final int RECT_ICON_NUM = 10;
-    private static final int CARD_ICON_NUM = 200;
-    private static final int BOX_ICON_NUM = 10;
-
     public static final int ICON_W = 200;
     public static final int ICON_H = 200;
     private static final int MARGIN_D = UMenuBar.MENU_BAR_H;
@@ -160,6 +156,10 @@ public class UIconWindow extends UWindow {
 
     public void setAppearance(boolean appearance) {
         isAppearance = appearance;
+    }
+
+    public TangoParentType getParentType() {
+        return parentType;
     }
 
     /**
@@ -352,7 +352,7 @@ public class UIconWindow extends UWindow {
         if (mIconManager.getSelectedIcon() != null) {
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(mIconManager.getSelectedIcon().getRectWithOffset
-                            (_offset, 5)), 10.0f, Color.argb(128, 255, 100, 100));
+                            (_offset, 5)), 10.0f, Color.argb(128, 255, 100, 100), 0, 0);
         }
         for (UIcon icon : mIconManager.getIcons()) {
             if (icon == dragedIcon) continue;
@@ -401,6 +401,7 @@ public class UIconWindow extends UWindow {
      */
     public void sortIcons(boolean animate) {
         List<UIcon> icons = getIcons();
+        UIcon selectedIcon = null;
         if (icons == null) return;
 
         int maxSize = 0;
@@ -424,6 +425,11 @@ public class UIconWindow extends UWindow {
                 } else {
                     icon.setPos(x, y);
                 }
+                // 選択アイコンがあるかどうかチェック
+                if (icon == mIconManager.getSelectedIcon()) {
+                    selectedIcon = icon;
+                }
+
                 i++;
             }
         } else {
@@ -443,6 +449,11 @@ public class UIconWindow extends UWindow {
                     icon.startMovingPos(x, y, MOVING_TIME);
                 } else {
                     icon.setPos(x, y);
+                }
+
+                // 選択アイコンがあるかどうかチェック
+                if (icon == mIconManager.getSelectedIcon()) {
+                    selectedIcon = icon;
                 }
                 i++;
             }
@@ -473,6 +484,10 @@ public class UIconWindow extends UWindow {
             contentTop.x = mScrollBarH.updateContent(contentSize);
         }
 
+        // 必要があれば選択アイコンをクリア
+        if (selectedIcon == null) {
+            mIconManager.setSelectedIcon(null);
+        }
     }
 
     /**
@@ -1140,6 +1155,8 @@ public class UIconWindow extends UWindow {
      */
     private void moveIconIn(UIcon icon1, UIcon icon2)
     {
+        if (icon1 == null || icon2 == null) return;
+
         // Cardの中には挿入できない
         if (!(icon2 instanceof IconContainer)) {
             return;
@@ -1155,7 +1172,7 @@ public class UIconWindow extends UWindow {
         icons1.remove(icon1);
         icons2.add(icon1);
 
-        if (window2 != null) {
+        if (window2 != null && window2.isShow()) {
             window2.sortIcons(false);
             icon1.setParentWindow(window2);
         }
@@ -1170,6 +1187,40 @@ public class UIconWindow extends UWindow {
                 itemId);
 
         sortIcons(true);
+    }
+
+    /**
+     * アイコンをゴミ箱の中に移動
+     * @param icon
+     */
+    public void moveIconIntoTrash(UIcon icon) {
+        moveIconIn(icon, mIconManager.getTrashIcon());
+    }
+
+    /**
+     * アイコンをホームに移動する
+     * @param icon
+     * @param mainWindow
+     */
+    public void moveIconIntoHome(UIcon icon, UIconWindow mainWindow) {
+        if (icon == null) return;
+
+        UIconWindow window1 = icon.parentWindow;
+        UIconWindow window2 = mainWindow;
+        List<UIcon> icons1 = window1.getIcons();
+        List<UIcon> icons2 = window2.getIcons();
+
+        icons1.remove(icon);
+        icons2.add(icon);
+
+        if (window2 != null && window2.isShow()) {
+            window2.sortIcons(false);
+            icon.setParentWindow(window2);
+        }
+        // データベース更新
+        RealmManager.getItemPosDao().moveItemToHome(icon.getTangoItem());
+
+        sortIcons(false);
     }
 
     /**
@@ -1218,6 +1269,20 @@ public class UIconWindow extends UWindow {
 
         // 箱の中に入れた後のアイコン整列後にチェックを解除したいのでフラグを持っておく
         isDropInBox = true;
+    }
+
+    /**
+     * アイコンを完全に削除する
+     * @param icon
+     * @return
+     */
+    public void removeIcon(UIcon icon) {
+
+        mIconManager.removeIcon(icon);
+        sortIcons(true);
+
+        // DB更新
+        RealmManager.getItemPosDao().deleteItemInTrash(icon.getTangoItem());
     }
 
 

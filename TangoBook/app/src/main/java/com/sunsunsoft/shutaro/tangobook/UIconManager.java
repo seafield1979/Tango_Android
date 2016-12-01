@@ -36,6 +36,7 @@ public class UIconManager implements UIconCallbacks{
 
     private UIcon selectedIcon;
     private UIcon dropedIcon;       // アイコンをドロップ中のアイコン
+    private UIcon mTrashIcon;
 
     /**
      * Get/Set
@@ -73,6 +74,10 @@ public class UIconManager implements UIconCallbacks{
             this.dropedIcon = dropedIcon;
             dropedIcon.isDroping = true;
         }
+    }
+
+    public UIcon getTrashIcon() {
+        return mTrashIcon;
     }
 
     /**
@@ -195,7 +200,7 @@ public class UIconManager implements UIconCallbacks{
                 break;
             case Trash:
             {
-                icon = new IconTrash(mParentView, mParentWindow, this);
+                mTrashIcon = icon = new IconTrash(mParentView, mParentWindow, this);
             }
                 break;
         }

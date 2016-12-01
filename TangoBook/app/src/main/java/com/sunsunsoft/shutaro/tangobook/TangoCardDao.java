@@ -273,15 +273,12 @@ public class TangoCardDao {
     /**
      * IDのリストに一致する項目を全て削除する
      */
-    public void deleteIds(Integer[] ids) {
-        if (ids.length <= 0) return;
+    public void deleteIds(List<Integer> ids, boolean transaction) {
+        if (ids.size() <= 0) return;
 
-        mRealm.beginTransaction();
 
-        // Build the query looking at all users:
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 
-        // Add query conditions:
         boolean isFirst = true;
         for (int id : ids) {
             if (isFirst) {
@@ -291,11 +288,15 @@ public class TangoCardDao {
                 query.or().equalTo("id", id);
             }
         }
-        // Execute the query:
         RealmResults<TangoCard> results = query.findAll();
 
-        results.deleteAllFromRealm();
-        mRealm.commitTransaction();
+        if (transaction) {
+            mRealm.beginTransaction();
+            results.deleteAllFromRealm();
+            mRealm.commitTransaction();
+        } else {
+            results.deleteAllFromRealm();
+        }
     }
 
     /**

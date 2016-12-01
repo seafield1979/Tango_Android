@@ -127,7 +127,8 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         }
 
         // BG
-        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20, bgColor);
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
+                bgColor, FRAME_WIDTH, FRAME_COLOR);
 
         textNumber.draw(canvas, paint, pos);
 

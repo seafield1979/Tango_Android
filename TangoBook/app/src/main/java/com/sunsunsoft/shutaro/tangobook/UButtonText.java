@@ -91,7 +91,7 @@ public class UButtonText extends UButton {
             } else {
                 // ボタンの影用に下に矩形を描画
                 UDraw.drawRoundRectFill(canvas, paint,
-                        new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + size.height), BUTTON_RADIUS, pressedColor);
+                        new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + size.height), BUTTON_RADIUS, pressedColor, 0, 0);
             }
             _height -= PRESS_Y;
 
@@ -103,7 +103,7 @@ public class UButtonText extends UButton {
         }
         UDraw.drawRoundRectFill(canvas, paint,
                 new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + _height),
-                BUTTON_RADIUS, _color);
+                BUTTON_RADIUS, _color, 0, 0);
 
         // テキスト
         if (text != null) {

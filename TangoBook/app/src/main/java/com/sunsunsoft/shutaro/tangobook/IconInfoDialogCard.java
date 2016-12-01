@@ -135,7 +135,8 @@ public class IconInfoDialogCard extends IconInfoDialog {
         }
 
         // BG
-        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20, bgColor);
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
+                bgColor, FRAME_WIDTH, FRAME_COLOR);
 
         textWordA.draw(canvas, paint, pos);
         textWordB.draw(canvas, paint, pos);

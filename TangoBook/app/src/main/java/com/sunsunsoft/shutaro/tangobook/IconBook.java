@@ -92,7 +92,7 @@ public class IconBook extends IconContainer {
             // 長押し、タッチ、ドロップ中はBGを表示
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(drawPos.x, drawPos.y, drawPos.x + ICON_W, drawPos.y + ICON_H),
-                    10, touchedColor);
+                    10, touchedColor, 0, 0);
         } else if (isAnimating) {
             // 点滅
             double v1 = ((double)animeFrame / (double)animeFrameMax) * 180;
@@ -109,10 +109,8 @@ public class IconBook extends IconContainer {
                 paint);
 
         // Text
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(TEXT_SIZE);
-        canvas.drawText( title, drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_SIZE + ICON_H,
-                paint);
+        UDraw.drawTextOneLine(canvas, paint, title, UDraw.UAlignment.None, TEXT_SIZE,
+                drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_SIZE + ICON_H, Color.BLACK);
     }
 
     /**

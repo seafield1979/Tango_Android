@@ -379,7 +379,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         // BG
         if (type == DialogType.Mordal) {
             UDraw.drawRectFill(canvas, paint,
-                    new Rect(0,0,screenSize.width, screenSize.height), bgColor);
+                    new Rect(0,0,screenSize.width, screenSize.height), bgColor, 0, 0);
         }
 
         super.draw(canvas, paint, offset);
@@ -410,11 +410,11 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             float x = (size.width - width) / 2;
             float y = (size.height - height) / 2;
             RectF _rect = new RectF(x, y, x + width, y + height);
-            UDraw.drawRoundRectFill(canvas, paint, _rect, 20, dialogColor);
+            UDraw.drawRoundRectFill(canvas, paint, _rect, 20, dialogColor, 0, 0);
 
         } else {
             // BG
-            UDraw.drawRoundRectFill(canvas, paint, getDialogRect(), 20, dialogColor);
+            UDraw.drawRoundRectFill(canvas, paint, getDialogRect(), 20, dialogColor, 0, 0);
 
             // Title, Message
             PointF _offset = pos;

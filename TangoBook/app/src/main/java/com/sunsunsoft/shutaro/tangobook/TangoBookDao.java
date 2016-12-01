@@ -196,15 +196,11 @@ public class TangoBookDao {
     /**
      * IDのリストに一致する項目を全て削除する
      */
-    public void deleteIds(Integer[] ids) {
-        if (ids.length <= 0) return;
+    public void deleteIds(List<Integer> ids, boolean transaction) {
+        if (ids.size() <= 0) return;
 
-        mRealm.beginTransaction();
-
-        // Build the query looking at all users:
         RealmQuery<TangoBook> query = mRealm.where(TangoBook.class);
 
-        // Add query conditions:
         boolean isFirst = true;
         for (int id : ids) {
             if (isFirst) {
@@ -214,11 +210,15 @@ public class TangoBookDao {
                 query.or().equalTo("id", id);
             }
         }
-        // Execute the query:
         RealmResults<TangoBook> results = query.findAll();
 
-        results.deleteAllFromRealm();
-        mRealm.commitTransaction();
+        if (transaction) {
+            mRealm.beginTransaction();
+            results.deleteAllFromRealm();
+            mRealm.commitTransaction();
+        } else {
+            results.deleteAllFromRealm();
+        }
     }
 
     /**

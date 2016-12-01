@@ -172,7 +172,7 @@ public class UTextView extends UDrawable {
         paint.setColor(bgColor);
         UDraw.drawRoundRectFill(canvas, paint,
                 new RectF(pos.x, pos.y, pos.x + size.width, pos.y + size.height),
-                20, bgColor);
+                20, bgColor, 0, 0);
     }
 
     /**

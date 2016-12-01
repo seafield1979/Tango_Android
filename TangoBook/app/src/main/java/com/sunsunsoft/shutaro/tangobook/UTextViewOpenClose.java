@@ -192,7 +192,6 @@ public class UTextViewOpenClose extends UTextView {
             drawRect = new RectF(pos.x, pos.y, pos.x + baseSize.width, pos.y + baseSize.height);
         }
         UDraw.drawRoundRectFill(canvas, paint,
-                drawRect,
-                20, bgColor);
+                drawRect, 20, bgColor, 0, 0);
     }
 }

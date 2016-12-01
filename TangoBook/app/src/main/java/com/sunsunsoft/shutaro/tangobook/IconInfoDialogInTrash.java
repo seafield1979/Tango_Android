@@ -12,33 +12,28 @@ import android.view.View;
 import java.util.LinkedList;
 
 /**
- * Created by shutaro on 2016/11/30.
+ * Created by shutaro on 2016/12/01.
  *
- * Bookアイコンをクリックした際に表示されるダイアログ
- * Bookの情報(Name)とアクションアイコン(ActionIcons)を表示する
+ * ゴミ箱の中のアイコンをクリックした際に表示されるダイアログ
  */
 
-public class IconInfoDialogBook extends IconInfoDialog {
+public class IconInfoDialogInTrash extends IconInfoDialog {
     /**
      * Enums
      */
     enum ActionIcons{
-        Open,
-        Edit,
-        MoveToTrash,
-        Copy
+        Return,        // 元に戻す。アイコンをゴミ箱からホームに移動する
+        Delete          // 削除
         ;
 
         private static final int[] iconImageIds = {
-                R.drawable.open,
-                R.drawable.edit,
-                R.drawable.trash,
-                R.drawable.copy
+                R.drawable.return1,
+                R.drawable.trash
         };
 
         protected static ActionIcons toEnum(int value) {
             if (value >= values().length) {
-                return Edit;
+                return Return;
             }
             return values()[value];
         }
@@ -73,9 +68,8 @@ public class IconInfoDialogBook extends IconInfoDialog {
      */
     private View mParentView;
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
-    private UTextView textName;
+    private UTextView textTitle;
     private UTextView textCount;
-    private TangoBook mBook;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
 
     /**
@@ -85,7 +79,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
     /**
      * Constructor
      */
-    public IconInfoDialogBook(View parentView,
+    public IconInfoDialogInTrash(View parentView,
                               IconInfoDialogCallbacks iconInfoDialogCallbacks,
                               UWindowCallbacks windowCallbacks,
                               UIcon icon,
@@ -94,23 +88,19 @@ public class IconInfoDialogBook extends IconInfoDialog {
     {
         super( parentView, iconInfoDialogCallbacks, windowCallbacks, icon, x, y, color);
         mParentView = parentView;
-        if (icon instanceof IconBook) {
-            IconBook bookIcon = (IconBook)icon;
-            mBook = (TangoBook)bookIcon.getTangoItem();
-        }
     }
 
     /**
      * createInstance
      */
-    public static IconInfoDialogBook createInstance(
+    public static IconInfoDialogInTrash createInstance(
             View parentView,
             IconInfoDialogCallbacks iconInfoDialogCallbacks,
             UWindowCallbacks windowCallbacks,
             UIcon icon,
             float x, float y)
     {
-        IconInfoDialogBook instance = new IconInfoDialogBook( parentView,
+        IconInfoDialogInTrash instance = new IconInfoDialogInTrash( parentView,
                 iconInfoDialogCallbacks, windowCallbacks, icon,
                 x, y, BG_COLOR);
 
@@ -140,8 +130,10 @@ public class IconInfoDialogBook extends IconInfoDialog {
         UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
                 bgColor, FRAME_WIDTH, FRAME_COLOR);
 
-        textName.draw(canvas, paint, pos);
-        textCount.draw(canvas, paint, pos);
+        textTitle.draw(canvas, paint, pos);
+        if (textCount != null) {
+            textCount.draw(canvas, paint, pos);
+        }
 
         // Buttons
         for (UButtonImage button : imageButtons) {
@@ -154,7 +146,6 @@ public class IconInfoDialogBook extends IconInfoDialog {
      * @param canvas
      */
     protected void updateLayout(Canvas canvas) {
-
         int y = TOP_ITEM_Y;
 
         int width = ICON_W * ActionIcons.values().length +
@@ -177,23 +168,24 @@ public class IconInfoDialogBook extends IconInfoDialog {
         }
         y += ICON_W + MARGIN_V + 50;
 
-        // Name
-        textName = UTextView.createInstance( mBook.getName(), TEXT_SIZE, 0,
+        // Title
+        textTitle = UTextView.createInstance( mIcon.getTitle(), TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), true,
                 MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;
 
-        // Card count
-        long count = RealmManager.getItemPosDao().countInParentType(
-                TangoParentType.Book, mIcon.getTangoItem().getId()
-        );
-        textCount = UTextView.createInstance( "Count:" + count, TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), true,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+        // Count(Bookの場合のみ)
+        if (mIcon.getType() == IconType.Book) {
+            long count = RealmManager.getItemPosDao().countInParentType(
+                    TangoParentType.Book, mIcon.getTangoItem().getId()
+            );
+            textCount = UTextView.createInstance("Count:" + count, TEXT_SIZE, 0,
+                    UDraw.UAlignment.None, canvas.getWidth(), true,
+                    MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
-        y += TEXT_VIEW_H + MARGIN_V;
-
+            y += TEXT_VIEW_H + MARGIN_V;
+        }
 
         setSize(width, y);
 
@@ -254,17 +246,11 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
         ULog.print(TAG, "UButtonCkick:" + id);
         switch(ActionIcons.toEnum(id)) {
-            case Open:
-                mIconInfoCallbacks.IconInfoOpenIcon(mIcon);
+            case Return:
+                mIconInfoCallbacks.IconInfoReturnIcon(mIcon);
                 break;
-            case Edit:
-                mIconInfoCallbacks.IconInfoEditIcon(mIcon);
-                break;
-            case MoveToTrash:
-                mIconInfoCallbacks.IconInfoThrowIcon(mIcon);
-                break;
-            case Copy:
-                mIconInfoCallbacks.IconInfoCopyIcon(mIcon);
+            case Delete:
+                mIconInfoCallbacks.IconInfoDeleteIcon(mIcon);
                 break;
         }
         return false;

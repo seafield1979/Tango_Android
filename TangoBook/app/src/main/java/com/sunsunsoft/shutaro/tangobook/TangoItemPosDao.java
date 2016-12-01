@@ -309,12 +309,6 @@ public class TangoItemPosDao {
             poses[1] = minInit;
         }
 
-//        if (indexs[2] < boxes.size()) {
-//            poses[2] = boxes.get(indexs[2]).getPos();
-//        } else {
-//            poses[2] = minInit;
-//        }
-
         int totalCount = cards.size() + books.size();
         int count = 0;
 
@@ -360,21 +354,6 @@ public class TangoItemPosDao {
                         poses[1] = 100000000;
                     }
                     break;
-//                case 2:
-//                    if (indexs[2] < boxes.size()) {
-//                        TangoBox box = boxes.get(indexs[2]);
-//                        box.setPos(items.size());
-//                        items.add(box);
-//                    }
-//
-//                    indexs[2]++;
-//                    count++;
-//                    if (indexs[2] < boxes.size()) {
-//                        poses[2] = boxes.get(indexs[2]).getPos();
-//                    } else {
-//                        poses[2] = 100000000;
-//                    }
-//                    break;
             }
 
             // 全ての要素をチェックし終わったら終了
@@ -519,6 +498,130 @@ public class TangoItemPosDao {
         mRealm.beginTransaction();
         result.deleteFromRealm();
         mRealm.commitTransaction();
+        return true;
+    }
+
+    /**
+     * 指定のParentType,ParentIdの要素を削除する
+     * @param parentType
+     * @param parentId
+     * @return
+     */
+    public boolean deleteItemsByParentType(int parentType, int parentId, boolean transaction) {
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", parentType)
+                .equalTo("parentId", parentId)
+                .findAll();
+        if (results == null) return false;
+
+        // Card/BookのIdリストを作成する
+        LinkedList<Integer> cardIds = new LinkedList<>();
+        LinkedList<Integer> bookIds = new LinkedList<>();
+        for (TangoItemPos itemPos : results) {
+            switch(TangoItemType.toEnum(itemPos.getItemType())) {
+                case Card:
+                    cardIds.add(itemPos.getItemId());
+                    break;
+                case Book:
+                    bookIds.add(itemPos.getItemId());
+                    break;
+            }
+        }
+
+        if (transaction) {
+            mRealm.beginTransaction();
+        }
+
+        // Card/Book本体を削除
+        RealmManager.getCardDao().deleteIds(cardIds, false);
+        RealmManager.getBookDao().deleteIds(bookIds, false);
+
+        // Posを削除
+        results.deleteAllFromRealm();
+
+        if (transaction) {
+            mRealm.commitTransaction();
+        }
+
+        return true;
+    }
+
+    /**
+     * ゴミ箱配下にあるアイテムを１件削除する
+     * @return
+     */
+    public boolean deleteItemInTrash(TangoItem item) {
+        TangoItemPos itemPos = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", TangoParentType.Trash.ordinal())
+                .equalTo("itemType", item.getItemType().ordinal())
+                .equalTo("itemId", item.getId())
+                .findFirst();
+        if (itemPos == null) return false;
+
+        mRealm.beginTransaction();
+
+        // アイテムを削除
+        switch( TangoItemType.toEnum(itemPos.getItemType())) {
+            case Card:
+                RealmManager.getCardDao().deleteById(item.getId());
+                break;
+            case Book:
+                RealmManager.getBookDao().deleteById(item.getId());
+                // 削除するのがBookなら配下のアイテムを全て削除
+                deleteItemsByParentType(TangoParentType.Book.ordinal(), itemPos.getItemId(), false);
+                break;
+        }
+
+        // Posを削除
+        itemPos.deleteFromRealm();
+
+        mRealm.commitTransaction();
+
+        return true;
+    }
+
+    /**
+     * ゴミ箱配下にあるアイテムを全て削除する
+     * Book内のカードも全て削除する
+     * @return
+     */
+    public boolean deleteItemsInTrash() {
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", TangoParentType.Trash.ordinal())
+                .findAll();
+        if (results == null) return false;
+
+
+        mRealm.beginTransaction();
+
+        LinkedList<Integer> cardIds = new LinkedList<>();
+        LinkedList<Integer> bookIds = new LinkedList<>();
+
+        for (TangoItemPos itemPos : results) {
+            if (TangoParentType.toEnum(itemPos.getParentType()) == TangoParentType.Book) {
+                // Bookなら子要素をまとめて削除
+                deleteItemsByParentType(TangoParentType.Book.ordinal(), itemPos.getItemId(), false);
+            }
+
+            switch(TangoItemType.toEnum(itemPos.getItemType())) {
+                case Card:
+                    cardIds.add(itemPos.getItemId());
+                    break;
+                case Book:
+                    bookIds.add(itemPos.getItemId());
+                    break;
+            }
+        }
+
+        // ゴミ箱直下の要素を削除
+        RealmManager.getCardDao().deleteIds(cardIds, false);
+        RealmManager.getBookDao().deleteIds(bookIds, false);
+
+        // Posを削除
+        results.deleteAllFromRealm();
+
+        mRealm.commitTransaction();
+
         return true;
     }
 
@@ -809,6 +912,7 @@ public class TangoItemPosDao {
                 .equalTo("itemId", item.getId())
                 .findFirst();
         if (result == null) return false;
+
         mRealm.beginTransaction();
         result.setParentType(parentType);
         result.setParentId(parentId);
@@ -869,6 +973,15 @@ public class TangoItemPosDao {
      */
     public boolean moveItemsToTrash(Iterable<TangoItem> items) {
         return moveItems(items, TangoParentType.Trash.ordinal(), 0);
+    }
+
+    /**
+     * アイテムをホームに移動
+     * @param item
+     * @return
+     */
+    public boolean moveItemToHome(TangoItem item) {
+        return moveItem(item, TangoParentType.Home.ordinal(), 0);
     }
 
     /**

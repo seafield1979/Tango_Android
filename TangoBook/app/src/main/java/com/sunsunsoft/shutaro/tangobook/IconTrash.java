@@ -82,7 +82,7 @@ public class IconTrash extends IconContainer {
             // 長押し、タッチ、ドロップ中はBGを表示
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(drawPos.x, drawPos.y, drawPos.x + ICON_W, drawPos.y + ICON_H),
-                    10, touchedColor);
+                    10, touchedColor, 0, 0);
         } else if (isAnimating) {
             // 点滅
             double v1 = ((double)animeFrame / (double)animeFrameMax) * 180;

@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Color;
 import android.view.View;
 
 
@@ -46,6 +47,18 @@ interface IconInfoDialogCallbacks {
      * @param icon
      */
     void IconInfoCleanup(UIcon icon);
+
+    /**
+     * ゴミ箱内のアイコンを元に戻す
+     * @param icon
+     */
+    void IconInfoReturnIcon(UIcon icon);
+
+    /**
+     * ゴミ箱内のアイコンを削除する
+     * @param icon
+     */
+    void IconInfoDeleteIcon(UIcon icon);
 }
 
 
@@ -56,6 +69,9 @@ abstract public class IconInfoDialog extends UWindow{
     /**
      * Consts
      */
+    protected static final int FRAME_WIDTH = 4;
+    protected static final int FRAME_COLOR = Color.rgb(120,120,120);
+
 
     /**
      * Member Variables
