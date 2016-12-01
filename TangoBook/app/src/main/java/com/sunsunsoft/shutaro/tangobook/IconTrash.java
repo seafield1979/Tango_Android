@@ -55,6 +55,10 @@ public class IconTrash extends IconContainer {
         title = "ゴミ箱";
         setColor(ICON_COLOR);
 
+        // 中のアイコンを表示するためのSubWindow
+        UIconWindows windows = parentWindow.getWindows();
+        subWindow = windows.getSubWindow();
+
         image = image2 = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.trash);
     }
 
@@ -91,6 +95,7 @@ public class IconTrash extends IconContainer {
         } else {
             paint.setColor(color);
         }
+
         // icon
         // 領域の幅に合わせて伸縮
         canvas.drawBitmap(image, new Rect(0,0,image.getWidth(), image.getHeight()),
@@ -106,6 +111,14 @@ public class IconTrash extends IconContainer {
      * @return
      */
     public boolean canDrop(UIcon dstIcon, float dropX, float dropY) {
+        return false;
+    }
+
+    /**
+     * アイコンの中に入れることができるか
+     * @return
+     */
+    public boolean canDropIn(UIcon dstIcon, float dropX, float dropY) {
         return false;
     }
 

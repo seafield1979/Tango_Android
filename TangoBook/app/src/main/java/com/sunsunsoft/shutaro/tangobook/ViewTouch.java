@@ -162,6 +162,8 @@ public class ViewTouch {
                             type = TouchType.None;
                         }
                     }
+                } else {
+                    type = TouchType.None;
                 }
                 isTouching = false;
             }
@@ -229,6 +231,7 @@ public class ViewTouch {
                 if (isTouching && type != TouchType.Moving) {
                     // ロングタッチを検出する
                     isLongTouch = true;
+                    isTouching = false;
                     innerType = type = TouchType.LongPress;
                     // ロングタッチイベント開始はonTouchから取れないので親に通知する
                     if (callbacks != null) {

@@ -136,14 +136,14 @@ public class IconBook extends IconContainer {
     }
 
     /**
-     * ドロップ時の処理
-     * @param dstIcon
-     * @return 何かしら処理をした（再描画あり）
+     * アイコンの中に入れることができるか
+     * @return
      */
-    public boolean droped(UIcon dstIcon, float dropX, float dropY) {
-        // 全面的にドロップはできない
-        if (canDrop(dstIcon, dropX, dropY)) {
-            return true;
+    public boolean canDropIn(UIcon dstIcon, float dropX, float dropY) {
+        if (dstIcon.getType() == IconType.Trash) {
+            if (dstIcon.checkDrop(dropX, dropY)) {
+                return true;
+            }
         }
         return false;
     }

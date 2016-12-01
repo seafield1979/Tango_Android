@@ -23,9 +23,9 @@ public class ULog {
 
     // 初期化、アプリ起動時に１回だけ呼ぶ
     public static void init() {
-        setEnable(ViewTouch.TAG, false);
+        setEnable(ViewTouch.TAG, true);
         setEnable(UDrawManager.TAG, true);
-        setEnable("UMenuBar", false);
+        setEnable(UMenuBar.TAG, false);
         setEnable(UScrollBar.TAG, false);
         setEnable(UIconWindow.TAG, true);
         setEnable(UButton.TAG, true);

@@ -134,6 +134,19 @@ public class IconCard extends UIcon{
     }
 
     /**
+     * アイコンの中に入れることができるか
+     * @return
+     */
+    public boolean canDropIn(UIcon dstIcon, float dropX, float dropY) {
+        if (dstIcon.getType() != IconType.Card) {
+            if (dstIcon.checkDrop(dropX, dropY)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * ドロップ時の処理
      * @param dstIcon
      * @return 何かしら処理をした（再描画あり）

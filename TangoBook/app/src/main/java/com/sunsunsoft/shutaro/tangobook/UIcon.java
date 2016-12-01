@@ -318,10 +318,10 @@ abstract public class UIcon extends UDrawable {
                 }
                 break;
             case LongClick:
-                if (getRect().contains((int)vt.touchX(offset.x), (int)vt.touchY(offset.y))) {
-                    longClick();
-                    done = true;
-                }
+//                if (getRect().contains((int)vt.touchX(offset.x), (int)vt.touchY(offset.y))) {
+//                    longClick();
+//                    done = true;
+//                }
                 break;
             case Moving:
                 if (vt.isMoveStart()) {
@@ -359,10 +359,11 @@ abstract public class UIcon extends UDrawable {
     abstract public boolean canDrop(UIcon dstIcon, float x, float y);
 
     /**
-     * ドロップ時の処理
-     * @param dstIcon
-     * @return 何かしら処理をした（再描画あり）
+     * ドロップして中に入れることができるかどうか？
+     * 例: Card -> Book は OK
+     *    Book -> Card/Book は NG
+     * @return
      */
-    abstract public boolean droped(UIcon dstIcon, float x, float y);
+    abstract public boolean canDropIn(UIcon dstIcon, float x, float y);
 }
 

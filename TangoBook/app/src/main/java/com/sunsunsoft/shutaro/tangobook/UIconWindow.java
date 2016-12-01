@@ -519,9 +519,9 @@ public class UIconWindow extends UWindow {
                 }
             }
             if (isChecking) {
-                changeIconChecking(icons, true);
+                changeIconChecked(icons, true);
+                setState(WindowState.icon_selecting);
             }
-            setState(WindowState.icon_selecting);
         } else if (state == WindowState.icon_selecting) {
             setState(WindowState.none);
         }
@@ -664,7 +664,6 @@ public class UIconWindow extends UWindow {
 
         // 他のアイコンの上にドロップされたらドロップ処理を呼び出す
         if (dragedIcon == null) return false;
-        boolean isDroped = false;
 
         mIconManager.setDropedIcon(null);
 
@@ -676,8 +675,6 @@ public class UIconWindow extends UWindow {
             }
 
             List<UIcon> dstIcons = window.getIcons();
-            UIcon dropedIcon = null;
-            IconMovingType moving = IconMovingType.Insert;
 
             if (dstIcons == null) continue;
 
@@ -686,115 +683,17 @@ public class UIconWindow extends UWindow {
             float winY = window.toWinY(vt.getY());
 
             // 全アイコンに対してドロップをチェックする
-            for (int i=0; i<dstIcons.size(); i++) {
-                UIcon dropIcon = dstIcons.get(i);
-                if (dropIcon == dragedIcon) continue;
-
-                // ドラッグアイコンが画面外ならスキップ or break
-                if (dir == WindowDir.Vertical) {
-                    if (contentTop.y > dropIcon.getBottom()) {
-                        continue;
-                    } else if (contentTop.y + size.height < dropIcon.pos.y){
-                        // これ以降は画面外に表示されるアイコンなので処理を中止
-                        break;
-                    }
-                } else {
-                    if (contentTop.x > dropIcon.getRight()) {
-                        continue;
-                    } else if (contentTop.x + size.width < dropIcon.pos.x){
-                        break;
-                    }
-                }
-
-                // ドロップ処理をチェックする
-                if (dragedIcon.canDrop(dropIcon, winX, winY)) {
-                    switch (dropIcon.getType()) {
-                        case Card:
-                            // ドラッグ位置のアイコンと場所を交換する
-                            dropedIcon = dropIcon;
-                            moving = IconMovingType.Exchange;
-                            isDroped = true;
-                            break;
-                        case Book:
-                        case Trash:
-                            // Containerの中に挿入する　
-                            moveIconIn(dragedIcon, dropIcon);
-
-                            for (UIconWindow win : windows.getWindows()) {
-                                UIconManager manager = win.getIconManager();
-                                if (manager != null) {
-                                    manager.updateBlockRect();
-                                }
-                            }
-                            isDroped = true;
-                            break;
-                    }
-                    break;
-                } else {
-                    // アイコンのマージン部分にドロップされたかのチェック
-                    if (dir == WindowDir.Vertical) {
-                        // 縦画面
-                        if (dropIcon.pos.x - ICON_MARGIN*2 <= winX &&
-                                winX <= dropIcon.pos.x + ICON_MARGIN &&
-                                dropIcon.pos.y <= winY &&
-                                winY <= dropIcon.pos.y + UIconWindow.ICON_H )
-                        {
-                            // ドラッグ位置（アイコンの左側)にアイコンを挿入する
-                            dropedIcon = dropIcon;
-                            isDroped = true;
-                            break;
-                        } else if (dropIcon.pos.x + (ICON_MARGIN + ICON_W) * 2 > size.width ) {
-                            // 右端のアイコンは右側に挿入できる
-                            if (winX > dropIcon.getRight() &&
-                                    dropIcon.pos.y <= winY &&
-                                    winY <= dropIcon.pos.y + dropIcon.size.height )
-                            {
-                                // 右側の場合は次のアイコンの次の位置に挿入
-                                if (i < dstIcons.size() - 1) {
-                                    dropIcon = dstIcons.get(i+1);
-                                }
-                                dropedIcon = dropIcon;
-                                isDroped = true;
-                                break;
-                            }
-                        }
-                    } else {
-                        // 横画面
-                        if (dropIcon.pos.y - ICON_MARGIN * 2 <= winY &&
-                                winY <= dropIcon.pos.y + ICON_MARGIN &&
-                                dropIcon.pos.x <= winX && winX <= dropIcon.pos.x + dropIcon.size
-                                .width )
-                        {
-                            dropedIcon = dropIcon;
-                            isDroped = true;
-                            break;
-                        } else if (dropIcon.pos.y + (ICON_MARGIN + ICON_H) * 2 > size.height ) {
-                            // 下端のアイコンは下側に挿入できる
-                            if (winY > dropIcon.getBottom() &&
-                                    dropIcon.pos.x <= winX &&
-                                    winX <= dropIcon.pos.x + dropIcon.size.width )
-                            {
-                                // 右側の場合は次のアイコンの次の位置に挿入
-                                if (i < dstIcons.size() - 1) {
-                                    dropIcon = dstIcons.get(i+1);
-                                }
-                                dropedIcon = dropIcon;
-                                isDroped = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+            ReturnValueDragEnd ret = checkDropNormal(dstIcons, winX, winY);
+            boolean isDroped = ret.isDroped;
 
             // 移動あり
-            if (isDroped && dropedIcon != null) {
-                if (moving == IconMovingType.Insert) {
+            if (isDroped && ret.dropedIcon != null) {
+                if (ret.movingType == IconMovingType.Insert) {
                     // ドロップ先の位置に挿入
-                    insertIcons(dragedIcon, dropedIcon, true);
+                    insertIcons(dragedIcon, ret.dropedIcon, true);
                 } else {
                     // ドロップ先のアイコンと場所交換
-                    changeIcons(dragedIcon, dropedIcon);
+                    changeIcons(dragedIcon, ret.dropedIcon);
                 }
             }
 
@@ -822,8 +721,6 @@ public class UIconWindow extends UWindow {
                     if (dragedIcon.type == IconType.Book && window == windows.getSubWindow()) {
                         continue;
                     }
-
-                    int startPos = srcIcons.indexOf(dragedIcon);
 
                     // 最後のアイコンの後の空きスペースにドロップされた場合
                     // ドラッグ中のアイコンをリストの最後に移動
@@ -865,14 +762,135 @@ public class UIconWindow extends UWindow {
     }
 
     /**
+     * dragEndNormalInsert の戻り値
+     */
+    public class ReturnValueDragEnd {
+        UIcon dropedIcon;
+        IconMovingType movingType;
+        boolean isDroped;
+    }
+
+    /**
+     * ReturnValueDragEnd からドロップ判定部分の処理を抜き出し
+     * @return
+     */
+    private ReturnValueDragEnd checkDropNormal(
+            List<UIcon>dstIcons, float winX, float winY)
+    {
+        ReturnValueDragEnd ret = new ReturnValueDragEnd();
+        ret.movingType = IconMovingType.Insert;
+
+        for (int i=0; i<dstIcons.size(); i++) {
+            UIcon dropIcon = dstIcons.get(i);
+            if (dropIcon == dragedIcon) continue;
+
+            // ドラッグアイコンが画面外ならスキップ or break
+            if (dir == WindowDir.Vertical) {
+                if (contentTop.y > dropIcon.getBottom()) {
+                    continue;
+                } else if (contentTop.y + size.height < dropIcon.pos.y){
+                    // これ以降は画面外に表示されるアイコンなので処理を中止
+                    break;
+                }
+            } else {
+                if (contentTop.x > dropIcon.getRight()) {
+                    continue;
+                } else if (contentTop.x + size.width < dropIcon.pos.x){
+                    break;
+                }
+            }
+
+            // ドロップ処理をチェックする
+            if (dragedIcon.canDrop(dropIcon, winX, winY)) {
+                switch (dropIcon.getType()) {
+                    case Card:
+                        // ドラッグ位置のアイコンと場所を交換する
+                        ret.dropedIcon = dropIcon;
+                        ret.movingType = IconMovingType.Exchange;
+                        ret.isDroped = true;
+                        break;
+                    case Book:
+                    case Trash:
+                        // Containerの中に挿入する　
+                        moveIconIn(dragedIcon, dropIcon);
+
+                        for (UIconWindow win : windows.getWindows()) {
+                            UIconManager manager = win.getIconManager();
+                            if (manager != null) {
+                                manager.updateBlockRect();
+                            }
+                        }
+                        ret.isDroped = true;
+                        break;
+                }
+                break;
+            } else {
+                // アイコンのマージン部分にドロップされたかのチェック
+                if (dir == WindowDir.Vertical) {
+                    // 縦画面
+                    if (dropIcon.pos.x - ICON_MARGIN*2 <= winX &&
+                            winX <= dropIcon.pos.x + ICON_MARGIN &&
+                            dropIcon.pos.y <= winY &&
+                            winY <= dropIcon.pos.y + UIconWindow.ICON_H )
+                    {
+                        // ドラッグ位置（アイコンの左側)にアイコンを挿入する
+                        ret.dropedIcon = dropIcon;
+                        ret.isDroped = true;
+                        break;
+                    } else if (dropIcon.pos.x + (ICON_MARGIN + ICON_W) * 2 > size.width ) {
+                        // 右端のアイコンは右側に挿入できる
+                        if (winX > dropIcon.getRight() &&
+                                dropIcon.pos.y <= winY &&
+                                winY <= dropIcon.pos.y + dropIcon.size.height )
+                        {
+                            // 右側の場合は次のアイコンの次の位置に挿入
+                            if (i < dstIcons.size() - 1) {
+                                dropIcon = dstIcons.get(i+1);
+                            }
+                            ret.dropedIcon = dropIcon;
+                            ret.isDroped = true;
+                            break;
+                        }
+                    }
+                } else {
+                    // 横画面
+                    if (dropIcon.pos.y - ICON_MARGIN * 2 <= winY &&
+                            winY <= dropIcon.pos.y + ICON_MARGIN &&
+                            dropIcon.pos.x <= winX && winX <= dropIcon.pos.x + dropIcon.size
+                            .width )
+                    {
+                        ret.dropedIcon = dropIcon;
+                        ret.isDroped = true;
+                        break;
+                    } else if (dropIcon.pos.y + (ICON_MARGIN + ICON_H) * 2 > size.height ) {
+                        // 下端のアイコンは下側に挿入できる
+                        if (winY > dropIcon.getBottom() &&
+                                dropIcon.pos.x <= winX &&
+                                winX <= dropIcon.pos.x + dropIcon.size.width )
+                        {
+                            // 右側の場合は次のアイコンの次の位置に挿入
+                            if (i < dstIcons.size() - 1) {
+                                dropIcon = dstIcons.get(i+1);
+                            }
+                            ret.dropedIcon = dropIcon;
+                            ret.isDroped = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
      * ドラッグ終了時の処理（アイコン選択時)
      * @param vt
      * @return trueならViewを再描画
      */
-    private boolean dragEndChecking(ViewTouch vt) {
+    private boolean dragEndChecked(ViewTouch vt) {
         // ドロップ処理
         // 他のアイコンの上にドロップされたらドロップ処理を呼び出す
-        boolean isDroped = false;
 
         mIconManager.setDropedIcon(null);
 
@@ -892,31 +910,8 @@ public class UIconWindow extends UWindow {
             float winX = window.toWinX(vt.getX());
             float winY = window.toWinY(vt.getY());
 
-            UIcon dropIcon = null;
-            for (UIcon icon : dstIcons) {
-                // ドロップ先が自身のアイコンかCardタイプならスキップ
-                if (checkedIcons.contains(icon) || icon.getType() == IconType.Card) {
-                    continue;
-                }
 
-                if (icon.getRect().contains((int) winX, (int) winY)) {
-                    dropIcon = icon;
-                    break;
-                }
-            }
-            if (dropIcon != null) {
-
-                moveIconsIntoBox(dropIcon);
-
-                for (UIconWindow win : windows.getWindows()) {
-                    UIconManager manager = win.getIconManager();
-                    if (manager != null) {
-                        manager.updateBlockRect();
-                    }
-                }
-                isDroped = true;
-
-            }
+            boolean isDroped = checkDropChecked(checkedIcons, dstIcons, winX, winY);
 
             // その他の場所にドロップされた場合
             if (!isDroped && dstIcons != null ) {
@@ -985,6 +980,48 @@ public class UIconWindow extends UWindow {
     }
 
     /**
+     * dragEndCheckedのドロップ処理
+     */
+    private boolean checkDropChecked(
+            List<UIcon>checkedIcons, List<UIcon>dstIcons, float x, float y)
+    {
+        UIcon dropedIcon = null;
+
+        // ドロップ先に挿入するアイコンのリスト
+        LinkedList<UIcon> icons = new LinkedList<>();
+
+        for (UIcon dropIcon : dstIcons) {
+            if (dropIcon.getType() == IconType.Card) {
+                continue;
+            }
+
+            for (UIcon _dragIcon : checkedIcons) {
+                if (_dragIcon.canDropIn(dropIcon, x, y)) {
+                    icons.add(_dragIcon);
+                }
+            }
+            if (icons.size() > 0) {
+                dropedIcon = dropIcon;
+                break;
+            }
+        }
+
+        if (dropedIcon != null) {
+            moveIconsIntoBox(icons, dropedIcon);
+
+            // BlockRect更新
+            for (UIconWindow win : windows.getWindows()) {
+                UIconManager manager = win.getIconManager();
+                if (manager != null) {
+                    manager.updateBlockRect();
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * タッチ処理
      * @param vt
      * @return trueならViewを再描画
@@ -1044,7 +1081,7 @@ public class UIconWindow extends UWindow {
                         done = true;
                     }
                 } else {
-                    if (dragEndChecking(vt)) {
+                    if (dragEndChecked(vt)) {
                         done = true;
                     }
                 }
@@ -1070,7 +1107,7 @@ public class UIconWindow extends UWindow {
     private void endIconMoving() {
         setState(nextState);
         mIconManager.updateBlockRect();
-        changeIconCheckingAll(false);
+        changeIconCheckedAll(false);
         setDragedIcon(null);
     }
 
@@ -1253,10 +1290,10 @@ public class UIconWindow extends UWindow {
     }
 
     /**
-     * チェックされた複数のアイコンをBook/Boxの中に移動する
+     * チェックされた複数のアイコンをBook/Trashの中に移動する
      * @param dropedIcon
      */
-    private void moveIconsIntoBox(UIcon dropedIcon) {
+    private void moveIconsIntoBox(List<UIcon>checkedIcons, UIcon dropedIcon) {
 
         if (!(dropedIcon instanceof IconContainer)) {
             return;
@@ -1264,7 +1301,6 @@ public class UIconWindow extends UWindow {
         IconContainer _dropedIcon = (IconContainer)dropedIcon;
 
         // チェックされたアイコンのリストを作成
-        List<UIcon> checkedIcons = mIconManager.getCheckedIcons();
         if (checkedIcons.size() <= 0) return;
 
         // 最初のチェックアイコン
@@ -1293,8 +1329,12 @@ public class UIconWindow extends UWindow {
 
         }
 
+        int itemId = 0;
+        if (_dropedIcon.getType() != IconType.Trash) {
+            itemId = _dropedIcon.getTangoItem().getId();
+        }
         RealmManager.getItemPosDao().moveItems(items, _dropedIcon.getParentType().ordinal(),
-                _dropedIcon.getTangoItem().getId());
+                itemId);
 
         // 箱の中に入れた後のアイコン整列後にチェックを解除したいのでフラグを持っておく
         isDropInBox = true;
@@ -1318,7 +1358,7 @@ public class UIconWindow extends UWindow {
     /**
      * アイコンの選択状態を変更する
      */
-    private void changeIconChecking(List<UIcon> icons, boolean isChecking) {
+    private void changeIconChecked(List<UIcon> icons, boolean isChecking) {
         if (icons == null) return;
 
         for (UIcon icon : icons) {
@@ -1333,10 +1373,10 @@ public class UIconWindow extends UWindow {
      * 全てのウィンドウのアイコンの選択状態を変更する
      * @param isChecking
      */
-    private void changeIconCheckingAll(boolean isChecking) {
+    private void changeIconCheckedAll(boolean isChecking) {
         for (UIconWindow window : windows.getWindows()) {
             List<UIcon> icons = window.getIcons();
-            changeIconChecking(icons, isChecking);
+            changeIconChecked(icons, isChecking);
         }
     }
 
