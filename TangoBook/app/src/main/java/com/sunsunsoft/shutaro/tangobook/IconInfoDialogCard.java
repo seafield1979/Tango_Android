@@ -10,43 +10,14 @@ import android.graphics.RectF;
 import android.view.View;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * カードアイコンをクリックした際に表示されるダイアログ
  * カードの情報(WordA,WordB)とアクションアイコン(ActionIcons)を表示する
  */
 public class IconInfoDialogCard extends IconInfoDialog {
-    /**
-     * Enums
-     */
-    enum ActionIcons{
-        Edit,
-        MoveToTrash,
-        Copy,
-        Favorite
-        ;
 
-        private static final int[] iconImageIds = {
-                R.drawable.edit,
-                R.drawable.trash,
-                R.drawable.copy,
-                R.drawable.favorites
-        };
-
-        public static ActionIcons toEnum(int value) {
-            if (value >= values().length) {
-                return Edit;
-            }
-            return values()[value];
-        }
-
-        /**
-         * アイコン用の画像IDを取得
-         */
-        public int getImageId() {
-            return iconImageIds[this.ordinal()];
-        }
-    }
 
     /**
      * Consts
@@ -154,12 +125,14 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         int y = TOP_ITEM_Y;
 
-        int width = ICON_W * ActionIcons.values().length +
-                ICON_MARGIN_H * (ActionIcons.values().length + 1);
+        List<ActionIcons> icons = ActionIcons.getCardIcons();
+
+        int width = ICON_W * icons.size() +
+                ICON_MARGIN_H * (icons.size() + 1);
 
         // アクションボタン
         int x = ICON_MARGIN_H;
-        for (ActionIcons icon : ActionIcons.values()) {
+        for (ActionIcons icon : icons) {
             Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(),
                     icon.getImageId());
 
@@ -167,6 +140,9 @@ public class IconInfoDialogCard extends IconInfoDialog {
                             icon.ordinal(), 0,
                             x, y,
                             ICON_W, ICON_W, bmp, null);
+            // アイコンの下に表示するテキストを設定
+            imageButton.setTitle(icon.getTitle(), 30, Color.BLACK);
+
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
 

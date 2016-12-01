@@ -3,6 +3,9 @@ package com.sunsunsoft.shutaro.tangobook;
 import android.graphics.Color;
 import android.view.View;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 /**
  * アイコン情報ダイアログのアクションアイコン
@@ -12,6 +15,82 @@ enum IconInfoAction {
     Trash,
     CopyCard,
     Favorite
+}
+
+enum ActionIcons{
+    Open(101, R.drawable.open, "open"),
+    Edit(102, R.drawable.edit, "edit"),
+    MoveToTrash(103, R.drawable.trash, "ゴミ箱"),
+    Copy(104, R.drawable.copy, "copy"),
+    Favorite(105, R.drawable.favorites, null),
+    CleanUp(110, R.drawable.trash_empty, "空にする"),
+    Return(201, R.drawable.return1, "元に戻す"),
+    Delete(202, R.drawable.trash, "削除")
+    ;
+
+    // Card
+    public static List<ActionIcons> getCardIcons() {
+        LinkedList<ActionIcons> list = new LinkedList<>();
+        list.add(Edit);
+        list.add(Copy);
+        list.add(MoveToTrash);
+        list.add(Favorite);
+        return list;
+    }
+
+    // Book
+    public static List<ActionIcons> getBookIcons() {
+        LinkedList<ActionIcons> list = new LinkedList<>();
+        list.add(Open);
+        list.add(Copy);
+        list.add(MoveToTrash);
+        list.add(Favorite);
+        return list;
+    }
+
+    // Trash
+    public static List<ActionIcons> getTrashIcons() {
+        LinkedList<ActionIcons> list = new LinkedList<>();
+        list.add(Open);
+        list.add(CleanUp);
+        return list;
+    }
+
+    // in Trash
+    public static List<ActionIcons> getInTrashIcons() {
+        LinkedList<ActionIcons> list = new LinkedList<>();
+        list.add(Return);
+        list.add(Delete);
+        return list;
+    }
+
+    private int id;
+    private int imageId;
+    private String title;
+
+    ActionIcons(int id, int imageId, String title) {
+        this.id = id;
+        this.imageId = imageId;
+        this.title = title;
+    }
+
+    protected static ActionIcons toEnum(int id) {
+        if (id >= values().length) {
+            return Edit;
+        }
+        return values()[id];
+    }
+
+    /**
+     * アイコン用の画像IDを取得
+     */
+    public int getImageId() {
+        return imageId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }
 
 /**

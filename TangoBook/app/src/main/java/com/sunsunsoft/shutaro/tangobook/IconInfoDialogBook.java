@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.view.View;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by shutaro on 2016/11/30.
@@ -19,37 +20,6 @@ import java.util.LinkedList;
  */
 
 public class IconInfoDialogBook extends IconInfoDialog {
-    /**
-     * Enums
-     */
-    enum ActionIcons{
-        Open,
-        Edit,
-        MoveToTrash,
-        Copy
-        ;
-
-        private static final int[] iconImageIds = {
-                R.drawable.open,
-                R.drawable.edit,
-                R.drawable.trash,
-                R.drawable.copy
-        };
-
-        protected static ActionIcons toEnum(int value) {
-            if (value >= values().length) {
-                return Edit;
-            }
-            return values()[value];
-        }
-
-        /**
-         * アイコン用の画像IDを取得
-         */
-        public int getImageId() {
-            return iconImageIds[this.ordinal()];
-        }
-    }
 
     /**
      * Consts
@@ -140,13 +110,13 @@ public class IconInfoDialogBook extends IconInfoDialog {
         UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
                 bgColor, FRAME_WIDTH, FRAME_COLOR);
 
-        textName.draw(canvas, paint, pos);
-        textCount.draw(canvas, paint, pos);
-
         // Buttons
         for (UButtonImage button : imageButtons) {
             button.draw(canvas, paint, pos);
         }
+
+        textName.draw(canvas, paint, pos);
+        textCount.draw(canvas, paint, pos);
     }
 
     /**
@@ -157,12 +127,14 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
         int y = TOP_ITEM_Y;
 
-        int width = ICON_W * ActionIcons.values().length +
-                ICON_MARGIN_H * (ActionIcons.values().length + 1);
+        List<ActionIcons> icons = ActionIcons.getBookIcons();
+
+        int width = ICON_W * icons.size() +
+                ICON_MARGIN_H * (icons.size() + 1);
 
         // Action buttons
         int x = ICON_MARGIN_H;
-        for (ActionIcons icon : ActionIcons.values()) {
+        for (ActionIcons icon : icons) {
             Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(),
                     icon.getImageId());
 
@@ -170,6 +142,9 @@ public class IconInfoDialogBook extends IconInfoDialog {
                     icon.ordinal(), 0,
                     x, y,
                     ICON_W, ICON_W, bmp, null);
+            // アイコンの下に表示するテキストを設定
+            imageButton.setTitle(icon.getTitle(), 30, Color.BLACK);
+
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
 

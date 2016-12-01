@@ -242,8 +242,8 @@ public class UDraw {
      * @return
      */
     public static Size drawTextOneLine(Canvas canvas, Paint paint, String text,
-                                                                   UAlignment alignment, int textSize,
-                                                                   float x, float y, int color) {
+                                       UAlignment alignment, int textSize,
+                                       float x, float y, int color) {
         if (text == null) return null;
 
         int pos = text.indexOf("\n");

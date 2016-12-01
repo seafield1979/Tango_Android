@@ -22,7 +22,9 @@ public class UButtonImage extends UButton {
      */
     protected Bitmap image;             // 画像
     protected Bitmap pressedImage;      // タッチ時の画像
-
+    protected String title;             // 画像の下に表示するテキスト
+    protected int titleSize;
+    protected int titleColor;
 
     /**
      * Get/Set
@@ -34,8 +36,12 @@ public class UButtonImage extends UButton {
     public UButtonImage(UButtonCallbacks callbacks,
                         int id, int priority,
                         float x, float y,
-                        int width, int height) {
+                        int width, int height,
+                        Bitmap image, Bitmap pressedImage )
+    {
         super(callbacks, UButtonType.BGColor, id, priority, x, y, width, height, 0);
+        this.image = image;
+        this.pressedImage = pressedImage;
     }
 
     // 画像ボタン
@@ -45,15 +51,27 @@ public class UButtonImage extends UButton {
                                             int width, int height,
                                             Bitmap image, Bitmap pressedImage)
     {
-        UButtonImage button = new UButtonImage(callbacks, id, priority, x, y, width, height);
-        button.image = image;
-        button.pressedImage = pressedImage;
+        UButtonImage button = new UButtonImage(callbacks, id, priority,
+                x, y, width, height,
+                image, pressedImage);
         return button;
     }
 
     /**
      * Methods
      */
+    /**
+     * ボタンの下に表示するタイトルを設定する
+     * @param title
+     * @param titleSize
+     * @param titleColor
+     */
+    public void setTitle(String title, int titleSize, int titleColor) {
+        this.title = title;
+        this.titleSize = titleSize;
+        this.titleColor = titleColor;
+    }
+
 
     /**
      * UDrawable
@@ -95,6 +113,12 @@ public class UButtonImage extends UButton {
 
         if (UDebug.drawRectLine) {
             this.drawRectLine(canvas, paint, offset, Color.YELLOW);
+        }
+
+        // 下にテキストを表示
+        if (title != null) {
+            UDraw.drawTextOneLine(canvas, paint, title, UDraw.UAlignment.CenterX, titleSize,
+                    _rect.centerX(), _rect.bottom + titleSize + 5, titleColor);
         }
     }
 }

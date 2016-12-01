@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.view.View;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by shutaro on 2016/12/01.
@@ -21,30 +22,7 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
     /**
      * Enums
      */
-    enum ActionIcons{
-        Return,        // 元に戻す。アイコンをゴミ箱からホームに移動する
-        Delete          // 削除
-        ;
 
-        private static final int[] iconImageIds = {
-                R.drawable.return1,
-                R.drawable.trash
-        };
-
-        protected static ActionIcons toEnum(int value) {
-            if (value >= values().length) {
-                return Return;
-            }
-            return values()[value];
-        }
-
-        /**
-         * アイコン用の画像IDを取得
-         */
-        public int getImageId() {
-            return iconImageIds[this.ordinal()];
-        }
-    }
 
     /**
      * Consts
@@ -148,12 +126,14 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
     protected void updateLayout(Canvas canvas) {
         int y = TOP_ITEM_Y;
 
-        int width = ICON_W * ActionIcons.values().length +
-                ICON_MARGIN_H * (ActionIcons.values().length + 1);
+        List<ActionIcons> icons = ActionIcons.getInTrashIcons();
+
+        int width = ICON_W * icons.size() +
+                ICON_MARGIN_H * (icons.size() + 1);
 
         // Action buttons
         int x = ICON_MARGIN_H;
-        for (ActionIcons icon : ActionIcons.values()) {
+        for (ActionIcons icon : icons) {
             Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(),
                     icon.getImageId());
 
@@ -161,6 +141,10 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
                     icon.ordinal(), 0,
                     x, y,
                     ICON_W, ICON_W, bmp, null);
+
+            // アイコンの下に表示するテキストを設定
+            imageButton.setTitle(icon.getTitle(), 30, Color.BLACK);
+
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
 
