@@ -394,7 +394,7 @@ public class TopView extends View
         if (mIconInfoDlg == null) {
             PointF winPos = icon.parentWindow.getPos();
             float x = winPos.x + icon.getX();
-            float y = winPos.y + icon.getY();
+            float y = winPos.y + icon.getY() + UIconWindow.ICON_H;  // ちょい下
 
             // ゴミ箱のWindow内なら別のダイアログを表示
             if (icon.parentWindow.getParentType() == TangoParentType.Trash) {

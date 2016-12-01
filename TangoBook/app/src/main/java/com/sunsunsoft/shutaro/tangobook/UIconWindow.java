@@ -506,6 +506,9 @@ public class UIconWindow extends UWindow {
         List<UIcon> icons = getIcons();
         if (icons == null) return false;
 
+        // 長押しを話したときにClickイベントが発生しないようにする
+        vt.setTouching(false);
+
         if (state == WindowState.none) {
             // チェック中のアイコンが１つでも存在していたら他のアイコンを全部チェック中に変更
             boolean isChecking = false;
@@ -625,9 +628,25 @@ public class UIconWindow extends UWindow {
                 dropIcon = manager.getOverlappedIcon(dragPos, checkedIcons);
             }
             if (dropIcon != null) {
-                isDone = true;
-                if (dragedIcon.canDrop(dropIcon, dragPos.x, dragPos.y)) {
-                    mIconManager.setDropedIcon(dropIcon);
+                if (state == WindowState.icon_selecting) {
+                    // 複数アイコンチェック中
+                    List<UIcon> checkedIcons = mIconManager.getCheckedIcons();
+                    boolean allOk = true;
+                    for (UIcon _dragIcon : checkedIcons) {
+                        if (_dragIcon.canDrop(dropIcon, dragPos.x, dragPos.y) == false) {
+                            allOk = false;
+                            break;
+                        }
+                    }
+                    if (allOk) {
+                        mIconManager.setDropedIcon(dropIcon);
+                    }
+                } else {
+                    // シングル
+                    isDone = true;
+                    if (dragedIcon.canDrop(dropIcon, dragPos.x, dragPos.y)) {
+                        mIconManager.setDropedIcon(dropIcon);
+                    }
                 }
                 break;
             }
@@ -718,7 +737,7 @@ public class UIconWindow extends UWindow {
                         if (dropIcon.pos.x - ICON_MARGIN*2 <= winX &&
                                 winX <= dropIcon.pos.x + ICON_MARGIN &&
                                 dropIcon.pos.y <= winY &&
-                                winY <= dropIcon.pos.y + dropIcon.size.height )
+                                winY <= dropIcon.pos.y + UIconWindow.ICON_H )
                         {
                             // ドラッグ位置（アイコンの左側)にアイコンを挿入する
                             dropedIcon = dropIcon;
@@ -932,6 +951,16 @@ public class UIconWindow extends UWindow {
                         RealmManager.getItemPosDao().saveIcons(srcIcons,
                                 parentType, parentId);
                     } else {
+                        // ItemPos を更新
+                        int dstParentType = window.parentType.ordinal();
+                        int dstParentId = window.parentId;
+
+                        for (UIcon icon : checkedIcons) {
+                            TangoItemPos itemPos = icon.getTangoItem().getItemPos();
+                            itemPos.setParentType(dstParentType);
+                            itemPos.setParentId(dstParentId);
+                        }
+                        // 更新したItemPosを DBに反映する
                         RealmManager.getItemPosDao().saveIcons(srcIcons,
                                 parentType, parentId);
                         RealmManager.getItemPosDao().saveIcons(dstIcons,

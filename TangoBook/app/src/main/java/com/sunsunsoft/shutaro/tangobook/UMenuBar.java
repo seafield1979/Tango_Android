@@ -96,8 +96,8 @@ public class UMenuBar extends UWindow {
 
         // Add
         item = addTopMenuItem(TopMenu.Add, MenuItemId.AddTop, R.drawable.add);
-        addMenuItem(item, MenuItemId.AddCard, R.drawable.file);
-        addMenuItem(item, MenuItemId.AddBook, R.drawable.folder);
+        addMenuItem(item, MenuItemId.AddCard, R.drawable.file_add);
+        addMenuItem(item, MenuItemId.AddBook, R.drawable.folder_add);
 
         // Sort
         item = addTopMenuItem(TopMenu.Sort, MenuItemId.SortTop, R.drawable.sort);
