@@ -286,9 +286,9 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         int y = TEXT_MARGIN_V;
         if (title != null && titleView == null) {
             titleView = UTextView.createInstance(title, 70, 0, UDraw.UAlignment.CenterX,
-                    canvas.getWidth(), true,
+                    canvas.getWidth(), false, true,
                     size.width / 2, y,
-                    size.width - 100, color, 0);
+                    size.width, color, 0);
             Size titleSize = titleView.getTextSize(getWidth());
             y += titleSize.height + BUTTON_MARGIN_H;
         }
@@ -296,9 +296,9 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         if (message != null && messageView == null) {
             messageView = UTextView.createInstance(message, MESSAGE_TEXT_SIZE, 0,
                     UDraw.UAlignment.CenterX,
-                    canvas.getWidth(), true,
+                    canvas.getWidth(), true, true,
                     size.width / 2, y,
-                    size.width - 100, color, 0);
+                    size.width, color, 0);
             Size messageSize = messageView.getTextSize(getWidth());
             y += messageSize.height + BUTTON_MARGIN_H;
         }

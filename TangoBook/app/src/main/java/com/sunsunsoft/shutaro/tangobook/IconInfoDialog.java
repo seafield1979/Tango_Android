@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -189,6 +190,13 @@ abstract public class IconInfoDialog extends UWindow{
     /**
      * Methods
      */
+
+    public boolean touchEvent(ViewTouch vt) {
+        if (super.touchEvent(vt)) {
+            return true;
+        }
+        return false;
+    }
     /**
      * Callbacks
      */

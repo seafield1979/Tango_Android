@@ -66,6 +66,7 @@ public class ULogWindow extends UWindow {
         instance.context = context;
         instance.type = type;
         instance.init();
+        instance.isShow = false;
 
         return instance;
     }

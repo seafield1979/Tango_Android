@@ -154,7 +154,7 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
 
         // Title
         textTitle = UTextView.createInstance( mIcon.getTitle(), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), true,
+                UDraw.UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;
@@ -165,7 +165,7 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
                     TangoParentType.Book, mIcon.getTangoItem().getId()
             );
             textCount = UTextView.createInstance("Count:" + count, TEXT_SIZE, 0,
-                    UDraw.UAlignment.None, canvas.getWidth(), true,
+                    UDraw.UAlignment.None, canvas.getWidth(), false, true,
                     MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
             y += TEXT_VIEW_H + MARGIN_V;
@@ -194,19 +194,6 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
             if (button.touchEvent(vt, offset)) {
                 return true;
             }
-        }
-
-        // 範囲外をタッチしたら閉じる
-        if (vt.type == TouchType.Touch) {
-            // 閉じた後にすぐにクリックが発生しないようにする
-            vt.setTouching(false);
-            if (getRect().contains((int)vt.touchX(), (int)vt.touchY())) {
-            } else {
-                if (windowCallbacks != null) {
-                    windowCallbacks.windowClose(this);
-                }
-            }
-            return true;
         }
 
         return false;

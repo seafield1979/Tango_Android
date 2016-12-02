@@ -28,6 +28,15 @@ public class UDraw {
     // ラジアン角度
     public static final double RAD = 3.1415 / 180.0;
 
+    public static void drawLine(Canvas canvas, Paint paint, float x1, float y1, float x2, float y2,
+                                int lineWidth, int color)
+    {
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(lineWidth);
+        paint.setColor(color);
+        canvas.drawLine(x1, y1, x2, y2, paint);
+    }
+
     /**
      * 矩形描画 (ライン）
      * @param canvas
@@ -242,39 +251,50 @@ public class UDraw {
      * @return
      */
     public static Size drawTextOneLine(Canvas canvas, Paint paint, String text,
-                                       UAlignment alignment, int textSize,
-                                       float x, float y, int color) {
+                                                                   UAlignment alignment, int textSize,
+                                                                   float x, float y, int color) {
         if (text == null) return null;
 
+        // x,yにラインを表示 for Debug
+        if (UDebug.drawTextBaseLine) {
+            drawLine(canvas, paint, x - 50, y, x + 50, y, 3, Color.YELLOW);
+            drawLine(canvas, paint, x, y - 50, x, y + 50, 3, Color.YELLOW);
+        }
+
         int pos = text.indexOf("\n");
-        String _text = null;
+        String _text;
         if ( pos != -1 ) {
             _text = text.substring(0, pos);
         } else {
             _text = text;
         }
 
-        Size size = getTextRect(canvas.getWidth(), _text, textSize);
-        switch (alignment) {
-            case CenterX:
-                x = x - size.width / 2;
-                break;
-            case CenterY:
-                y = y - size.height / 2;
-                break;
-            case Center:
-                x = x - size.width / 2;
-                y = y - size.height / 2;
-                break;
-        }
-
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(1);
         paint.setColor(color);
         paint.setTextSize(textSize);
+
+        int width = (int)paint.measureText( text);
+        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+
+        // テキストの左上端がx,yと一致するように補正
+        y -= (fontMetrics.ascent + fontMetrics.descent);
+
+        switch (alignment) {
+            case CenterX:
+                x -= width / 2;
+                break;
+            case CenterY:
+                y -= (-fontMetrics.top - fontMetrics.bottom) / 2;
+                break;
+            case Center:
+                x -= width / 2;
+                y -= (-fontMetrics.top - fontMetrics.bottom) / 2;
+                break;
+        }
         canvas.drawText(_text, x, y, paint);
 
-        return size;
+        return new Size(width, textSize);
     }
 
     /**
@@ -290,7 +310,16 @@ public class UDraw {
                                                             float x, float y, int color)
     {
         if (text == null) return null;
-        Size size = getTextRect(canvas.getWidth(), text, textSize);
+
+        TextPaint textPaint = new TextPaint();
+
+        // x,yにラインを表示 for Debug
+        if (UDebug.drawTextBaseLine) {
+            drawLine(canvas, textPaint, x - 50, y, x + 50, y, 3, Color.YELLOW);
+            drawLine(canvas, textPaint, x, y - 50, x, y + 50, 3, Color.YELLOW);
+        }
+
+        Size size = getTextSize(canvas.getWidth(), text, textSize);
         switch (alignment) {
             case CenterX:
                 x = x - size.width / 2;
@@ -305,7 +334,6 @@ public class UDraw {
         }
 
         // 改行ができるようにTextPaintとStaticLayoutを使用する
-        TextPaint textPaint = new TextPaint();
         textPaint.setTextSize(textSize);
         textPaint.setColor(color);
 
@@ -317,7 +345,7 @@ public class UDraw {
         canvas.translate(x, y);
 
         ///テキストの描画位置の指定
-        textPaint.setStyle(Paint.Style.STROKE);
+        textPaint.setStyle(Paint.Style.FILL);
         textPaint.setStrokeWidth(1);
         textPaint.setColor(color);
         mTextLayout.draw(canvas);
@@ -331,7 +359,7 @@ public class UDraw {
      * @param canvasW
      * @return
      */
-    private static Size getTextRect(int canvasW, String text, int size) {
+    public static Size getTextSize(int canvasW, String text, int size) {
         TextPaint textPaint = new TextPaint();
         textPaint.setTextSize(size);
         StaticLayout textLayout = new StaticLayout(text, textPaint,
@@ -351,5 +379,13 @@ public class UDraw {
         }
 
         return new Size(maxWidth, height);
+    }
+
+    /**
+     * １行テキストの描画サイズを取得する
+     */
+    public static Size getOneLineTextSize(Paint paint, String text, int textSize) {
+
+        return new Size((int)paint.measureText( text), textSize);
     }
 }

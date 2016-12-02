@@ -14,9 +14,9 @@ import static com.sunsunsoft.shutaro.tangobook.UDebug.drawIconId;
  */
 
 interface UIconCallbacks {
-    void clickIcon(UIcon icon);
+    void iconClicked(UIcon icon);
     void longClickIcon(UIcon icon);
-    void dropToIcon(UIcon icon);
+    void iconDroped(UIcon icon);
 }
 
 /**
@@ -27,6 +27,10 @@ abstract public class UIcon extends UDrawable {
     private static final String TAG = "UIcon";
     private static final int DRAW_PRIORITY = 200;
     public static final int DRAG_ICON_PRIORITY = 10;
+
+    protected static final int TEXT_SIZE = 40;
+    protected static final int TEXT_MARGIN = 10;
+
     private static int count;
 
     public int id;
@@ -119,7 +123,7 @@ abstract public class UIcon extends UDrawable {
             }
         } else {
             if (callbacks != null) {
-                callbacks.clickIcon(this);
+                callbacks.iconClicked(this);
             }
         }
     }
@@ -134,7 +138,7 @@ abstract public class UIcon extends UDrawable {
     public void drop() {
         Log.v(TAG, "drop");
         if (callbacks != null) {
-            callbacks.dropToIcon(this);
+            callbacks.iconDroped(this);
         }
     }
 

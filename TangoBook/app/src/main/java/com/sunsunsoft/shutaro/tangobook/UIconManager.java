@@ -1,7 +1,5 @@
 package com.sunsunsoft.shutaro.tangobook;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.view.View;
 
@@ -318,21 +316,21 @@ public class UIconManager implements UIconCallbacks{
     /**
      * UIconCallbacks
      */
-    public void clickIcon(UIcon icon) {
+    public void iconClicked(UIcon icon) {
         if (getParentWindow().getType() == UIconWindow.WindowType.Home) {
             selectedIcon = icon;
         }
         if (mIconCallbacks != null) {
-            mIconCallbacks.clickIcon(icon);
+            mIconCallbacks.iconClicked(icon);
         }
     }
     public void longClickIcon(UIcon icon) {
         if (mIconCallbacks != null) {
-            mIconCallbacks.clickIcon(icon);
+            mIconCallbacks.iconClicked(icon);
         }
     }
 
-    public  void dropToIcon(UIcon icon) {
+    public  void iconDroped(UIcon icon) {
 
     }
 }

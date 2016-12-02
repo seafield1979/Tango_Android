@@ -390,36 +390,35 @@ public class TopView extends View
     /**
      * UIconCallbacks
      */
-    public void clickIcon(UIcon icon) {
-        ULog.print(TAG, "clickIcon");
-        if (mIconInfoDlg == null) {
-            PointF winPos = icon.parentWindow.getPos();
-            float x = winPos.x + icon.getX();
-            float y = winPos.y + icon.getY() + UIconWindow.ICON_H;  // ちょい下
-
-            // ゴミ箱のWindow内なら別のダイアログを表示
-            if (icon.parentWindow.getParentType() == TangoParentType.Trash) {
-                mIconInfoDlg = IconInfoDialogInTrash.createInstance(this, this, this, icon,
-                        x, y);
-            } else {
-                switch (icon.type) {
-                    case Card:
-                        mIconInfoDlg = IconInfoDialogCard.createInstance(this, this, this, icon,
-                                x, y);
-                        break;
-                    case Book:
-                        mIconInfoDlg = IconInfoDialogBook.createInstance(this, this, this, icon,
-                                x, y);
-                        break;
-                    case Trash:
-                        mIconInfoDlg = IconInfoDialogTrash.createInstance(this, this, this, icon,
-                                x, y);
-                        break;
-                }
-            }
-        } else {
+    public void iconClicked(UIcon icon) {
+        ULog.print(TAG, "iconClicked");
+        if (mIconInfoDlg != null) {
             mIconInfoDlg.closeWindow();
             mIconInfoDlg = null;
+        }
+        PointF winPos = icon.parentWindow.getPos();
+        float x = winPos.x + icon.getX();
+        float y = winPos.y + icon.getY() + UIconWindow.ICON_H;  // ちょい下
+
+        // ゴミ箱のWindow内なら別のダイアログを表示
+        if (icon.parentWindow.getParentType() == TangoParentType.Trash) {
+            mIconInfoDlg = IconInfoDialogInTrash.createInstance(this, this, this, icon,
+                    x, y);
+        } else {
+            switch (icon.type) {
+                case Card:
+                    mIconInfoDlg = IconInfoDialogCard.createInstance(this, this, this, icon,
+                            x, y);
+                    break;
+                case Book:
+                    mIconInfoDlg = IconInfoDialogBook.createInstance(this, this, this, icon,
+                            x, y);
+                    break;
+                case Trash:
+                    mIconInfoDlg = IconInfoDialogTrash.createInstance(this, this, this, icon,
+                            x, y);
+                    break;
+            }
         }
         invalidate();
     }
@@ -428,8 +427,8 @@ public class TopView extends View
         ULog.print(TAG, "longClickIcon");
     }
 
-    public void dropToIcon(UIcon icon) {
-        ULog.print(TAG, "dropToIcon");
+    public void iconDroped(UIcon icon) {
+        ULog.print(TAG, "iconDroped");
     }
 
     /**

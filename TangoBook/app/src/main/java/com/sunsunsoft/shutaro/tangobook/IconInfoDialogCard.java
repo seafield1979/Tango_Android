@@ -46,6 +46,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
     private UTextView textWordB;
     private TangoCard mCard;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
+    private boolean favoriteFlag;
 
     /**
      * Get/Set
@@ -152,14 +153,14 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         // WordA
         textWordA = UTextView.createInstance( mCard.getWordA(), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), true,
+                UDraw.UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;
 
         // WordB
         textWordB = UTextView.createInstance( mCard.getWordB(), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, TEXT_VIEW_W, true,
+                UDraw.UAlignment.None, TEXT_VIEW_W, false, true,
                 MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V + 50;
@@ -188,19 +189,6 @@ public class IconInfoDialogCard extends IconInfoDialog {
             if (button.touchEvent(vt, offset)) {
                 return true;
             }
-        }
-
-        // 範囲外をタッチしたら閉じる
-        if (vt.type == TouchType.Touch) {
-            // 閉じた後にすぐにクリックが発生しないようにする
-            vt.setTouching(false);
-            if (getRect().contains((int)vt.touchX(), (int)vt.touchY())) {
-            } else {
-                if (windowCallbacks != null) {
-                    windowCallbacks.windowClose(this);
-                }
-            }
-            return true;
         }
 
         return false;
@@ -234,7 +222,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
                 mIconInfoCallbacks.IconInfoCopyIcon(mIcon);
                 break;
             case Favorite:
-                //mIconInfoCallbacks.favoriteIcon(mIcon);
+
                 break;
         }
         return false;

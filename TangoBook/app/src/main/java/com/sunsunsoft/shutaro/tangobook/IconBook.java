@@ -109,8 +109,8 @@ public class IconBook extends IconContainer {
                 paint);
 
         // Text
-        UDraw.drawTextOneLine(canvas, paint, title, UDraw.UAlignment.None, TEXT_SIZE,
-                drawPos.x + TEXT_PAD_X, drawPos.y + TEXT_SIZE + ICON_H, Color.BLACK);
+        UDraw.drawTextOneLine(canvas, paint, title, UDraw.UAlignment.CenterX, TEXT_SIZE,
+                drawPos.x + ICON_W / 2, drawPos.y + ICON_H + TEXT_MARGIN, Color.BLACK);
     }
 
     /**

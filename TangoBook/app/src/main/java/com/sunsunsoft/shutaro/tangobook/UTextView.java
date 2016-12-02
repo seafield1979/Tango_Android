@@ -29,6 +29,7 @@ public class UTextView extends UDrawable {
     protected int textSize;
     protected int bgColor;
     protected int canvasW;
+    protected boolean multiLine;      // 複数行表示する
 
     protected boolean isDrawBG;
     protected boolean isOpened;
@@ -57,7 +58,7 @@ public class UTextView extends UDrawable {
      */
     public UTextView(String text, int textSize, int priority,
                      UDraw.UAlignment alignment, int canvasW,
-                     boolean isDrawBG,
+                     boolean multiLine, boolean isDrawBG,
                      float x, float y,
                      int width,
                      int color, int bgColor)
@@ -66,6 +67,7 @@ public class UTextView extends UDrawable {
 
         this.text = text;
         this.alignment = alignment;
+        this.multiLine = multiLine;
         this.isDrawBG = isDrawBG;
         this.textSize = textSize;
         this.canvasW = canvasW;
@@ -85,12 +87,13 @@ public class UTextView extends UDrawable {
 
     public static UTextView createInstance(String text, int textSize, int priority,
                                            UDraw.UAlignment alignment, int canvasW,
-                                           boolean isDrawBG,
+                                           boolean multiLine, boolean isDrawBG,
                                            float x, float y,
                                            int width,
                                            int color, int bgColor)
     {
-        UTextView instance = new UTextView(text, textSize, priority, alignment, canvasW, isDrawBG,
+        UTextView instance = new UTextView(text, textSize, priority, alignment, canvasW,
+                multiLine, isDrawBG,
                 x, y, width, color, bgColor);
 
         return instance;
@@ -122,44 +125,31 @@ public class UTextView extends UDrawable {
             _pos.x = pos.x + offset.x;
             _pos.y = pos.y + offset.y;
         }
-        switch (alignment) {
-            case CenterX:
-                _pos.x = _pos.x - size.width / 2;
-                break;
-            case CenterY:
-                _pos.y = _pos.y - size.height / 2;
-                break;
-            case Center:
-                _pos.x = _pos.x - size.width / 2;
-                _pos.y = _pos.y - size.height / 2;
-                break;
-        }
+
+        UDraw.UAlignment _alignment = alignment;
 
         if (isDrawBG) {
             drawBG(canvas, paint, _pos);
 
             _pos.x += MARGIN_H;
             _pos.y += MARGIN_V;
+
+            // BGの中央にテキストを表示したいため、aligmentを書き換える
+            switch (alignment) {
+                case CenterX:
+                    _alignment = UDraw.UAlignment.Center;
+                    break;
+                case None:
+                    _alignment = UDraw.UAlignment.CenterY;
+                    break;
+            }
         }
-
-        if (text != null) {
-            // 改行ができるようにTextPaintとStaticLayoutを使用する
-            TextPaint textPaint = new TextPaint();
-            textPaint.setTextSize(textSize);
-            textPaint.setColor(color);
-
-            StaticLayout mTextLayout = new StaticLayout(text, textPaint,
-                    canvas.getWidth() * 4 / 5, Layout.Alignment.ALIGN_NORMAL,
-                    1.0f, 0.0f, false);
-
-            canvas.save();
-            canvas.translate(_pos.x, _pos.y);
-
-
-            ///テキストの描画位置の指定
-            textPaint.setColor(color);
-            mTextLayout.draw(canvas);
-            canvas.restore();
+        if (multiLine) {
+            UDraw.drawText(canvas, text, _alignment, textSize, _pos.x, _pos.y, color);
+        } else {
+            UDraw.drawTextOneLine(canvas, paint, text, _alignment, textSize,
+                    _pos.x, _pos.y + textSize / 2,
+                    color);
         }
     }
 
@@ -169,10 +159,16 @@ public class UTextView extends UDrawable {
      * @param paint
      */
     protected void drawBG(Canvas canvas, Paint paint, PointF pos) {
-        paint.setColor(bgColor);
-        UDraw.drawRoundRectFill(canvas, paint,
-                new RectF(pos.x, pos.y, pos.x + size.width, pos.y + size.height),
-                20, bgColor, 0, 0);
+        if (multiLine) {
+            paint.setColor(bgColor);
+            UDraw.drawRoundRectFill(canvas, paint,
+                    new RectF(pos.x, pos.y, pos.x + size.width, pos.y + size.height),
+                    20, bgColor, 0, 0);
+        } else {
+            UDraw.drawRoundRectFill(canvas, paint,
+                    new RectF(pos.x, pos.y, pos.x + size.width, pos.y + size.height),
+                    20, bgColor, 0, 0);
+        }
     }
 
     /**
@@ -181,25 +177,12 @@ public class UTextView extends UDrawable {
      * @return
      */
     public Size getTextSize(int canvasW) {
-        TextPaint textPaint = new TextPaint();
-        textPaint.setTextSize(textSize);
-        StaticLayout textLayout = new StaticLayout(text, textPaint,
-                canvasW, Layout.Alignment.ALIGN_NORMAL,
-                1.0f, 0.0f, false);
 
-        int height = textLayout.getHeight();
-        int maxWidth = 0;
-        int _width;
-
-        // 各行の最大の幅を計算する
-        for (int i = 0; i < textLayout.getLineCount(); i++) {
-            _width = (int)textLayout.getLineWidth(i);
-            if (_width > maxWidth) {
-                maxWidth = _width;
-            }
+        if (multiLine) {
+            return UDraw.getTextSize( canvasW, text, textSize);
+        } else {
+            return UDraw.getOneLineTextSize(new Paint(), text, textSize);
         }
-
-        return new Size(maxWidth, height);
     }
 
     /**
