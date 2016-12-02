@@ -41,7 +41,9 @@ public class UEditText extends UTextView implements UEditDialogCallbacks{
         updateSize();
     }
 
-    private void updateSize() {
+    protected void updateSize() {
+        if (baseSize == null) return;
+
         // サイズは元々のサイズ(size)とテキストを内包するサイズ(_size)で大きい方を使用する
         Size _size = getTextSize(canvasW);
         int _width = (_size.width > baseSize.width) ? _size.width : baseSize.width;

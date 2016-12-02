@@ -251,8 +251,8 @@ public class UDraw {
      * @return
      */
     public static Size drawTextOneLine(Canvas canvas, Paint paint, String text,
-                                                                   UAlignment alignment, int textSize,
-                                                                   float x, float y, int color) {
+                                       UAlignment alignment, int textSize,
+                                       float x, float y, int color) {
         if (text == null) return null;
 
         // x,yにラインを表示 for Debug
@@ -306,8 +306,8 @@ public class UDraw {
      * @return
      */
     public static Size drawText(Canvas canvas, String text,
-                                                            UAlignment alignment, int textSize,
-                                                            float x, float y, int color)
+                                UAlignment alignment, int textSize,
+                                float x, float y, int color)
     {
         if (text == null) return null;
 
@@ -330,6 +330,8 @@ public class UDraw {
             case Center:
                 x = x - size.width / 2;
                 y = y - size.height / 2;
+                break;
+            case None:
                 break;
         }
 

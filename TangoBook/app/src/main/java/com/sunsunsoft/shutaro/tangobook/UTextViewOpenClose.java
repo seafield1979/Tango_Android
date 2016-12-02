@@ -114,51 +114,6 @@ public class UTextViewOpenClose extends UTextView {
     }
 
     /**
-     * 描画処理
-     * @param canvas
-     * @param paint
-     * @param offset 独自の座標系を持つオブジェクトをスクリーン座標系に変換するためのオフセット値
-     */
-    void draw(Canvas canvas, Paint paint, PointF offset) {
-        PointF _pos = new PointF(pos.x, pos.y);
-        if (offset != null) {
-            _pos.x = pos.x + offset.x;
-            _pos.y = pos.y + offset.y;
-        }
-        Size _size = getSize();
-
-        switch (alignment) {
-            case CenterX:
-                _pos.x = _pos.x - _size.width / 2;
-                break;
-            case CenterY:
-                _pos.y = _pos.y - _size.height / 2;
-                break;
-            case Center:
-                _pos.x = _pos.x - _size.width / 2;
-                _pos.y = _pos.y - _size.height / 2;
-                break;
-        }
-
-        drawBG(canvas, paint, _pos);
-
-        if (text != null) {
-            if (isOpened) {
-                UDraw.drawText(canvas, text, UDraw.UAlignment.None, textSize,
-                        _pos.x + MARGIN_H,
-                        _pos.y + MARGIN_V,
-                        color);
-            } else {
-                // １行だけ描画する
-                UDraw.drawTextOneLine(canvas, paint, text, UDraw.UAlignment.None, textSize,
-                        _pos.x + MARGIN_H,
-                        _pos.y + textSize + MARGIN_V,
-                        color);
-            }
-        }
-    }
-
-    /**
      * タッチ処理
      * @param vt
      * @return
@@ -174,25 +129,12 @@ public class UTextViewOpenClose extends UTextView {
             }
             if (getRect().contains((int)vt.touchX(offset.x), (int)vt.touchY(offset.y))) {
                 isOpened = !isOpened;
+                multiLine = isOpened;
+                updateSize();
                 return true;
             }
         }
         return false;
     }
 
-    /**
-     * 背景色を描画する
-     * @param canvas
-     * @param paint
-     */
-    protected void drawBG(Canvas canvas, Paint paint, PointF pos) {
-        RectF drawRect;
-        if (isOpened) {
-            drawRect = new RectF(pos.x, pos.y, pos.x + openedSize.width, pos.y + openedSize.height);
-        } else {
-            drawRect = new RectF(pos.x, pos.y, pos.x + baseSize.width, pos.y + baseSize.height);
-        }
-        UDraw.drawRoundRectFill(canvas, paint,
-                drawRect, 20, bgColor, 0, 0);
-    }
 }

@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -8,6 +9,7 @@ import android.graphics.RectF;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+
 
 /**
  * テキストを表示する
@@ -75,13 +77,10 @@ public class UTextView extends UDrawable {
         this.bgColor = bgColor;
 
         // テキストを描画した時のサイズを取得
-        Size size = getTextSize(canvasW);
-        size = addBGPadding(size);
-
         if (width == 0) {
             setSize(size.width, size.height);
         } else {
-            setSize(width, size.height);
+            updateSize();
         }
     }
 
@@ -102,6 +101,12 @@ public class UTextView extends UDrawable {
     /**
      * Methods
      */
+
+    protected void updateSize() {
+        Size size = getTextSize(canvasW);
+        size = addBGPadding(size);
+        setSize(this.size.width, size.height);
+    }
 
     /**
      * テキストを囲むボタン部分のマージンを追加する
@@ -125,31 +130,65 @@ public class UTextView extends UDrawable {
             _pos.x = pos.x + offset.x;
             _pos.y = pos.y + offset.y;
         }
+        PointF _linePos = new PointF(_pos.x, _pos.y);
 
         UDraw.UAlignment _alignment = alignment;
 
         if (isDrawBG) {
-            drawBG(canvas, paint, _pos);
-
-            _pos.x += MARGIN_H;
-            _pos.y += MARGIN_V;
-
-            // BGの中央にテキストを表示したいため、aligmentを書き換える
+            PointF bgPos = new PointF(_pos.x, _pos.y);
             switch (alignment) {
                 case CenterX:
-                    _alignment = UDraw.UAlignment.Center;
+                    bgPos.x -= size.width / 2;
+                    _pos.y += MARGIN_V;
+                    break;
+                case CenterY:
+                    bgPos.y -= size.height / 2;
+                    _pos.x += MARGIN_H;
+                    break;
+                case Center:
+                    bgPos.x -= size.width / 2;
+                    bgPos.y -= size.height / 2;
                     break;
                 case None:
-                    _alignment = UDraw.UAlignment.CenterY;
+                    _pos.x += MARGIN_H;
+                    _pos.y += MARGIN_V;
                     break;
+            }
+
+            if (!multiLine) {
+                if (alignment == UDraw.UAlignment.CenterX || alignment == UDraw.UAlignment.None) {
+                    _pos.y += textSize / 2;
+                }
+            }
+
+            drawBG(canvas, paint, bgPos);
+
+            // BGの中央にテキストを表示したいため、aligmentを書き換える
+            if (!multiLine) {
+                switch (alignment) {
+                    case CenterX:
+                        _alignment = UDraw.UAlignment.Center;
+                        break;
+                    case None:
+                        _alignment = UDraw.UAlignment.CenterY;
+                        break;
+                }
             }
         }
         if (multiLine) {
             UDraw.drawText(canvas, text, _alignment, textSize, _pos.x, _pos.y, color);
         } else {
             UDraw.drawTextOneLine(canvas, paint, text, _alignment, textSize,
-                    _pos.x, _pos.y + textSize / 2,
+                    _pos.x, _pos.y,
                     color);
+        }
+
+        // x,yにラインを表示 for Debug
+        if (UDebug.drawTextBaseLine) {
+            UDraw.drawLine(canvas, paint, _linePos.x - 50, _linePos.y,
+                    _linePos.x + 50, _linePos.y, 3, Color.RED);
+            UDraw.drawLine(canvas, paint, _linePos.x, _linePos.y - 50,
+                    _linePos.x, _linePos.y + 50, 3, Color.RED);
         }
     }
 
