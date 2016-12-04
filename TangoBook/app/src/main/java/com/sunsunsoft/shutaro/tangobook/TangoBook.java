@@ -28,7 +28,16 @@ public class TangoBook extends RealmObject implements TangoItem {
     private boolean isChecked;  // ListViewで選択状態を示す
     private TangoItemPos itemPos;   // どこにあるか？
 
-    // Get/Set
+
+    /**
+     * Constructor
+     */
+    public TangoBook() {
+    }
+
+    /**
+     * Get/Set
+     */
     public int getId() {
         return id;
     }

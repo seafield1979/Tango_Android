@@ -41,4 +41,12 @@ public class MainActivity extends AppCompatActivity {
             RealmManager.initRealm(getApplicationContext());
         }
     }
+
+//
+//    @Override
+//    protected void onDestroy() {
+//        RealmManager.closeRealm();
+//
+//        super.onDestroy();
+//    }
 }

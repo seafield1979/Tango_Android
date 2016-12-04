@@ -16,10 +16,20 @@ import io.realm.RealmResults;
  * 単語帳のDAO
  */
 public class TangoCardDao {
+    /**
+     * Constants
+     */
     public static final String TAG = "TangoCardDao";
 
+    /**
+     * Member variables
+     */
     private Realm mRealm;
 
+    /**
+     * Constructor
+     * @param realm
+     */
     public TangoCardDao(Realm realm) {
         mRealm = realm;
     }
@@ -97,10 +107,8 @@ public class TangoCardDao {
     public List<TangoCard> selectByIds(List<TangoItemPos> itemPoses, boolean changeable) {
         if (itemPoses.size() <= 0) return null;
 
-        // Build the query looking at all users:
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 
-        // Add query conditions:
         boolean isFirst = true;
         for (TangoItemPos item : itemPoses) {
             if (isFirst) {
@@ -110,7 +118,6 @@ public class TangoCardDao {
             }
             query.equalTo("id", item.getItemId());
         }
-        // Execute the query:
         RealmResults<TangoCard> results = query.findAll();
 
         if (results != null && changeable) {
@@ -219,12 +226,13 @@ public class TangoCardDao {
      * @param card
      */
     public void updateOne(TangoCard card) {
-        mRealm.beginTransaction();
 
         TangoCard newCard =
                 mRealm.where(TangoCard.class)
                         .equalTo("id", card.getId()).
                         findFirst();
+
+        mRealm.beginTransaction();
 
         newCard.setWordA(card.getWordA());
         newCard.setWordB(card.getWordB());
@@ -352,10 +360,10 @@ public class TangoCardDao {
         // 初期化
         int nextId = 1;
         // userIdの最大値を取得
-        Number maxUserId = mRealm.where(TangoCard.class).max("id");
+        Number maxId = mRealm.where(TangoCard.class).max("id");
         // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
-        if(maxUserId != null) {
-            nextId = maxUserId.intValue() + 1;
+        if(maxId != null) {
+            nextId = maxId.intValue() + 1;
         }
         return nextId;
     }

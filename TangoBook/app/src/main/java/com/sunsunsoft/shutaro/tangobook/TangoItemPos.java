@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
+import io.realm.annotations.Index;
 
 /**
  * 単語帳のアイテムの場所を特定する情報
@@ -16,18 +17,23 @@ import io.realm.annotations.Ignore;
 public class TangoItemPos extends RealmObject {
 
     // 親の種類 TangoParentType(0:ホーム / 1:単語帳 / 2:ボックス / 3:ゴミ箱)
+    @Index
     private int parentType;
 
     // 親のID
+    @Index
     private int parentId;
 
-    // 表示順 0...
+    // 表示場所 0...
+    @Index
     private int pos;
 
     // アイテムの種類 TangoItemType( 0:カード / 1:単語帳 / 2:ボックス)
+    @Index
     private int itemType;
 
     // 各アイテムのID
+    @Index
     private int itemId;
 
     @Ignore

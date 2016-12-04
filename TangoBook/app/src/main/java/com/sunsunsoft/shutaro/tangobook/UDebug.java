@@ -13,7 +13,9 @@ public class UDebug {
     // UDrawableオブジェクトの描画範囲をライン描画
     public static final boolean drawRectLine = false;
 
+    // Select時にログを出力
     public static final boolean debugDAO = true;
 
-    public static final boolean drawTextBaseLine = true;
+    // テキストのベース座標に+を描画
+    public static final boolean drawTextBaseLine = false;
 }

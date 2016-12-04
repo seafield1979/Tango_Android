@@ -23,10 +23,12 @@ public class TangoCard extends RealmObject implements TangoItem{
     private String comment;     // 説明や例文
     private Date createTime;    // 作成日時
     private Date updateTime;    // 更新日時
-    private boolean star;       // 何かしらのチェック
+
+    private boolean star;       // お気に入り
+
     // メタデータ
     private byte[] history;     // 過去のOK/NG履歴
-    private Date studyTime;     // 最後に学習した日
+    private Date studiedTime;     // 最後に学習した日
 
     @Ignore
     private boolean isChecked;  // ListViewで選択状態を示す
