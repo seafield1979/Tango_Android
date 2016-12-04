@@ -334,11 +334,7 @@ public class UIconWindow extends UWindow {
         if (icons == null) return;
 
         // 背景を描画
-        if (bgColor != 0) {
-            paint.setStyle(Paint.Style.FILL);
-            paint.setColor(bgColor);
-            canvas.drawRect(rect, paint);
-        }
+        drawBG(canvas, paint);
 
         // ウィンドウの座標とスクロールの座標を求める
         PointF _offset = new PointF(pos.x - contentTop.x, pos.y - contentTop.y);
@@ -408,11 +404,11 @@ public class UIconWindow extends UWindow {
 
         int i=0;
         if (dir == WindowDir.Vertical) {
-            int column = (clientSize.width - ICON_MARGIN) / (ICON_W + ICON_MARGIN);
+            int column = ((int)clientSize.width - ICON_MARGIN) / (ICON_W + ICON_MARGIN);
             if (column <= 0) {
                 return;
             }
-            int margin = (clientSize.width - ICON_W * column) / (column + 1);
+            int margin = ((int)clientSize.width - ICON_W * column) / (column + 1);
             for (UIcon icon : icons) {
                 int x = margin + (i % column) * (ICON_W + margin);
                 int y = margin + (i / column) * (ICON_H + margin);
@@ -433,11 +429,11 @@ public class UIconWindow extends UWindow {
                 i++;
             }
         } else {
-            int column = (clientSize.height - ICON_MARGIN) / (ICON_H + ICON_MARGIN);
+            int column = ((int)clientSize.height - ICON_MARGIN) / (ICON_H + ICON_MARGIN);
             if (column <= 0) {
                 return;
             }
-            int margin = (clientSize.height - ICON_H * column) / (column + 1);
+            int margin = ((int)clientSize.height - ICON_H * column) / (column + 1);
             for (UIcon icon : icons) {
                 int x = margin + (i / column) * (ICON_W + margin);
                 int y = margin + (i % column) * (ICON_H + margin);

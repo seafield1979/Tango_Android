@@ -1,6 +1,11 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
+
+import java.io.File;
+import java.io.IOException;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -10,6 +15,8 @@ import io.realm.RealmConfiguration;
  */
 
 public class RealmManager {
+    public static final String TAG = "RealmManager";
+
     public static Realm realm;
     public static final int Version1 = 1;
     public static final int latestVersion = Version1;
@@ -50,5 +57,38 @@ public class RealmManager {
 
     public static void closeRealm() {
         realm.close();
+    }
+
+    /**
+     * Methods
+     */
+    /**
+     * 外部ストレージにRealmのコピーを作成する
+     */
+    public static void createCopyToStorage() {
+
+        Realm r = Realm.getDefaultInstance();
+        String fileName = "realm_copy.realm";
+
+        // 外部ストレージ直下にrealm_copy.realmファイルを作成する
+        //File f = new File(Environment.getExternalStorageDirectory() + "/" + fileName);
+        File f = new File(Environment.getExternalStoragePublicDirectory
+                (Environment.DIRECTORY_DOCUMENTS) + "/" + fileName);
+
+        ULog.print(TAG, f.getPath());
+
+        if (f.exists()) {
+            // 同一ファイル名のファイルが存在する場合エラーが発生するため、ファイルがすでに存在すれば削除する
+            f.delete();
+        }
+
+        try {
+            // 現時点での.realmファイルを指定のパスの位置にコピーする
+            r.writeCopyTo(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        r.close();
     }
 }

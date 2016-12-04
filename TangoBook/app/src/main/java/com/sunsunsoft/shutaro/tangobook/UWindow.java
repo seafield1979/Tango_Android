@@ -1,9 +1,11 @@
 package com.sunsunsoft.shutaro.tangobook;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  * UWindow呼び出し元に通知するためのコールバック
@@ -46,26 +48,22 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      */
     protected UWindowCallbacks windowCallbacks;
     protected int bgColor;
+    protected int frameColor;
 
     /**
      * Get/Set
      */
-    protected Size contentSize = new Size();     // 領域全体のサイズ
-    protected Size clientSize = new Size();      // ウィンドウの幅からスクロールバーのサイズを引いたサイズ
-    protected PointF contentTop = new PointF();  // 画面に表示する領域の左上の座標
+    protected SizeL contentSize = new SizeL();     // 領域全体のサイズ
+    protected SizeL clientSize = new SizeL();      // ウィンドウの幅からスクロールバーのサイズを引いたサイズ
+    protected PointL contentTop = new PointL();  // 画面に表示する領域の左上の座標
     protected UScrollBar mScrollBarH;
     protected UScrollBar mScrollBarV;
     protected UButtonClose closeIcon;            // 閉じるボタン
     protected CloseIconPos closeIconPos;     // 閉じるボタンの位置
 
-    public boolean isShow() {
-        return isShow;
-    }
-
-    public void setShow(boolean show) {
-        isShow = show;
-    }
-
+    /**
+     * Get/Set
+     */
     public void setPos(float x, float y, boolean update) {
         pos.x = x;
         pos.y = y;
@@ -74,17 +72,21 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         }
     }
 
-    public PointF getContentTop() {
+    public PointL getContentTop() {
         return contentTop;
     }
 
-    public void setContentTop(PointF contentTop) {
+    public void setContentTop(PointL contentTop) {
         this.contentTop = contentTop;
     }
 
-    public void setContentTop(float x, float y) {
+    public void setContentTop(long x, long y) {
         contentTop.x = x;
         contentTop.y = y;
+    }
+
+    public void setFrameColor(int frameColor) {
+        this.frameColor = frameColor;
     }
 
     // 座標系を変換する
@@ -145,10 +147,10 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         updateRect();
 
         // ScrollBar
-        mScrollBarV = new UScrollBar(ScrollBarType.Right, ScrollBarInOut.In, this.pos, width, height, SCROLL_BAR_W, contentSize.height);
+        mScrollBarV = new UScrollBar(ScrollBarType.Right, ScrollBarInOut.In, this.pos, width, height, SCROLL_BAR_W, getHeight(), contentSize.height);
         mScrollBarV.setBgColor(Color.rgb(128, 128, 128));
 
-        mScrollBarH = new UScrollBar(ScrollBarType.Bottom, ScrollBarInOut.In, this.pos, width, height, SCROLL_BAR_W, contentSize.height);
+        mScrollBarH = new UScrollBar(ScrollBarType.Bottom, ScrollBarInOut.In, this.pos, width, height, SCROLL_BAR_W, getWidth(), contentSize.height);
         mScrollBarH.setBgColor(Color.rgb(128, 128, 128));
 
         // 描画オブジェクトに登録する
@@ -225,6 +227,25 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * @param paint
      */
     abstract public void drawContent(Canvas canvas, Paint paint );
+
+    /**
+     * Windowの背景を描画する
+     * @param canvas
+     * @param paint
+     * @param rect
+     */
+    protected void drawBG(Canvas canvas, Paint paint, RectF rect) {
+        int frameWidth = (frameColor == 0) ? 0 : 5;
+        UDraw.drawRoundRectFill(canvas, paint, rect, 20, bgColor, frameWidth, frameColor);
+    }
+    protected void drawBG(Canvas canvas, Paint paint, Rect rect) {
+        // BG,Frame
+        int frameWidth = (frameColor == 0) ? 0 : 5;
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(rect), 20, bgColor, frameWidth, frameColor);
+    }
+    protected void drawBG(Canvas canvas, Paint paint) {
+        this.drawBG(canvas, paint, rect);
+    }
 
     /**
      * Windowの枠やバー、ボタンを描画する

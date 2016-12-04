@@ -59,6 +59,10 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     public static final int BUTTON_MARGIN_H = 50;
     public static final int BUTTON_MARGIN_V = 30;
 
+    /**
+     * Member variables
+     */
+    protected PointF basePos;       // Open/Close時の中心座標
     protected DialogType type;
     protected DialogPosType posType;
     protected ButtonDir buttonDir;
@@ -224,6 +228,12 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * 閉じるアニメーション開始
      */
     public void startClosing() {
+        if (posType == DialogPosType.Point) {
+            basePos = new PointF(pos.x + size.width / 2, pos.y + size.height / 2);
+        } else {
+            basePos = new PointF(screenSize.width / 2, screenSize.height / 2);
+        }
+
         if (isAnimation) {
             startAnimation(AnimationType.Closing);
         } else {
@@ -361,6 +371,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         // センタリング
         pos.x = (screenSize.width - size.width) / 2;
         pos.y = (screenSize.height - size.height) / 2;
+        updateRect();
     }
 
     /**
@@ -379,13 +390,10 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         // BG
         if (type == DialogType.Mordal) {
             UDraw.drawRectFill(canvas, paint,
-                    new Rect(0,0,screenSize.width, screenSize.height), bgColor, 0, 0);
+                    new Rect(0, 0, screenSize.width, screenSize.height), bgColor, 0, 0);
         }
 
         super.draw(canvas, paint, offset);
-
-
-//        drawContent(canvas, paint);
     }
 
     /**
@@ -405,16 +413,20 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                 ratio = (float)Math.cos(animeRatio * 90 * RAD);
                 ULog.print(TAG, "cos ratio:" + ratio);
             }
-            float width = size.width * ratio;
-            float height = size.height * ratio;
-            float x = (size.width - width) / 2;
-            float y = (size.height - height) / 2;
-            RectF _rect = new RectF(x, y, x + width, y + height);
-            UDraw.drawRoundRectFill(canvas, paint, _rect, 20, dialogColor, 0, 0);
 
+            float width, height, x, y;
+            RectF _rect;
+
+            width = size.width * ratio;
+            height = size.height * ratio;
+            x = basePos.x - width / 2;
+            y = basePos.y - height / 2;
+            _rect = new RectF(x, y, x + width, y + height);
+
+            drawBG(canvas, paint, _rect);
         } else {
             // BG
-            UDraw.drawRoundRectFill(canvas, paint, getDialogRect(), 20, dialogColor, 0, 0);
+            drawBG(canvas, paint, rect);
 
             // Title, Message
             PointF _offset = pos;

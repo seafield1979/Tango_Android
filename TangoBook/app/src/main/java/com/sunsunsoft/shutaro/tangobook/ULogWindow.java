@@ -217,8 +217,7 @@ public class ULogWindow extends UWindow {
         if (!isShow) return;
 
         // 背景
-        paint.setColor(bgColor);
-        canvas.drawRect(rect, paint);
+        drawBG(canvas, paint);
 
         // テキスト表示
         paint.setTextSize(TEXT_SIZE);

@@ -13,7 +13,8 @@ enum TopMenu {
     Add,            // 追加
     Sort,           // 並び替え
     ListType,       // リストの表示方法
-    Debug           // デバッグ
+    Debug,          // デバッグ
+    Debug2,         // デバッグ2
 }
 
 // メニューをタッチした時に返されるID
@@ -35,7 +36,10 @@ enum MenuItemId {
     Debug3,
     Debug4,
     Debug5,
-    Debug6
+    Debug6,
+    Debug2Top,
+    Debug2RealmCopy,
+    Debug2RealmRestore
 }
 
 
@@ -116,6 +120,12 @@ public class UMenuBar extends UWindow {
         addMenuItem(item, MenuItemId.Debug4, R.drawable.number_4);
         addMenuItem(item, MenuItemId.Debug5, R.drawable.number_5);
         addMenuItem(item, MenuItemId.Debug6, R.drawable.number_6);
+
+        // Debug2
+        item = addTopMenuItem(TopMenu.Debug2, MenuItemId.Debug2Top, R.drawable.debug);
+        addMenuItem(item, MenuItemId.Debug2RealmCopy, R.drawable.number_1);
+        addMenuItem(item, MenuItemId.Debug2RealmRestore, R.drawable.number_2);
+
 
         mDrawList = UDrawManager.getInstance().addDrawable(this);
         updateBGSize();

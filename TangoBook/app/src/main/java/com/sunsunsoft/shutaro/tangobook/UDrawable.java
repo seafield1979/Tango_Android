@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  * 描画可能なクラス
@@ -143,6 +144,10 @@ abstract public class UDrawable {
         return new Rect(rect.left + (int)offset.x, rect.top + (int)offset.y,
                 rect.right + (int)offset.x, rect.bottom + (int)offset.y);
     }
+    public RectF getRectF() {
+        return new RectF(rect);
+    }
+
     // 枠の分太いRectを返す
     public Rect getRectWithOffset(PointF offset, int frameWidth) {
         return new Rect(rect.left + (int)offset.x - frameWidth,

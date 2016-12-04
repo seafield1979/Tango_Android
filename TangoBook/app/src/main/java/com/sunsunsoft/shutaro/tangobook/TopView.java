@@ -298,6 +298,16 @@ public class TopView extends View
             case Debug6:
                 UDrawManager.getInstance().showAllList(true, false);
                 break;
+            case Debug2RealmCopy:
+            {
+                RealmManager.createCopyToStorage();
+                UPopupWindow popup = new UPopupWindow( UPopupType.OK,
+                        "Copy realm file", true, getWidth(), getHeight());
+                UDrawManager.getInstance().addDrawable(popup);
+            }
+                break;
+            case Debug2RealmRestore:
+                break;
         }
         ULog.print(TAG, "menu item clicked " + id);
     }
