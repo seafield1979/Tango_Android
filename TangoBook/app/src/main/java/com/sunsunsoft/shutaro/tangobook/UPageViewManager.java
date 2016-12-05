@@ -62,7 +62,19 @@ public class UPageViewManager {
     /**
      * Constructor
      */
-    public UPageViewManager(Context context, View parentView) {
+    // Singletonオブジェクト
+    private static UPageViewManager singleton;
+
+    // Singletonオブジェクトを作成する
+    public static UPageViewManager createInstance(Context context, View parentView) {
+        if (singleton == null) {
+            singleton = new UPageViewManager(context, parentView);
+        }
+        return singleton;
+    }
+    public static UPageViewManager getInstance() { return singleton; }
+
+    private UPageViewManager(Context context, View parentView) {
         mContext = context;
         mParentView = parentView;
 
@@ -114,7 +126,6 @@ public class UPageViewManager {
 
         // 最初に表示するページ
         stackPage(PageView.Title);
-        stackPage(PageView.TangoEdit);
     }
 
     /**
@@ -138,11 +149,11 @@ public class UPageViewManager {
      * @return
      */
     public boolean touchEvent(ViewTouch vt) {
-        for (UPageView pageView : pages) {
-            if (pageView.touchEvent(vt)) {
-                return true;
-            }
+        UPageView page = pages[currentPage().ordinal()];
+        if (page.touchEvent(vt)) {
+            return true;
         }
+
         return false;
     }
 

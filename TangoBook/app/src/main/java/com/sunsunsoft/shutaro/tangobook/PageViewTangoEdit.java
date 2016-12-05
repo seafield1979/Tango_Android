@@ -77,7 +77,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         int height = mParentView.getHeight();
 
         // 描画オブジェクトクリア
-        UDrawManager.getInstance().init();
+        UDrawManager.getInstance().initPage(drawPageId);
 
         // DebugDialogs
         debugDialogs = new DebugDialogs(mParentView);
