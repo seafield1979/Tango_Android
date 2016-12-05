@@ -9,12 +9,12 @@ import android.view.View;
 import java.util.LinkedList;
 
 enum PageView {
-//    Title,              // タイトル画面
+    Title,              // タイトル画面
     TangoEdit,          // 単語帳を編集
-//    TangoSelect,        // 学習する単語帳を選択する
-//    TangoStudy,         // 単語帳学習
-//    TangoResult,        // 単語帳結果
-//    Settings,
+    TangoSelect,        // 学習する単語帳を選択する
+    TangoStudy,         // 単語帳学習
+    TangoResult,        // 単語帳結果
+    Settings,
     ;
 
     // UDrawManagerの描画ページ番号
@@ -87,10 +87,33 @@ public class UPageViewManager {
      * 配下のページを追加する
      */
     public void initPages() {
+        UPageView page;
+        // Title
+        page = new PageViewTitle(mContext, mParentView);
+        pages[PageView.Title.ordinal()] = page;
+
         // TangoEdit
-        UPageView page = new PageViewTangoEdit(mContext, mParentView);
+        page = new PageViewTangoEdit(mContext, mParentView);
         pages[PageView.TangoEdit.ordinal()] = page;
 
+        // TangoSelect
+        page = new PageViewStudySelect(mContext, mParentView);
+        pages[PageView.TangoSelect.ordinal()] = page;
+
+        // TangoStudy
+        page = new PageViewStudy(mContext, mParentView);
+        pages[PageView.TangoStudy.ordinal()] = page;
+
+        // TangoResult
+        page = new PageViewResult(mContext, mParentView);
+        pages[PageView.TangoResult.ordinal()] = page;
+
+        // Settings
+        page = new PageViewSettings(mContext, mParentView);
+        pages[PageView.Settings.ordinal()] = page;
+
+        // 最初に表示するページ
+        stackPage(PageView.Title);
         stackPage(PageView.TangoEdit);
     }
 
@@ -175,7 +198,9 @@ public class UPageViewManager {
      */
     public void stackPage(PageView pageId) {
         pageIdStack.add(pageId);
-        pages[pageId.ordinal()].onShow();
+        if (pages[pageId.ordinal()] != null) {
+            pages[pageId.ordinal()].onShow();
+        }
     }
 
     /**

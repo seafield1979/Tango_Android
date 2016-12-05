@@ -60,4 +60,15 @@ public class TopFragment extends Fragment implements OnClickListener, OnTouchLis
     public boolean onTouch(View v, MotionEvent e) {
         return true;
     }
+
+    /**
+     * MyFragment
+     */
+    public boolean onBackKeyDown() {
+        if (topView.onBackKeyDown()) {
+            topView.invalidate();
+            return true;
+        }
+        return false;
+    }
 }

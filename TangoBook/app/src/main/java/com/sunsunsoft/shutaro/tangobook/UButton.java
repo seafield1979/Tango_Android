@@ -8,7 +8,6 @@ import android.util.Log;
 
 interface UButtonCallbacks {
     boolean UButtonClick(int id);
-    boolean UButtonLongClick(int id);
 }
 
 

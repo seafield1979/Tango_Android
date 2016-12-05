@@ -13,11 +13,9 @@ import android.view.View;
 
 abstract public class UPageView {
     /**
-     * Enums
-     */
-    /**
      * Consts
      */
+    public static final String TAG = "UPagaView";
 
     /**
      * Member Variables
@@ -25,8 +23,9 @@ abstract public class UPageView {
     protected Context mContext;
     protected View mParentView;
 
+    // UDrawManagerで描画を行うページ番号
     protected int drawPageId;
-    private boolean isFirst = true;
+    protected boolean isFirst = true;
 
     /**
      * Get/Set
@@ -59,6 +58,13 @@ abstract public class UPageView {
 
     }
 
+    /**
+     * 描画処理
+     * サブクラスのdrawでこのメソッドを最初に呼び出す
+     * @param canvas
+     * @param paint
+     * @return
+     */
     protected boolean draw(Canvas canvas, Paint paint) {
         if (isFirst) {
             isFirst = false;
@@ -67,13 +73,22 @@ abstract public class UPageView {
         return false;
     }
 
+    /**
+     * タッチ処理
+     * @param vt
+     * @return
+     */
     abstract boolean touchEvent(ViewTouch vt);
 
+    /**
+     * そのページで表示される描画オブジェクトを初期化する
+     */
     abstract void initDrawables();
 
+    /**
+     * ソフトウェアキーの戻るボタンを押したときの処理
+     * @return
+     */
     abstract boolean onBackKeyDown();
 
-    /**
-     * Callbacks
-     */
 }
