@@ -216,6 +216,17 @@ public class ViewTouch {
     }
 
     /**
+     * ２点間の距離が指定の距離内に収まっているかどうかを調べる
+     * @return true:距離内 / false:距離外
+     */
+    public boolean checkInsideCircle(float vx, float vy, float x, float y, float length) {
+        if ((vx - x) * (vx - x) + (vy - y) * (vy - y) <= length * length) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * ロングタッチ検出用のタイマーを開始
      */
     private void startLongTouchTimer() {

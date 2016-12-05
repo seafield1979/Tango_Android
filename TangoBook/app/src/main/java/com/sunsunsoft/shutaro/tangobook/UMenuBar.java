@@ -8,150 +8,78 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.view.View;
 
-// メニューバーのトップ項目
-enum TopMenu {
-    Add,            // 追加
-    Sort,           // 並び替え
-    ListType,       // リストの表示方法
-    Debug,          // デバッグ
-    Debug2,         // デバッグ2
-}
-
-// メニューをタッチした時に返されるID
-enum MenuItemId {
-    AddTop,
-    AddCard,
-    AddBook,
-    SortTop,
-    Sort1,
-    Sort2,
-    Sort3,
-    ListTypeTop,
-    ListType1,
-    ListType2,
-    ListType3,
-    DebugTop,
-    Debug1,
-    Debug2,
-    Debug3,
-    Debug4,
-    Debug5,
-    Debug6,
-    Debug2Top,
-    Debug2RealmCopy,
-    Debug2RealmRestore
-}
+import java.util.LinkedList;
 
 
 /**
  * メニューバー
  * メニューに表示する項目を管理する
  */
-public class UMenuBar extends UWindow {
+abstract public class UMenuBar extends UWindow {
 
     public static final int DRAW_PRIORITY = 90;
     public static final int MENU_BAR_H = 150;
-    private static final int MARGIN_L = 30;
-    private static final int MARGIN_LR = 50;
-    private static final int MARGIN_TOP = 15;
-    public static final int TOP_MENU_MAX = TopMenu.values().length;
+    protected static final int MARGIN_L = 30;
+    protected static final int MARGIN_LR = 50;
+    protected static final int MARGIN_TOP = 15;
 
 
-    private View mParentView;
-    private UMenuItemCallbacks mCallbackClass;
-    UMenuItem[] topItems = new UMenuItem[TOP_MENU_MAX];
-    UMenuItem[] items = new UMenuItem[MenuItemId.values().length];
-    private DrawList mDrawList;
-    private boolean isAnimating;
+    protected View mParentView;
+    protected UMenuItemCallbacks mMenuItemCallbacks;
+    protected LinkedList<UMenuItem> topItems;
+    protected LinkedList<UMenuItem> items;
+    protected DrawList mDrawList;
+    protected boolean isAnimating;
 
-    // Get/Set
+    /**
+     * Get/Set
+     */
     public void setAnimating(boolean animating) {
         isAnimating = animating;
     }
 
-    private UMenuBar(View parentView, UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor)
+    /**
+     * Constructor
+     */
+    public UMenuBar(View parentView, UMenuItemCallbacks callbackClass,
+                    int parentW, int parentH,
+                    int bgColor)
     {
         super(null, DRAW_PRIORITY, 0, parentH - MENU_BAR_H, parentW, MENU_BAR_H, bgColor);
         mParentView = parentView;
-        mCallbackClass = callbackClass;
+        mMenuItemCallbacks = callbackClass;
+        topItems = new LinkedList<>();
+        items = new LinkedList<>();
     }
 
     /**
-     * メニューバーを生成する
-     * @param parentView
-     * @param callbackClass
-     * @param parentW     親Viewのwidth
-     * @param parentH    親Viewのheight
-     * @param bgColor
-     * @return
+     * Methods
      */
-    public static UMenuBar createInstance(View parentView, UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor)
-    {
-        UMenuBar instance = new UMenuBar(parentView, callbackClass, parentW, parentH, bgColor);
-        instance.initMenuBar();
-        return instance;
-    }
-
     /**
      * メニューバーを初期化
      */
-    private void initMenuBar() {
-        UMenuItem item = null;
+    abstract void initMenuBar();
 
-        // Add
-        item = addTopMenuItem(TopMenu.Add, MenuItemId.AddTop, R.drawable.add);
-        addMenuItem(item, MenuItemId.AddCard, R.drawable.file_add);
-        addMenuItem(item, MenuItemId.AddBook, R.drawable.folder_add);
-
-        // Sort
-        item = addTopMenuItem(TopMenu.Sort, MenuItemId.SortTop, R.drawable.sort);
-        addMenuItem(item, MenuItemId.Sort1, R.drawable.sort_by_alphabet2_asc);
-        addMenuItem(item, MenuItemId.Sort2, R.drawable.sort_by_alphabet2_desc);
-
-        // ListType
-        item = addTopMenuItem(TopMenu.ListType, MenuItemId.ListTypeTop, R.drawable.list);
-        addMenuItem(item, MenuItemId.ListType1, R.drawable.list1);
-        addMenuItem(item, MenuItemId.ListType2, R.drawable.grid_icons);
-        // Debug
-        item = addTopMenuItem(TopMenu.Debug, MenuItemId.DebugTop, R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug1, R.drawable.number_1);
-        addMenuItem(item, MenuItemId.Debug2, R.drawable.number_2);
-        addMenuItem(item, MenuItemId.Debug3, R.drawable.number_3);
-        addMenuItem(item, MenuItemId.Debug4, R.drawable.number_4);
-        addMenuItem(item, MenuItemId.Debug5, R.drawable.number_5);
-        addMenuItem(item, MenuItemId.Debug6, R.drawable.number_6);
-
-        // Debug2
-        item = addTopMenuItem(TopMenu.Debug2, MenuItemId.Debug2Top, R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug2RealmCopy, R.drawable.number_1);
-        addMenuItem(item, MenuItemId.Debug2RealmRestore, R.drawable.number_2);
-
-
-        mDrawList = UDrawManager.getInstance().addDrawable(this);
-        updateBGSize();
-    }
-
-    private void updateBGSize() {
-        size.width = MARGIN_L + TOP_MENU_MAX * (UMenuItem.ITEM_W + MARGIN_LR);
+    protected void updateBGSize() {
+        size.width = MARGIN_L + topItems.size() * (UMenuItem.ITEM_W + MARGIN_LR);
     }
 
     /**
      * メニューのトップ項目を追加する
-     * @param topId
      * @param menuId
      * @param bmpId
      */
-    private UMenuItem addTopMenuItem(TopMenu topId, MenuItemId menuId, int bmpId) {
+    protected UMenuItem addTopMenuItem(int menuId, int bmpId) {
         Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(), bmpId);
         UMenuItem item = new UMenuItem(this, menuId, bmp);
-        item.setCallbacks(mCallbackClass);
-
-        topItems[topId.ordinal()] = item;
-        items[menuId.ordinal()] = item;
+        item.setCallbacks(mMenuItemCallbacks);
         item.setShow(true);
 
+        topItems.add(item);
+        items.add(item);
+
         // 座標設定
-        item.setPos(MARGIN_LR + (UMenuItem.ITEM_W + MARGIN_LR) * topId.ordinal(), MARGIN_TOP);
+        item.setPos(MARGIN_LR + (UMenuItem.ITEM_W + MARGIN_LR) * (topItems.size() - 1), MARGIN_TOP);
         return item;
     }
 
@@ -162,17 +90,17 @@ public class UMenuBar extends UWindow {
      * @param bmpId
      * @return
      */
-    private UMenuItem addMenuItem(UMenuItem parent, MenuItemId menuId, int bmpId) {
+    protected UMenuItem addMenuItem(UMenuItem parent, int menuId, int bmpId) {
         Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(), bmpId);
         UMenuItem item = new UMenuItem(this, menuId, bmp);
-        item.setCallbacks(mCallbackClass);
+        item.setCallbacks(mMenuItemCallbacks);
         item.setParentItem(parent);
-        parent.addItem(item);
-
         // 子要素は初期状態では非表示。オープン時に表示される
         item.setShow(false);
 
-        items[menuId.ordinal()] = item;
+        parent.addItem(item);
+
+        items.add(item);
         return item;
     }
 
@@ -212,7 +140,7 @@ public class UMenuBar extends UWindow {
         for (UMenuItem item : topItems) {
             if (item == null) continue;
 
-            if (item.checkClick(vt, clickX, clickY)) {
+            if (item.checkTouch(vt, clickX, clickY)) {
                 done = true;
                 if (item.isOpened()) {
                     // 他に開かれたメニューを閉じる
@@ -241,7 +169,7 @@ public class UMenuBar extends UWindow {
      * メニューを閉じる
      * @param excludedItem
      */
-    private void closeAllMenu(UMenuItem excludedItem) {
+    protected void closeAllMenu(UMenuItem excludedItem) {
         for (UMenuItem item : topItems) {
             if (item == excludedItem) continue;
             item.closeMenu();
@@ -251,8 +179,8 @@ public class UMenuBar extends UWindow {
     /**
      * メニュー項目の座標をスクリーン座標で取得する
      */
-    public PointF getItemPos(MenuItemId itemId) {
-        UMenuItem item = items[itemId.ordinal()];
+    public PointF getItemPos(int itemId) {
+        UMenuItem item = items.get(itemId);
         if (item == null) {
             return new PointF();
         }

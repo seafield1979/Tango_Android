@@ -7,9 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.support.v4.view.NestedScrollingParent;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.View;
 
 /**
@@ -53,7 +51,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     private UDialogWindow mDialog;
 
     // メニューバー
-    private UMenuBar mMenuBar;
+    private MenuBarTangoEdit mMenuBar;
 
     // クリック判定の仕組み
     private ViewTouch vt = new ViewTouch(this);
@@ -115,7 +113,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         subWindow.init();
 
         // UMenuBar
-        mMenuBar = UMenuBar.createInstance(mParentView, this, width, height,
+        mMenuBar = MenuBarTangoEdit.createInstance(mParentView, this, width, height,
                 Color.BLACK);
         mWindows[WindowType.MenuBar.ordinal()] = mMenuBar;
 
@@ -264,8 +262,10 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     /**
      * メニューアイテムをタップした時のコールバック
      */
-    public void menuItemClicked(MenuItemId id) {
-        switch (id) {
+    public void menuItemClicked(int id, int stateId) {
+        MenuBarTangoEdit.MenuItemId itemId = MenuBarTangoEdit.MenuItemId.toEnum(id);
+
+        switch (itemId) {
             case AddTop:
                 break;
             case AddCard:
