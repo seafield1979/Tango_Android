@@ -43,7 +43,6 @@ public class IconInfoDialogBook extends IconInfoDialog {
     /**
      * Member Variables
      */
-    private View mParentView;
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private UTextView textTitle, textNameTitle, textCountTitle;
     private UTextView textName;
@@ -66,7 +65,6 @@ public class IconInfoDialogBook extends IconInfoDialog {
                               int color)
     {
         super( parentView, iconInfoDialogCallbacks, windowCallbacks, icon, x, y, color);
-        mParentView = parentView;
         if (icon instanceof IconBook) {
             IconBook bookIcon = (IconBook)icon;
             mBook = (TangoBook)bookIcon.getTangoItem();
@@ -138,7 +136,8 @@ public class IconInfoDialogBook extends IconInfoDialog {
         int width = ICON_W * icons.size() +
                 ICON_MARGIN_H * (icons.size() + 1);
         // 種別
-        textTitle = UTextView.createInstance( "単語帳", TEXT_SIZE, 0,
+        textTitle = UTextView.createInstance( mContext.getString(R.string.book),
+                TEXT_SIZE, 0,
                 UDraw.UAlignment.CenterX, canvas.getWidth(), false, false,
                 width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + 30;
@@ -154,7 +153,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
                     x, y,
                     ICON_W, ICON_W, bmp, null);
             // アイコンの下に表示するテキストを設定
-            imageButton.setTitle(icon.getTitle(), 30, Color.BLACK);
+            imageButton.setTitle(icon.getTitle(mContext), 30, Color.BLACK);
 
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
@@ -164,7 +163,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
         y += ICON_W + MARGIN_V + 50;
 
         // Name
-        textNameTitle = UTextView.createInstance( "名前", TEXT_SIZE, 0,
+        textNameTitle = UTextView.createInstance( mContext.getString(R.string.name), TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         textNameTitle.setMarginH(false);
@@ -180,11 +179,15 @@ public class IconInfoDialogBook extends IconInfoDialog {
                 TangoParentType.Book, mIcon.getTangoItem().getId()
         );
 
-        textCountTitle = UTextView.createInstance( "カード数", TEXT_SIZE, 0,
+        // title
+        textCountTitle = UTextView.createInstance( mContext.getString(R.string
+                .card_count),
+                TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, TITLE_WIDTH2, TEXT_COLOR, Color.argb(1,0,0,0));
         textCountTitle.setMarginH(false);
 
+        // body
         textCount = UTextView.createInstance( "" + count, TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H + TITLE_WIDTH2, y, width - (MARGIN_H * 2 + TITLE_WIDTH2), TEXT_COLOR,

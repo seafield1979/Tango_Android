@@ -11,4 +11,24 @@
     <string name="edit_title_book_name">単語帳の名前</string>
     <string name="edit_title_book_color">単語帳の色</string>
 
+    <string name="word_a_top">英</string>
+    <string name="word_b_top">日</string>
+    <string name="name">名前</string>
+    <string name="card">カード</string>
+    <string name="book">単語帳</string>
+    <string name="card_count">カード数</string>
+    <string name="title_edit">単語帳を作る</string>
+    <string name="title_study">学習する</string>
+    <string name="title_settings">設定</string>
+
+    <string name="open">開く</string>
+    <string name="edit">編集</string>
+    <string name="delete">削除</string>
+    <string name="study">学習する</string>
+    <string name="clean_up">空にする</string>
+    <string name="copy">コピー</string>
+    <string name="trash">ゴミ箱</string>
+    <string name="favorite">お気に入り</string>
+    <string name="return_to_home">元に戻す</string>
+
 </resources>

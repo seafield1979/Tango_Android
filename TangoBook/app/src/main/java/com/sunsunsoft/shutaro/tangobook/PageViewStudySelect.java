@@ -20,8 +20,7 @@ import android.view.View;
 
 public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks,
         UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks, UButtonCallbacks,
-        EditCardDialogCallbacks, EditBookDialogCallbacks, IconInfoDialogCallbacks,
-        UDialogCallbacks
+        IconInfoDialogCallbacks, UDialogCallbacks
 {
     /**
      * Enums
@@ -126,7 +125,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         mWindows[WindowType.Icon1.ordinal()] = mainWindow;
 
         // Sub
-        UIconWindowStudySelect subWindow = UIconWindowStudySelect.createInstance(mParentView, this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
+        UIconWindow subWindow = UIconWindow.createInstance(mParentView, this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
         subWindow.isShow = false;
         mWindows[WindowType.Icon2.ordinal()] = subWindow;
 
@@ -199,87 +198,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
             }
         }
         return false;
-    }
-
-    /**
-     * Add icon
-     */
-
-    // Card追加用のダイアログを表示
-    private void addCardDialog() {
-        EditCardDialogFragment dialogFragment = EditCardDialogFragment.createInstance(this);
-
-        dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
-                "fragment_dialog");
-    }
-
-    // Book追加用のダイアログを表示
-    private void addBookDialog() {
-        EditBookDialogFragment dialogFragment = EditBookDialogFragment.createInstance(this);
-
-        dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
-                "fragment_dialog");
-    }
-
-    /**
-     * Edit icon
-     */
-    private void editCardDialog(IconCard iconCard) {
-        EditCardDialogFragment dialogFragment =
-                EditCardDialogFragment.createInstance(this, (TangoCard)iconCard.getTangoItem());
-
-        dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
-                "fragment_dialog");
-    }
-
-    private void editBookDialog(IconBook iconBook) {
-        EditBookDialogFragment dialogFragment =
-                EditBookDialogFragment.createInstance(this, (TangoBook)iconBook.getTangoItem());
-
-        dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
-                "fragment_dialog");
-    }
-
-    /**
-     * Copy icon
-     */
-    private void copyIcon(UIcon icon) {
-        UIconManager iconManager =  icon.parentWindow.getIconManager();
-
-        // コピー先のカードアイコンを作成
-        UIcon newIcon = iconManager.copyIcon(icon, null);
-        if (newIcon == null) {
-            return;
-        }
-
-        switch (icon.getType()) {
-            case Card: {
-
-            }
-            break;
-            case Book: {
-            }
-            break;
-        }
-        icon.parentWindow.sortIcons(true);
-    }
-
-    // card
-    private void addCardIcon() {
-        UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-        iconManager.addNewIcon(IconType.Card, AddPos.Tail);
-        mIconWinManager.getMainWindow().sortIcons(true);
-
-        mParentView.invalidate();
-    }
-
-    // book
-    private void addBookIcon() {
-        UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-        iconManager.addNewIcon(IconType.Book, AddPos.Tail);
-        mIconWinManager.getMainWindow().sortIcons(true);
-
-        mParentView.invalidate();
     }
 
     /**
@@ -434,14 +352,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
      */
     public boolean UButtonClick(int id) {
         switch (id) {
-            case CleanupDialogButtonOK:
-                // ゴミ箱を空にする
-                RealmManager.getItemPosDao().deleteItemsInTrash();
-                mDialog.closeDialog();
-                mIconInfoDlg.closeWindow();
-                mIconInfoDlg = null;
-                mIconWinManager.getSubWindow().sortIcons(false);
-                break;
             case UDialogWindow.CloseDialogId:
                 mDialog.closeDialog();
                 break;
@@ -507,95 +417,22 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
 
     }
 
-
-    /**
-     * EditBookDialogCallbacks
-     */
-    public void submitEditBook(Bundle args) {
-        if (args == null) return;
-
-        int mode = args.getInt(EditCardDialogFragment.KEY_MODE, EditCardDialogMode.Create.ordinal
-                ());
-        if (mode == EditCardDialogMode.Create.ordinal()) {
-            // 新たにアイコンを追加する
-            UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-            IconBook bookIcon = (IconBook) (iconManager.addNewIcon(IconType.Book, AddPos.Tail));
-            if (bookIcon == null) {
-                return;
-            }
-            TangoBook book = (TangoBook) bookIcon.getTangoItem();
-
-            // 戻り値を取得
-            book.setName(args.getString(EditBookDialogFragment.KEY_NAME, ""));
-            book.setComment(args.getString(EditBookDialogFragment.KEY_COMMENT, ""));
-            book.setColor(args.getInt(EditBookDialogFragment.KEY_COLOR, 0));
-            bookIcon.updateTitle();
-
-            // DB更新
-            RealmManager.getBookDao().updateOne(book);
-        } else {
-            // 既存のアイコンを更新する
-
-            TangoBook book = (TangoBook)editingIcon.getTangoItem();
-            book.setName(args.getString(EditBookDialogFragment.KEY_NAME, ""));
-            book.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
-
-            editingIcon.updateTitle();
-            // DB更新
-            RealmManager.getBookDao().updateOne(book);
-        }
-
-        // アイコン整列
-        mIconWinManager.getMainWindow().sortIcons(false);
-        mParentView.invalidate();
-    }
-    public void cancelEditBook() {
-
-    }
-
     /**
      * IconInfoDialogCallbacks
      */
     public void IconInfoEditIcon(UIcon icon) {
-        switch (icon.getType()) {
-            case Card: {
-                editingIcon = icon;
-                if (icon instanceof IconCard) {
-                    editCardDialog((IconCard)editingIcon);
-                    mIconInfoDlg.closeWindow();
-                    mIconInfoDlg = null;
-                }
-            }
-            break;
-            case Book: {
-                editingIcon = icon;
-                if (icon instanceof IconBook) {
-                    editBookDialog((IconBook)editingIcon);
-                    mIconInfoDlg.closeWindow();
-                    mIconInfoDlg = null;
-                }
-            }
-            break;
-        }
     }
 
     /**
      * アイコンをコピー
      */
     public void IconInfoCopyIcon(UIcon icon) {
-        this.copyIcon(icon);
-        mIconInfoDlg.closeWindow();
-        mIconInfoDlg = null;
     }
 
     /**
      * アイコンをゴミ箱に移動
      */
     public void IconInfoThrowIcon(UIcon icon) {
-        mIconWinManager.getMainWindow().moveIconIntoTrash(icon);
-        mIconInfoDlg.closeWindow();
-        mIconInfoDlg = null;
-        mParentView.invalidate();
     }
 
     /**
@@ -617,34 +454,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     /**
      * アイコン配下をクリーンアップする
      */
-    public static final int CleanupDialogButtonOK = 101;
-
     public void IconInfoCleanup(UIcon icon) {
-        if (icon.getType() == IconType.Trash) {
-            if (mDialog != null) {
-                mDialog.closeDialog();
-                mDialog = null;
-            }
-            // Daoデバッグ用のダイアログを表示
-            mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                    this, this,
-                    UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
-                    false,
-                    mParentView.getWidth(), mParentView.getHeight(),
-                    Color.rgb(200,100,100), Color.WHITE);
-
-
-            // 確認のダイアログを表示する
-            mDialog.setTitle("Do you clean up?");
-
-            // ボタンを追加
-            mDialog.addButton(CleanupDialogButtonOK, "OK", Color.WHITE,
-                    Color.rgb(150, 80, 80));
-            mDialog.addCloseButton("Cancel");
-
-            // 描画マネージャに登録
-            mDialog.setDrawPriority(DrawPriority.Dialog.p());
-        }
     }
 
     /**
@@ -652,10 +462,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
      * @param icon
      */
     public void IconInfoReturnIcon(UIcon icon) {
-        icon.parentWindow.moveIconIntoHome(icon, mIconWinManager.getMainWindow());
-
-        mIconInfoDlg.closeWindow();
-        mIconInfoDlg = null;
     }
 
     /**
@@ -663,12 +469,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
      * @param icon
      */
     public void IconInfoDeleteIcon(UIcon icon) {
-        icon.parentWindow.removeIcon(icon);
-
-        mIconInfoDlg.closeWindow();
-        mIconInfoDlg = null;
-
-        mParentView.invalidate();
     }
 
     /**

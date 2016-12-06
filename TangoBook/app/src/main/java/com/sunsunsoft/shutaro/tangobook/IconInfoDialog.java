@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.view.View;
@@ -19,15 +20,15 @@ enum IconInfoAction {
 }
 
 enum ActionIcons{
-    Open(101, R.drawable.open, "開く"),
-    Edit(102, R.drawable.edit, "編集"),
-    MoveToTrash(103, R.drawable.trash, "ゴミ箱"),
-    Copy(104, R.drawable.copy, "コピー"),
-    Favorite(105, R.drawable.favorites, "お気に入り"),
-    CleanUp(110, R.drawable.trash_empty, "空にする"),
-    Return(201, R.drawable.return1, "元に戻す"),
-    Delete(202, R.drawable.trash, "削除"),
-    Study(301, R.drawable.play, "学習開始")
+    Open(101, R.drawable.open, R.string.open),
+    Edit(102, R.drawable.edit, R.string.edit),
+    MoveToTrash(103, R.drawable.trash, R.string.trash),
+    Copy(104, R.drawable.copy, R.string.copy),
+    Favorite(105, R.drawable.favorites, R.string.favorite),
+    CleanUp(110, R.drawable.trash_empty, R.string.clean_up),
+    Return(201, R.drawable.return1, R.string.return_to_home),
+    Delete(202, R.drawable.trash, R.string.delete),
+    Study(301, R.drawable.play, R.string.study)
     ;
 
     // Card
@@ -76,12 +77,12 @@ enum ActionIcons{
 
     private int id;
     private int imageId;
-    private String title;
+    private int titleId;
 
-    ActionIcons(int id, int imageId, String title) {
+    ActionIcons(int id, int imageId, int titleId) {
         this.id = id;
         this.imageId = imageId;
-        this.title = title;
+        this.titleId = titleId;
     }
 
     protected static ActionIcons toEnum(int id) {
@@ -98,8 +99,8 @@ enum ActionIcons{
         return imageId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitle(Context context) {
+        return context.getString(titleId);
     }
 }
 
@@ -172,6 +173,7 @@ abstract public class IconInfoDialog extends UWindow{
      * Member Variables
      */
     protected View mParentView;
+    protected Context mContext;
     protected IconInfoDialogCallbacks mIconInfoCallbacks;
 
     // ダイアログに情報を表示元のアイコン
@@ -195,6 +197,7 @@ abstract public class IconInfoDialog extends UWindow{
         super(windowCallbacks, DrawPriority.Dialog.p(), x, y, 0, 0, color);
 
         mParentView = parentView;
+        mContext = parentView.getContext();
         mIconInfoCallbacks = iconInfoCallbacks;
         mIcon = icon;
     }

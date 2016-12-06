@@ -18,17 +18,17 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
      * Enums
      */
     enum ButtonId {
-        Edit("単語帳を作る"),
-        Study("学習する"),
-        Settings("設定")
+        Edit(R.string.title_edit),
+        Study(R.string.title_study),
+        Settings(R.string.title_settings)
         ;
 
-        private String title;
-        ButtonId(String title) {
-            this.title = title;
+        private int titleId;
+        ButtonId(int titleId) {
+            this.titleId = titleId;
         }
-        String getTitle() {
-            return title;
+        String getTitle(Context context) {
+            return context.getString(titleId);
         }
 
         static ButtonId toEnum(int value) {
@@ -73,7 +73,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
             buttonType = UButtonType.BGColor;
 
             buttons[i] = new UButtonText(this, buttonType, id.ordinal(), BUTTON_PRIORITY,
-                    id.getTitle(), 100, y,
+                    id.getTitle(mContext), 100, y,
                     width - 100*2, 120,
                     Color.WHITE,
                     Color.rgb(0,128,0));

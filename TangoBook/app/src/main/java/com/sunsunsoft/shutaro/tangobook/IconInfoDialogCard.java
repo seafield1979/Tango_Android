@@ -41,6 +41,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
     private static final int MARGIN_V = 40;
     private static final int MARGIN_H = 40;
     private static final int TEXT_SIZE = 50;
+    private static final int TITLE_WIDTH = 100;
 
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
@@ -48,7 +49,6 @@ public class IconInfoDialogCard extends IconInfoDialog {
     /**
      * Member Variables
      */
-    private View mParentView;
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private UTextView textTitle, textWordATitle, textWordBTitle;
     private UTextView textWordA;
@@ -71,7 +71,6 @@ public class IconInfoDialogCard extends IconInfoDialog {
                               int color)
     {
         super( parentView, iconInfoDialogCallbacks, windowCallbacks, icon, x, y, color);
-        mParentView = parentView;
         if (icon instanceof IconCard) {
             IconCard cardIcon = (IconCard)icon;
             mCard = (TangoCard)cardIcon.getTangoItem();
@@ -143,7 +142,8 @@ public class IconInfoDialogCard extends IconInfoDialog {
                 ICON_MARGIN_H * (icons.size() + 1);
 
         // 種別
-        textTitle = UTextView.createInstance( "単語カード", TEXT_SIZE, 0,
+        textTitle = UTextView.createInstance( mContext.getString(R.string.card),
+                TEXT_SIZE, 0,
                 UDraw.UAlignment.CenterX, canvas.getWidth(), false, false,
                 width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + 30;
@@ -169,7 +169,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
             }
 
             // アイコンの下に表示するテキストを設定
-            imageButton.setTitle(icon.getTitle(), 30, Color.BLACK);
+            imageButton.setTitle(icon.getTitle(mContext), 30, Color.BLACK);
 
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
@@ -181,24 +181,24 @@ public class IconInfoDialogCard extends IconInfoDialog {
         // WordA (Title & 本文)
         textWordATitle = UTextView.createInstance( "英", TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, 100, TEXT_COLOR, Color.argb(1,0,0,0));
+                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         textWordATitle.setMarginH(false);
 
         textWordA = UTextView.createInstance( mCard.getWordA(), TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H + 100, y, width - (MARGIN_H * 2 + 100), TEXT_COLOR, TEXT_BG_COLOR);
+                MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;
 
         // WordB
         textWordBTitle = UTextView.createInstance( "日", TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, 100, TEXT_COLOR, Color.argb(1,0,0,0));
+                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         textWordBTitle.setMarginH(false);
 
         textWordB = UTextView.createInstance( mCard.getWordB(), TEXT_SIZE, 0,
                 UDraw.UAlignment.None, TEXT_VIEW_W, false, true,
-                MARGIN_H + 100, y, width - (MARGIN_H * 2 + 100), TEXT_COLOR, TEXT_BG_COLOR);
+                MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V + 50;
 

@@ -52,7 +52,7 @@ public class IconTrash extends IconContainer {
         super(parentView, parentWindow, iconCallbacks, IconType.Trash,
                 0, 0, ICON_W, ICON_H);
 
-        title = "ゴミ箱";
+        title = parentView.getContext().getString(R.string.trash);
         setColor(ICON_COLOR);
 
         // 中のアイコンを表示するためのSubWindow
@@ -102,6 +102,10 @@ public class IconTrash extends IconContainer {
                 new Rect((int)drawPos.x, (int)drawPos.y,
                         (int)drawPos.x + ICON_W,(int)drawPos.y + ICON_H),
                 paint);
+
+        // Text
+        UDraw.drawTextOneLine(canvas, paint, title, UDraw.UAlignment.CenterX, TEXT_SIZE,
+                drawPos.x + ICON_W / 2, drawPos.y + ICON_H + TEXT_MARGIN, Color.BLACK);
     }
 
     /**

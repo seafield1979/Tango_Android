@@ -44,7 +44,6 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
     /**
      * Member Variables
      */
-    private View mParentView;
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private UTextView textTitle;
     private UTextView textCount;
@@ -65,7 +64,6 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
                               int color)
     {
         super( parentView, iconInfoDialogCallbacks, windowCallbacks, icon, x, y, color);
-        mParentView = parentView;
     }
 
     /**
@@ -143,7 +141,7 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
                     ICON_W, ICON_W, bmp, null);
 
             // アイコンの下に表示するテキストを設定
-            imageButton.setTitle(icon.getTitle(), 30, Color.BLACK);
+            imageButton.setTitle(icon.getTitle(mParentView.getContext()), 30, Color.BLACK);
 
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
