@@ -19,14 +19,15 @@ enum IconInfoAction {
 }
 
 enum ActionIcons{
-    Open(101, R.drawable.open, "open"),
-    Edit(102, R.drawable.edit, "edit"),
+    Open(101, R.drawable.open, "開く"),
+    Edit(102, R.drawable.edit, "編集"),
     MoveToTrash(103, R.drawable.trash, "ゴミ箱"),
-    Copy(104, R.drawable.copy, "copy"),
+    Copy(104, R.drawable.copy, "コピー"),
     Favorite(105, R.drawable.favorites, null),
     CleanUp(110, R.drawable.trash_empty, "空にする"),
     Return(201, R.drawable.return1, "元に戻す"),
-    Delete(202, R.drawable.trash, "削除")
+    Delete(202, R.drawable.trash, "削除"),
+    Study(301, R.drawable.play, "学習開始")
     ;
 
     // Card
@@ -46,6 +47,14 @@ enum ActionIcons{
         list.add(Copy);
         list.add(MoveToTrash);
         list.add(Favorite);
+        return list;
+    }
+
+    // Book Study
+    public static List<ActionIcons> getBookStudyIcons() {
+        LinkedList<ActionIcons> list = new LinkedList<>();
+        list.add(Study);
+        list.add(Open);
         return list;
     }
 
@@ -121,6 +130,12 @@ interface IconInfoDialogCallbacks {
      * @param icon
      */
     void IconInfoOpenIcon(UIcon icon);
+
+    /**
+     * Book の学習開始
+     * @param icon
+     */
+    void IconInfoStudy(UIcon icon);
 
     /**
      * コンテナタイプのアイコン以下をクリーンアップ(全削除)する

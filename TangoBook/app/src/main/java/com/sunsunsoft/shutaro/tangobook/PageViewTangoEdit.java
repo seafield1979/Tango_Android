@@ -81,12 +81,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         debugDialogs = new DebugDialogs(mParentView);
 
         // UIconWindow
-        PointF pos1, pos2;
         Size size1, size2;
         UIconWindow.WindowDir winDir;
-        pos1 = new PointF(0, 0);
         size1 = new Size(width, height);
-        pos2 = new PointF(0, 0);
         size2 = new Size(width, height);
 
         if (width <= height) {
@@ -96,11 +93,11 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         }
 
         // Main
-        UIconWindow mainWindow = UIconWindow.createInstance(mParentView, this, this, true, winDir, pos1.x, pos1.y, size1.width, size1.height, Color.WHITE);
+        UIconWindow mainWindow = UIconWindow.createInstance(mParentView, this, this, true, winDir, size1.width, size1.height, Color.WHITE);
         mWindows[WindowType.Icon1.ordinal()] = mainWindow;
 
         // Sub
-        UIconWindow subWindow = UIconWindow.createInstance(mParentView, this, this, false, winDir, pos2.x, pos2.y, size2.width, size2.height, Color.LTGRAY);
+        UIconWindow subWindow = UIconWindow.createInstance(mParentView, this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
         subWindow.isShow = false;
         mWindows[WindowType.Icon2.ordinal()] = subWindow;
 
@@ -607,6 +604,13 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         openIcon(icon);
         mIconInfoDlg.closeWindow();
         mIconInfoDlg = null;
+    }
+
+    /**
+     * 学習開始
+     */
+    public void IconInfoStudy(UIcon icon) {
+        // 編集ページでは学習開始は行えない
     }
 
     /**

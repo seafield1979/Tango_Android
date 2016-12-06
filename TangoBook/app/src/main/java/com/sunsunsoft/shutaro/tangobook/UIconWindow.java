@@ -13,11 +13,15 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Windows for Icons
+ * Window can have many icons
+ */
 
 public class UIconWindow extends UWindow {
     /**
-     * Windows for Icons
-     * Window can have many icons
+     * Window state
+     * Window behavior is changed by state.
      */
     enum WindowState {
         none,
@@ -66,36 +70,36 @@ public class UIconWindow extends UWindow {
 
     public static final int ICON_W = 200;
     public static final int ICON_H = 200;
-    private static final int MARGIN_D = UMenuBar.MENU_BAR_H;
+    protected static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 
-    private static final int MOVING_TIME = 10;
+    protected static final int MOVING_TIME = 10;
 
     /**
      * Member veriables
      */
-    private WindowType type;
-    private UIconManager mIconManager;
-    private PointF basePos;
-    private WindowDir dir;
+    protected WindowType type;
+    protected UIconManager mIconManager;
+    protected PointF basePos;
+    protected WindowDir dir;
 
     // 他のIconWindow
     // ドラッグで他のWindowにアイコンを移動するのに使用する
-    private UIconWindows windows;
+    protected UIconWindows windows;
 
     // Windowの親のタイプ
-    private TangoParentType parentType;
-    private int parentId;
+    protected TangoParentType parentType;
+    protected int parentId;
 
     // ドラッグ中のアイコン
-    private UIcon dragedIcon;
+    protected UIcon dragedIcon;
 
-    private WindowState state = WindowState.none;
-    private WindowState nextState = WindowState.none;
+    protected WindowState state = WindowState.none;
+    protected WindowState nextState = WindowState.none;
 
-    private boolean isDragMove;
-    private boolean isDropInBox;
-    private boolean isAnimating;
-    private boolean isAppearance = true;       // true:出現中 / false:退出中
+    protected boolean isDragMove;
+    protected boolean isDropInBox;
+    protected boolean isAnimating;
+    protected boolean isAppearance = true;       // true:出現中 / false:退出中
 
     /**
      * Get/Set
@@ -243,30 +247,36 @@ public class UIconWindow extends UWindow {
     /**
      * Constructor
      */
-    private UIconWindow(float x, float y, int width, int height, int color) {
-        super(null, DRAW_PRIORITY, x, y, width, height, color);
-        basePos = new PointF(x,y);
+    protected UIconWindow(View parent, UWindowCallbacks windowCallbacks,
+                        UIconCallbacks iconCallbacks,
+                        boolean isHome, WindowDir dir,
+                        int width, int height, int bgColor) {
+        super(null, DRAW_PRIORITY, 0, 0, width, height, bgColor);
+        basePos = new PointF(0,0);
+        if (isHome) {
+            type = WindowType.Home;
+        } else {
+            type = WindowType.Sub;
+            addCloseIcon();
+        }
+        mIconManager = UIconManager.createInstance(parent, this, iconCallbacks);
+        this.windowCallbacks = windowCallbacks;
+        this.dir = dir;
     }
+
     /**
      * Create class instance
-     * It doesn't allow creating multi Home windows.
+     * It doesn't allow to create multi Home windows.
      * @return
      */
     public static UIconWindow createInstance(View parent, UWindowCallbacks windowCallbacks,
                                              UIconCallbacks iconCallbacks,
                                              boolean isHome, WindowDir dir,
-                                             float x, float y, int width, int height, int bgColor)
+                                             int width, int height, int bgColor)
     {
-        UIconWindow instance = new UIconWindow(0, 0, width, height, bgColor);
-        if (isHome) {
-            instance.type = WindowType.Home;
-        } else {
-            instance.type = WindowType.Sub;
-            instance.addCloseIcon();
-        }
-        instance.mIconManager = UIconManager.createInstance(parent, instance, iconCallbacks);
-        instance.windowCallbacks = windowCallbacks;
-        instance.dir = dir;
+        UIconWindow instance = new UIconWindow(parent, windowCallbacks,
+                iconCallbacks, isHome, dir, width, height, bgColor);
+
 
         // 描画はDrawManagerに任せるのでDrawManagerに登録
         instance.drawList = UDrawManager.getInstance().addDrawable(instance);

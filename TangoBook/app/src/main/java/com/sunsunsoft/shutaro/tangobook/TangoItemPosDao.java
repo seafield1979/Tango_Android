@@ -118,18 +118,33 @@ public class TangoItemPosDao {
      */
     public List<TangoItem> selectItemsByParentType(
             TangoParentType parentType, int parentId, boolean changeable)
+
+    {
+        return selectItemsByParentType(parentType, parentId, null, changeable);
+    }
+
+    // itemTypeで取得するアイテムのタイプを指定できるバージョン
+    // itemTypeがnullなら全てのタイプを取得
+    public List<TangoItem> selectItemsByParentType(
+            TangoParentType parentType, int parentId, TangoItemType itemType, boolean changeable)
     {
         RealmResults<TangoItemPos> _itemPoses;
 
         if (parentType == TangoParentType.Home || parentType == TangoParentType.Trash) {
-            _itemPoses = mRealm.where(TangoItemPos.class)
-                    .equalTo("parentType", parentType.ordinal())
-                    .findAllSorted("pos", Sort.ASCENDING);
+            RealmQuery query = mRealm.where(TangoItemPos.class)
+                    .equalTo("parentType", parentType.ordinal());
+            if (itemType != null) {
+                query.equalTo("itemType", itemType.ordinal());
+            }
+            _itemPoses = query.findAllSorted("pos", Sort.ASCENDING);
         } else {
-            _itemPoses = mRealm.where(TangoItemPos.class)
+            RealmQuery query = mRealm.where(TangoItemPos.class)
                     .equalTo("parentType", parentType.ordinal())
-                    .equalTo("parentId", parentId)
-                    .findAllSorted("pos", Sort.ASCENDING);
+                    .equalTo("parentId", parentId);
+            if (itemType != null) {
+                query.equalTo("itemType", itemType.ordinal());
+            }
+            _itemPoses = query.findAllSorted("pos", Sort.ASCENDING);
         }
         if (_itemPoses == null) return null;
 
