@@ -193,7 +193,7 @@ public class TangoCardDao {
         card.setHintAB("hintAB:" + randVal);
         card.setHintBA("hintBA:" + randVal);
         card.setComment("comment:" + randVal);
-        card.setStar(true);
+        card.setStar(false);
         byte[] history = new byte[3];
         for (int i=0; i<history.length; i++) {
             history[i] = 1;
@@ -209,6 +209,9 @@ public class TangoCardDao {
         mRealm.commitTransaction();
     }
 
+    /**
+     * Update:
+     */
     /**
      * 要素を更新
      */
@@ -229,8 +232,8 @@ public class TangoCardDao {
 
         TangoCard newCard =
                 mRealm.where(TangoCard.class)
-                        .equalTo("id", card.getId()).
-                        findFirst();
+                        .equalTo("id", card.getId())
+                        .findFirst();
 
         mRealm.beginTransaction();
 
@@ -252,12 +255,9 @@ public class TangoCardDao {
      * @param wordB  更新するB
      */
     public void updateByIds(Integer[] ids, String wordA, String wordB) {
-        mRealm.beginTransaction();
 
-        // Build the query looking at all users:
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
 
-        // Add query conditions:
         boolean isFirst = true;
         for (int id : ids) {
             if (isFirst) {
@@ -267,17 +267,38 @@ public class TangoCardDao {
                 query.or().equalTo("id", id);
             }
         }
-        // Execute the query:
         RealmResults<TangoCard> results = query.findAll();
 
+        mRealm.beginTransaction();
         for (TangoCard card : results) {
             card.setWordA(wordA);
             card.setWordB(wordB);
         }
-
         mRealm.commitTransaction();
     }
 
+    /**
+     * スターのON/OFFを切り替える
+     * @param card
+     * @return 切り替え後のStarの値
+     */
+    public boolean toggleStar(TangoCard card) {
+        TangoCard updateCard =
+                mRealm.where(TangoCard.class)
+                        .equalTo("id", card.getId())
+                        .findFirst();
+
+        boolean newValue = updateCard.getStar() ? false : true;
+        mRealm.beginTransaction();
+        updateCard.setStar(newValue);
+        mRealm.commitTransaction();
+
+        return newValue;
+    }
+
+    /**
+     * Delete:
+     */
     /**
      * IDのリストに一致する項目を全て削除する
      */

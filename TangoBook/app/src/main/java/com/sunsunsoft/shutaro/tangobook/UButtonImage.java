@@ -8,8 +8,13 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import java.util.LinkedList;
+
 /**
  * Created by shutaro on 2016/11/17.
+ *
+ * 画像を表示するボタン
+ * 画像の下にテキストを表示することも可能
  */
 
 public class UButtonImage extends UButton {
@@ -21,11 +26,14 @@ public class UButtonImage extends UButton {
     /**
      * Member Variables
      */
-    protected Bitmap image;             // 画像
+    protected LinkedList<Bitmap> images = new LinkedList<>();    // 画像
     protected Bitmap pressedImage;      // タッチ時の画像
     protected String title;             // 画像の下に表示するテキスト
     protected int titleSize;
     protected int titleColor;
+    protected int stateId;          // 現在の状態
+    protected int stateMax;         // 状態の最大値 addState で増える
+
 
     /**
      * Get/Set
@@ -41,8 +49,10 @@ public class UButtonImage extends UButton {
                         Bitmap image, Bitmap pressedImage )
     {
         super(callbacks, UButtonType.BGColor, id, priority, x, y, width, height, 0);
-        this.image = image;
+        this.images.add(image);
         this.pressedImage = pressedImage;
+        stateId = 0;
+        stateMax = 1;
     }
 
     // 画像ボタン
@@ -73,6 +83,37 @@ public class UButtonImage extends UButton {
         this.titleColor = titleColor;
     }
 
+    /**
+     * 状態を追加する
+     * @param image 追加した状態の場合に表示する画像
+     */
+    public void addState(Bitmap image) {
+        images.add(image);
+        stateMax++;
+    }
+
+    /**
+     * 次の状態にすすむ
+     */
+    public int setNextState() {
+        if (stateMax >= 2) {
+            stateId = (stateId + 1) % stateMax;
+        }
+        return stateId;
+    }
+
+    public void setState(int state) {
+        if (stateMax > state) {
+            stateId = state;
+        }
+    }
+
+    private int getNextStateId() {
+        if (stateMax >= 2) {
+            return (stateId + 1) % stateMax;
+        }
+        return 0;
+    }
 
     /**
      * UDrawable
@@ -92,7 +133,7 @@ public class UButtonImage extends UButton {
             _pos.y += offset.y;
         }
 
-        _image = image;
+        _image = images.get(stateId);
         Rect _rect = new Rect((int)_pos.x, (int)_pos.y,
                         (int)_pos.x + size.width,(int)_pos.y + size.height);
         if (isPressed) {

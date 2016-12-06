@@ -28,6 +28,7 @@ public class UTextView extends UDrawable {
      */
     protected String text;
     protected UDraw.UAlignment alignment;
+    protected boolean marginH;
     protected int textSize;
     protected int bgColor;
     protected int canvasW;
@@ -55,12 +56,16 @@ public class UTextView extends UDrawable {
         updateRect();
     }
 
+    public void setMarginH(boolean marginH) {
+        this.marginH = marginH;
+    }
+
     /**
      * Constructor
      */
     public UTextView(String text, int textSize, int priority,
                      UDraw.UAlignment alignment, int canvasW,
-                     boolean multiLine, boolean isDrawBG,
+                     boolean multiLine, boolean isDrawBG, boolean marginH,
                      float x, float y,
                      int width,
                      int color, int bgColor)
@@ -69,6 +74,7 @@ public class UTextView extends UDrawable {
 
         this.text = text;
         this.alignment = alignment;
+        this.marginH = marginH;
         this.multiLine = multiLine;
         this.isDrawBG = isDrawBG;
         this.textSize = textSize;
@@ -92,7 +98,7 @@ public class UTextView extends UDrawable {
                                            int color, int bgColor)
     {
         UTextView instance = new UTextView(text, textSize, priority, alignment, canvasW,
-                multiLine, isDrawBG,
+                multiLine, isDrawBG, true,
                 x, y, width, color, bgColor);
 
         return instance;
@@ -143,14 +149,14 @@ public class UTextView extends UDrawable {
                     break;
                 case CenterY:
                     bgPos.y -= size.height / 2;
-                    _pos.x += MARGIN_H;
+                    if (marginH) _pos.x += MARGIN_H;
                     break;
                 case Center:
                     bgPos.x -= size.width / 2;
                     bgPos.y -= size.height / 2;
                     break;
                 case None:
-                    _pos.x += MARGIN_H;
+                    if (marginH) _pos.x += MARGIN_H;
                     _pos.y += MARGIN_V;
                     break;
             }

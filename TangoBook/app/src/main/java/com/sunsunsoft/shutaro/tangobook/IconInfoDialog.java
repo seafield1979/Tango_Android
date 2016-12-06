@@ -23,7 +23,7 @@ enum ActionIcons{
     Edit(102, R.drawable.edit, "編集"),
     MoveToTrash(103, R.drawable.trash, "ゴミ箱"),
     Copy(104, R.drawable.copy, "コピー"),
-    Favorite(105, R.drawable.favorites, null),
+    Favorite(105, R.drawable.favorites, "お気に入り"),
     CleanUp(110, R.drawable.trash_empty, "空にする"),
     Return(201, R.drawable.return1, "元に戻す"),
     Delete(202, R.drawable.trash, "削除"),
@@ -184,8 +184,6 @@ abstract public class IconInfoDialog extends UWindow{
     /**
      * Constructor
      */
-
-
     public IconInfoDialog(View parentView,
                           IconInfoDialogCallbacks iconInfoCallbacks,
                           UWindowCallbacks windowCallbacks,

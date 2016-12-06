@@ -111,7 +111,7 @@ public class TangoCard extends RealmObject implements TangoItem{
         card.hintAB = "HB " + randVal;
         card.hintBA = "HA " + randVal;
         card.comment = "C " + randVal;
-        card.star = true;
+        card.star = false;
         card.history = new byte[3];
         for (int i = 0; i < card.history.length; i++) {
             card.history[i] = 1;

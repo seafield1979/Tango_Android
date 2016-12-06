@@ -17,7 +17,15 @@ import java.util.List;
  * カードの情報(WordA,WordB)とアクションアイコン(ActionIcons)を表示する
  */
 public class IconInfoDialogCard extends IconInfoDialog {
-
+    /**
+     * Enums
+     */
+    enum ButtonId{
+        Edit,
+        Copy,
+        MoveToTrash,
+        Favorite
+    }
 
     /**
      * Consts
@@ -25,7 +33,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
     private static final String TAG = "IconInfoDialogCard";
     private static final int BG_COLOR = Color.LTGRAY;
     private static final int DLG_MARGIN = 100;
-    private static final int TOP_ITEM_Y = 100;
+    private static final int TOP_ITEM_Y = 50;
     private static final int TEXT_VIEW_W = 300;
     private static final int TEXT_VIEW_H = 100;
     private static final int ICON_W = 120;
@@ -42,11 +50,11 @@ public class IconInfoDialogCard extends IconInfoDialog {
      */
     private View mParentView;
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
+    private UTextView textTitle, textWordATitle, textWordBTitle;
     private UTextView textWordA;
     private UTextView textWordB;
     private TangoCard mCard;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
-    private boolean favoriteFlag;
 
     /**
      * Get/Set
@@ -110,6 +118,9 @@ public class IconInfoDialogCard extends IconInfoDialog {
         UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
                 bgColor, FRAME_WIDTH, FRAME_COLOR);
 
+        textTitle.draw(canvas, paint, pos);
+        textWordATitle.draw(canvas, paint, pos);
+        textWordBTitle.draw(canvas, paint, pos);
         textWordA.draw(canvas, paint, pos);
         textWordB.draw(canvas, paint, pos);
         // Buttons
@@ -131,16 +142,32 @@ public class IconInfoDialogCard extends IconInfoDialog {
         int width = ICON_W * icons.size() +
                 ICON_MARGIN_H * (icons.size() + 1);
 
+        // 種別
+        textTitle = UTextView.createInstance( "単語カード", TEXT_SIZE, 0,
+                UDraw.UAlignment.CenterX, canvas.getWidth(), false, false,
+                width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+        y += TEXT_SIZE + 30;
+
         // アクションボタン
         int x = ICON_MARGIN_H;
         for (ActionIcons icon : icons) {
             Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(),
                     icon.getImageId());
-
             UButtonImage imageButton = UButtonImage.createButton( this,
                             icon.ordinal(), 0,
                             x, y,
                             ICON_W, ICON_W, bmp, null);
+
+            // お気に入りだけは２つ画像を登録する
+            if (icon == ActionIcons.Favorite) {
+                bmp = BitmapFactory.decodeResource(mParentView.getResources(),
+                        R.drawable.favorites2);
+                imageButton.addState(bmp);
+                if (mCard.getStar()) {
+                    imageButton.setState(mCard.getStar() ? 1 : 0);
+                }
+            }
+
             // アイコンの下に表示するテキストを設定
             imageButton.setTitle(icon.getTitle(), 30, Color.BLACK);
 
@@ -151,17 +178,27 @@ public class IconInfoDialogCard extends IconInfoDialog {
         }
         y += ICON_W + MARGIN_V + 50;
 
-        // WordA
+        // WordA (Title & 本文)
+        textWordATitle = UTextView.createInstance( "英", TEXT_SIZE, 0,
+                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                MARGIN_H, y, 100, TEXT_COLOR, Color.argb(1,0,0,0));
+        textWordATitle.setMarginH(false);
+
         textWordA = UTextView.createInstance( mCard.getWordA(), TEXT_SIZE, 0,
                 UDraw.UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+                MARGIN_H + 100, y, width - (MARGIN_H * 2 + 100), TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;
 
         // WordB
+        textWordBTitle = UTextView.createInstance( "日", TEXT_SIZE, 0,
+                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                MARGIN_H, y, 100, TEXT_COLOR, Color.argb(1,0,0,0));
+        textWordBTitle.setMarginH(false);
+
         textWordB = UTextView.createInstance( mCard.getWordB(), TEXT_SIZE, 0,
                 UDraw.UAlignment.None, TEXT_VIEW_W, false, true,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+                MARGIN_H + 100, y, width - (MARGIN_H * 2 + 100), TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V + 50;
 
@@ -221,8 +258,14 @@ public class IconInfoDialogCard extends IconInfoDialog {
             case Copy:
                 mIconInfoCallbacks.IconInfoCopyIcon(mIcon);
                 break;
-            case Favorite:
+            case Favorite: {
+                TangoCard card = (TangoCard)mIcon.getTangoItem();
+                boolean star = RealmManager.getCardDao().toggleStar(card);
+                card.setStar(star);
 
+                // 表示アイコンを更新
+                imageButtons.get(ButtonId.Favorite.ordinal()).setState(star ? 1 : 0);
+            }
                 break;
         }
         return false;
