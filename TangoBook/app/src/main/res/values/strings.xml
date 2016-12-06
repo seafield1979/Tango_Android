@@ -29,6 +29,23 @@
     <string name="copy">コピー</string>
     <string name="trash">ゴミ箱</string>
     <string name="favorite">お気に入り</string>
+    <string name="learned">覚えた</string>
     <string name="return_to_home">元に戻す</string>
+    <string name="last_studied_date">最終学習日時</string>
+    <string name="last">最終学習日時</string>
+    <string name="start">開始</string>
+    <string name="cancel">キャンセル</string>
+
+    <string name="study_type">出題方法</string>
+    <string name="e_to_j">英語->日本語</string>
+    <string name="j_to_e">日本語->英語</string>
+
+    <string name="order_type">出題順</string>
+    <string name="order_normal">通常</string>
+    <string name="order_random">ランダム</string>
+
+    <string name="study_pattern">学習単語</string>
+    <string name="all">すべて</string>
+    <string name="not_learned">未収得</string>
 
 </resources>

@@ -63,15 +63,17 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
      */
     public static final String TAG = "TopView";
 
+    // 開始ダイアログ(PreStudyWindow)でボタンが押されたときに使用する
+    public static final int ButtonIdStartStudy = 2001;
+    public static final int ButtonIdCancel = 2002;
+
     /**
      * Member varialbes
      */
     // Windows
     private UWindow[] mWindows = new UWindow[WindowType.values().length];
-    // UIconWindow
     private UIconWindows mIconWinManager;
-
-    // MessageWindow
+    private PreStudyWindow mPreStudyWindow;
     private ULogWindow mLogWin;
 
     // Dialog
@@ -136,6 +138,9 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         // アイコンの登録はMainとSubのWindowを作成後に行う必要がある
         mainWindow.init();
         subWindow.init();
+
+        // PreStudyWindow 学習開始前に設定を行うウィンドウ
+        mPreStudyWindow = new PreStudyWindow(mParentView, this, this);
 
         // UMenuBar
         mMenuBar = MenuBarStudySelect.createInstance(mParentView, this, width, height,
@@ -352,74 +357,46 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
      */
     public boolean UButtonClick(int id) {
         switch (id) {
+            case ButtonIdStartStudy:
+                // 学習開始
+                UPageViewManager.getInstance().stackPage(PageView.TangoStudy);
+                break;
+            case ButtonIdCancel:
+                mPreStudyWindow.setShow(false);
+                break;
             case UDialogWindow.CloseDialogId:
                 mDialog.closeDialog();
                 break;
         }
         return false;
     }
-    public boolean UButtonLongClick(int id) {
-        return false;
-    }
-
-    /**
-     * EditCardDialogCallbacks
-     */
-    public void submitEditCard(Bundle args) {
-        if (args == null) return;
-
-        int mode = args.getInt(EditCardDialogFragment.KEY_MODE, EditCardDialogMode.Create.ordinal
-                ());
-        if (mode == EditCardDialogMode.Create.ordinal()) {
-            // 新たにアイコンを追加する
-
-            UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-            IconCard iconCard = (IconCard)(iconManager
-                    .addNewIcon(IconType.Card, AddPos.Tail));
-            if (iconCard == null) {
-                return;
-            }
-            TangoCard card = (TangoCard)iconCard.getTangoItem();
-
-            // 戻り値を取得
-            card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
-            card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
-            card.setHintAB(args.getString(EditCardDialogFragment.KEY_HINT_AB, ""));
-            card.setHintBA(args.getString(EditCardDialogFragment.KEY_HINT_BA, ""));
-            card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
-
-            iconCard.updateTitle();
-
-            // DB更新
-            RealmManager.getCardDao().updateOne(card);
-
-            // アイコン整列
-            mIconWinManager.getMainWindow().sortIcons(false);
-        } else {
-            // 既存のアイコンを更新する
-
-            TangoCard card = (TangoCard)editingIcon.getTangoItem();
-            card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
-            card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
-            card.setHintAB(args.getString(EditCardDialogFragment.KEY_HINT_AB, ""));
-            card.setHintBA(args.getString(EditCardDialogFragment.KEY_HINT_BA, ""));
-            card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
-
-            editingIcon.updateTitle();
-            // DB更新
-            RealmManager.getCardDao().updateOne(card);
-        }
-
-        mParentView.invalidate();
-    }
-
-    public void cancelEditCard() {
-
-    }
 
     /**
      * IconInfoDialogCallbacks
      */
+    /**
+     * 学習を開始する
+     */
+    public void IconInfoStudy(UIcon icon) {
+        mIconInfoDlg.closeWindow();
+        mIconInfoDlg = null;
+
+        if (icon instanceof IconBook) {
+            TangoBook book = (TangoBook)icon.getTangoItem();
+            mPreStudyWindow.showWithBook(book);
+        }
+    }
+
+    /**
+     * アイコンを開く
+     */
+    public void IconInfoOpenIcon(UIcon icon) {
+        openIcon(icon);
+        mIconInfoDlg.closeWindow();
+        mIconInfoDlg = null;
+    }
+
+
     public void IconInfoEditIcon(UIcon icon) {
     }
 
@@ -435,21 +412,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     public void IconInfoThrowIcon(UIcon icon) {
     }
 
-    /**
-     * アイコンを開く
-     */
-    public void IconInfoOpenIcon(UIcon icon) {
-        openIcon(icon);
-        mIconInfoDlg.closeWindow();
-        mIconInfoDlg = null;
-    }
-
-    /**
-     * 学習を開始する
-     */
-    public void IconInfoStudy(UIcon icon) {
-        UPageViewManager.getInstance().stackPage(PageView.TangoStudy);
-    }
 
     /**
      * アイコン配下をクリーンアップする

@@ -12,19 +12,12 @@ import java.util.List;
 /**
  * アイコン情報ダイアログのアクションアイコン
  */
-enum IconInfoAction {
-    EditCard,
-    Trash,
-    CopyCard,
-    Favorite
-}
-
 enum ActionIcons{
     Open(101, R.drawable.open, R.string.open),
     Edit(102, R.drawable.edit, R.string.edit),
     MoveToTrash(103, R.drawable.trash, R.string.trash),
     Copy(104, R.drawable.copy, R.string.copy),
-    Favorite(105, R.drawable.favorites, R.string.favorite),
+    Favorite(105, R.drawable.favorites, R.string.learned),
     CleanUp(110, R.drawable.trash_empty, R.string.clean_up),
     Return(201, R.drawable.return1, R.string.return_to_home),
     Delete(202, R.drawable.trash, R.string.delete),
