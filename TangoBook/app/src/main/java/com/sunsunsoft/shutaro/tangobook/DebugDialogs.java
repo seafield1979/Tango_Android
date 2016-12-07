@@ -217,7 +217,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
     /**
      * UButtonCallbacks
      */
-    public boolean UButtonClick(int id) {
+    public boolean UButtonClicked(int id, boolean pressedOn) {
 
         switch (DialogButtons.toEnum(id)) {
             // Dao

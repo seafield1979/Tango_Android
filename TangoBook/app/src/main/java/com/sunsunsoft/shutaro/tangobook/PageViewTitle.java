@@ -125,7 +125,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
     /**
      * UButtonCallbacks
      */
-    public boolean UButtonClick(int id) {
+    public boolean UButtonClicked(int id, boolean pressedOn) {
         ButtonId buttonId = ButtonId.toEnum(id);
         switch(buttonId) {
             case Edit:

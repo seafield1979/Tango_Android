@@ -4,8 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
-import android.graphics.RectF;
 
 /**
  * 閉じるボタン(というかアイコン)
@@ -123,7 +121,7 @@ public class UButtonClose extends UButton {
             case LongClick:
                 isPressed = false;
                 if (contains((int)vt.touchX(-offset.x), (int)vt.touchY(-offset.y))) {
-                    buttonCallback.UButtonClick(id);
+                    buttonCallback.UButtonClicked(id, false);
                     done = true;
                 }
                 break;

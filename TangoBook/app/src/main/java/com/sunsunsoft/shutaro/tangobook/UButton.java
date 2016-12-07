@@ -7,9 +7,8 @@ import android.graphics.RectF;
 import android.util.Log;
 
 interface UButtonCallbacks {
-    boolean UButtonClick(int id);
+    boolean UButtonClicked(int id, boolean pressedOn);
 }
-
 
 /**
  * クリックでイベントが発生するボタン
@@ -18,18 +17,21 @@ interface UButtonCallbacks {
  * ボタンが押されたときの動作はtypeで指定できる
  *   BGColor ボタンの背景色が変わる
  *   Press   ボタンがへこむ
+ *   Press2  ボタンがへこむ。へこんだ状態が維持される
  */
 enum UButtonType {
     BGColor,    // color changing
-    Press       // pressed down
+    Press,      // pressed down
+    Press2,     // pressed down, On/Off swiching
+    Press3,     // pressed down, Off -> On only, to change Off call setPressedOn(false)
 }
 
-public class UButton extends UDrawable {
+abstract public class UButton extends UDrawable {
     /**
      * Consts
      */
     public static final String TAG = "UButton";
-    protected static final int PRESS_Y = 12;
+    protected static final int PRESS_Y = 16;
     protected static final int BUTTON_RADIUS = 16;
 
     /**
@@ -40,8 +42,7 @@ public class UButton extends UDrawable {
     protected UButtonCallbacks buttonCallback;
     protected boolean isPressed;
     protected int pressedColor;
-
-
+    protected boolean pressedOn;        // Press2タイプの時のOn状態
 
     /**
      * Get/Set
@@ -50,6 +51,13 @@ public class UButton extends UDrawable {
         return id;
     }
 
+    public boolean isPressedOn() {
+        return pressedOn;
+    }
+
+    public void setPressedOn(boolean pressedOn) {
+        this.pressedOn = pressedOn;
+    }
 
     /**
      * Constructor
@@ -87,45 +95,7 @@ public class UButton extends UDrawable {
      * @param paint
      * @param offset 独自の座標系を持つオブジェクトをスクリーン座標系に変換するためのオフセット値
      */
-    public void draw(Canvas canvas, Paint paint, PointF offset) {
-        // 内部を塗りつぶし
-        paint.setStyle(Paint.Style.FILL);
-
-        // 色
-        // 押されていたら明るくする
-        int _color = color;
-
-        paint.setColor(_color);
-
-        PointF _pos = new PointF(pos.x, pos.y);
-        if (offset != null) {
-            _pos.x += offset.x;
-            _pos.y += offset.y;
-        }
-
-        int _height = size.height;
-
-        if (type == UButtonType.Press) {
-            // 押したら凹むボタン
-            if (isPressed) {
-                _pos.y += PRESS_Y;
-            } else {
-                // ボタンの影用に下に矩形を描画
-                UDraw.drawRoundRectFill(canvas, paint,
-                        new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + size.height), BUTTON_RADIUS, pressedColor, 0, 0);
-            }
-            _height -= PRESS_Y;
-
-        } else {
-            // 押したら色が変わるボタン
-            if (isPressed) {
-                _color = pressedColor;
-            }
-        }
-        UDraw.drawRoundRectFill(canvas, paint,
-                new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + _height),
-                BUTTON_RADIUS, _color, 0, 0);
-    }
+    abstract void draw(Canvas canvas, Paint paint, PointF offset);
 
     /**
      * Touchable Interface
@@ -165,8 +135,19 @@ public class UButton extends UDrawable {
             case LongClick:
                 isPressed = false;
                 if (rect.contains((int)vt.touchX(-offset.x), (int)vt.touchY(-offset.y))) {
-                    click();
-                    done = true;
+                    if (type == UButtonType.Press3) {
+                        // Off -> On に切り替わる一回目だけイベント発生
+                        if (pressedOn == false) {
+                            click();
+                            pressedOn = true;
+                        }
+                    } else {
+                        click();
+                        done = true;
+                        if (type == UButtonType.Press2) {
+                            pressedOn = !pressedOn;
+                        }
+                    }
                 }
                 break;
             case MoveEnd:
@@ -179,8 +160,7 @@ public class UButton extends UDrawable {
     public void click() {
         Log.v(TAG, "click");
         if (buttonCallback != null) {
-            buttonCallback.UButtonClick(id);
+            buttonCallback.UButtonClicked(id, pressedOn);
         }
     }
-
 }

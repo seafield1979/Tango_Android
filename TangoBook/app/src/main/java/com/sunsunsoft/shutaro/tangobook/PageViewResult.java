@@ -69,7 +69,7 @@ public class PageViewResult extends UPageView implements UButtonCallbacks{
     /**
      * UButtonCallbacks
      */
-    public boolean UButtonClick(int id) {
+    public boolean UButtonClicked(int id, boolean pressedOn) {
 
         return false;
     }

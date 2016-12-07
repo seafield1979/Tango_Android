@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
             // Realmの初期化
             RealmManager.initRealm(getApplicationContext());
+
+            // SharedPreferencesの初期化
+            MySharedPref.init(this);
         }
     }
 

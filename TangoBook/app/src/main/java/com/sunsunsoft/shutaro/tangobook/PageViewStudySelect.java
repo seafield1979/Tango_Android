@@ -78,7 +78,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
 
     // Dialog
     private DebugDialogs debugDialogs;
-    private UDialogWindow mDialog;
 
     // メニューバー
     private MenuBarStudySelect mMenuBar;
@@ -87,9 +86,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     private ViewTouch vt = new ViewTouch(this);
 
     private IconInfoDialog mIconInfoDlg;
-
-    // Fragmentで内容を編集中のアイコン
-    private UIcon editingIcon;
 
 
     /**
@@ -349,13 +345,16 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         if (mIconInfoDlg == window) {
             mIconInfoDlg.closeWindow();
             mIconInfoDlg = null;
+        } else if (mPreStudyWindow == window) {
+            mPreStudyWindow.setShow(false);
         }
+
     }
 
     /**
      * UButtonCallbacks
      */
-    public boolean UButtonClick(int id) {
+    public boolean UButtonClicked(int id, boolean pressedOn) {
         switch (id) {
             case ButtonIdStartStudy:
                 // 学習開始
@@ -363,9 +362,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
                 break;
             case ButtonIdCancel:
                 mPreStudyWindow.setShow(false);
-                break;
-            case UDialogWindow.CloseDialogId:
-                mDialog.closeDialog();
                 break;
         }
         return false;

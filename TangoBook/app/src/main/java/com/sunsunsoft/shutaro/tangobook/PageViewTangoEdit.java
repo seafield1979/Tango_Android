@@ -431,7 +431,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     /**
      * UButtonCallbacks
      */
-    public boolean UButtonClick(int id) {
+    public boolean UButtonClicked(int id, boolean pressedOn) {
         switch (id) {
             case CleanupDialogButtonOK:
                 // ゴミ箱を空にする

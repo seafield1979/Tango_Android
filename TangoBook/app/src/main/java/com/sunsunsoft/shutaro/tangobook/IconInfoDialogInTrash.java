@@ -208,8 +208,8 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
     /**
      * UButtonCallbacks
      */
-    public boolean UButtonClick(int id) {
-        if (super.UButtonClick(id)) {
+    public boolean UButtonClicked(int id, boolean pressedOn) {
+        if (super.UButtonClicked(id, pressedOn)) {
             return true;
         }
 

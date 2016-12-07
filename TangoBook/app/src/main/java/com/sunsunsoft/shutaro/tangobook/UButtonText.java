@@ -6,10 +6,10 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+
 /**
  * テキストを表示するボタン
  */
-
 public class UButtonText extends UButton {
 
     /**
@@ -33,10 +33,6 @@ public class UButtonText extends UButton {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public int getTextColor() {
-        return textColor;
     }
 
     public void setTextColor(int textColor) {
@@ -84,22 +80,26 @@ public class UButtonText extends UButton {
 
         int _height = size.height;
 
-        if (type == UButtonType.Press) {
-            // 押したら凹むボタン
-            if (isPressed) {
-                _pos.y += PRESS_Y;
-            } else {
-                // ボタンの影用に下に矩形を描画
-                UDraw.drawRoundRectFill(canvas, paint,
-                        new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + size.height), BUTTON_RADIUS, pressedColor, 0, 0);
-            }
-            _height -= PRESS_Y;
-
-        } else {
+        if (type == UButtonType.BGColor) {
             // 押したら色が変わるボタン
             if (isPressed) {
                 _color = pressedColor;
             }
+        }
+        else {
+            // 押したら凹むボタン
+            if (isPressed || pressedOn) {
+                _pos.y += PRESS_Y;
+            } else {
+                // ボタンの影用に下に矩形を描画
+                int height = PRESS_Y + 20;
+                UDraw.drawRoundRectFill(canvas, paint,
+                        new RectF(_pos.x, _pos.y + size.height - height,
+                                _pos.x + size.width, _pos.y + size.height),
+                        BUTTON_RADIUS, pressedColor, 0, 0);
+            }
+            _height -= PRESS_Y;
+
         }
         UDraw.drawRoundRectFill(canvas, paint,
                 new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + _height),

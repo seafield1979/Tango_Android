@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
@@ -47,6 +46,7 @@ public class PreStudyWindow extends UWindow {
 
     private static final int BUTTON_W = 400;
     private static final int BUTTON_H = 120;
+    private static final int BUTTON2_H = 200;
 
     private static final int BG_COLOR = Color.WHITE;
     private static final int FRAME_COLOR = Color.rgb(120,120,120);
@@ -60,6 +60,11 @@ public class PreStudyWindow extends UWindow {
     private static final int ButtonIdOption3_1 = 105;
     private static final int ButtonIdOption3_2 = 106;
 
+    // option key
+    private static final String Option1Key = "StudyOption1";
+    private static final String Option2Key = "StudyOption2";
+    private static final String Option3Key = "StudyOption3";
+
     /**
      * Member Variables
      */
@@ -69,6 +74,9 @@ public class PreStudyWindow extends UWindow {
     protected boolean isUpdate = true;
     private UTextView textTitle, textCount, textLastStudied;
     private UTextView textOption1, textOption2, textOption3;
+
+    // options
+    protected boolean option1, option2, option3;
 
     // buttons
     private UButton[] buttons = new UButton[ButtonId.values().length];
@@ -93,6 +101,13 @@ public class PreStudyWindow extends UWindow {
         mContext = parentView.getContext();
         mButtonCallbacks = buttonCallbacks;
         isShow = false;     // 初期状態は非表示
+
+        addCloseIcon(CloseIconPos.RightTop);
+
+        // get options
+        option1 = MySharedPref.getInstance().readBoolean(Option1Key);
+        option2 = MySharedPref.getInstance().readBoolean(Option2Key);
+        option3 = MySharedPref.getInstance().readBoolean(Option3Key);
     }
 
     /**
@@ -196,22 +211,26 @@ public class PreStudyWindow extends UWindow {
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE + MARGIN_V + 40;
 
+
+        /**
+         * Buttons
+         */
         // 開始ボタン
-        buttons[ButtonId.Start.ordinal()] = new UButtonText(mButtonCallbacks, UButtonType.Press,
+        buttons[ButtonId.Start.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudySelect.ButtonIdStartStudy,
                 0, mContext.getString(R.string.start), MARGIN_H, y,
-                width - MARGIN_H * 2, BUTTON_H,
+                BUTTON_W, BUTTON2_H,
                 TEXT_COLOR, Color.rgb(100,200,100));
-        y += BUTTON_H + MARGIN_V;
 
         // キャンセルボタン
-        buttons[ButtonId.Cancel.ordinal()] = new UButtonText(mButtonCallbacks, UButtonType.Press,
+        buttons[ButtonId.Cancel.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudySelect.ButtonIdCancel,
                 0, mContext.getString(R.string.cancel),
-                MARGIN_H, y,
-                width - MARGIN_H * 2, BUTTON_H,
-                TEXT_COLOR, Color.rgb(200,100,100));
-        y += BUTTON_H + MARGIN_V + 30;
+                MARGIN_H + BUTTON_W + MARGIN_H, y,
+                BUTTON_W, BUTTON2_H,
+                Color.WHITE, Color.rgb(200,100,100));
+
+        y += BUTTON2_H + MARGIN_V + 30;
 
         // Option1 出題方法
         // タイトル
@@ -222,13 +241,13 @@ public class PreStudyWindow extends UWindow {
         y += TEXT_SIZE_2 + 20;
 
         // 英語->日本語
-        buttons[ButtonId.Option1_1.ordinal()] = new UButtonText(this, UButtonType.Press,
+        buttons[ButtonId.Option1_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_1,
                 0, mContext.getString(R.string.e_to_j), MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
         // 日本語->英語
-        buttons[ButtonId.Option1_2.ordinal()] = new UButtonText(this, UButtonType.Press,
+        buttons[ButtonId.Option1_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_2,
                 0, mContext.getString(R.string.j_to_e),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
@@ -245,17 +264,17 @@ public class PreStudyWindow extends UWindow {
         y += TEXT_SIZE_2 + 20;
 
         // 順番通り
-        buttons[ButtonId.Option2_1.ordinal()] = new UButtonText(this, UButtonType.Press,
+        buttons[ButtonId.Option2_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption2_1,
                 0, mContext.getString(R.string.order_normal), MARGIN_H, y, BUTTON_W, BUTTON_H,
-                Color.WHITE, Color.BLUE);
+                TEXT_COLOR, Color.LTGRAY);
 
         // ランダム
-        buttons[ButtonId.Option2_2.ordinal()] = new UButtonText(this, UButtonType.Press,
+        buttons[ButtonId.Option2_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption2_2,
                 0, mContext.getString(R.string.order_random),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                Color.WHITE, Color.BLUE);
+                TEXT_COLOR, Color.LTGRAY);
 
         y += BUTTON_H + MARGIN_V;
 
@@ -269,22 +288,33 @@ public class PreStudyWindow extends UWindow {
         y += TEXT_SIZE_2 + 20;
 
         // すべて
-        buttons[ButtonId.Option3_1.ordinal()] = new UButtonText(this, UButtonType.Press,
+        buttons[ButtonId.Option3_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_1,
                 0, mContext.getString(R.string.all), MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_COLOR, Color.YELLOW);
+                TEXT_COLOR, Color.LTGRAY);
 
         // 未収得
-        buttons[ButtonId.Option3_2.ordinal()] = new UButtonText(this, UButtonType.Press,
+        buttons[ButtonId.Option3_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_2,
                 0, mContext.getString(R.string.not_learned),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_COLOR, Color.YELLOW);
+                TEXT_COLOR, Color.LTGRAY);
 
         y += BUTTON_H + MARGIN_V;
 
         size.width = width;
         size.height = y;
+
+        // オプションボタンの初期状態
+        ButtonId id;
+        id = (option1) ? ButtonId.Option1_2 : ButtonId.Option1_1;
+        buttons[id.ordinal()].setPressedOn(true);
+
+        id = (option2) ? ButtonId.Option2_2 : ButtonId.Option2_1;
+        buttons[id.ordinal()].setPressedOn(true);
+
+        id = (option3) ? ButtonId.Option3_2 : ButtonId.Option3_1;
+        buttons[id.ordinal()].setPressedOn(true);
 
         // センタリング
         pos.x = (mParentView.getWidth() - size.width) / 2;
@@ -301,21 +331,50 @@ public class PreStudyWindow extends UWindow {
     /**
      * UButtonCallbacks
      */
-    public boolean UButtonClick(int id) {
+    public boolean UButtonClicked(int id, boolean pressedOn) {
         switch (id) {
-            case ButtonIdOption1_1:
+            case PageViewStudySelect.ButtonIdStartStudy:
+                // オプションを保存
+                MySharedPref.getInstance().writeBoolean(Option1Key, option1);
+                MySharedPref.getInstance().writeBoolean(Option2Key, option2);
+                MySharedPref.getInstance().writeBoolean(Option3Key, option3);
 
+                if (mButtonCallbacks != null) {
+                    mButtonCallbacks.UButtonClicked(id, pressedOn);
+                }
+                break;
+            case PageViewStudySelect.ButtonIdCancel:
+                if (mButtonCallbacks != null) {
+                    mButtonCallbacks.UButtonClicked(id, pressedOn);
+                }
+                break;
+            case ButtonIdOption1_1:
+                buttons[ButtonId.Option1_2.ordinal()].setPressedOn(false);
+                option1 = false;
                 break;
             case ButtonIdOption1_2:
+                buttons[ButtonId.Option1_1.ordinal()].setPressedOn(false);
+                option1 = true;
                 break;
             case ButtonIdOption2_1:
+                buttons[ButtonId.Option2_2.ordinal()].setPressedOn(false);
+                option2 = false;
                 break;
             case ButtonIdOption2_2:
+                buttons[ButtonId.Option2_1.ordinal()].setPressedOn(false);
+                option2 = true;
                 break;
             case ButtonIdOption3_1:
+                buttons[ButtonId.Option3_2.ordinal()].setPressedOn(false);
+                option3 = false;
                 break;
             case ButtonIdOption3_2:
+                buttons[ButtonId.Option3_1.ordinal()].setPressedOn(false);
+                option3 = true;
                 break;
+        }
+        if (super.UButtonClicked(id, pressedOn)) {
+            return true;
         }
         return false;
     }

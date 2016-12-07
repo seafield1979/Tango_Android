@@ -234,7 +234,7 @@ public class ULogWindow extends UWindow {
     /**
      * UButtonCallback
      */
-    public boolean UButtonClick(int id) {
+    public boolean UButtonClicked(int id, boolean pressedOn) {
         switch (id) {
             case CloseButtonId:
                 toggle();
