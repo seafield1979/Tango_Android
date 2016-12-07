@@ -427,7 +427,7 @@ public class UIconWindow extends UWindow {
                     maxSize = height;
                 }
                 if (animate) {
-                    icon.startMovingPos(x, y, MOVING_TIME);
+                    icon.startMoving( x, y, MOVING_TIME);
                 } else {
                     icon.setPos(x, y);
                 }
@@ -452,7 +452,7 @@ public class UIconWindow extends UWindow {
                     maxSize = width;
                 }
                 if (animate) {
-                    icon.startMovingPos(x, y, MOVING_TIME);
+                    icon.startMoving(x, y, MOVING_TIME);
                 } else {
                     icon.setPos(x, y);
                 }

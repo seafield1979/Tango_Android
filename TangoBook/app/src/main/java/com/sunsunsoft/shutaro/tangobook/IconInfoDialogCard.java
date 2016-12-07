@@ -144,7 +144,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
         // 種別
         textTitle = UTextView.createInstance( mContext.getString(R.string.card),
                 TEXT_SIZE, 0,
-                UDraw.UAlignment.CenterX, canvas.getWidth(), false, false,
+                UAlignment.CenterX, canvas.getWidth(), false, false,
                 width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + 30;
 
@@ -180,24 +180,24 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         // WordA (Title & 本文)
         textWordATitle = UTextView.createInstance( "英", TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         textWordATitle.setMarginH(false);
 
         textWordA = UTextView.createInstance( mCard.getWordA(), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;
 
         // WordB
         textWordBTitle = UTextView.createInstance( "日", TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         textWordBTitle.setMarginH(false);
 
         textWordB = UTextView.createInstance( mCard.getWordB(), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, TEXT_VIEW_W, false, true,
+                UAlignment.None, TEXT_VIEW_W, false, true,
                 MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V + 50;

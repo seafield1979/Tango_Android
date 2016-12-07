@@ -17,12 +17,24 @@ import android.graphics.RectF;
  */
 
 abstract public class UDrawable {
-    private static final String TAG = "UDrawable";
+    /**
+     * Enums
+     */
+    // 自動移動のタイプ
+    enum MovingType {
+        UniformMotion,      // 等速運動
+        Acceleration,       // 加速
+        Deceleration        // 減速
+    }
 
+    /**
+     * Constants
+     */
+    private static final String TAG = "UDrawable";
     public static double RAD = 3.1415 / 180.0;
 
     /**
-     * メンバ変数
+     * Member variables
      */
     protected DrawList drawList;    // DrawManagerに描画登録するとnull以外になる
     protected PointF pos = new PointF();
@@ -36,6 +48,7 @@ abstract public class UDrawable {
     protected boolean isMovingPos;
     protected boolean isMovingSize;
     protected boolean isShow;
+    protected MovingType movingType;
     protected int movingFrame;
     protected int movingFrameMax;
     protected PointF srcPos = new PointF();
@@ -215,13 +228,17 @@ abstract public class UDrawable {
     public void startMoving() {
     }
 
+    public void startMoving(float dstX, float dstY, int frame) {
+        startMoving(MovingType.UniformMotion, dstX, dstY, frame);
+    }
+
     /**
      * 自動移動(座標)
      * @param dstX  目的x
      * @param dstY  目的y
      * @param frame  移動にかかるフレーム数
      */
-    public void startMovingPos(float dstX, float dstY, int frame) {
+    public void startMoving(MovingType movingType, float dstX, float dstY, int frame) {
         if (!setMovingPos(dstX, dstY)) {
             // 移動不要
             return;
@@ -231,6 +248,7 @@ abstract public class UDrawable {
         isMoving = true;
         isMovingPos = true;
         isMovingSize = false;
+        this.movingType = movingType;
         movingFrame = 0;
         movingFrameMax = frame;
     }
@@ -285,7 +303,13 @@ abstract public class UDrawable {
      * @param dstH
      * @param frame
      */
-    public void startMoving(float dstX, float dstY, int dstW, int dstH, int frame) {
+    public void startMoving(float dstX, float dstY, int dstW, int dstH, int frame)
+    {
+        startMoving(MovingType.UniformMotion, dstX, dstY, dstW, dstH, frame);
+    }
+    public void startMoving(MovingType movingType,
+                            float dstX, float dstY, int dstW, int dstH, int frame)
+    {
         boolean noMoving = true;
 
         startMoving();
@@ -299,6 +323,7 @@ abstract public class UDrawable {
         if (!noMoving) {
             isMovingPos = true;
             isMovingSize = true;
+            this.movingType = movingType;
             movingFrame = 0;
             movingFrameMax = frame;
             isMoving = true;
@@ -315,6 +340,7 @@ abstract public class UDrawable {
 
         movingFrame++;
         if (movingFrame >= movingFrameMax) {
+            // 移動完了
             if (isMovingPos) {
                 setPos(dstPos);
             }
@@ -328,15 +354,28 @@ abstract public class UDrawable {
             updateRect();
             endMoving();
         } else {
+            // 移動中
+            // ratio 0.0(始点) -> 1.0(終点)
             float ratio = (float)movingFrame / (float)movingFrameMax;
+            switch(movingType) {
+                case UniformMotion:
+                    break;
+                case Acceleration:
+                    ratio = UUtil.toAccel(ratio);
+                    break;
+                case Deceleration:
+                    ratio = UUtil.toDecel(ratio);
+                    break;
+            }
             if (isMovingPos) {
                 setPos(srcPos.x + ((dstPos.x - srcPos.x) * ratio),
                         srcPos.y + ((dstPos.y - srcPos.y) * ratio));
             }
             if (isMovingSize) {
-                setSize((int)(srcSize.width + (dstSize.width - srcSize.width) * ratio),
-                        (int)(srcSize.height + (dstSize.height - srcSize.height) * ratio));
+                setSize((int) (srcSize.width + (dstSize.width - srcSize.width) * ratio),
+                        (int) (srcSize.height + (dstSize.height - srcSize.height) * ratio));
             }
+
         }
         return true;
     }

@@ -29,7 +29,6 @@ public class UMenuItem extends UDrawable {
     private static final int CHILD_MARGIN_V = 30;
     private static final int CHILD_MARGIN_H = 30;
 
-
     /**
      * メンバ変数
      */
@@ -285,10 +284,10 @@ public class UMenuItem extends UDrawable {
 
             if (nestCount == 0) {
                 // 縦方向
-                item.startMovingPos(0, -count * (ITEM_H + CHILD_MARGIN_V), ANIME_FRAME);
+                item.startMoving(0, -count * (ITEM_H + CHILD_MARGIN_V), ANIME_FRAME);
             } else if (nestCount == 1) {
                 // 横方向
-                item.startMovingPos(count * (ITEM_W + CHILD_MARGIN_H), 0, ANIME_FRAME);
+                item.startMoving(count * (ITEM_W + CHILD_MARGIN_H), 0, ANIME_FRAME);
             }
             count++;
         }
@@ -303,7 +302,7 @@ public class UMenuItem extends UDrawable {
         isOpened = false;
 
         for (UMenuItem item : childItems) {
-            item.startMovingPos(0, 0, ANIME_FRAME);
+            item.startMoving(0, 0, ANIME_FRAME);
             item.isClosing = true;
             if (item.isOpened) {
                 item.closeMenu();

@@ -138,7 +138,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
         // 種別
         textTitle = UTextView.createInstance( mContext.getString(R.string.book),
                 TEXT_SIZE, 0,
-                UDraw.UAlignment.CenterX, canvas.getWidth(), false, false,
+                UAlignment.CenterX, canvas.getWidth(), false, false,
                 width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + 30;
 
@@ -164,12 +164,12 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
         // Name
         textNameTitle = UTextView.createInstance( mContext.getString(R.string.name), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         textNameTitle.setMarginH(false);
 
         textName = UTextView.createInstance( mBook.getName(), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR, TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;
@@ -183,13 +183,13 @@ public class IconInfoDialogBook extends IconInfoDialog {
         textCountTitle = UTextView.createInstance( mContext.getString(R.string
                 .card_count),
                 TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, TITLE_WIDTH2, TEXT_COLOR, Color.argb(1,0,0,0));
         textCountTitle.setMarginH(false);
 
         // body
         textCount = UTextView.createInstance( "" + count, TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H + TITLE_WIDTH2, y, width - (MARGIN_H * 2 + TITLE_WIDTH2), TEXT_COLOR,
                 TEXT_BG_COLOR);
 

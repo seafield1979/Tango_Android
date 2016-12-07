@@ -18,6 +18,12 @@ public class MySharedPref {
      */
     public static final String TAG = "MySharedPref";
 
+    // option key
+    public static final String Option1Key = "StudyOption1";
+    public static final String Option2Key = "StudyOption2";
+    public static final String Option3Key = "StudyOption3";
+
+
     /**
      * Static varialbes
      */

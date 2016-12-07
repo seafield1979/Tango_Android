@@ -104,10 +104,25 @@ public class TangoItemPosDao {
         if (results == null) return null;
 
         // IDのリストを作成
-        List<TangoCard> cards = RealmManager.getCardDao().selectByIds(results, false);
+        List<TangoCard> cards = RealmManager.getCardDao().selectByIds(results, false, false);
 
         return cards;
     }
+
+    // オプション付き
+    public List<TangoCard> selectCardsByBookIdWithOption(int bookId, boolean notLearned) {
+        RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
+                .equalTo("parentType", TangoParentType.Book.ordinal())
+                .equalTo("parentId", bookId)
+                .findAllSorted("pos", Sort.ASCENDING);
+        if (results == null) return null;
+
+        // IDのリストを作成
+        List<TangoCard> cards = RealmManager.getCardDao().selectByIds(results, notLearned, false);
+
+        return cards;
+    }
+
 
     /**
      * 指定の親の配下にある全てのアイテムを取得する(主にホーム用)
@@ -173,7 +188,7 @@ public class TangoItemPosDao {
         List<TangoCard> cards;
         if (cardPoses.size() > 0) {
             cards = RealmManager.getCardDao()
-                    .selectByIds(cardPoses, changeable);
+                    .selectByIds(cardPoses, false, changeable);
             // cardsはposでソートされていないので自前でソートする(select sort)
             LinkedList<TangoCard> sortedCards = new LinkedList<>();
             for (TangoItemPos itemPos : cardPoses) {

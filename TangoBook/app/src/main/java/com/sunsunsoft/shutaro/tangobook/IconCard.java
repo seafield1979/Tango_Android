@@ -103,7 +103,7 @@ public class IconCard extends UIcon{
                 paint);
 
         // Text
-        UDraw.drawTextOneLine(canvas, paint, title, UDraw.UAlignment.Center, TEXT_SIZE,
+        UDraw.drawTextOneLine(canvas, paint, title, UAlignment.Center, TEXT_SIZE,
                 drawPos.x + ICON_W / 2, drawPos.y + ICON_H + TEXT_MARGIN, Color.BLACK);
 
     }

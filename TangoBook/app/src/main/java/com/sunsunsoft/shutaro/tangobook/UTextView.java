@@ -27,7 +27,7 @@ public class UTextView extends UDrawable {
      * Member variables
      */
     protected String text;
-    protected UDraw.UAlignment alignment;
+    protected UAlignment alignment;
     protected boolean marginH;
     protected int textSize;
     protected int bgColor;
@@ -64,7 +64,7 @@ public class UTextView extends UDrawable {
      * Constructor
      */
     public UTextView(String text, int textSize, int priority,
-                     UDraw.UAlignment alignment, int canvasW,
+                     UAlignment alignment, int canvasW,
                      boolean multiLine, boolean isDrawBG, boolean marginH,
                      float x, float y,
                      int width,
@@ -91,7 +91,7 @@ public class UTextView extends UDrawable {
     }
 
     public static UTextView createInstance(String text, int textSize, int priority,
-                                           UDraw.UAlignment alignment, int canvasW,
+                                           UAlignment alignment, int canvasW,
                                            boolean multiLine, boolean isDrawBG,
                                            float x, float y,
                                            int width,
@@ -138,7 +138,7 @@ public class UTextView extends UDrawable {
         }
         PointF _linePos = new PointF(_pos.x, _pos.y);
 
-        UDraw.UAlignment _alignment = alignment;
+        UAlignment _alignment = alignment;
 
         if (isDrawBG) {
             PointF bgPos = new PointF(_pos.x, _pos.y);
@@ -162,7 +162,7 @@ public class UTextView extends UDrawable {
             }
 
             if (!multiLine) {
-                if (alignment == UDraw.UAlignment.CenterX || alignment == UDraw.UAlignment.None) {
+                if (alignment == UAlignment.CenterX || alignment == UAlignment.None) {
                     _pos.y += textSize / 2;
                 }
             }
@@ -173,10 +173,10 @@ public class UTextView extends UDrawable {
             if (!multiLine) {
                 switch (alignment) {
                     case CenterX:
-                        _alignment = UDraw.UAlignment.Center;
+                        _alignment = UAlignment.Center;
                         break;
                     case None:
-                        _alignment = UDraw.UAlignment.CenterY;
+                        _alignment = UAlignment.CenterY;
                         break;
                 }
             }

@@ -133,7 +133,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         // 種別
         textTitle = UTextView.createInstance( mParentView.getContext().getString(R.string.trash),
                 TEXT_SIZE, 0,
-                UDraw.UAlignment.CenterX, canvas.getWidth(), false, false,
+                UAlignment.CenterX, canvas.getWidth(), false, false,
                 width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + 30;
 
@@ -165,12 +165,12 @@ public class IconInfoDialogTrash extends IconInfoDialog {
 
         textCountTitle = UTextView.createInstance( mParentView.getContext().getString(R.string
                         .card_count), TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         textCountTitle.setMarginH(false);
 
         textNumber = UTextView.createInstance( "" + count, TEXT_SIZE, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, true,
+                UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR,
                 TEXT_BG_COLOR);
 

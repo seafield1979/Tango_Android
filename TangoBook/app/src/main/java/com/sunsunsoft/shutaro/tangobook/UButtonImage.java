@@ -159,7 +159,7 @@ public class UButtonImage extends UButton {
 
         // 下にテキストを表示
         if (title != null) {
-            UDraw.drawTextOneLine(canvas, paint, title, UDraw.UAlignment.CenterX, titleSize,
+            UDraw.drawTextOneLine(canvas, paint, title, UAlignment.CenterX, titleSize,
                     _rect.centerX(), _rect.bottom + TEXT_MARGIN, titleColor);
         }
     }

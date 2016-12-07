@@ -87,6 +87,9 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
 
     private IconInfoDialog mIconInfoDlg;
 
+    // 選択中のBookIcon
+    private IconBook mIconBook;
+
 
     /**
      * Get/Set
@@ -255,6 +258,10 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
      */
     public void iconClicked(UIcon icon) {
         ULog.print(TAG, "iconClicked");
+
+        if (icon instanceof IconBook) {
+            mIconBook = (IconBook)icon;
+        }
         if (mIconInfoDlg != null) {
             mIconInfoDlg.closeWindow();
             mIconInfoDlg = null;
@@ -358,7 +365,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         switch (id) {
             case ButtonIdStartStudy:
                 // 学習開始
-                UPageViewManager.getInstance().stackPage(PageView.TangoStudy);
+                UPageViewManager.getInstance().startStudyPage((TangoBook)mIconBook.getTangoItem());
                 break;
             case ButtonIdCancel:
                 mPreStudyWindow.setShow(false);

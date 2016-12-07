@@ -236,6 +236,17 @@ public class UPageViewManager {
     }
 
     /**
+     * 学習ページを表示開始
+     * 他のページと異なり引数を受け取る必要があるため関数化した
+     * @param book
+     */
+    public void startStudyPage(TangoBook book) {
+        PageViewStudy studyPage = (PageViewStudy)pages[PageView.TangoStudy.ordinal()];
+        studyPage.setBook(book);
+        stackPage(PageView.TangoStudy);
+    }
+
+    /**
      * Callbacks
      */
 

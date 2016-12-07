@@ -58,7 +58,7 @@ public class UEditText extends UTextView implements UEditDialogCallbacks{
     /**
      * Constructor
      */
-    public UEditText(String text, int textSize, int priority, UDraw.UAlignment alignment, int
+    public UEditText(String text, int textSize, int priority, UAlignment alignment, int
             canvasW, boolean multiLine,
                      float x, float y, int width,
                      int color, int bgColor)
@@ -71,7 +71,7 @@ public class UEditText extends UTextView implements UEditDialogCallbacks{
     }
     public static UEditText createInstance(View parentView, UEditTextCallbacks editTextCallbacks,
                                            String text, int textSize, int priority,
-                                           UDraw.UAlignment alignment, int canvasW, boolean
+                                           UAlignment alignment, int canvasW, boolean
                                                    multiLine,
                                            float x, float y, int width,
                                            int color, int bgColor)

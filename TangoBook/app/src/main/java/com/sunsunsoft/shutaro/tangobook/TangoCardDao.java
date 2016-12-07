@@ -104,7 +104,9 @@ public class TangoCardDao {
      * @param itemPoses
      * @return
      */
-    public List<TangoCard> selectByIds(List<TangoItemPos> itemPoses, boolean changeable) {
+    public List<TangoCard> selectByIds(List<TangoItemPos> itemPoses, boolean noStar, boolean
+            changeable)
+    {
         if (itemPoses.size() <= 0) return null;
 
         RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
@@ -117,6 +119,9 @@ public class TangoCardDao {
                 query.or();
             }
             query.equalTo("id", item.getItemId());
+            if (noStar) {
+                query.equalTo("star", false);
+            }
         }
         RealmResults<TangoCard> results = query.findAll();
 

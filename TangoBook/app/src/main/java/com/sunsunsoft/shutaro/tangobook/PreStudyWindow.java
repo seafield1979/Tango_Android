@@ -60,10 +60,6 @@ public class PreStudyWindow extends UWindow {
     private static final int ButtonIdOption3_1 = 105;
     private static final int ButtonIdOption3_2 = 106;
 
-    // option key
-    private static final String Option1Key = "StudyOption1";
-    private static final String Option2Key = "StudyOption2";
-    private static final String Option3Key = "StudyOption3";
 
     /**
      * Member Variables
@@ -105,9 +101,9 @@ public class PreStudyWindow extends UWindow {
         addCloseIcon(CloseIconPos.RightTop);
 
         // get options
-        option1 = MySharedPref.getInstance().readBoolean(Option1Key);
-        option2 = MySharedPref.getInstance().readBoolean(Option2Key);
-        option3 = MySharedPref.getInstance().readBoolean(Option3Key);
+        option1 = MySharedPref.getInstance().readBoolean(MySharedPref.Option1Key);
+        option2 = MySharedPref.getInstance().readBoolean(MySharedPref.Option2Key);
+        option3 = MySharedPref.getInstance().readBoolean(MySharedPref.Option3Key);
     }
 
     /**
@@ -188,7 +184,7 @@ public class PreStudyWindow extends UWindow {
         // タイトル(単語帳の名前)
         String title = mContext.getString(R.string.book) + " : " + mBook.getName();
         textTitle = UTextView.createInstance( title, TEXT_SIZE_3, 0,
-                UDraw.UAlignment.CenterX, canvas.getWidth(), false, true,
+                UAlignment.CenterX, canvas.getWidth(), false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE_3 + MARGIN_V;
 
@@ -198,7 +194,7 @@ public class PreStudyWindow extends UWindow {
         );
         textCount = UTextView.createInstance( mContext.getString(R.string.card_count) + ":" + count,
                 TEXT_SIZE, 0,
-                UDraw.UAlignment.CenterX, canvas.getWidth(), false, true,
+                UAlignment.CenterX, canvas.getWidth(), false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE + MARGIN_V;
 
@@ -207,7 +203,7 @@ public class PreStudyWindow extends UWindow {
         textLastStudied = UTextView.createInstance( mContext.getString(R.string
                 .last_studied_date) + ":" + studiedTime,
                 TEXT_SIZE, 0,
-                UDraw.UAlignment.CenterX, canvas.getWidth(), false, true,
+                UAlignment.CenterX, canvas.getWidth(), false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE + MARGIN_V + 40;
 
@@ -236,7 +232,7 @@ public class PreStudyWindow extends UWindow {
         // タイトル
         textOption1 = UTextView.createInstance( mContext.getString(R.string.study_type),
                 TEXT_SIZE_2, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, false,
+                UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE_2 + 20;
 
@@ -259,7 +255,7 @@ public class PreStudyWindow extends UWindow {
         // タイトル
         textOption2 = UTextView.createInstance( mContext.getString(R.string.order_type),
                 TEXT_SIZE_2, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, false,
+                UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         y += TEXT_SIZE_2 + 20;
 
@@ -283,7 +279,7 @@ public class PreStudyWindow extends UWindow {
         // タイトル
         textOption3 = UTextView.createInstance( mContext.getString(R.string.study_pattern),
                 TEXT_SIZE_2, 0,
-                UDraw.UAlignment.None, canvas.getWidth(), false, false,
+                UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE_2 + 20;
 
@@ -335,9 +331,9 @@ public class PreStudyWindow extends UWindow {
         switch (id) {
             case PageViewStudySelect.ButtonIdStartStudy:
                 // オプションを保存
-                MySharedPref.getInstance().writeBoolean(Option1Key, option1);
-                MySharedPref.getInstance().writeBoolean(Option2Key, option2);
-                MySharedPref.getInstance().writeBoolean(Option3Key, option3);
+                MySharedPref.getInstance().writeBoolean(MySharedPref.Option1Key, option1);
+                MySharedPref.getInstance().writeBoolean(MySharedPref.Option2Key, option2);
+                MySharedPref.getInstance().writeBoolean(MySharedPref.Option3Key, option3);
 
                 if (mButtonCallbacks != null) {
                     mButtonCallbacks.UButtonClicked(id, pressedOn);

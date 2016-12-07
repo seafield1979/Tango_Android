@@ -104,7 +104,7 @@ public class IconTrash extends IconContainer {
                 paint);
 
         // Text
-        UDraw.drawTextOneLine(canvas, paint, title, UDraw.UAlignment.CenterX, TEXT_SIZE,
+        UDraw.drawTextOneLine(canvas, paint, title, UAlignment.CenterX, TEXT_SIZE,
                 drawPos.x + ICON_W / 2, drawPos.y + ICON_H + TEXT_MARGIN, Color.BLACK);
     }
 

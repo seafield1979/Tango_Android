@@ -47,5 +47,7 @@
     <string name="study_pattern">学習単語</string>
     <string name="all">すべて</string>
     <string name="not_learned">未収得</string>
+    <string name="finish">終了</string>
+    <string name="cards_remain">あと%d枚</string>
 
 </resources>

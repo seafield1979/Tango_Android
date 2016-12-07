@@ -12,19 +12,19 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
+enum UAlignment {
+    None,
+    CenterX,
+    CenterY,
+    Center
+}
+
 /**
  * 自前の描画処理
  * OnDrawの中から呼び出す
  */
 
 public class UDraw {
-    enum UAlignment {
-        None,
-        CenterX,
-        CenterY,
-        Center
-    }
-
     // ラジアン角度
     public static final double RAD = 3.1415 / 180.0;
 
