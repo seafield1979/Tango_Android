@@ -141,7 +141,7 @@ public class StudyCard extends UDrawable{
      * 自動で実行される何かしらの処理
      * @return
      */
-    protected boolean doAction() {
+    public boolean doAction() {
         switch (mState) {
             case Moving:
                 if (autoMoving()) {

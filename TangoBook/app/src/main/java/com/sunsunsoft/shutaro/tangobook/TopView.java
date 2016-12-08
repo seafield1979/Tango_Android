@@ -51,10 +51,6 @@ public class TopView extends View
     }
 
     public TopView(Context context, AttributeSet attrs) {
-        this(context, attrs, null);
-    }
-
-    public TopView(Context context, AttributeSet attrs, NestedScrollingParent nestedParent) {
         super(context, attrs);
         this.setOnTouchListener(this);
         mContext = context;
@@ -91,17 +87,11 @@ public class TopView extends View
 
         vt.checkTouchType(e);
 
-        // PageManager以下のタッチ処理
-//        if (mPageManager.touchEvent(vt)) {
-//            ULog.print(TAG, "invalidate1");
-//            invalidate();
-//        }
         // 描画オブジェクトのタッチ処理はすべてUDrawManagerにまかせる
         if (UDrawManager.getInstance().touchEvent(vt)) {
             ULog.print(TAG, "invalidate2");
             invalidate();
         }
-
 
         switch(e.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -138,7 +128,7 @@ public class TopView extends View
         ((Activity)mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mPageManager.touchEvent(vt);
+                UDrawManager.getInstance().touchEvent(vt);
                 invalidate();
             }
         });

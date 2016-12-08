@@ -161,6 +161,7 @@ public class UDrawManager {
      */
     private void removeRequestedList() {
         TreeMap<Integer, DrawList> lists = getCurrentDrawLists();
+        if (lists == null) return;
 
         for (UDrawable obj : removeRequest) {
             Integer _priority = new Integer(obj.getDrawPriority());
@@ -242,12 +243,20 @@ public class UDrawManager {
         // 削除要求のかかったオブジェクトを削除する
         removeRequestedList();
 
+        for (DrawList list : lists.values()) {
+            // 毎フレームの処理
+            if (list.doAction()) {
+                redraw = true;
+            }
+        }
+
         ULog.startCount(TAG);
         for (DrawList list : lists.descendingMap().values()) {
             if (list.draw(canvas, paint) ) {
                 redraw = true;
             }
         }
+
         ULog.showCount(TAG);
         return redraw;
     }
@@ -348,7 +357,6 @@ class DrawList
         // 分けるのが面倒なのでアニメーションと描画を同時に処理する
         boolean allDone = true;
         for (UDrawable obj : list) {
-            Rect objRect = obj.getRect();
 
             if (obj.animate()) {
                 allDone = false;
@@ -357,13 +365,19 @@ class DrawList
             PointF offset = obj.getDrawOffset();
             obj.draw(canvas, paint, offset);
             drawId(canvas, paint, obj.getRect(), priority);
+        }
+        return !allDone;
+    }
 
-            if (priority == UIconWindow.DRAG_ICON_PRIORITY) {
-                ULog.print(UDrawManager.TAG, "" + obj.getRect().bottom);
-            }
-
-            if (UDebug.drawIconId) {
-                Rect _rect = obj.getRect();
+    /**
+     * 毎フレームの処理
+     * @return
+     */
+    public boolean doAction() {
+        boolean allDone = true;
+        for (UDrawable obj : list) {
+            if (obj.doAction()) {
+                allDone = false;
             }
         }
         return !allDone;

@@ -16,20 +16,6 @@ enum PageView {
     TangoResult,        // 単語帳結果
     Settings,
     ;
-
-    // UDrawManagerの描画ページ番号
-    private static final int[] drawIdTable = {
-            0, // Title
-            1, // TangoEdit
-            2, // TangoSelect
-            3, // TangoStudy
-            4, // TangoResult
-            5, // Settings
-    };
-
-    public int getDrawId() {
-        return drawIdTable[ordinal()];
-    }
 }
 
 /**
@@ -143,21 +129,6 @@ public class UPageViewManager {
     }
 
     /**
-     * タッチ処理
-     * 配下のUViewPageのタッチ処理を呼び出す
-     * @param vt
-     * @return
-     */
-    public boolean touchEvent(ViewTouch vt) {
-        UPageView page = pages[currentPage().ordinal()];
-        if (page.touchEvent(vt)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * バックキーが押されたときの処理
      * @return
      */
@@ -208,6 +179,13 @@ public class UPageViewManager {
      * @param pageId
      */
     public void stackPage(PageView pageId) {
+
+        // 古いページの後処理
+        if (pageIdStack.size() > 0) {
+            PageView page = pageIdStack.getLast();
+            pages[page.ordinal()].onHide();
+        }
+
         pageIdStack.add(pageId);
         if (pages[pageId.ordinal()] != null) {
             pages[pageId.ordinal()].onShow();

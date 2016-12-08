@@ -24,7 +24,6 @@ abstract public class UPageView {
     protected View mParentView;
 
     // UDrawManagerで描画を行うページ番号
-    protected int drawPageId;
     protected boolean isFirst = true;
 
     /**
@@ -34,10 +33,9 @@ abstract public class UPageView {
     /**
      * Constructor
      */
-    public UPageView(Context context, View parentView, int drawPageId) {
+    public UPageView(Context context, View parentView) {
         mContext = context;
         mParentView = parentView;
-        this.drawPageId = drawPageId;
     }
 
     /**
@@ -47,8 +45,6 @@ abstract public class UPageView {
      * スタックの先頭になって表示され始める前に呼ばれる
      */
     protected void onShow() {
-        // ページを切り替える
-        UDrawManager.getInstance().setCurrentPage(drawPageId);
     }
 
     /**
@@ -72,13 +68,6 @@ abstract public class UPageView {
         }
         return false;
     }
-
-    /**
-     * タッチ処理
-     * @param vt
-     * @return
-     */
-    abstract boolean touchEvent(ViewTouch vt);
 
     /**
      * そのページで表示される描画オブジェクトを初期化する

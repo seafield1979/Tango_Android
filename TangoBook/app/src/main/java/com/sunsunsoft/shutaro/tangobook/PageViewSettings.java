@@ -14,7 +14,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
      * Constructor
      */
     public PageViewSettings(Context context, View parentView) {
-        super(context, parentView, PageView.Settings.getDrawId());
+        super(context, parentView);
     }
 
     /**

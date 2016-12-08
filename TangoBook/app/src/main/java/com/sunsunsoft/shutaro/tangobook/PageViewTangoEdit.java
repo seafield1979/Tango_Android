@@ -18,7 +18,7 @@ import android.view.View;
 
 
 public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
-        UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks, UButtonCallbacks,
+        UIconCallbacks, UWindowCallbacks, UButtonCallbacks,
         EditCardDialogCallbacks, EditBookDialogCallbacks, IconInfoDialogCallbacks,
         UDialogCallbacks
 {
@@ -53,9 +53,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     // メニューバー
     private MenuBarTangoEdit mMenuBar;
 
-    // クリック判定の仕組み
-    private ViewTouch vt = new ViewTouch(this);
-
     private IconInfoDialog mIconInfoDlg;
 
     // Fragmentで内容を編集中のアイコン
@@ -66,16 +63,27 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      * Get/Set
      */
     public PageViewTangoEdit(Context context, View parentView) {
-        super(context, parentView, PageView.TangoEdit.getDrawId());
+        super(context, parentView);
     }
 
+
+    /**
+     * Methods
+     */
+    public void onShow() {
+
+    }
+
+    public void onHide() {
+        isFirst = true;
+    }
 
     protected void initDrawables() {
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
         // 描画オブジェクトクリア
-        UDrawManager.getInstance().initPage(drawPageId);
+        UDrawManager.getInstance().init();
 
         // DebugDialogs
         debugDialogs = new DebugDialogs(mParentView);
@@ -121,40 +129,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             mWindows[WindowType.Log.ordinal()] = mLogWin;
             ULog.setLogWindow(mLogWin);
         }
-    }
-
-    /**
-     * 描画処理
-     * @param canvas
-     * @param paint
-     * @return
-     */
-    public boolean draw(Canvas canvas, Paint paint) {
-        super.draw(canvas, paint);
-
-        // Windowの処理
-        // アクション(手前から順に処理する)
-        for (int i=mWindows.length - 1; i >= 0; i--) {
-            UWindow win = mWindows[i];
-            if (win == null) continue;
-            if (win.doAction()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean touchEvent(ViewTouch vt) {
-        // 手前から順に処理する
-//        for (int i=mWindows.length - 1; i >= 0; i--) {
-//            UWindow win = mWindows[i];
-//            if (!win.isShow()) continue;
-//
-//            if (win.touchEvent(vt)) {
-//                return true;
-//            }
-//        }
-        return false;
     }
 
     /**
@@ -397,19 +371,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 mParentView.invalidate();
             }
         }
-    }
-
-    /**
-     * ViewTouchCallbacks
-     */
-    public void longPressed() {
-        ((Activity)mContext).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                touchEvent(vt);
-                mParentView.invalidate();
-            }
-        });
     }
 
     /**

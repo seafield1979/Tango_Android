@@ -69,7 +69,7 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
      * Constructor
      */
     public PageViewStudy(Context context, View parentView) {
-        super(context, parentView, PageView.TangoStudy.getDrawId());
+        super(context, parentView);
 
     }
 
@@ -77,7 +77,7 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
      * Methods
      */
     protected void onShow() {
-        super.onShow();
+        UDrawManager.getInstance().init();
 
         // get options
         option1 = MySharedPref.getInstance().readBoolean(MySharedPref.Option1Key);
@@ -85,12 +85,6 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
         option3 = MySharedPref.getInstance().readBoolean(MySharedPref.Option3Key);
 
         mCardsManager = new StudyCardsManager(mBook, option1, option2, option3);
-        mCardsStack = new StudyCardsStack(mCardsManager,
-                (mParentView.getWidth() - StudyCard.WIDTH) / 2, TOP_AREA_H,
-                StudyCard.WIDTH,
-                mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
-                );
-        UDrawManager.getInstance().addDrawable(mCardsStack);
 
         initDrawables();
     }
@@ -99,50 +93,7 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
         mCardsManager = null;
         mCardsStack.cleanUp();
         mCardsStack = null;
-    }
-
-    /**
-     * 描画処理
-     * サブクラスのdrawでこのメソッドを最初に呼び出す
-     * @param canvas
-     * @param paint
-     * @return
-     */
-    protected boolean draw(Canvas canvas, Paint paint) {
-
-        boolean done = false;
-        if (doAction()) {
-            done = true;
-        }
-
-        if (UDrawManager.getInstance().draw(canvas, paint)) {
-            done = true;
-        }
-
-        return done;
-    }
-
-    /**
-     * 毎フレームの処理
-     * @return
-     */
-    protected boolean doAction() {
-        if (mCardsStack.doAction()) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * タッチ処理
-     * @param vt
-     * @return
-     */
-    public boolean touchEvent(ViewTouch vt) {
-        if (UDrawManager.getInstance().touchEvent(vt)) {
-            return true;
-        }
-        return false;
+        isFirst = true;
     }
 
     /**
@@ -151,6 +102,15 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
     public void initDrawables() {
         int screenW = mParentView.getWidth();
         int screenH = mParentView.getHeight();
+
+        // カードスタック
+        mCardsStack = new StudyCardsStack(mCardsManager,
+                (mParentView.getWidth() - StudyCard.WIDTH) / 2, TOP_AREA_H,
+                StudyCard.WIDTH,
+                mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
+        );
+        UDrawManager.getInstance().addDrawable(mCardsStack);
+
 
         // あと〜枚
         String title = getCardsRemainText(mCardsStack.getCardCount());

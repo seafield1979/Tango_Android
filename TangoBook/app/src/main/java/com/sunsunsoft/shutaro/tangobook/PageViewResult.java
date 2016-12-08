@@ -14,36 +14,15 @@ public class PageViewResult extends UPageView implements UButtonCallbacks{
      * Constructor
      */
     public PageViewResult(Context context, View parentView) {
-        super(context, parentView, PageView.TangoResult.getDrawId());
+        super(context, parentView);
     }
 
     /**
      * Methods
      */
 
-    /**
-     * 描画処理
-     * サブクラスのdrawでこのメソッドを最初に呼び出す
-     * @param canvas
-     * @param paint
-     * @return
-     */
-    protected boolean draw(Canvas canvas, Paint paint) {
-        if (isFirst) {
-            isFirst = false;
-            initDrawables();
-        }
-        return false;
-    }
-
-    /**
-     * タッチ処理
-     * @param vt
-     * @return
-     */
-    public boolean touchEvent(ViewTouch vt) {
-
-        return false;
+    public void onHide() {
+        isFirst = true;
     }
 
     /**

@@ -53,12 +53,20 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
      * Constructor
      */
     public PageViewTitle(Context context, View parentView) {
-        super(context, parentView, PageView.Title.getDrawId());
+        super(context, parentView);
     }
 
     /**
      * Methods
      */
+
+    public void onShow() {
+
+    }
+
+    public void onHide() {
+        isFirst = true;
+    }
 
     /**
      * そのページで表示される描画オブジェクトを初期化する
@@ -67,6 +75,9 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         int width = mParentView.getWidth();
         float y = 300;
         UButtonType buttonType;
+
+        // 描画オブジェクトクリア
+        UDrawManager.getInstance().init();
 
         for (int i=0; i<buttons.length; i++) {
             ButtonId id = ButtonId.values()[i];
@@ -83,31 +94,6 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
             y += 150;
         }
     }
-    /**
-     * 描画処理
-     * サブクラスのdrawでこのメソッドを最初に呼び出す
-     * @param canvas
-     * @param paint
-     * @return
-     */
-    protected boolean draw(Canvas canvas, Paint paint) {
-        if (isFirst) {
-            isFirst = false;
-            initDrawables();
-        }
-        return false;
-    }
-
-    /**
-     * タッチ処理
-     * @param vt
-     * @return
-     */
-    public boolean touchEvent(ViewTouch vt) {
-
-        return false;
-    }
-
 
     /**
      * ソフトウェアキーの戻るボタンを押したときの処理

@@ -201,6 +201,13 @@ abstract public class UDrawable {
     abstract void draw(Canvas canvas, Paint paint, PointF offset);
 
     /**
+     * 毎フレームの処理
+     * サブクラスでオーバーライドして使用する
+     * @return true:処理中 / false:処理完了
+     */
+    public boolean doAction(){ return false; }
+
+    /**
      * Rectをライン描画する for Debug
      */
     public void drawRectLine(Canvas canvas, Paint paint, PointF offset, int color) {

@@ -19,7 +19,7 @@ import android.view.View;
  */
 
 public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks,
-        UIconCallbacks, ViewTouchCallbacks, UWindowCallbacks, UButtonCallbacks,
+        UIconCallbacks, UWindowCallbacks, UButtonCallbacks,
         IconInfoDialogCallbacks, UDialogCallbacks
 {
     /**
@@ -82,9 +82,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     // メニューバー
     private MenuBarStudySelect mMenuBar;
 
-    // クリック判定の仕組み
-    private ViewTouch vt = new ViewTouch(this);
-
     private IconInfoDialog mIconInfoDlg;
 
     // 選択中のBookIcon
@@ -95,16 +92,24 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
      * Get/Set
      */
     public PageViewStudySelect(Context context, View parentView) {
-        super(context, parentView, PageView.TangoSelect.getDrawId());
+        super(context, parentView);
     }
 
+    public void onShow() {
+
+    }
+
+    public void onHide() {
+        // 次回表示時に initDrawables が呼ばれるようにする
+        isFirst = true;
+    }
 
     protected void initDrawables() {
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
         // 描画オブジェクトクリア
-        UDrawManager.getInstance().initPage(drawPageId);
+        UDrawManager.getInstance().init();
 
         // DebugDialogs
         debugDialogs = new DebugDialogs(mParentView);
@@ -153,40 +158,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
             mWindows[WindowType.Log.ordinal()] = mLogWin;
             ULog.setLogWindow(mLogWin);
         }
-    }
-
-    /**
-     * 描画処理
-     * @param canvas
-     * @param paint
-     * @return
-     */
-    public boolean draw(Canvas canvas, Paint paint) {
-        super.draw(canvas, paint);
-
-        // Windowの処理
-        // アクション(手前から順に処理する)
-        for (int i=mWindows.length - 1; i >= 0; i--) {
-            UWindow win = mWindows[i];
-            if (win == null) continue;
-            if (win.doAction()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean touchEvent(ViewTouch vt) {
-        // 手前から順に処理する
-        for (int i=mWindows.length - 1; i >= 0; i--) {
-            UWindow win = mWindows[i];
-            if (!win.isShow()) continue;
-
-            if (win.touchEvent(vt)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -323,19 +294,6 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
                 mParentView.invalidate();
             }
         }
-    }
-
-    /**
-     * ViewTouchCallbacks
-     */
-    public void longPressed() {
-        ((Activity)mContext).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                touchEvent(vt);
-                mParentView.invalidate();
-            }
-        });
     }
 
     /**

@@ -60,14 +60,17 @@ public class StudyCardsManager {
         List<TangoCard> _cards = RealmManager.getItemPosDao()
                 .selectCardsByBookIdWithOption(book.getId(), notLearned);
 
-        for (TangoCard card : _cards) {
-            mCards.add(card);
+        if (_cards != null) {
+            for (TangoCard card : _cards) {
+                mCards.add(card);
+            }
+
+            // ランダムに並び替える
+            if (orderRandom) {
+                Collections.shuffle(mCards);
+            }
         }
 
-        // ランダムに並び替える
-        if (orderRandom) {
-            Collections.shuffle(mCards);
-        }
         mStudyType = studyType;
     }
 
