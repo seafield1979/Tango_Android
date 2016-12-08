@@ -184,6 +184,14 @@ abstract public class UDrawable {
         isShow = show;
     }
 
+
+    /**
+     * 後処理。nullを設定する前に呼ぶ
+     */
+    public void cleanUp() {
+        UDrawManager.getInstance().removeDrawable(this);
+    }
+
     /**
      * 描画処理
      * @param canvas

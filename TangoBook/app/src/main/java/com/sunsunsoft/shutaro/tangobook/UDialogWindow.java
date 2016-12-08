@@ -59,6 +59,9 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     public static final int BUTTON_MARGIN_H = 50;
     public static final int BUTTON_MARGIN_V = 30;
 
+    // colors
+    public static final int CLOSE_BUTTON_COLOR = Color.rgb(200,100,100);
+
     /**
      * Member variables
      */
@@ -107,6 +110,14 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    private void updateBasePos() {
+        if (posType == DialogPosType.Point) {
+            basePos = new PointF(pos.x + size.width / 2, pos.y + size.height / 2);
+        } else {
+            basePos = new PointF(screenSize.width / 2, screenSize.height / 2);
+        }
     }
 
     /**
@@ -180,6 +191,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         instance.dialogCallbacks = dialogCallbacks;
         instance.isAnimation = isAnimation;
         if (isAnimation) {
+            instance.updateBasePos();
             instance.startAnimation(AnimationType.Opening);
         }
         if (type == DialogType.Mordal) {
@@ -215,6 +227,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
     /**
      * ダイアログを閉じる
+     * ※閉じるアニメーションありの場合はアニメーションが完了したタイミングで呼ばれる
      */
     public void closeDialog() {
         isShow = false;
@@ -228,11 +241,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * 閉じるアニメーション開始
      */
     public void startClosing() {
-        if (posType == DialogPosType.Point) {
-            basePos = new PointF(pos.x + size.width / 2, pos.y + size.height / 2);
-        } else {
-            basePos = new PointF(screenSize.width / 2, screenSize.height / 2);
-        }
+        updateBasePos();
 
         if (isAnimation) {
             startAnimation(AnimationType.Closing);
@@ -266,7 +275,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         }
         UButtonText button = new UButtonText(this, UButtonType.Press, CloseDialogId, 0, text, 0, 0,
                 0, 0,
-                Color.WHITE, Color.RED);
+                Color.WHITE, CLOSE_BUTTON_COLOR);
         buttons.add(button);
         isUpdate = true;
     }
@@ -469,7 +478,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         // 範囲外をタッチしたら閉じる
         if (type == DialogType.Normal) {
             if (vt.type == TouchType.Touch) {
-            if (!getDialogRect().contains(vt.touchX(), vt.touchY())) {
+                if (!getDialogRect().contains(vt.touchX(), vt.touchY())) {
                     startClosing();
                     return true;
                 }
@@ -517,9 +526,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         if (super.UButtonClicked(id, pressedOn)) {
             return true;
         }
-        return false;
-    }
-    public boolean UButtonLongClick(int id) {
         return false;
     }
 }

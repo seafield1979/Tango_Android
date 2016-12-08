@@ -13,7 +13,7 @@ import android.view.View;
  * カードが全てOK/NG処理されるまで上から単語カードが降ってくる
  */
 
-public class PageViewStudy extends UPageView implements UButtonCallbacks{
+public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialogCallbacks{
     /**
      * Constants
      */
@@ -29,10 +29,14 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks{
     private static final int MARGIN_V = 50;
     private static final int MARGIN_H = 50;
 
+    private static final int DRAW_PRIORITY = 100;
+
     // button ids
-    private static final int ButtonIdFinish = 100;
+    private static final int ButtonIdExit = 100;
     private static final int ButtonIdOk = 101;
     private static final int ButtonIdNg = 102;
+
+    private static final int ButtonIdExitOk = 200;
 
     /**
      * Member variables
@@ -42,11 +46,16 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks{
     private StudyCardsStack mCardsStack;
 
     private UTextView mTextCardCount;
-    private UButtonText mFinishButton;
+    private UButtonText mExitButton;
     private UButtonText mOkCardsButton, mNgCardsButton;
 
     // 学習する単語帳
     private TangoBook mBook;
+
+    // 終了確認ダイアログ
+    private UDialogWindow mConfirmDialog;
+
+    private boolean isCloseOk;
 
     /**
      * Get/Set
@@ -74,14 +83,18 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks{
         option2 = MySharedPref.getInstance().readBoolean(MySharedPref.Option2Key);
         option3 = MySharedPref.getInstance().readBoolean(MySharedPref.Option3Key);
 
-        if (mCardsManager == null) {
-            mCardsManager = new StudyCardsManager(mBook, option1, option2, option3);
-        }
-        if (mCardsStack == null) {
-            mCardsStack = new StudyCardsStack(mCardsManager, (mParentView.getWidth() - StudyCard
-                    .WIDTH) / 2, TOP_AREA_H, mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H));
-            UDrawManager.getInstance().addDrawable(mCardsStack);
-        }
+        mCardsManager = new StudyCardsManager(mBook, option1, option2, option3);
+        mCardsStack = new StudyCardsStack(mCardsManager,
+                (mParentView.getWidth() - StudyCard.WIDTH) / 2, TOP_AREA_H,
+                StudyCard.WIDTH,
+                mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H));
+        UDrawManager.getInstance().addDrawable(mCardsStack);
+    }
+
+    protected void onHide() {
+        mCardsManager = null;
+        mCardsStack.cleanUp();
+        mCardsStack = null;
     }
 
     /**
@@ -141,24 +154,24 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks{
 
         // あと〜枚
         String title = getCardsRemainText(mCardsStack.getCardCount());
-        mTextCardCount = UTextView.createInstance( title, TEXT_SIZE, 0,
+        mTextCardCount = UTextView.createInstance( title, TEXT_SIZE, DRAW_PRIORITY,
                 UAlignment.CenterX, screenW, false, true,
                 screenW / 2, 50, 300, Color.rgb(100,50,50), 0);
         UDrawManager.getInstance().addDrawable(mTextCardCount);
 
         // 終了ボタン
-        mFinishButton = new UButtonText(this, UButtonType.Press,
-                ButtonIdFinish,
-                0, mContext.getString(R.string.finish),
+        mExitButton = new UButtonText(this, UButtonType.Press,
+                ButtonIdExit,
+                DRAW_PRIORITY, mContext.getString(R.string.finish),
                 (screenW - BUTTON_W) / 2, screenH - 150,
                 BUTTON_W, BUTTON_H,
                 Color.BLACK, Color.rgb(100,200,100));
-        UDrawManager.getInstance().addDrawable(mFinishButton);
+        UDrawManager.getInstance().addDrawable(mExitButton);
 
         // OKボタン
         mOkCardsButton = new UButtonText(this, UButtonType.BGColor,
                 ButtonIdOk,
-                0, "OK",
+                DRAW_PRIORITY, "OK",
                 screenW - BUTTON2_W - MARGIN_H, screenH - BUTTON2_H - MARGIN_V,
                 BUTTON2_W, BUTTON2_H,
                 Color.BLACK, Color.rgb(100,200,100));
@@ -167,7 +180,7 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks{
         // NGボタン
         mNgCardsButton = new UButtonText(this, UButtonType.BGColor,
                 ButtonIdNg,
-                0, "NG",
+                DRAW_PRIORITY, "NG",
                 MARGIN_H, screenH - BUTTON2_H - MARGIN_V,
                 BUTTON2_W, BUTTON2_H,
                 Color.BLACK, Color.rgb(100,200,100));
@@ -195,7 +208,43 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks{
      * UButtonCallbacks
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
-
+        switch(id) {
+            case ButtonIdExit:
+                // 終了ボタンを押したら確認用のモーダルダイアログを表示
+                if (mConfirmDialog == null) {
+                    mConfirmDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                            this, this,
+                            UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
+                            true, mParentView.getWidth(), mParentView.getHeight(),
+                            Color.BLACK, Color.LTGRAY);
+                    mConfirmDialog.setTitle(mContext.getString(R.string.confirm_exit));
+                    mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.LTGRAY);
+                    mConfirmDialog.addCloseButton("Cancel");
+                }
+                break;
+            case ButtonIdOk:
+                break;
+            case ButtonIdNg:
+                break;
+            case ButtonIdExitOk:
+                // 終了
+                isCloseOk = true;
+                mConfirmDialog.startClosing();
+                break;
+        }
         return false;
+    }
+
+    /**
+     * UDialogCallbacks
+     */
+    public void dialogClosed(UDialogWindow dialog) {
+        if (isCloseOk) {
+            // 終了して前のページに戻る
+            UPageViewManager.getInstance().popPage();
+        }
+        if (dialog == mConfirmDialog) {
+            mConfirmDialog = null;
+        }
     }
 }

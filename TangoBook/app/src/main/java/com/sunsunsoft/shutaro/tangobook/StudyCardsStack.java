@@ -27,7 +27,6 @@ public class StudyCardsStack extends UDrawable {
 
     // layout
     public static final int MARGIN_V = 50;
-    protected static final int MARGIN_H = 50;
     protected static final int MOVING_FRAME = 10;
 
 
@@ -57,8 +56,11 @@ public class StudyCardsStack extends UDrawable {
     /**
      * Constructor
      */
-    public StudyCardsStack(StudyCardsManager cardManager, float x, float y, int maxHeight) {
-        super(100, x, y, StudyCard.WIDTH + MARGIN_H * 2, 0 );
+    public StudyCardsStack(StudyCardsManager cardManager,
+                           float x, float y,
+                           int width, int maxHeight)
+    {
+        super(100, x, y, width, 0 );
 
         mMaxCardNum = maxHeight / (StudyCard.HEIGHT + MARGIN_V);
         size.height = mMaxCardNum * (StudyCard.HEIGHT + MARGIN_V);
@@ -102,9 +104,9 @@ public class StudyCardsStack extends UDrawable {
                 StudyCard _card = cardsInBackYard.pop();
                 cards.add(_card);
                 // 初期座標設定
-                _card.setPos(MARGIN_H, -StudyCard.HEIGHT);
+                _card.setPos(0, -StudyCard.HEIGHT);
                 float dstY = (mMaxCardNum - cards.size()) * (StudyCard.HEIGHT + MARGIN_V);
-                _card.startAppearMoving(MARGIN_H, dstY, MOVING_FRAME);
+                _card.startAppearMoving(0, dstY, MOVING_FRAME);
             }
         }
 
@@ -148,4 +150,5 @@ public class StudyCardsStack extends UDrawable {
     /**
      * Callbacks
      */
+
 }

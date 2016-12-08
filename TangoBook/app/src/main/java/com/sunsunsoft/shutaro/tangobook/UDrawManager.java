@@ -101,6 +101,9 @@ public class UDrawManager {
      * @param page 切り替え先のページ 0ならデフォルトのページ
      */
     public void setCurrentPage(int page) {
+        // 古いページの削除リクエストを処理する
+        removeRequestedList();
+
         // ページリストが存在しなら作成する
         if (!mPageList.containsKey(page)) {
             TreeMap<Integer, DrawList> lists = new TreeMap<>();

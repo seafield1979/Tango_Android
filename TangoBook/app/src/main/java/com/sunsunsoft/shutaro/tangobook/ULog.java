@@ -13,7 +13,7 @@ public class ULog {
      * Constants
      */
     public static final String TAG = "ULog";
-    private static final boolean isCount = false;
+    private static final boolean isCount = true;
 
     /**
      * Static variables
@@ -39,12 +39,12 @@ public class ULog {
      */
     // 初期化、アプリ起動時に１回だけ呼ぶ
     public static void init() {
-        setEnable(ViewTouch.TAG, true);
+        setEnable(ViewTouch.TAG, false);
         setEnable(UDrawManager.TAG, true);
         setEnable(UMenuBar.TAG, false);
         setEnable(UScrollBar.TAG, false);
-        setEnable(UIconWindow.TAG, true);
-        setEnable(UButton.TAG, true);
+        setEnable(UIconWindow.TAG, false);
+        setEnable(UButton.TAG, false);
         setEnable(UColor.TAG, false);
     }
 

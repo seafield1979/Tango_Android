@@ -49,5 +49,6 @@
     <string name="not_learned">未収得</string>
     <string name="finish">終了</string>
     <string name="cards_remain">あと%d枚</string>
+    <string name="confirm_exit">学習を終了しますか？</string>
 
 </resources>
