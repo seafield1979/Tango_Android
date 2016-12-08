@@ -116,6 +116,7 @@ abstract public class UButton extends UDrawable {
             offset = new PointF();
         }
         if (vt.isTouchUp()) {
+            ULog.print(TAG, "touchup:" + isPressed);
             if (isPressed) {
                 isPressed = false;
                 done = true;

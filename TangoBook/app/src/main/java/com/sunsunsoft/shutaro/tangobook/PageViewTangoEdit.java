@@ -146,14 +146,14 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
     public boolean touchEvent(ViewTouch vt) {
         // 手前から順に処理する
-        for (int i=mWindows.length - 1; i >= 0; i--) {
-            UWindow win = mWindows[i];
-            if (!win.isShow()) continue;
-
-            if (win.touchEvent(vt)) {
-                return true;
-            }
-        }
+//        for (int i=mWindows.length - 1; i >= 0; i--) {
+//            UWindow win = mWindows[i];
+//            if (!win.isShow()) continue;
+//
+//            if (win.touchEvent(vt)) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

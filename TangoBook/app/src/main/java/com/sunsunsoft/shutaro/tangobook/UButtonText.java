@@ -15,6 +15,7 @@ public class UButtonText extends UButton {
     /**
      * Consts
      */
+    public static final String TAG = "UButtonText";
 
     /**
      * Member Variables

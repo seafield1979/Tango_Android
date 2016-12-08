@@ -279,7 +279,7 @@ public class UIconWindow extends UWindow {
 
 
         // 描画はDrawManagerに任せるのでDrawManagerに登録
-        instance.drawList = UDrawManager.getInstance().addDrawable(instance);
+//        instance.drawList = UDrawManager.getInstance().addDrawable(instance);
 
         return instance;
     }

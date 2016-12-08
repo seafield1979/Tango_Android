@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -91,11 +92,13 @@ public class TopView extends View
         vt.checkTouchType(e);
 
         // PageManager以下のタッチ処理
-        if (mPageManager.touchEvent(vt)) {
-            invalidate();
-        }
+//        if (mPageManager.touchEvent(vt)) {
+//            ULog.print(TAG, "invalidate1");
+//            invalidate();
+//        }
         // 描画オブジェクトのタッチ処理はすべてUDrawManagerにまかせる
-        else if (UDrawManager.getInstance().touchEvent(vt)) {
+        if (UDrawManager.getInstance().touchEvent(vt)) {
+            ULog.print(TAG, "invalidate2");
             invalidate();
         }
 
