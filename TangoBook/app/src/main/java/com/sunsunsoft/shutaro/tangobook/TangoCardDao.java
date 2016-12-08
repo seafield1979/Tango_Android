@@ -302,6 +302,13 @@ public class TangoCardDao {
     }
 
     /**
+     *
+     */
+    public void copyOne(TangoCard card) {
+
+    }
+
+    /**
      * Delete:
      */
     /**

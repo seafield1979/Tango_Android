@@ -90,5 +90,4 @@ public class StudyCardsManager {
             mNgCards.add(card);
         }
     }
-
 }

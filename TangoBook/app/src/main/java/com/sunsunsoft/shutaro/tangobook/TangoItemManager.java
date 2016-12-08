@@ -72,13 +72,13 @@ public class TangoItemManager {
 //        }
 //
 //        // card
-//        List<TangoCard> cards = null;
+//        List<TangoCard> mCards = null;
 //        if (cardIds.size() > 0) {
-//            cards = RealmManager.getCardDao().selectByIds(cardIds, true);
+//            mCards = RealmManager.getCardDao().selectByIds(cardIds, true);
 //        }
 //        // cardsの各要素にposを設定する処理
 //        int posIndex = 0;
-//        for (TangoCard card : cards) {
+//        for (TangoCard card : mCards) {
 //            while(posIndex < itemPos.size()) {
 //                TangoItemPos item = itemPos.get(posIndex);
 //                if (item.getItemType() == TangoItemType.Card.ordinal() &&

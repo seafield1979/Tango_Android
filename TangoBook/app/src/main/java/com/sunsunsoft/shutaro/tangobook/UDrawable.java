@@ -285,6 +285,7 @@ abstract public class UDrawable {
         }
         startMoving();
 
+        movingType = MovingType.UniformMotion;
         isMoving = true;
         isMovingPos = false;
         isMovingSize = true;

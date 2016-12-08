@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.view.View;
 
 /**
@@ -87,8 +88,11 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
         mCardsStack = new StudyCardsStack(mCardsManager,
                 (mParentView.getWidth() - StudyCard.WIDTH) / 2, TOP_AREA_H,
                 StudyCard.WIDTH,
-                mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H));
+                mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
+                );
         UDrawManager.getInstance().addDrawable(mCardsStack);
+
+        initDrawables();
     }
 
     protected void onHide() {
@@ -105,10 +109,6 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
      * @return
      */
     protected boolean draw(Canvas canvas, Paint paint) {
-        if (isFirst) {
-            isFirst = false;
-            initDrawables();
-        }
 
         boolean done = false;
         if (doAction()) {
@@ -185,6 +185,12 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
                 BUTTON2_W, BUTTON2_H,
                 Color.BLACK, Color.rgb(100,200,100));
         UDrawManager.getInstance().addDrawable(mNgCardsButton);
+
+        // OK/NGボタンの座標をCardsStackに教えてやる
+        PointF _pos = mOkCardsButton.getPos();
+        mCardsStack.setOkBoxPos(_pos.x - mCardsStack.pos.x, _pos.y - mCardsStack.pos.y);
+        _pos = mNgCardsButton.getPos();
+        mCardsStack.setNgBoxPos(_pos.x - mCardsStack.pos.x, _pos.y - mCardsStack.pos.y);
     }
 
     private String getCardsRemainText(int count) {
@@ -212,6 +218,8 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
             case ButtonIdExit:
                 // 終了ボタンを押したら確認用のモーダルダイアログを表示
                 if (mConfirmDialog == null) {
+                    isCloseOk = false;
+
                     mConfirmDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
                             this, this,
                             UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,

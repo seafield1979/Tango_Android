@@ -223,6 +223,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             return;
         }
 
+        // DB上のデータもコピーする
         switch (icon.getType()) {
             case Card: {
 

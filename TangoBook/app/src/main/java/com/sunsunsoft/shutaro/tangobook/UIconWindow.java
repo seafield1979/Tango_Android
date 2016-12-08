@@ -816,6 +816,7 @@ public class UIconWindow extends UWindow {
                         ret.isDroped = true;
                         break;
                     case Book:
+                        if (dragedIcon.getType() != IconType.Card) break;
                     case Trash:
                         // Containerの中に挿入する　
                         moveIconIn(dragedIcon, dropIcon);
