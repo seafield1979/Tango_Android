@@ -1,11 +1,9 @@
 package com.sunsunsoft.shutaro.tangobook;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.view.View;
 
 import java.util.Date;
 
@@ -64,8 +62,6 @@ public class PreStudyWindow extends UWindow {
     /**
      * Member Variables
      */
-    protected View mParentView;
-    protected Context mContext;
     protected UButtonCallbacks mButtonCallbacks;
     protected boolean isUpdate = true;
     private UTextView textTitle, textCount, textLastStudied;
@@ -87,14 +83,11 @@ public class PreStudyWindow extends UWindow {
     /**
      * Constructor
      */
-    public PreStudyWindow(View parentView,
-                          UWindowCallbacks windowCallbacks, UButtonCallbacks buttonCallbacks )
+    public PreStudyWindow(UWindowCallbacks windowCallbacks, UButtonCallbacks buttonCallbacks )
     {
         // width, height はinit内で計算するのでここでは0を設定
         super(windowCallbacks, DrawPriority.Dialog.p(), 0, 0, 0, 0, BG_COLOR);
 
-        mParentView = parentView;
-        mContext = parentView.getContext();
         mButtonCallbacks = buttonCallbacks;
         isShow = false;     // 初期状態は非表示
 
@@ -182,7 +175,8 @@ public class PreStudyWindow extends UWindow {
         int width = BUTTON_W * 2 + MARGIN_H * 3;
 
         // タイトル(単語帳の名前)
-        String title = mContext.getString(R.string.book) + " : " + mBook.getName();
+        String title = UResourceManager.getInstance().getStringById(R.string.book) + " : " + mBook
+                .getName();
         textTitle = UTextView.createInstance( title, TEXT_SIZE_3, 0,
                 UAlignment.CenterX, canvas.getWidth(), false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
@@ -192,7 +186,8 @@ public class PreStudyWindow extends UWindow {
         long count = RealmManager.getItemPosDao().countInParentType(
                 TangoParentType.Book, mBook.getId()
         );
-        textCount = UTextView.createInstance( mContext.getString(R.string.card_count) + ":" + count,
+        textCount = UTextView.createInstance(
+                UResourceManager.getInstance().getStringById(R.string.card_count) + ":" + count,
                 TEXT_SIZE, 0,
                 UAlignment.CenterX, canvas.getWidth(), false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
@@ -200,7 +195,8 @@ public class PreStudyWindow extends UWindow {
 
         // 最終学習日時
         Date studiedTime = mBook.getStudyTime();
-        textLastStudied = UTextView.createInstance( mContext.getString(R.string
+        textLastStudied = UTextView.createInstance(
+                UResourceManager.getInstance().getStringById(R.string
                 .last_studied_date) + ":" + studiedTime,
                 TEXT_SIZE, 0,
                 UAlignment.CenterX, canvas.getWidth(), false, true,
@@ -214,14 +210,14 @@ public class PreStudyWindow extends UWindow {
         // 開始ボタン
         buttons[ButtonId.Start.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudySelect.ButtonIdStartStudy,
-                0, mContext.getString(R.string.start), MARGIN_H, y,
+                0, UResourceManager.getInstance().getStringById(R.string.start), MARGIN_H, y,
                 BUTTON_W, BUTTON2_H,
                 TEXT_COLOR, Color.rgb(100,200,100));
 
         // キャンセルボタン
         buttons[ButtonId.Cancel.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudySelect.ButtonIdCancel,
-                0, mContext.getString(R.string.cancel),
+                0, UResourceManager.getInstance().getStringById(R.string.cancel),
                 MARGIN_H + BUTTON_W + MARGIN_H, y,
                 BUTTON_W, BUTTON2_H,
                 Color.WHITE, Color.rgb(200,100,100));
@@ -230,7 +226,8 @@ public class PreStudyWindow extends UWindow {
 
         // Option1 出題方法
         // タイトル
-        textOption1 = UTextView.createInstance( mContext.getString(R.string.study_type),
+        textOption1 = UTextView.createInstance(
+                UResourceManager.getInstance().getStringById(R.string.study_type),
                 TEXT_SIZE_2, 0,
                 UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
@@ -239,13 +236,14 @@ public class PreStudyWindow extends UWindow {
         // 英語->日本語
         buttons[ButtonId.Option1_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_1,
-                0, mContext.getString(R.string.e_to_j), MARGIN_H, y, BUTTON_W, BUTTON_H,
+                0, UResourceManager.getInstance().getStringById(R.string.e_to_j),
+                MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
         // 日本語->英語
         buttons[ButtonId.Option1_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_2,
-                0, mContext.getString(R.string.j_to_e),
+                0, UResourceManager.getInstance().getStringById(R.string.j_to_e),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
@@ -253,7 +251,8 @@ public class PreStudyWindow extends UWindow {
 
         // Option2 順番
         // タイトル
-        textOption2 = UTextView.createInstance( mContext.getString(R.string.order_type),
+        textOption2 = UTextView.createInstance(
+                UResourceManager.getInstance().getStringById(R.string.order_type),
                 TEXT_SIZE_2, 0,
                 UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
@@ -262,13 +261,14 @@ public class PreStudyWindow extends UWindow {
         // 順番通り
         buttons[ButtonId.Option2_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption2_1,
-                0, mContext.getString(R.string.order_normal), MARGIN_H, y, BUTTON_W, BUTTON_H,
+                0, UResourceManager.getInstance().getStringById(R.string.order_normal),
+                MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
         // ランダム
         buttons[ButtonId.Option2_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption2_2,
-                0, mContext.getString(R.string.order_random),
+                0, UResourceManager.getInstance().getStringById(R.string.order_random),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
@@ -277,7 +277,8 @@ public class PreStudyWindow extends UWindow {
 
         // Option3 学習単語
         // タイトル
-        textOption3 = UTextView.createInstance( mContext.getString(R.string.study_pattern),
+        textOption3 = UTextView.createInstance(
+                UResourceManager.getInstance().getStringById(R.string.study_pattern),
                 TEXT_SIZE_2, 0,
                 UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
@@ -286,13 +287,14 @@ public class PreStudyWindow extends UWindow {
         // すべて
         buttons[ButtonId.Option3_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_1,
-                0, mContext.getString(R.string.all), MARGIN_H, y, BUTTON_W, BUTTON_H,
+                0, UResourceManager.getInstance().getStringById(R.string.all),
+                MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
         // 未収得
         buttons[ButtonId.Option3_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_2,
-                0, mContext.getString(R.string.not_learned),
+                0, UResourceManager.getInstance().getStringById(R.string.not_learned),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
@@ -313,8 +315,8 @@ public class PreStudyWindow extends UWindow {
         buttons[id.ordinal()].setPressedOn(true);
 
         // センタリング
-        pos.x = (mParentView.getWidth() - size.width) / 2;
-        pos.y = (mParentView.getHeight() - size.height) / 2;
+        pos.x = (canvas.getWidth() - size.width) / 2;
+        pos.y = (canvas.getHeight() - size.height) / 2;
 
         setSize(width, y);
 

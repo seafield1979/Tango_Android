@@ -44,8 +44,8 @@ public class MenuBarTangoEdit extends UMenuBar {
     /**
      * Constructor
      */
-    public MenuBarTangoEdit(View parentView, UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor) {
-        super(parentView, callbackClass, parentW, parentH, bgColor);
+    public MenuBarTangoEdit(UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor) {
+        super(callbackClass, parentW, parentH, bgColor);
     }
 
     /**
@@ -60,7 +60,7 @@ public class MenuBarTangoEdit extends UMenuBar {
 
     public static MenuBarTangoEdit createInstance(View parentView, UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor)
     {
-        MenuBarTangoEdit instance = new MenuBarTangoEdit(parentView, callbackClass, parentW, parentH, bgColor);
+        MenuBarTangoEdit instance = new MenuBarTangoEdit( callbackClass, parentW, parentH, bgColor);
         instance.initMenuBar();
         return instance;
     }

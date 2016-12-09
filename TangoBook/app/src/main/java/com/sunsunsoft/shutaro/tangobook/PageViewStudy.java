@@ -14,7 +14,9 @@ import android.view.View;
  * カードが全てOK/NG処理されるまで上から単語カードが降ってくる
  */
 
-public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialogCallbacks{
+public class PageViewStudy extends UPageView
+        implements UButtonCallbacks, UDialogCallbacks, CardsStackCallbacks
+{
     /**
      * Constants
      */
@@ -85,8 +87,6 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
         option3 = MySharedPref.getInstance().readBoolean(MySharedPref.Option3Key);
 
         mCardsManager = new StudyCardsManager(mBook, option1, option2, option3);
-
-        initDrawables();
     }
 
     protected void onHide() {
@@ -104,7 +104,7 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
         int screenH = mParentView.getHeight();
 
         // カードスタック
-        mCardsStack = new StudyCardsStack(mCardsManager,
+        mCardsStack = new StudyCardsStack(mCardsManager, this,
                 (mParentView.getWidth() - StudyCard.WIDTH) / 2, TOP_AREA_H,
                 StudyCard.WIDTH,
                 mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
@@ -214,5 +214,13 @@ public class PageViewStudy extends UPageView implements UButtonCallbacks, UDialo
         if (dialog == mConfirmDialog) {
             mConfirmDialog = null;
         }
+    }
+
+    /**
+     * CardsStackCallbacks
+     */
+    public void CardsStackChangedCardNum(int count) {
+        String title = getCardsRemainText(count);
+        mTextCardCount.setText(title);
     }
 }

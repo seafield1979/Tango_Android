@@ -1,14 +1,12 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.view.View;
 
 import java.util.List;
 
@@ -52,9 +50,9 @@ public class IconBook extends IconContainer {
     /**
      * Constructor
      */
-    public IconBook(TangoBook book, View parentView, UIconWindow parentWindow, UIconCallbacks
+    public IconBook(TangoBook book, UIconWindow parentWindow, UIconCallbacks
             iconCallbacks) {
-        super(parentView, parentWindow, iconCallbacks, IconType.Book, 0, 0, ICON_W, ICON_H);
+        super(parentWindow, iconCallbacks, IconType.Book, 0, 0, ICON_W, ICON_H);
 
         this.book = book;
         updateTitle();
@@ -63,7 +61,7 @@ public class IconBook extends IconContainer {
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        image = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.notebook);
+        image = UResourceManager.getInstance().getBitmapById(R.drawable.notebook);
 
         // データベースから配下のCardを読み込む
         List<TangoCard> cards = RealmManager.getItemPosDao().selectCardsByBookId(book.getId());

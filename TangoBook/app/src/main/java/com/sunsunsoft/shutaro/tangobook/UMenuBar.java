@@ -1,12 +1,9 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
-import android.view.View;
 
 import java.util.LinkedList;
 
@@ -24,7 +21,6 @@ abstract public class UMenuBar extends UWindow {
     protected static final int MARGIN_TOP = 15;
 
 
-    protected View mParentView;
     protected UMenuItemCallbacks mMenuItemCallbacks;
     protected LinkedList<UMenuItem> topItems;
     protected LinkedList<UMenuItem> items;
@@ -41,12 +37,11 @@ abstract public class UMenuBar extends UWindow {
     /**
      * Constructor
      */
-    public UMenuBar(View parentView, UMenuItemCallbacks callbackClass,
+    public UMenuBar(UMenuItemCallbacks callbackClass,
                     int parentW, int parentH,
                     int bgColor)
     {
         super(null, DRAW_PRIORITY, 0, parentH - MENU_BAR_H, parentW, MENU_BAR_H, bgColor);
-        mParentView = parentView;
         mMenuItemCallbacks = callbackClass;
         topItems = new LinkedList<>();
         items = new LinkedList<>();
@@ -70,7 +65,7 @@ abstract public class UMenuBar extends UWindow {
      * @param bmpId
      */
     protected UMenuItem addTopMenuItem(int menuId, int bmpId) {
-        Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(), bmpId);
+        Bitmap bmp = UResourceManager.getInstance().getBitmapById(bmpId);
         UMenuItem item = new UMenuItem(this, menuId, bmp);
         item.setCallbacks(mMenuItemCallbacks);
         item.setShow(true);
@@ -91,7 +86,7 @@ abstract public class UMenuBar extends UWindow {
      * @return
      */
     protected UMenuItem addMenuItem(UMenuItem parent, int menuId, int bmpId) {
-        Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(), bmpId);
+        Bitmap bmp = UResourceManager.getInstance().getBitmapById(bmpId);
         UMenuItem item = new UMenuItem(this, menuId, bmp);
         item.setCallbacks(mMenuItemCallbacks);
         item.setParentItem(parent);

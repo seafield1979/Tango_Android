@@ -1,7 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -151,8 +150,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
         // アクションボタン
         int x = ICON_MARGIN_H;
         for (ActionIcons icon : icons) {
-            Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(),
-                    icon.getImageId());
+            Bitmap bmp = UResourceManager.getInstance().getBitmapById(icon.getImageId());
             UButtonImage imageButton = UButtonImage.createButton( this,
                             icon.ordinal(), 0,
                             x, y,
@@ -160,8 +158,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
             // お気に入りだけは２つ画像を登録する
             if (icon == ActionIcons.Favorite) {
-                bmp = BitmapFactory.decodeResource(mParentView.getResources(),
-                        R.drawable.favorites2);
+                bmp = UResourceManager.getInstance().getBitmapById(R.drawable.favorites2);
                 imageButton.addState(bmp);
                 if (mCard.getStar()) {
                     imageButton.setState(mCard.getStar() ? 1 : 0);

@@ -59,6 +59,8 @@ public class StudyCard extends UDrawable{
     protected TangoCard mCard;
     protected boolean isTouching;
     protected float slideX;
+    protected boolean showArrow;
+
     // ボックス移動要求（親への通知用)
     protected RequestToParent moveRequest = RequestToParent.None;
     protected RequestToParent lastRequest = RequestToParent.None;
@@ -75,9 +77,12 @@ public class StudyCard extends UDrawable{
      * Get/Set
      */
 
-
     public TangoCard getTangoCard() {
         return mCard;
+    }
+
+    public boolean isShowArrow() {
+        return showArrow;
     }
 
     /**
@@ -193,6 +198,11 @@ public class StudyCard extends UDrawable{
             String text = isTouching ? wordA : wordB;
             UDraw.drawText(canvas, text, UAlignment.Center, TEXT_SIZE,
                     _pos.x + size.width / 2, _pos.y + size.height / 2, TEXT_COLOR);
+        }
+
+        // 矢印
+        if (showArrow) {
+
         }
     }
 

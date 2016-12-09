@@ -37,13 +37,12 @@ public class MenuBarStudySelect extends UMenuBar {
     /**
      * Constructor
      */
-    public MenuBarStudySelect(View parentView, UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor) {
-        super(parentView, callbackClass, parentW, parentH, bgColor);
+    public MenuBarStudySelect(UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor) {
+        super(callbackClass, parentW, parentH, bgColor);
     }
 
     /**
      * メニューバーを生成する
-     * @param parentView
      * @param callbackClass
      * @param parentW     親Viewのwidth
      * @param parentH    親Viewのheight
@@ -51,9 +50,9 @@ public class MenuBarStudySelect extends UMenuBar {
      * @return
      */
 
-    public static MenuBarStudySelect createInstance(View parentView, UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor)
+    public static MenuBarStudySelect createInstance(UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor)
     {
-        MenuBarStudySelect instance = new MenuBarStudySelect(parentView, callbackClass, parentW, parentH, bgColor);
+        MenuBarStudySelect instance = new MenuBarStudySelect(callbackClass, parentW, parentH, bgColor);
         instance.initMenuBar();
         return instance;
     }

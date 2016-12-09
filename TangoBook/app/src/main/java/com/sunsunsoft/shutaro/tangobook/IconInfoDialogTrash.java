@@ -1,7 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -140,8 +139,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         // Action buttons
         int x = ICON_MARGIN_H;
         for (ActionIcons icon : icons) {
-            Bitmap bmp = BitmapFactory.decodeResource(mParentView.getResources(),
-                    icon.getImageId());
+            Bitmap bmp = UResourceManager.getInstance().getBitmapById(icon.getImageId());
 
             UButtonImage imageButton = UButtonImage.createButton( this,
                     icon.ordinal(), 0,

@@ -13,6 +13,14 @@ import java.util.LinkedList;
  * カードをスライドしてボックスにふり分ける
  */
 
+interface CardsStackCallbacks {
+    /**
+     * 残りのカード枚数が変わった
+     * @param cardNum
+     */
+    void CardsStackChangedCardNum(int cardNum);
+}
+
 public class StudyCardsStack extends UDrawable {
     /**
      * Enums
@@ -37,6 +45,7 @@ public class StudyCardsStack extends UDrawable {
      */
     protected int mMaxCardNum;
     protected StudyCardsManager mCardManager;
+    protected CardsStackCallbacks cardsStackCallbacks;
 
     // 表示前のCard
     protected LinkedList<StudyCard> mCardsInBackYard = new LinkedList<>();
@@ -73,11 +82,13 @@ public class StudyCardsStack extends UDrawable {
      * Constructor
      */
     public StudyCardsStack(StudyCardsManager cardManager,
+                           CardsStackCallbacks cardsStackCallbacks,
                            float x, float y,
                            int width, int maxHeight)
     {
         super(90, x, y, width, 0 );
 
+        this.cardsStackCallbacks = cardsStackCallbacks;
         mMaxCardNum = maxHeight / (StudyCard.HEIGHT + MARGIN_V);
         size.height = mMaxCardNum * (StudyCard.HEIGHT + MARGIN_V);
         mCardManager = cardManager;
@@ -147,6 +158,10 @@ public class StudyCardsStack extends UDrawable {
                 }
                 mToBoxCards.add(card);
                 mCards.remove(card);
+
+                if (cardsStackCallbacks != null) {
+                    cardsStackCallbacks.CardsStackChangedCardNum(getCardCount());
+                }
             }
 
             if (breakLoop) {

@@ -36,13 +36,13 @@ abstract public class IconContainer extends UIcon {
     /**
      * Constructor
      */
-    public IconContainer(View parentView, UIconWindow parentWindow, UIconCallbacks iconCallbacks,
+    public IconContainer(UIconWindow parentWindow, UIconCallbacks iconCallbacks,
                          IconType type, float x,
                  float y, int width, int height)
     {
-        super(parentView, parentWindow, iconCallbacks, type, x, y, width, height);
+        super(parentWindow, iconCallbacks, type, x, y, width, height);
 
         // 内包するアイコン
-        mIconManager = UIconManager.createInstance(parentView, subWindow, iconCallbacks);
+        mIconManager = UIconManager.createInstance(subWindow, iconCallbacks);
     }
 }

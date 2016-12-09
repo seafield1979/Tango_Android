@@ -127,11 +127,11 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         }
 
         // Main
-        UIconWindowStudySelect mainWindow = UIconWindowStudySelect.createInstance(mParentView, this, this, true, winDir, size1.width, size1.height, Color.WHITE);
+        UIconWindowStudySelect mainWindow = UIconWindowStudySelect.createInstance( this, this, true, winDir, size1.width, size1.height, Color.WHITE);
         mWindows[WindowType.Icon1.ordinal()] = mainWindow;
 
         // Sub
-        UIconWindow subWindow = UIconWindow.createInstance(mParentView, this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
+        UIconWindow subWindow = UIconWindow.createInstance( this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
         subWindow.isShow = false;
         mWindows[WindowType.Icon2.ordinal()] = subWindow;
 
@@ -144,16 +144,16 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         subWindow.init();
 
         // PreStudyWindow 学習開始前に設定を行うウィンドウ
-        mPreStudyWindow = new PreStudyWindow(mParentView, this, this);
+        mPreStudyWindow = new PreStudyWindow( this, this);
 
         // UMenuBar
-        mMenuBar = MenuBarStudySelect.createInstance(mParentView, this, width, height,
+        mMenuBar = MenuBarStudySelect.createInstance( this, width, height,
                 Color.BLACK);
         mWindows[WindowType.MenuBar.ordinal()] = mMenuBar;
 
         // ULogWindow
         if (mLogWin == null) {
-            mLogWin = ULogWindow.createInstance(mContext, mParentView, LogWindowType.Fix,
+            mLogWin = ULogWindow.createInstance(mContext, LogWindowType.Fix,
                     0, 0, width, height);
             mWindows[WindowType.Log.ordinal()] = mLogWin;
             ULog.setLogWindow(mLogWin);

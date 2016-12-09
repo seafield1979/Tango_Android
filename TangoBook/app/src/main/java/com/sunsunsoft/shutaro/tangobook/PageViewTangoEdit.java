@@ -101,11 +101,11 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         }
 
         // Main
-        UIconWindow mainWindow = UIconWindow.createInstance(mParentView, this, this, true, winDir, size1.width, size1.height, Color.WHITE);
+        UIconWindow mainWindow = UIconWindow.createInstance(this, this, true, winDir, size1.width, size1.height, Color.WHITE);
         mWindows[WindowType.Icon1.ordinal()] = mainWindow;
 
         // Sub
-        UIconWindow subWindow = UIconWindow.createInstance(mParentView, this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
+        UIconWindow subWindow = UIconWindow.createInstance(this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
         subWindow.isShow = false;
         mWindows[WindowType.Icon2.ordinal()] = subWindow;
 
@@ -124,7 +124,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
         // ULogWindow
         if (mLogWin == null) {
-            mLogWin = ULogWindow.createInstance(mContext, mParentView, LogWindowType.Fix,
+            mLogWin = ULogWindow.createInstance(mContext, LogWindowType.Fix,
                     0, 0, width, height);
             mWindows[WindowType.Log.ordinal()] = mLogWin;
             ULog.setLogWindow(mLogWin);

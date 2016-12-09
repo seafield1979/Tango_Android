@@ -52,17 +52,15 @@ public class ULogWindow extends UWindow {
     /**
      * インスタンスを生成する
      * @param context
-     * @param parentView
      * @param width
      * @param height
      * @return
      */
-    public static ULogWindow createInstance(Context context, View parentView,
+    public static ULogWindow createInstance(Context context,
                                             LogWindowType type,
                                             float x, float y, int width, int height)
     {
         ULogWindow instance = new ULogWindow( x, y, width, height, Color.argb(128,0,0,0));
-        instance.parentView = parentView;
         instance.context = context;
         instance.type = type;
         instance.init();

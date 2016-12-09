@@ -21,6 +21,10 @@ public class PageViewResult extends UPageView implements UButtonCallbacks{
      * Methods
      */
 
+    public void onShow() {
+
+    }
+
     public void onHide() {
         isFirst = true;
     }

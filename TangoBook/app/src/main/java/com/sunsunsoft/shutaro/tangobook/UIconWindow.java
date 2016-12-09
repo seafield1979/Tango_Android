@@ -247,7 +247,7 @@ public class UIconWindow extends UWindow {
     /**
      * Constructor
      */
-    protected UIconWindow(View parent, UWindowCallbacks windowCallbacks,
+    protected UIconWindow(UWindowCallbacks windowCallbacks,
                         UIconCallbacks iconCallbacks,
                         boolean isHome, WindowDir dir,
                         int width, int height, int bgColor) {
@@ -259,7 +259,7 @@ public class UIconWindow extends UWindow {
             type = WindowType.Sub;
             addCloseIcon();
         }
-        mIconManager = UIconManager.createInstance(parent, this, iconCallbacks);
+        mIconManager = UIconManager.createInstance(this, iconCallbacks);
         this.windowCallbacks = windowCallbacks;
         this.dir = dir;
     }
@@ -269,17 +269,13 @@ public class UIconWindow extends UWindow {
      * It doesn't allow to create multi Home windows.
      * @return
      */
-    public static UIconWindow createInstance(View parent, UWindowCallbacks windowCallbacks,
+    public static UIconWindow createInstance( UWindowCallbacks windowCallbacks,
                                              UIconCallbacks iconCallbacks,
                                              boolean isHome, WindowDir dir,
                                              int width, int height, int bgColor)
     {
-        UIconWindow instance = new UIconWindow(parent, windowCallbacks,
+        UIconWindow instance = new UIconWindow( windowCallbacks,
                 iconCallbacks, isHome, dir, width, height, bgColor);
-
-
-        // 描画はDrawManagerに任せるのでDrawManagerに登録
-//        instance.drawList = UDrawManager.getInstance().addDrawable(instance);
 
         return instance;
     }

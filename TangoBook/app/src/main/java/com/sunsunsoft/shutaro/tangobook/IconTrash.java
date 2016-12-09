@@ -1,14 +1,12 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.view.View;
 
 /**
  * Created by shutaro on 2016/11/21.
@@ -47,19 +45,19 @@ public class IconTrash extends IconContainer {
     /**
      * Constructor
      */
-    public IconTrash(View parentView, UIconWindow parentWindow, UIconCallbacks iconCallbacks) {
+    public IconTrash(UIconWindow parentWindow, UIconCallbacks iconCallbacks) {
         // 自動整列するので座標は設定しない
-        super(parentView, parentWindow, iconCallbacks, IconType.Trash,
+        super( parentWindow, iconCallbacks, IconType.Trash,
                 0, 0, ICON_W, ICON_H);
 
-        title = parentView.getContext().getString(R.string.trash);
+        title = UResourceManager.getInstance().getStringById(R.string.trash);
         setColor(ICON_COLOR);
 
         // 中のアイコンを表示するためのSubWindow
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        image = image2 = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.trash);
+        image = image2 = UResourceManager.getInstance().getBitmapById(R.drawable.trash);
     }
 
     /**

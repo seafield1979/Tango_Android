@@ -21,11 +21,11 @@ public class UIconWindowStudySelect extends UIconWindow {
     /**
      * Constructor
      */
-    public UIconWindowStudySelect(View parent, UWindowCallbacks windowCallbacks,
+    public UIconWindowStudySelect( UWindowCallbacks windowCallbacks,
                                   UIconCallbacks iconCallbacks,
                                   boolean isHome, WindowDir dir,
                                   int width, int height, int bgColor) {
-        super(parent, windowCallbacks,
+        super(windowCallbacks,
                 iconCallbacks, isHome, dir, width, height, bgColor);
     }
 
@@ -34,12 +34,12 @@ public class UIconWindowStudySelect extends UIconWindow {
      * It doesn't allow to create multi Home windows.
      * @return
      */
-    public static UIconWindowStudySelect createInstance(View parent, UWindowCallbacks windowCallbacks,
+    public static UIconWindowStudySelect createInstance( UWindowCallbacks windowCallbacks,
                                              UIconCallbacks iconCallbacks,
                                              boolean isHome, WindowDir dir,
                                              int width, int height, int bgColor)
     {
-        UIconWindowStudySelect instance = new UIconWindowStudySelect(parent, windowCallbacks,
+        UIconWindowStudySelect instance = new UIconWindowStudySelect( windowCallbacks,
                 iconCallbacks, isHome, dir, width, height, bgColor);
 
 

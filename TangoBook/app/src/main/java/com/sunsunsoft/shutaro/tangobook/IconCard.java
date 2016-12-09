@@ -1,15 +1,12 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
-import android.view.View;
 
 /**
  * 単語カードのアイコン
@@ -42,17 +39,17 @@ public class IconCard extends UIcon{
      * Constructor
      */
 
-    public IconCard(TangoCard card, View parentView, UIconWindow parentWindow, UIconCallbacks
+    public IconCard(TangoCard card, UIconWindow parentWindow, UIconCallbacks
             iconCallbacks)
     {
-        this(card, parentView, parentWindow, iconCallbacks, 0, 0);
+        this(card, parentWindow, iconCallbacks, 0, 0);
 
     }
 
-    public IconCard(TangoCard card, View parentView, UIconWindow parentWindow, UIconCallbacks
+    public IconCard(TangoCard card, UIconWindow parentWindow, UIconCallbacks
             iconCallbacks, int x, int y)
     {
-        super(parentView, parentWindow, iconCallbacks, IconType.Card,
+        super(parentWindow, iconCallbacks, IconType.Card,
                 x, y, ICON_W, ICON_H);
 
         this.card = card;
@@ -60,7 +57,7 @@ public class IconCard extends UIcon{
         setColor(ICON_COLOR);
 
         // アイコン画像の読み込み
-        image = BitmapFactory.decodeResource(mParentView.getResources(), R.drawable.card2);
+        image = UResourceManager.getInstance().getBitmapById(R.drawable.card2);
     }
 
     /**
