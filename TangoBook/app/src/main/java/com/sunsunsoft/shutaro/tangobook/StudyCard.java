@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -45,6 +46,10 @@ public class StudyCard extends UDrawable{
     protected static final int TEXT_COLOR = Color.BLACK;
     protected static final int BG_COLOR = Color.rgb(200,100,200);
 
+    protected static final int ARROW_W = 150;
+    protected static final int ARROW_H = 150;
+    protected static final int ARROW_MARGIN = 50;
+
     // スライド系
     // 左右にスライドできる距離。これ以上スライドするとOK/NGボックスに入る
     protected static final int SLIDE_LEN = 300;
@@ -60,6 +65,7 @@ public class StudyCard extends UDrawable{
     protected boolean isTouching;
     protected float slideX;
     protected boolean showArrow;
+    protected Bitmap arrowL, arrowR;
 
     // ボックス移動要求（親への通知用)
     protected RequestToParent moveRequest = RequestToParent.None;
@@ -108,6 +114,9 @@ public class StudyCard extends UDrawable{
         }
         mState = State.None;
         mCard = card;
+
+        arrowL = UResourceManager.getInstance().getBitmapById(R.drawable.arrow_l);
+        arrowR = UResourceManager.getInstance().getBitmapById(R.drawable.arrow_r);
     }
 
     /**
@@ -116,6 +125,7 @@ public class StudyCard extends UDrawable{
     public void startMoving(float dstX, float dstY, int frame) {
         startMoving(MovingType.Deceleration, dstX, dstY, frame);
         setBasePos(dstX, dstY);
+        showArrow = false;
         mState = State.Moving;
     }
 
@@ -162,10 +172,16 @@ public class StudyCard extends UDrawable{
      */
     public void endMoving() {
         mState = State.None;
-        if (lastRequest == RequestToParent.MoveToOK) {
-            moveRequest = RequestToParent.MoveIntoOK;
-        } else if (lastRequest == RequestToParent.MoveToNG) {
-            moveRequest = RequestToParent.MoveIntoNG;
+        switch(lastRequest) {
+            case None:
+                showArrow = true;
+                break;
+            case MoveToOK:
+                moveRequest = RequestToParent.MoveIntoOK;
+                break;
+            case MoveToNG:
+                moveRequest = RequestToParent.MoveIntoNG;
+                break;
         }
     }
 
@@ -201,8 +217,19 @@ public class StudyCard extends UDrawable{
         }
 
         // 矢印
-        if (showArrow) {
+        if (showArrow && !isTouching) {
+            int y = (int)(_pos.y + (size.height - ARROW_H) / 2);
+            canvas.drawBitmap(arrowL,
+                    new Rect(0,0,arrowL.getWidth(), arrowL.getHeight()),
+                    new Rect((int)_pos.x - ARROW_MARGIN - ARROW_W, y,
+                            (int)_pos.x - ARROW_MARGIN, y + ARROW_H),
+                    paint);
 
+            canvas.drawBitmap(arrowR,
+                    new Rect(0,0,arrowR.getWidth(), arrowR.getHeight()),
+                    new Rect((int)_pos.x + size.width + ARROW_MARGIN, y,
+                            (int)_pos.x + size.width + ARROW_MARGIN + ARROW_W, y + ARROW_H),
+                    paint);
         }
     }
 
