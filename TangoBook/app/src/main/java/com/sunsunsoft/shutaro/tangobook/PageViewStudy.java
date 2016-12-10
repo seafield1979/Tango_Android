@@ -18,6 +18,15 @@ public class PageViewStudy extends UPageView
         implements UButtonCallbacks, UDialogCallbacks, CardsStackCallbacks
 {
     /**
+     * Enums
+     */
+    enum State {
+        Start,
+        Main,
+        Finish
+    }
+
+    /**
      * Constants
      */
     public static final String TAG = "PageViewStudy";
@@ -44,6 +53,8 @@ public class PageViewStudy extends UPageView
     /**
      * Member variables
      */
+    private State mState;
+
     private boolean option1, option2, option3;
     private StudyCardsManager mCardsManager;
     private StudyCardsStack mCardsStack;
@@ -81,6 +92,8 @@ public class PageViewStudy extends UPageView
     protected void onShow() {
         UDrawManager.getInstance().init();
 
+        mState = State.Main;
+
         // get options
         option1 = MySharedPref.getInstance().readBoolean(MySharedPref.Option1Key);
         option2 = MySharedPref.getInstance().readBoolean(MySharedPref.Option2Key);
@@ -94,6 +107,22 @@ public class PageViewStudy extends UPageView
         mCardsStack.cleanUp();
         mCardsStack = null;
         isFirst = true;
+    }
+
+    /**
+     * 毎フレームの処理
+     * @return true:処理中
+     */
+    public boolean doAction() {
+        switch (mState) {
+            case Start:
+                break;
+            case Main:
+                break;
+            case Finish:
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -222,5 +251,16 @@ public class PageViewStudy extends UPageView
     public void CardsStackChangedCardNum(int count) {
         String title = getCardsRemainText(count);
         mTextCardCount.setText(title);
+
+
+    }
+
+    /**
+     */
+    public void CardsStackFinished() {
+        // カードが０になったので学習完了
+        mState = State.Finish;
+        UPageViewManager.getInstance().changePage(PageView.StudyResult);
+        mParentView.invalidate();
     }
 }

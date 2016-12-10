@@ -33,7 +33,7 @@ public class PageViewResult extends UPageView implements UButtonCallbacks{
      * そのページで表示される描画オブジェクトを初期化する
      */
     public void initDrawables() {
-
+        UDrawManager.getInstance().init();
     }
 
     /**

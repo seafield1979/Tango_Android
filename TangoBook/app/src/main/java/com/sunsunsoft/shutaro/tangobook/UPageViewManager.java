@@ -10,10 +10,10 @@ import java.util.LinkedList;
 
 enum PageView {
     Title,              // タイトル画面
-    TangoEdit,          // 単語帳を編集
-    TangoSelect,        // 学習する単語帳を選択する
-    TangoStudy,         // 単語帳学習
-    TangoResult,        // 単語帳結果
+    Edit,          // 単語帳を編集
+    StudySelect,        // 学習する単語帳を選択する
+    Study,         // 単語帳学習
+    StudyResult,        // 単語帳結果
     Settings,
     ;
 }
@@ -90,21 +90,21 @@ public class UPageViewManager {
         page = new PageViewTitle(mContext, mParentView);
         pages[PageView.Title.ordinal()] = page;
 
-        // TangoEdit
+        // Edit
         page = new PageViewTangoEdit(mContext, mParentView);
-        pages[PageView.TangoEdit.ordinal()] = page;
+        pages[PageView.Edit.ordinal()] = page;
 
-        // TangoSelect
+        // StudySelect
         page = new PageViewStudySelect(mContext, mParentView);
-        pages[PageView.TangoSelect.ordinal()] = page;
+        pages[PageView.StudySelect.ordinal()] = page;
 
-        // TangoStudy
+        // Study
         page = new PageViewStudy(mContext, mParentView);
-        pages[PageView.TangoStudy.ordinal()] = page;
+        pages[PageView.Study.ordinal()] = page;
 
         // TangoResult
         page = new PageViewResult(mContext, mParentView);
-        pages[PageView.TangoResult.ordinal()] = page;
+        pages[PageView.StudyResult.ordinal()] = page;
 
         // Settings
         page = new PageViewSettings(mContext, mParentView);
@@ -159,7 +159,7 @@ public class UPageViewManager {
      */
     public void changePage(PageView pageId) {
         if (pageIdStack.size() > 0) {
-            // 古いページの後処理
+            // 古いページの後処理(onHide)
             PageView page = pageIdStack.getLast();
             pages[page.ordinal()].onHide();
 
@@ -168,7 +168,7 @@ public class UPageViewManager {
         }
         pageIdStack.add(pageId);
 
-        // 新しいページの前処理
+        // 新しいページの前処理(onShow)
         pageId = pageIdStack.getLast();
         pages[pageId.ordinal()].onShow();
     }
@@ -219,9 +219,9 @@ public class UPageViewManager {
      * @param book
      */
     public void startStudyPage(TangoBook book) {
-        PageViewStudy studyPage = (PageViewStudy)pages[PageView.TangoStudy.ordinal()];
+        PageViewStudy studyPage = (PageViewStudy)pages[PageView.Study.ordinal()];
         studyPage.setBook(book);
-        stackPage(PageView.TangoStudy);
+        stackPage(PageView.Study);
     }
 
     /**

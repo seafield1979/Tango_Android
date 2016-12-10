@@ -1,9 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.View;
 
 /**
@@ -115,10 +113,10 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         ButtonId buttonId = ButtonId.toEnum(id);
         switch(buttonId) {
             case Edit:
-                UPageViewManager.getInstance().stackPage(PageView.TangoEdit);
+                UPageViewManager.getInstance().stackPage(PageView.Edit);
                 break;
             case Study:
-                UPageViewManager.getInstance().stackPage(PageView.TangoSelect);
+                UPageViewManager.getInstance().stackPage(PageView.StudySelect);
                 break;
             case Settings:
                 UPageViewManager.getInstance().stackPage(PageView.Settings);

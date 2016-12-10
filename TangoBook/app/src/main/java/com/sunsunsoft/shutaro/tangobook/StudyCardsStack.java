@@ -19,6 +19,12 @@ interface CardsStackCallbacks {
      * @param cardNum
      */
     void CardsStackChangedCardNum(int cardNum);
+
+    /**
+     * カードが０になった
+     */
+    void CardsStackFinished();
+
 }
 
 public class StudyCardsStack extends UDrawable {
@@ -181,6 +187,9 @@ public class StudyCardsStack extends UDrawable {
                     card.setMoveRequest(StudyCard.RequestToParent.None);
                     mToBoxCards.remove(card);
                     breakLoop = true;
+                    if (getCardCount() == 0) {
+                        cardsStackCallbacks.CardsStackFinished();
+                    }
                     break;
             }
             if (breakLoop) break;
