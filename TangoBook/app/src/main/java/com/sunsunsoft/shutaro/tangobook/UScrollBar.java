@@ -7,25 +7,18 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 // スクロールバーの配置場所
-enum ScrollBarType {
-    Top,
+enum ScrollBarLocation {
     Bottom,
-    Left,
     Right
 }
 
-// スクロールバーの配置場所2
-enum ScrollBarInOut {
-    In,
-    Out
+// スクロールバーの表示タイプ
+enum ScrollBarShowType {
+    Show,           // 必要なら表示
+    Show2,          // 必要なら表示（自動で非表示になる）
+    ShowAllways     // 常に表示
 }
 
-// スクロールバーのバーの位置設定用
-enum ScrollBarPos {
-    Top,
-    Center,
-    Bottom
-}
 
 /**
  * 自前で描画するスクロールバー
@@ -38,37 +31,45 @@ enum ScrollBarPos {
  *  指定のViewに張り付くように配置
  */
 public class UScrollBar {
+    /**
+     * Constants
+     */
     public static final String TAG = "UScrollBar";
+
+    // colors
+    private static final int SHOW2_BG_COLOR = Color.argb(160, 255,128,0);
+    private static final int SHOW_BAR_COLOR = Color.argb(255, 255,128,0);
+    private static final int SHOW_BG_COLOR = Color.argb(128,255,255,255);
 
     /**
      * Membar Variables
      */
-    private ScrollBarType type;
-    private ScrollBarInOut inOut;
+    private ScrollBarLocation location;
+    private ScrollBarShowType showType;
     private boolean isShow;
 
-    private PointF pos = new PointF();
-    private PointF parentPos;
-    private int bgColor, barColor;
+    public PointF pos = new PointF();
+    public PointF parentPos;
+    public int bgColor, barColor;
     private boolean isDraging;
 
     // スクリーン座標系
-    private int bgLength, bgWidth;
-    private float barPos;        // バーの座標（縦ならy,横ならx)
-    private int barLength;       // バーの長さ(縦バーなら高さ、横バーなら幅)
+    public int bgLength, bgWidth;
+    public float barPos;        // バーの座標（縦ならy,横ならx)
+    public int barLength;       // バーの長さ(縦バーなら高さ、横バーなら幅)
 
     // コンテンツ座標系
-    private long contentLen;       // コンテンツ領域のサイズ
-    private long pageLen;          // 表示画面のサイズ
-    private long topPos;         // スクロールの現在の位置
+    public long contentLen;       // コンテンツ領域のサイズ
+    public long pageLen;          // 表示画面のサイズ
+    public long topPos;         // スクロールの現在の位置
 
     // 縦のスクロールバーか
     private boolean isVertical() {
-        return (type == ScrollBarType.Left || type == ScrollBarType.Right);
+        return (location == ScrollBarLocation.Right);
     }
     // 横のスクロールバーか
     private boolean isHorizontal() {
-        return (type == ScrollBarType.Top || type == ScrollBarType.Bottom);
+        return (location == ScrollBarLocation.Bottom);
     }
 
     /**
@@ -87,12 +88,13 @@ public class UScrollBar {
     }
 
     private void updateBarLength() {
-        ULog.print(TAG, "pageLen:" + pageLen + " contentLen:" + contentLen);
         if (pageLen >= contentLen) {
             // 表示領域よりコンテンツの領域が小さいので表示不要
             barLength = 0;
             topPos = 0;
-            isShow = false;
+            if (showType != ScrollBarShowType.ShowAllways) {
+                isShow = false;
+            }
         } else {
             barLength = (int) (this.bgLength * ((float) pageLen / (float) contentLen));
             isShow = true;
@@ -119,33 +121,41 @@ public class UScrollBar {
      * コンストラクタ
      * 指定のViewに張り付くタイプのスクロールバーを作成
      *
-     * @param type
-     * @param inOut
+     * @param location
+     * @param showType
      * @param parentPos
      * @param viewWidth
      * @param viewHeight
-     * @param width
+     * @param bgWidth
      * @param pageLen   1ページ分のコンテンツの長さ
      * @param contentLen  全体のコンテンツの長さ
      */
-    public UScrollBar(ScrollBarType type, ScrollBarInOut inOut,
-                      PointF parentPos, int viewWidth, int viewHeight, int width,
+    public UScrollBar(ScrollBarLocation location, ScrollBarShowType showType,
+                      PointF parentPos, int viewWidth, int viewHeight, int bgWidth,
                       long pageLen, long contentLen ) {
-        this.type = type;
-        this.inOut = inOut;
+        this.location = location;
+        this.showType = showType;
+        if (showType == ScrollBarShowType.ShowAllways) {
+            isShow = true;
+        }
         this.parentPos = parentPos;
         topPos = 0;
         barPos = 0;
-        this.bgWidth = width;
+        this.bgWidth = bgWidth;
         this.contentLen = contentLen;
         this.pageLen = pageLen;
 
         updateBarLength();
 
-        bgColor = Color.argb(128,255,255,255);
-        barColor = Color.argb(255, 255,128,0);
+        if (showType == ScrollBarShowType.Show2) {
+            bgColor = 0;
+            barColor = SHOW2_BG_COLOR;
+        } else {
+            bgColor = SHOW_BAR_COLOR;
+            barColor = SHOW_BG_COLOR;
+        }
 
-        updateSize(viewWidth, viewHeight);
+        updateSize(viewWidth, viewHeight, true);
     }
 
     /**
@@ -153,42 +163,20 @@ public class UScrollBar {
      * @param viewW
      * @param viewH
      */
-    public void updateSize(int viewW, int viewH) {
-        switch (type) {
-            case Top:
-                pos.x = 0;
-                bgLength = viewW;
-                if (inOut == ScrollBarInOut.In) {
-                    pos.y = 0;
-                } else {
-                    pos.y = -bgWidth;
-                }
-                break;
+    public void updateSize(int viewW, int viewH, boolean init) {
+        switch (location) {
             case Bottom:
                 pos.x = 0;
                 bgLength = viewW;
-                if (inOut == ScrollBarInOut.In) {
+                if (init) {
                     pos.y = viewH - bgWidth;
-                } else {
-                    pos.y = viewH;
-                }
-                break;
-            case Left:
-                pos.y = 0;
-                bgLength = viewH;
-                if (inOut == ScrollBarInOut.In) {
-                    pos.x = 0;
-                } else {
-                    pos.x = -bgWidth;
                 }
                 break;
             case Right:
                 pos.y = 0;
                 bgLength = viewH;
-                if (inOut == ScrollBarInOut.In) {
+                if (init) {
                     pos.x = viewW - bgWidth;
-                } else {
-                    pos.x = viewW;
                 }
                 break;
         }
@@ -220,27 +208,13 @@ public class UScrollBar {
         this.topPos = _pos;
     }
 
-    public void updateBarPos() {
-        barPos = (topPos / (float)contentLen) * bgLength;
+    public void updateScroll(long pos) {
+        barPos = (pos / (float)contentLen) * bgLength;
+        this.topPos = pos;
     }
 
-    /**
-     * バーの位置を設定する
-     */
-    public long setBarPos(ScrollBarPos pos) {
-        switch(pos) {
-            case Top:
-                topPos = 0;
-                break;
-            case Center:
-                topPos = (contentLen - pageLen) / 2;
-                break;
-            case Bottom:
-                topPos = contentLen - pageLen;
-                break;
-        }
-        updateBarPos();
-        return topPos;
+    public void updateBarPos() {
+        barPos = (topPos / (float)contentLen) * bgLength;
     }
 
     /**
@@ -266,7 +240,7 @@ public class UScrollBar {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        if (barLength == 0) return;
+        if (!isShow) return;
 
         paint.setStyle(Paint.Style.FILL);
 
@@ -276,34 +250,48 @@ public class UScrollBar {
         float baseX = pos.x + parentPos.x;
         float baseY = pos.y + parentPos.y;
 
+        float _barLength = barLength;
+        float _barPos = barPos;
+        if (showType == ScrollBarShowType.ShowAllways) {
+            _barLength = bgLength - 30;
+            _barPos = 15;
+        }
         if (isHorizontal()) {
-            bgRect.left = baseX;
-            bgRect.right = baseX + bgLength;
-            bgRect.top = baseY;
-            bgRect.bottom = baseY + bgWidth;
-            barRect.left = baseX + barPos;
+            if (bgColor != 0) {
+                bgRect.left = baseX;
+                bgRect.right = baseX + bgLength;
+                bgRect.top = baseY;
+                bgRect.bottom = baseY + bgWidth;
+            }
+
+            barRect.left = baseX + _barPos;
             barRect.top = baseY + 10;
-            barRect.right = baseX + barPos + barLength;
+            barRect.right = baseX + _barPos + _barLength;
             barRect.bottom = baseY + bgWidth - 10;
         } else {
-            bgRect.left = baseX;
-            bgRect.top = baseY;
-            bgRect.right = baseX + bgWidth;
-            bgRect.bottom = baseY + bgLength;
+            if (bgColor != 0) {
+                bgRect.left = baseX;
+                bgRect.top = baseY;
+                bgRect.right = baseX + bgWidth;
+                bgRect.bottom = baseY + bgLength;
+            }
+
             barRect.left = baseX + 10;
-            barRect.top = baseY + barPos;
+            barRect.top = baseY + _barPos;
             barRect.right = baseX + bgWidth - 10;
-            barRect.bottom =baseY + barPos + barLength;
+            barRect.bottom =baseY + _barPos + _barLength;
         }
 
         // 背景
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(bgColor);
-        canvas.drawRect(bgRect.left,
-                bgRect.top,
-                bgRect.right,
-                bgRect.bottom,
-                paint);
+        if (bgColor != 0) {
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(bgColor);
+            canvas.drawRect(bgRect.left,
+                    bgRect.top,
+                    bgRect.right,
+                    bgRect.bottom,
+                    paint);
+        }
 
         // バー
         paint.setStyle(Paint.Style.FILL);
