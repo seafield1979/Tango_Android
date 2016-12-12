@@ -86,7 +86,6 @@ public class TopView extends View
 
         // 描画オブジェクトのタッチ処理はすべてUDrawManagerにまかせる
         if (UDrawManager.getInstance().touchEvent(vt)) {
-            ULog.print(TAG, "invalidate2");
             invalidate();
         }
 

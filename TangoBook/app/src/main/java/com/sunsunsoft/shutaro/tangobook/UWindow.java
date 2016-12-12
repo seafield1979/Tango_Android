@@ -390,7 +390,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * アイコンタイプの閉じるボタンを追加する
      */
     protected void addCloseIcon() {
-        this.addCloseIcon(CloseIconPos.LeftTop);
+        this.addCloseIcon(CloseIconPos.RightTop);
     }
     protected void addCloseIcon(CloseIconPos pos) {
         if (closeIcon != null) return;

@@ -104,8 +104,22 @@ abstract public class UButton extends UDrawable {
     abstract void draw(Canvas canvas, Paint paint, PointF offset);
 
     /**
-     * Touchable Interface
+     * UDrawable Interface
      */
+    /**
+     * タッチアップイベント
+     */
+    public boolean touchUpEvent(ViewTouch vt) {
+        boolean done = false;
+
+        if (vt.isTouchUp()) {
+            if (isPressed) {
+                isPressed = false;
+                done = true;
+            }
+        }
+        return done;
+    }
 
     /**
      * タッチイベント
@@ -120,13 +134,6 @@ abstract public class UButton extends UDrawable {
         boolean done = false;
         if (offset == null) {
             offset = new PointF();
-        }
-        if (vt.isTouchUp()) {
-            ULog.print(TAG, "touchup:" + isPressed);
-            if (isPressed) {
-                isPressed = false;
-                done = true;
-            }
         }
 
         switch(vt.type) {

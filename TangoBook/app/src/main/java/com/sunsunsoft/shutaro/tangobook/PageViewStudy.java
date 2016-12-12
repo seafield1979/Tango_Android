@@ -154,7 +154,7 @@ public class PageViewStudy extends UPageView
                 DRAW_PRIORITY, mContext.getString(R.string.finish),
                 (screenW - BUTTON_W) / 2, screenH - 150,
                 BUTTON_W, BUTTON_H,
-                Color.BLACK, Color.rgb(100,200,100));
+                TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
         UDrawManager.getInstance().addDrawable(mExitButton);
 
         // OKボタン
@@ -163,7 +163,7 @@ public class PageViewStudy extends UPageView
                 DRAW_PRIORITY, "OK",
                 screenW - BUTTON2_W - MARGIN_H, screenH - BUTTON2_H - MARGIN_V,
                 BUTTON2_W, BUTTON2_H,
-                Color.BLACK, Color.rgb(100,200,100));
+                TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
         UDrawManager.getInstance().addDrawable(mOkCardsButton);
 
         // NGボタン
@@ -172,7 +172,7 @@ public class PageViewStudy extends UPageView
                 DRAW_PRIORITY, "NG",
                 MARGIN_H, screenH - BUTTON2_H - MARGIN_V,
                 BUTTON2_W, BUTTON2_H,
-                Color.BLACK, Color.rgb(100,200,100));
+                TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
         UDrawManager.getInstance().addDrawable(mNgCardsButton);
 
         // OK/NGボタンの座標をCardsStackに教えてやる
@@ -260,7 +260,8 @@ public class PageViewStudy extends UPageView
     public void CardsStackFinished() {
         // カードが０になったので学習完了
         mState = State.Finish;
-        UPageViewManager.getInstance().startStudyResultPage(mCardsManager.getOkCards(), mCardsManager.getNgCards());
+        UPageViewManager.getInstance().startStudyResultPage( mBook,
+                mCardsManager.getOkCards(), mCardsManager.getNgCards());
 
         mParentView.invalidate();
     }

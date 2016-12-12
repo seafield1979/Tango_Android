@@ -229,8 +229,14 @@ public class UPageViewManager {
      * リザルトページを開始
      * 他のページと異なり引数を受け取る必要があるため関数化
      */
-    public void startStudyResultPage(List<TangoCard> okCards, List<TangoCard> ngCards) {
+    public static void StartStudyResultPage(TangoBook book, List<TangoCard> okCards, List<TangoCard> ngCards) {
+        UPageViewManager instance = getInstance();
+        instance.startStudyResultPage(book, okCards, ngCards);
+    }
+
+    public void startStudyResultPage(TangoBook book, List<TangoCard> okCards, List<TangoCard> ngCards) {
         PageViewResult page = (PageViewResult)pages[PageView.StudyResult.ordinal()];
+        page.setBook(book);
         page.setCardsLists(okCards, ngCards);
         changePage(PageView.StudyResult);
     }

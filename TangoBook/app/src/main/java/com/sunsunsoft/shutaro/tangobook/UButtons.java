@@ -17,23 +17,25 @@ public class UButtons extends UDrawable {
     private static final int BUTTON_MARGIN = 10;
 
 
-    private LinkedList<UButton> buttons = new LinkedList<>();
-    private UButtonType type;
-    private UButtonCallbacks mCallbacks;
-    private int textColor;
-    private int column;     // 列(縦)
-    private int row;        // 行(横)
+    protected LinkedList<UButton> buttons = new LinkedList<>();
+    protected UButtonType type;
+    protected UButtonCallbacks mCallbacks;
+    protected int textColor;
+    protected int mTextSize;
+    protected int column;     // 列(縦)
+    protected int row;        // 行(横)
 
     /**
      * インスタンス生成
      */
     public UButtons(UButtonCallbacks callbacks, UButtonType type,
-                    int priority, int color, int textColor,
+                    int priority, int textSize, int color, int textColor,
                     int row, int column,
                     float x, float y, int width, int height )
     {
         super(priority, x, y, width, height);
         this.mCallbacks = callbacks;
+        mTextSize = textSize;
         this.color = color;
         this.type = type;
         this.textColor = textColor;
@@ -62,8 +64,7 @@ public class UButtons extends UDrawable {
                 BUTTON_MARGIN + (count % row) * (buttonW + BUTTON_MARGIN),
                 BUTTON_MARGIN + (count / row) * (buttonH + BUTTON_MARGIN),
                 buttonW, buttonH,
-                Color.WHITE,
-                color);
+                mTextSize, Color.WHITE, color);
         button.setTextColor(textColor);
         buttons.add(button);
 

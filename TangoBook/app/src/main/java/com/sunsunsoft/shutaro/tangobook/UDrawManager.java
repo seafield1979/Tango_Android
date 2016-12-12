@@ -270,12 +270,21 @@ public class UDrawManager {
     public boolean touchEvent(ViewTouch vt) {
         TreeMap<Integer, DrawList> lists = getCurrentDrawLists();
 
+        boolean isRedraw = false;
+        for (DrawList list : lists.values()) {
+            if (list.touchUpEvent(vt) ) {
+                // タッチアップイベントは全てのオブジェクトで処理する
+                isRedraw = true;
+            }
+        }
+
         for (DrawList list : lists.values()) {
             if (list.touchEvent(vt) ) {
+                // その他のタッチイベントはtrueが返った時点で打ち切り
                 return true;
             }
         }
-        return false;
+        return isRedraw;
     }
 
     /**
@@ -294,6 +303,15 @@ public class UDrawManager {
 
 }
 
+
+
+
+
+
+
+
+
+
 /**
  * 描画オブジェクトのリストを管理するクラス
  * プライオリティーやクリップ領域を持つ
@@ -301,7 +319,6 @@ public class UDrawManager {
 class DrawList
 {
     // 描画範囲 この範囲外には描画しない
-//    public Rect clipRect;
     private int priority;
     private LinkedList<UDrawable> list = new LinkedList<>();
 
@@ -404,6 +421,23 @@ class DrawList
     }
 
     /**
+     * タッチアップイベント処理
+     * @param vt
+     * @return
+     */
+    protected boolean touchUpEvent(ViewTouch vt) {
+        boolean isRedraw = false;
+
+        for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();){
+            UDrawable obj = (UDrawable)it.previous();
+            if (obj.touchUpEvent(vt)) {
+                isRedraw = true;
+            }
+        }
+        return isRedraw;
+    }
+
+    /**
      * タッチイベント処理
      * リストの末尾(手前に表示されている)から順に処理する
      * @param vt
@@ -428,6 +462,7 @@ class DrawList
         for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();){
             UDrawable obj = (UDrawable)it.previous();
             if (obj.touchEvent(vt)) {
+
                 if (vt.type == TouchType.Touch) {
                     manager.setTouchingObj(obj);
                 }

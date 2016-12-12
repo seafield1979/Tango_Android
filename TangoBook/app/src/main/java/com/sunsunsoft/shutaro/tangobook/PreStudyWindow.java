@@ -112,17 +112,26 @@ public class PreStudyWindow extends UWindow {
     }
 
     public boolean touchEvent(ViewTouch vt) {
-        if (super.touchEvent(vt)) {
-            return true;
-        }
+        boolean isRedraw = false;
 
+
+        for (UButton button : buttons) {
+            if (button == null) continue;
+            if (button.touchUpEvent(vt)) {
+                isRedraw = true;
+            }
+        }
         for (UButton button : buttons) {
             if (button == null) continue;
             if (button.touchEvent(vt, pos)) {
                 return true;
             }
         }
-        return false;
+        if (super.touchEvent(vt)) {
+            return true;
+        }
+
+        return isRedraw;
     }
 
 
@@ -212,7 +221,7 @@ public class PreStudyWindow extends UWindow {
                 PageViewStudySelect.ButtonIdStartStudy,
                 0, UResourceManager.getStringById(R.string.start), MARGIN_H, y,
                 BUTTON_W, BUTTON2_H,
-                TEXT_COLOR, Color.rgb(100,200,100));
+                TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
 
         // キャンセルボタン
         buttons[ButtonId.Cancel.ordinal()] = new UButtonText(this, UButtonType.Press,
@@ -220,7 +229,7 @@ public class PreStudyWindow extends UWindow {
                 0, UResourceManager.getStringById(R.string.cancel),
                 MARGIN_H + BUTTON_W + MARGIN_H, y,
                 BUTTON_W, BUTTON2_H,
-                Color.WHITE, Color.rgb(200,100,100));
+                TEXT_SIZE, Color.WHITE, Color.rgb(200,100,100));
 
         y += BUTTON2_H + MARGIN_V + 30;
 
@@ -238,14 +247,14 @@ public class PreStudyWindow extends UWindow {
                 ButtonIdOption1_1,
                 0, UResourceManager.getStringById(R.string.e_to_j),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
 
         // 日本語->英語
         buttons[ButtonId.Option1_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_2,
                 0, UResourceManager.getStringById(R.string.j_to_e),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
 
         y += BUTTON_H + MARGIN_V;
 
@@ -263,14 +272,14 @@ public class PreStudyWindow extends UWindow {
                 ButtonIdOption2_1,
                 0, UResourceManager.getStringById(R.string.order_normal),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
 
         // ランダム
         buttons[ButtonId.Option2_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption2_2,
                 0, UResourceManager.getStringById(R.string.order_random),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
 
         y += BUTTON_H + MARGIN_V;
 
@@ -289,14 +298,14 @@ public class PreStudyWindow extends UWindow {
                 ButtonIdOption3_1,
                 0, UResourceManager.getStringById(R.string.all),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
 
         // 未収得
         buttons[ButtonId.Option3_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_2,
                 0, UResourceManager.getStringById(R.string.not_learned),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
 
         y += BUTTON_H + MARGIN_V;
 
@@ -319,6 +328,9 @@ public class PreStudyWindow extends UWindow {
         pos.y = (canvas.getHeight() - size.height) / 2;
 
         setSize(width, y);
+
+        // 戻るボタン
+        updateCloseIconPos();
 
         updateRect();
     }

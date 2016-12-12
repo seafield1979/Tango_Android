@@ -39,7 +39,8 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
      * Constants
      */
     public static final String TAG = "PageViewTitle";
-    public static final int BUTTON_PRIORITY = 100;
+    private static final int BUTTON_PRIORITY = 100;
+    private static final int TEXT_SIZE = 50;
 
     /**
      * Member variables
@@ -84,8 +85,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
             buttons[i] = new UButtonText(this, buttonType, id.ordinal(), BUTTON_PRIORITY,
                     id.getTitle(mContext), 100, y,
                     width - 100*2, 120,
-                    Color.WHITE,
-                    Color.rgb(0,128,0));
+                    TEXT_SIZE, Color.WHITE, Color.rgb(0,128,0));
 
 
             UDrawManager.getInstance().addDrawable(buttons[i]);

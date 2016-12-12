@@ -158,7 +158,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         return instance;
     }
 
-    // 中央に表示するタイプ
+    // 画面中央に表示するタイプ
     public static UDialogWindow createInstance(DialogType type, UButtonCallbacks buttonCallbacks,
                                                UDialogCallbacks dialogCallbacks,
                                                ButtonDir dir, DialogPosType posType,
@@ -242,7 +242,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     /**
      * TextViewを追加
      */
-    public UTextView addTextView(String text, UAlignment alignment, int canvasW,
+    public UTextView addTextView(String text, UAlignment alignment,
                                  boolean multiLine, boolean isDrawBG,
                                  int textSize, int textColor,
                                  int bgColor)
@@ -257,7 +257,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                 x = MARGIN_H;
                 break;
         }
-        UTextView textView = UTextView.createInstance(text, textSize, 0, alignment, canvasW,
+        UTextView textView = UTextView.createInstance(text, textSize, 0,
+                alignment, screenSize.width,
                 multiLine, isDrawBG, x, 0, size.width - MARGIN_H * 2, textColor, bgColor);
         mTextViews.add(textView);
         isUpdate = true;
@@ -271,9 +272,10 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * @param color
      */
     public UButton addButton(int id, String text, int textColor, int color) {
-        UButtonText button = new UButtonText(buttonCallbacks, UButtonType.Press, id, 0, text, 0, 0,
+        UButtonText button = new UButtonText(buttonCallbacks, UButtonType.Press,
+                id, 0, text, 0, 0,
                 0, 0,
-                textColor, color);
+                50, textColor, color);
         mButtons.add(button);
         isUpdate = true;
         return button;
@@ -287,9 +289,10 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         if (text == null) {
             text = "Close";
         }
-        UButtonText button = new UButtonText(this, UButtonType.Press, CloseDialogId, 0, text, 0, 0,
+        UButtonText button = new UButtonText(this, UButtonType.Press, CloseDialogId,
+                0, text, 0, 0,
                 0, 0,
-                Color.WHITE, Color.RED);
+                50, Color.WHITE, Color.RED);
         mButtons.add(button);
         isUpdate = true;
     }
@@ -476,10 +479,15 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     public boolean touchEvent(ViewTouch vt) {
         PointF offset = pos;
 
-        if (super.touchEvent(vt)) {
-            return true;
-        }
+        boolean isRedraw = false;
 
+        // タッチアップ処理
+        for (UButton button : mButtons) {
+            if (button.touchUpEvent(vt)) {
+                isRedraw = true;
+            }
+        }
+        // タッチ処理
         for (UButton button : mButtons) {
             if (button.touchEvent(vt, offset)) {
                 return true;
@@ -506,7 +514,11 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             }
         }
 
-        return false;
+        if (super.touchEvent(vt)) {
+            return true;
+        }
+
+        return isRedraw;
     }
 
     public void startAnimation(AnimationType type) {

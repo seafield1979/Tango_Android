@@ -60,6 +60,8 @@ public class UListView extends UScrollWindow
     public void add(UListItem item) {
         item.setPos(0, mBottomY);
         item.setIndex(mItems.size());
+        item.setListItemCallbacks(mListItemCallbacks);
+
         mItems.add(item);
         mBottomY += item.size.height;
 
@@ -122,16 +124,18 @@ public class UListView extends UScrollWindow
     public boolean touchEvent(ViewTouch vt) {
         // アイテムのクリック判定処理
         PointF offset = new PointF(pos.x, pos.y + contentTop.y);
+        boolean isDraw = false;
+
         for (UListItem item : mItems) {
             if (item.touchEvent(vt, offset)) {
-                return true;
+                isDraw = true;
             }
         }
 
         if (super.touchEvent(vt)) {
-            return true;
+            isDraw = true;
         }
-        return false;
+        return isDraw;
     }
 
     /**

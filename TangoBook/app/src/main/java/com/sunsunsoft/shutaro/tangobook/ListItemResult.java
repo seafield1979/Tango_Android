@@ -52,43 +52,38 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
         return mType;
     }
 
+    public TangoCard getCard() {
+        return mCard;
+    }
+
     /**
      * Constructor
      */
     public ListItemResult(UListItemCallbacks listItemCallbacks,
-                          ListItemResultType type,
+                          ListItemResultType type, boolean isTouchable,
                           float x, int width, int color) {
-        super(listItemCallbacks, x, width, 0);
+        super(listItemCallbacks, isTouchable, x, width, 0, color);
         mType = type;
-        this.color = color;
-        switch (type) {
-            case Title:
-                size.height = TITLE_H;
-                break;
-            case OK:
-            case NG:
-                size.height = CARD_H;
-                break;
-        }
     }
 
     // ListItemResultType.Title のインスタンスを生成する
     public static ListItemResult createTitle(String text, int width, int color)
     {
         ListItemResult instance = new ListItemResult(null, ListItemResultType.Title,
-                0, width, color);
+                false, 0, width, color);
         instance.mText = text;
+        instance.size.height = TITLE_H;
         return instance;
     }
 
     // ListItemResultType.OKのインスタンスを生成する
-    public static ListItemResult createOK(TangoCard card, int width, int color)
-    {
+    public static ListItemResult createOK(TangoCard card, int width, int color) {
         ListItemResult instance = new ListItemResult(null,
-                ListItemResultType.OK,
+                ListItemResultType.OK, true,
                 0, width, color);
         instance.mText = card.getWordA() + ":" + card.getWordB();
         instance.mCard = card;
+        instance.size.height = CARD_H;
         // Starボタンを追加(On/Offあり)
         instance.mStarButton = new UButtonImage(instance, ButtonIdStar, 100,
                 instance.size.width - 150, (instance.size.height - STAR_ICON_W) / 2,
@@ -100,17 +95,23 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     }
 
     // ListItemResultType.NGのインスタンスを生成する
-    public static ListItemResult createNG(TangoCard card, int width, int color)
-    {
+    public static ListItemResult createNG(TangoCard card, int width, int color) {
         ListItemResult instance = new ListItemResult(null,
-                ListItemResultType.NG,
+                ListItemResultType.NG, true,
                 0, width, color);
         instance.mText = card.getWordA() + ":" + card.getWordB();
+        instance.size.height = CARD_H;
         return instance;
     }
 
     /**
      * Methods
+     */
+    /**
+     * 描画処理
+     * @param canvas
+     * @param paint
+     * @param offset 独自の座標系を持つオブジェクトをスクリーン座標系に変換するためのオフセット値
      */
     public void draw(Canvas canvas, Paint paint, PointF offset) {
         PointF _pos = new PointF(pos.x, pos.y);
@@ -118,11 +119,16 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
             _pos.x += offset.x;
             _pos.y += offset.y;
         }
-        // BG
+
+        // BG　タッチ中は色を変更
+        int _color = color;
+        if (isTouchable && isTouching) {
+            _color = pressedColor;
+        }
+        ULog.print(TAG, "isTouching:" + isTouching);
         UDraw.drawRectFill(canvas, paint,
-                new Rect((int)_pos.x, (int)_pos.y, (int)_pos.x + size.width, (int)_pos.y + size.height),
-                color, FRAME_WIDTH, FRAME_COLOR);
-        ULog.print(TAG, "" + _pos.x + " " + _pos.y + " " + size.width + " " + size.height);
+                    new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),
+                    _color, FRAME_WIDTH, FRAME_COLOR);
 
         switch(mType) {
             case Title:

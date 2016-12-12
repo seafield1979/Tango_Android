@@ -48,6 +48,7 @@ abstract public class UDrawable {
     protected boolean isMovingPos;
     protected boolean isMovingSize;
     protected boolean isShow;
+    protected boolean isDraw;
     protected MovingType movingType;
     protected int movingFrame;
     protected int movingFrameMax;
@@ -219,6 +220,13 @@ abstract public class UDrawable {
     }
 
     /**
+     * タッチアップ処理
+     * @param vt
+     * @return
+     */
+    public boolean touchUpEvent(ViewTouch vt) { return false; }
+
+    /**
      * タッチ処理
      * @param vt
      * @return
@@ -226,6 +234,14 @@ abstract public class UDrawable {
     public boolean touchEvent(ViewTouch vt) {
         return false;
     }
+
+    /**
+     * DrawManagerの描画リストに追加する
+     */
+    public void addToDrawManager() {
+        UDrawManager.getInstance().addDrawable(this);
+    }
+
 
     /**
      * 移動

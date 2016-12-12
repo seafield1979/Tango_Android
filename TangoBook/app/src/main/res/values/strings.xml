@@ -51,4 +51,7 @@
     <string name="cards_remain">あと%d枚</string>
     <string name="confirm_exit">学習を終了しますか？</string>
 
+    <string name="retry1">"すべて\nリトライ"</string>
+    <string name="retry2">"NGのみ\nリトライ"</string>
+
 </resources>
