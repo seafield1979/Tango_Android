@@ -61,7 +61,7 @@ public class IconBook extends IconContainer {
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        image = UResourceManager.getInstance().getBitmapById(R.drawable.notebook);
+        image = UResourceManager.getBitmapById(R.drawable.notebook);
 
         // データベースから配下のCardを読み込む
         List<TangoCard> cards = RealmManager.getItemPosDao().selectCardsByBookId(book.getId());

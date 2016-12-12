@@ -94,9 +94,9 @@ public class PreStudyWindow extends UWindow {
         addCloseIcon(CloseIconPos.RightTop);
 
         // get options
-        option1 = MySharedPref.getInstance().readBoolean(MySharedPref.Option1Key);
-        option2 = MySharedPref.getInstance().readBoolean(MySharedPref.Option2Key);
-        option3 = MySharedPref.getInstance().readBoolean(MySharedPref.Option3Key);
+        option1 = MySharedPref.readBoolean(MySharedPref.Option1Key);
+        option2 = MySharedPref.readBoolean(MySharedPref.Option2Key);
+        option3 = MySharedPref.readBoolean(MySharedPref.Option3Key);
     }
 
     /**
@@ -196,7 +196,7 @@ public class PreStudyWindow extends UWindow {
         // 最終学習日時
         Date studiedTime = mBook.getStudyTime();
         textLastStudied = UTextView.createInstance(
-                UResourceManager.getInstance().getStringById(R.string
+                UResourceManager.getStringById(R.string
                 .last_studied_date) + ":" + studiedTime,
                 TEXT_SIZE, 0,
                 UAlignment.CenterX, canvas.getWidth(), false, true,
@@ -210,14 +210,14 @@ public class PreStudyWindow extends UWindow {
         // 開始ボタン
         buttons[ButtonId.Start.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudySelect.ButtonIdStartStudy,
-                0, UResourceManager.getInstance().getStringById(R.string.start), MARGIN_H, y,
+                0, UResourceManager.getStringById(R.string.start), MARGIN_H, y,
                 BUTTON_W, BUTTON2_H,
                 TEXT_COLOR, Color.rgb(100,200,100));
 
         // キャンセルボタン
         buttons[ButtonId.Cancel.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudySelect.ButtonIdCancel,
-                0, UResourceManager.getInstance().getStringById(R.string.cancel),
+                0, UResourceManager.getStringById(R.string.cancel),
                 MARGIN_H + BUTTON_W + MARGIN_H, y,
                 BUTTON_W, BUTTON2_H,
                 Color.WHITE, Color.rgb(200,100,100));
@@ -227,7 +227,7 @@ public class PreStudyWindow extends UWindow {
         // Option1 出題方法
         // タイトル
         textOption1 = UTextView.createInstance(
-                UResourceManager.getInstance().getStringById(R.string.study_type),
+                UResourceManager.getStringById(R.string.study_type),
                 TEXT_SIZE_2, 0,
                 UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
@@ -236,14 +236,14 @@ public class PreStudyWindow extends UWindow {
         // 英語->日本語
         buttons[ButtonId.Option1_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_1,
-                0, UResourceManager.getInstance().getStringById(R.string.e_to_j),
+                0, UResourceManager.getStringById(R.string.e_to_j),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
         // 日本語->英語
         buttons[ButtonId.Option1_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_2,
-                0, UResourceManager.getInstance().getStringById(R.string.j_to_e),
+                0, UResourceManager.getStringById(R.string.j_to_e),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
@@ -252,7 +252,7 @@ public class PreStudyWindow extends UWindow {
         // Option2 順番
         // タイトル
         textOption2 = UTextView.createInstance(
-                UResourceManager.getInstance().getStringById(R.string.order_type),
+                UResourceManager.getStringById(R.string.order_type),
                 TEXT_SIZE_2, 0,
                 UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
@@ -261,14 +261,14 @@ public class PreStudyWindow extends UWindow {
         // 順番通り
         buttons[ButtonId.Option2_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption2_1,
-                0, UResourceManager.getInstance().getStringById(R.string.order_normal),
+                0, UResourceManager.getStringById(R.string.order_normal),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
         // ランダム
         buttons[ButtonId.Option2_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption2_2,
-                0, UResourceManager.getInstance().getStringById(R.string.order_random),
+                0, UResourceManager.getStringById(R.string.order_random),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
@@ -278,7 +278,7 @@ public class PreStudyWindow extends UWindow {
         // Option3 学習単語
         // タイトル
         textOption3 = UTextView.createInstance(
-                UResourceManager.getInstance().getStringById(R.string.study_pattern),
+                UResourceManager.getStringById(R.string.study_pattern),
                 TEXT_SIZE_2, 0,
                 UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
@@ -287,14 +287,14 @@ public class PreStudyWindow extends UWindow {
         // すべて
         buttons[ButtonId.Option3_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_1,
-                0, UResourceManager.getInstance().getStringById(R.string.all),
+                0, UResourceManager.getStringById(R.string.all),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
         // 未収得
         buttons[ButtonId.Option3_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_2,
-                0, UResourceManager.getInstance().getStringById(R.string.not_learned),
+                0, UResourceManager.getStringById(R.string.not_learned),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
                 TEXT_COLOR, Color.LTGRAY);
 
@@ -333,9 +333,9 @@ public class PreStudyWindow extends UWindow {
         switch (id) {
             case PageViewStudySelect.ButtonIdStartStudy:
                 // オプションを保存
-                MySharedPref.getInstance().writeBoolean(MySharedPref.Option1Key, option1);
-                MySharedPref.getInstance().writeBoolean(MySharedPref.Option2Key, option2);
-                MySharedPref.getInstance().writeBoolean(MySharedPref.Option3Key, option3);
+                MySharedPref.writeBoolean(MySharedPref.Option1Key, option1);
+                MySharedPref.writeBoolean(MySharedPref.Option2Key, option2);
+                MySharedPref.writeBoolean(MySharedPref.Option3Key, option3);
 
                 if (mButtonCallbacks != null) {
                     mButtonCallbacks.UButtonClicked(id, pressedOn);

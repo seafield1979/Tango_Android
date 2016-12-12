@@ -61,7 +61,6 @@ public class MySharedPref {
         return singleton;
     }
 
-
     /**
      * Methods
      */
@@ -69,38 +68,49 @@ public class MySharedPref {
      * Write系
      */
     // String
-    public void writeString(String key, String value) {
+    public static void writeString(String key, String value) {
+        MySharedPref instance = getInstance();
         if (value == null) return;
 
-        mEditor.putString(key, value);
-        mEditor.apply();
+        instance.mEditor.putString(key, value);
+        instance.mEditor.apply();
     }
     // int
-    public void writeInt(String key, int value) {
-        mEditor.putInt(key, value);
-        mEditor.apply();
+    public static void writeInt(String key, int value) {
+        MySharedPref instance = getInstance();
+
+        instance.mEditor.putInt(key, value);
+        instance.mEditor.apply();
     }
 
     // boolean
-    public void writeBoolean(String key, boolean value) {
-        mEditor.putBoolean(key, value);
-        mEditor.apply();
+    public static void writeBoolean(String key, boolean value) {
+        MySharedPref instance = getInstance();
+
+        instance.mEditor.putBoolean(key, value);
+        instance.mEditor.apply();
     }
 
     /**
      * Read系
      */
     // String
-    public String readString(String key) {
-        return mPrefs.getString(key, "");
+    public static String readString(String key) {
+        MySharedPref instance = getInstance();
+
+        return instance.mPrefs.getString(key, "");
     }
     // int
-    public int readInt(String key) {
-        return mPrefs.getInt(key, 0);
+    public static int readInt(String key) {
+        MySharedPref instance = getInstance();
+
+        return instance.mPrefs.getInt(key, 0);
     }
     // boolean
-    public boolean readBoolean(String key) {
-        return mPrefs.getBoolean(key, false);
+    public static boolean readBoolean(String key) {
+        MySharedPref instance = getInstance();
+
+        return instance.mPrefs.getBoolean(key, false);
     }
 
     /**
@@ -111,7 +121,6 @@ public class MySharedPref {
 
         for(Map.Entry<String,?> entry : keys.entrySet()){
             ULog.print( TAG, entry.getKey() + ": " + entry.getValue().toString() + "\n");
-
         }
     }
 }

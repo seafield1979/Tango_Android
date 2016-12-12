@@ -278,18 +278,20 @@ public class UDraw {
         Paint.FontMetrics fontMetrics = paint.getFontMetrics();
 
         // テキストの左上端がx,yと一致するように補正
-        y -= (fontMetrics.ascent + fontMetrics.descent);
-
         switch (alignment) {
+            case None:
+                y -= fontMetrics.ascent;
+                break;
             case CenterX:
                 x -= width / 2;
+                y -= fontMetrics.ascent;
                 break;
             case CenterY:
-                y -= (-fontMetrics.top - fontMetrics.bottom) / 2;
+                y -= fontMetrics.ascent / 2 + textSize * 0.15;
                 break;
             case Center:
                 x -= width / 2;
-                y -= (-fontMetrics.top - fontMetrics.bottom) / 2;
+                y -= fontMetrics.ascent / 2 + textSize * 0.15;
                 break;
         }
         canvas.drawText(_text, x, y, paint);

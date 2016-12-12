@@ -150,16 +150,14 @@ public class IconInfoDialogCard extends IconInfoDialog {
         // アクションボタン
         int x = ICON_MARGIN_H;
         for (ActionIcons icon : icons) {
-            Bitmap bmp = UResourceManager.getInstance().getBitmapById(icon.getImageId());
             UButtonImage imageButton = UButtonImage.createButton( this,
                             icon.ordinal(), 0,
                             x, y,
-                            ICON_W, ICON_W, bmp, null);
+                            ICON_W, ICON_W, icon.getImageId(), -1);
 
             // お気に入りだけは２つ画像を登録する
             if (icon == ActionIcons.Favorite) {
-                bmp = UResourceManager.getInstance().getBitmapById(R.drawable.favorites2);
-                imageButton.addState(bmp);
+                imageButton.addState(R.drawable.favorites2);
                 if (mCard.getStar()) {
                     imageButton.setState(mCard.getStar() ? 1 : 0);
                 }

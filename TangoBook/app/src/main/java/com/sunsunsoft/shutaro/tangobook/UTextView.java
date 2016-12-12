@@ -10,11 +10,9 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
-
 /**
  * テキストを表示する
  */
-
 public class UTextView extends UDrawable {
     /**
      * Constracts

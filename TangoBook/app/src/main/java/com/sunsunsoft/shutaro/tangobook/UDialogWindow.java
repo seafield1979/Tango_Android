@@ -59,9 +59,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     public static final int BUTTON_MARGIN_H = 50;
     public static final int BUTTON_MARGIN_V = 30;
 
-    // colors
-    public static final int CLOSE_BUTTON_COLOR = Color.rgb(200,100,100);
-
     /**
      * Member variables
      */
@@ -69,12 +66,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     protected DialogType type;
     protected DialogPosType posType;
     protected ButtonDir buttonDir;
-
-    protected String title;
-    protected String message;
-
-    protected UTextView titleView;
-    protected UTextView messageView;
 
     protected int textColor;
     protected int dialogColor;
@@ -90,8 +81,15 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
 
-    // ボタン
-    LinkedList<UButton> buttons = new LinkedList<>();
+    // タイトル
+    protected String title;
+    protected UTextView mTitleView;
+
+    // メッセージ(複数)
+    protected LinkedList<UTextView> mTextViews = new LinkedList<>();
+
+    // ボタン(複数)
+    protected LinkedList<UButton> mButtons = new LinkedList<>();
 
     /**
      * Get/Set
@@ -102,14 +100,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     private void updateBasePos() {
@@ -222,12 +212,11 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * ボタンを全削除
      */
     public void clearButtons() {
-        buttons.clear();
+        mButtons.clear();
     }
 
     /**
      * ダイアログを閉じる
-     * ※閉じるアニメーションありの場合はアニメーションが完了したタイミングで呼ばれる
      */
     public void closeDialog() {
         isShow = false;
@@ -251,6 +240,31 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     }
 
     /**
+     * TextViewを追加
+     */
+    public UTextView addTextView(String text, UAlignment alignment, int canvasW,
+                                 boolean multiLine, boolean isDrawBG,
+                                 int textSize, int textColor,
+                                 int bgColor)
+    {
+        float x = 0;
+        switch(alignment) {
+            case CenterX:
+            case Center:
+                x = size.width / 2;
+                break;
+            case CenterY:
+                x = MARGIN_H;
+                break;
+        }
+        UTextView textView = UTextView.createInstance(text, textSize, 0, alignment, canvasW,
+                multiLine, isDrawBG, x, 0, size.width - MARGIN_H * 2, textColor, bgColor);
+        mTextViews.add(textView);
+        isUpdate = true;
+        return textView;
+    }
+
+    /**
      * ボタンを追加
      * ボタンを追加した時点では座標は設定しない
      * @param text
@@ -260,7 +274,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         UButtonText button = new UButtonText(buttonCallbacks, UButtonType.Press, id, 0, text, 0, 0,
                 0, 0,
                 textColor, color);
-        buttons.add(button);
+        mButtons.add(button);
         isUpdate = true;
         return button;
     }
@@ -275,24 +289,24 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         }
         UButtonText button = new UButtonText(this, UButtonType.Press, CloseDialogId, 0, text, 0, 0,
                 0, 0,
-                Color.WHITE, CLOSE_BUTTON_COLOR);
-        buttons.add(button);
+                Color.WHITE, Color.RED);
+        mButtons.add(button);
         isUpdate = true;
     }
 
     /**
      * アイコンボタンを追加
      */
-    public void addImageButton(int id, Bitmap image, Bitmap pressedImage, int width, int height) {
-        if (image == null) {
+    public void addImageButton(int id, int imageId, int pressedImageId, int width, int height) {
+        if (imageId == -1) {
             return;
         }
 
         UButtonImage button = UButtonImage.createButton(buttonCallbacks, id,
                 0,
                 0, 0, width, height,
-                image, pressedImage);
-        buttons.add(button);
+                imageId, pressedImageId);
+        mButtons.add(button);
         isUpdate = true;
     }
 
@@ -303,34 +317,30 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     protected void updateLayout(Canvas canvas) {
         // タイトル、メッセージ
         int y = TEXT_MARGIN_V;
-        if (title != null && titleView == null) {
-            titleView = UTextView.createInstance(title, 70, 0, UAlignment.CenterX,
-                    canvas.getWidth(), false, true,
-                    size.width / 2, y,
-                    size.width, color, 0);
-            Size titleSize = titleView.getTextSize(getWidth());
-            y += titleSize.height + BUTTON_MARGIN_H;
-        }
-
-        if (message != null && messageView == null) {
-            messageView = UTextView.createInstance(message, MESSAGE_TEXT_SIZE, 0,
-                    UAlignment.CenterX,
+        if (title != null && mTitleView == null) {
+            mTitleView = UTextView.createInstance(title, 70, 0, UAlignment.CenterX,
                     canvas.getWidth(), true, true,
                     size.width / 2, y,
                     size.width, color, 0);
-            Size messageSize = messageView.getTextSize(getWidth());
-            y += messageSize.height + BUTTON_MARGIN_H;
+            Size titleSize = mTitleView.getTextSize(getWidth());
+            y += titleSize.height + BUTTON_MARGIN_H;
         }
 
+        // テキスト
+        for (UTextView textView : mTextViews) {
+            textView.pos.y = y;
+            y += textView.size.height + BUTTON_MARGIN_H;
+        }
 
+        // ボタン
         if (buttonDir == ButtonDir.Horizontal) {
             // ボタンを横に並べる
             // 画像ボタンのサイズはそのままにする
             // 固定サイズの画像ボタンと可変サイズのボタンが混ざっていても正しく配置させるためにいろいろ計算
-            int num = buttons.size();
+            int num = mButtons.size();
             int imageNum = 0;
             int imagesWidth = 0;
-            for (UButton button : buttons) {
+            for (UButton button : mButtons) {
                 if (button instanceof UButtonImage) {
                     imageNum++;
                     imagesWidth += button.size.width;
@@ -342,7 +352,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             int heightMax = 0;
             int _height;
             for (int i=0; i<num; i++) {
-                UButton button = buttons.get(i);
+                UButton button = mButtons.get(i);
                 if (button instanceof UButtonImage) {
                     button.setPos(x, y);
                     x += button.size.width + BUTTON_MARGIN_H;
@@ -361,10 +371,10 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         }
         else {
             // ボタンを縦に並べる
-            int num = buttons.size();
+            int num = mButtons.size();
 
             for (int i=0; i<num; i++) {
-                UButton button = buttons.get(i);
+                UButton button = mButtons.get(i);
                 if (button instanceof UButtonImage) {
                     button.setPos((size.width - button.size.width) / 2, y);
                     y += button.size.height + BUTTON_MARGIN_V;
@@ -437,17 +447,18 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             // BG
             drawBG(canvas, paint, rect);
 
-            // Title, Message
+            // Title
             PointF _offset = pos;
-            if (titleView != null) {
-                titleView.draw(canvas, paint, _offset);
+            if (mTitleView != null) {
+                mTitleView.draw(canvas, paint, _offset);
             }
-            if (messageView != null) {
-                messageView.draw(canvas, paint, _offset);
+            // TextViews
+            for (UTextView textView : mTextViews) {
+                textView.draw(canvas, paint, _offset);
             }
 
             // Buttons
-            for (UButton button : buttons) {
+            for (UButton button : mButtons) {
                 button.draw(canvas, paint, _offset);
             }
         }
@@ -469,7 +480,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             return true;
         }
 
-        for (UButton button : buttons) {
+        for (UButton button : mButtons) {
             if (button.touchEvent(vt, offset)) {
                 return true;
             }

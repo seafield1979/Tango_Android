@@ -51,6 +51,14 @@ public class StudyCardsManager {
         return mCards.size();
     }
 
+    public LinkedList<TangoCard> getNgCards() {
+        return mNgCards;
+    }
+
+    public LinkedList<TangoCard> getOkCards() {
+        return mOkCards;
+    }
+
     /**
      * Constructor
      */

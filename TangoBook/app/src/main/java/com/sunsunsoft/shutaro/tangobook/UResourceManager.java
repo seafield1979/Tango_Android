@@ -47,16 +47,19 @@ public class UResourceManager {
     /**
      * Methods
      */
-    public void clear() {
-        mBitmaps.clear();
+    public static void clear() {
+        UResourceManager instance = getInstance();
+        instance.mBitmaps.clear();
     }
 
     /**
      * stringsのIDで文字列を取得する
      * @param strId
      */
-    public String getStringById(int strId) {
-        return mContext.getString(strId);
+    public static String getStringById(int strId) {
+        UResourceManager instance = getInstance();
+
+        return instance.mContext.getString(strId);
     }
 
     /**
@@ -64,15 +67,17 @@ public class UResourceManager {
      * @param bmpId
      * @return Bitmapオブジェクト / もしBitmapがロードできなかったら null
      */
-    public Bitmap getBitmapById(int bmpId) {
-        if (mBitmaps.containsKey(bmpId)) {
+    public static Bitmap getBitmapById(int bmpId) {
+        UResourceManager instance = getInstance();
+
+        if (instance.mBitmaps.containsKey(bmpId)) {
             // すでにロード済みならオブジェクトを返す
-            return mBitmaps.get(bmpId);
+            return instance.mBitmaps.get(bmpId);
         } else {
             // 未ロードならロードしてからオブジェクトを返す
-            Bitmap bmp = BitmapFactory.decodeResource(mView.getResources(), bmpId);
+            Bitmap bmp = BitmapFactory.decodeResource(instance.mView.getResources(), bmpId);
             if (bmp != null) {
-                mBitmaps.put(bmpId, bmp);
+                instance.mBitmaps.put(bmpId, bmp);
                 return bmp;
             }
         }

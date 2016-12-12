@@ -46,11 +46,15 @@ public class UButtonImage extends UButton {
                         int id, int priority,
                         float x, float y,
                         int width, int height,
-                        Bitmap image, Bitmap pressedImage )
+                        int imageId, int pressedImageId )
     {
         super(callbacks, UButtonType.BGColor, id, priority, x, y, width, height, 0);
-        this.images.add(image);
-        this.pressedImage = pressedImage;
+        this.images.add(UResourceManager.getInstance().getBitmapById(imageId));
+        if ( pressedImageId == -1) {
+            this.pressedImage = null;
+        } else {
+            this.pressedImage = UResourceManager.getInstance().getBitmapById(pressedImageId);
+        }
         stateId = 0;
         stateMax = 1;
     }
@@ -60,11 +64,11 @@ public class UButtonImage extends UButton {
                                             int id, int priority,
                                             float x, float y,
                                             int width, int height,
-                                            Bitmap image, Bitmap pressedImage)
+                                            int imageId, int pressedImageId)
     {
         UButtonImage button = new UButtonImage(callbacks, id, priority,
                 x, y, width, height,
-                image, pressedImage);
+                imageId, pressedImageId);
         return button;
     }
 
@@ -85,10 +89,10 @@ public class UButtonImage extends UButton {
 
     /**
      * 状態を追加する
-     * @param image 追加した状態の場合に表示する画像
+     * @param imageId 追加した状態の場合に表示する画像
      */
-    public void addState(Bitmap image) {
-        images.add(image);
+    public void addState(int imageId) {
+        images.add(UResourceManager.getInstance().getBitmapById(imageId));
         stateMax++;
     }
 

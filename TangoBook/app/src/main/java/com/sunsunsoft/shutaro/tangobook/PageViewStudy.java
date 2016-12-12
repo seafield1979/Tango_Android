@@ -95,9 +95,9 @@ public class PageViewStudy extends UPageView
         mState = State.Main;
 
         // get options
-        option1 = MySharedPref.getInstance().readBoolean(MySharedPref.Option1Key);
-        option2 = MySharedPref.getInstance().readBoolean(MySharedPref.Option2Key);
-        option3 = MySharedPref.getInstance().readBoolean(MySharedPref.Option3Key);
+        option1 = MySharedPref.readBoolean(MySharedPref.Option1Key);
+        option2 = MySharedPref.readBoolean(MySharedPref.Option2Key);
+        option3 = MySharedPref.readBoolean(MySharedPref.Option3Key);
 
         mCardsManager = new StudyCardsManager(mBook, option1, option2, option3);
     }
@@ -260,7 +260,8 @@ public class PageViewStudy extends UPageView
     public void CardsStackFinished() {
         // カードが０になったので学習完了
         mState = State.Finish;
-        UPageViewManager.getInstance().changePage(PageView.StudyResult);
+        UPageViewManager.getInstance().startStudyResultPage(mCardsManager.getOkCards(), mCardsManager.getNgCards());
+
         mParentView.invalidate();
     }
 }

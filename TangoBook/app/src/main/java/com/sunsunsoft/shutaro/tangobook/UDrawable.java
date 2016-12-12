@@ -223,7 +223,9 @@ abstract public class UDrawable {
      * @param vt
      * @return
      */
-    abstract public boolean touchEvent(ViewTouch vt);
+    public boolean touchEvent(ViewTouch vt) {
+        return false;
+    }
 
     /**
      * 移動

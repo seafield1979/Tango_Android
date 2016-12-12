@@ -52,6 +52,11 @@ public class UListView extends UScrollWindow
     /**
      * Methods
      */
+    public UListItem get(int index) {
+        return mItems.get(index);
+    }
+
+
     public void add(UListItem item) {
         item.setPos(0, mBottomY);
         item.setIndex(mItems.size());

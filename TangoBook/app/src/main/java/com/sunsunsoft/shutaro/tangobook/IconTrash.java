@@ -50,14 +50,14 @@ public class IconTrash extends IconContainer {
         super( parentWindow, iconCallbacks, IconType.Trash,
                 0, 0, ICON_W, ICON_H);
 
-        title = UResourceManager.getInstance().getStringById(R.string.trash);
+        title = UResourceManager.getStringById(R.string.trash);
         setColor(ICON_COLOR);
 
         // 中のアイコンを表示するためのSubWindow
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        image = image2 = UResourceManager.getInstance().getBitmapById(R.drawable.trash);
+        image = image2 = UResourceManager.getBitmapById(R.drawable.trash);
     }
 
     /**

@@ -7,6 +7,12 @@ import android.graphics.RectF;
 import android.util.Log;
 
 interface UButtonCallbacks {
+    /**
+     * ボタンがクリックされた時の処理
+     * @param id  button id
+     * @param pressedOn  押された状態かどうか(On/Off)
+     * @return
+     */
     boolean UButtonClicked(int id, boolean pressedOn);
 }
 

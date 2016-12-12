@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.view.View;
 
 import java.util.LinkedList;
+import java.util.List;
 
 enum PageView {
     Title,              // タイトル画面
@@ -215,13 +216,23 @@ public class UPageViewManager {
 
     /**
      * 学習ページを表示開始
-     * 他のページと異なり引数を受け取る必要があるため関数化した
+     * 他のページと異なり引数を受け取る必要があるため関数化
      * @param book
      */
     public void startStudyPage(TangoBook book) {
-        PageViewStudy studyPage = (PageViewStudy)pages[PageView.Study.ordinal()];
-        studyPage.setBook(book);
+        PageViewStudy page = (PageViewStudy)pages[PageView.Study.ordinal()];
+        page.setBook(book);
         stackPage(PageView.Study);
+    }
+
+    /**
+     * リザルトページを開始
+     * 他のページと異なり引数を受け取る必要があるため関数化
+     */
+    public void startStudyResultPage(List<TangoCard> okCards, List<TangoCard> ngCards) {
+        PageViewResult page = (PageViewResult)pages[PageView.StudyResult.ordinal()];
+        page.setCardsLists(okCards, ngCards);
+        changePage(PageView.StudyResult);
     }
 
     /**

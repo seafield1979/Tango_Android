@@ -72,5 +72,4 @@ abstract public class UListItem extends UDrawable {
      * 高さを返す
      */
     abstract public int getHeight();
-
 }
