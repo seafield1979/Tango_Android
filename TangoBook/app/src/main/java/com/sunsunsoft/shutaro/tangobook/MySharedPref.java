@@ -19,10 +19,12 @@ public class MySharedPref {
     public static final String TAG = "MySharedPref";
 
     // option key
-    public static final String Option1Key = "StudyOption1";
-    public static final String Option2Key = "StudyOption2";
-    public static final String Option3Key = "StudyOption3";
-
+    // 出題方法 false:英語->日本語 true:日本語->英語
+    public static final String StudyOption1Key = "StudyOption1";
+    // 出題順 false:順番通り true:ランダム
+    public static final String StudyOption2Key = "StudyOption2";
+    // 出題単語 false:全部  true:未収得
+    public static final String StudyOption3Key = "StudyOption3";
 
     /**
      * Static varialbes

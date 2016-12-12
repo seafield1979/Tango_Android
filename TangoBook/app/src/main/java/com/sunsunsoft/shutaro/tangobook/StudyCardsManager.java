@@ -62,14 +62,26 @@ public class StudyCardsManager {
     /**
      * Constructor
      */
-    public StudyCardsManager(TangoBook book, boolean studyType, boolean orderRandom, boolean
-            notLearned)
-    {
+    public static StudyCardsManager createInstance(List<TangoCard> cards) {
+        StudyCardsManager instance = new StudyCardsManager(cards);
+        return instance;
+    }
+
+    public static StudyCardsManager createInstance(TangoBook book) {
+        boolean notLearned = MySharedPref.readBoolean(MySharedPref.StudyOption3Key);
+
         List<TangoCard> _cards = RealmManager.getItemPosDao()
                 .selectCardsByBookIdWithOption(book.getId(), notLearned);
+        StudyCardsManager instance = new StudyCardsManager(_cards);
+        return instance;
+    }
 
-        if (_cards != null) {
-            for (TangoCard card : _cards) {
+    public StudyCardsManager(List<TangoCard> cards) {
+        boolean studyType = MySharedPref.readBoolean(MySharedPref.StudyOption1Key);
+        boolean orderRandom = MySharedPref.readBoolean(MySharedPref.StudyOption2Key);
+
+        if (cards != null) {
+            for (TangoCard card : cards) {
                 mCards.add(card);
             }
 

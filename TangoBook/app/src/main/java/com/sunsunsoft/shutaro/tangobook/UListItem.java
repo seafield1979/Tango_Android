@@ -64,6 +64,14 @@ abstract public class UListItem extends UDrawable {
         }
     }
 
+
+    public boolean touchUpEvent(ViewTouch vt) {
+        if (vt.isTouchUp()) {
+            isTouching = false;
+        }
+        return false;
+    }
+
     /**
      * タッチ処理
      * @param vt
@@ -72,19 +80,12 @@ abstract public class UListItem extends UDrawable {
     public boolean touchEvent(ViewTouch vt, PointF offset) {
         boolean isDraw = false;
 
-        if (vt.isTouchUp()) {
-            isTouching = false;
-            ULog.print(TAG, "isTouching = false");
-            isDraw = true;
-        }
-
         switch(vt.type) {
             case Touch:
                 if (isTouchable) {
                     if (rect.contains((int) (vt.touchX() - offset.x),
                             (int) (vt.touchY() - offset.y))) {
                         isTouching = true;
-                        ULog.print(TAG, "isTouching = true");
                         isDraw = true;
                     }
                 }

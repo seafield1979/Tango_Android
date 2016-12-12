@@ -104,6 +104,9 @@ public class IconInfoDialogBookStudy extends IconInfoDialog {
         if (isUpdate) {
             isUpdate = false;
             updateLayout(canvas);
+
+            // 閉じるボタンの再配置
+            updateCloseIconPos();
         }
 
         // BG
@@ -204,9 +207,6 @@ public class IconInfoDialogBookStudy extends IconInfoDialog {
             pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
         }
         updateRect();
-
-        // 閉じるボタンの再配置
-        updateCloseIconPos();
     }
 
     public boolean touchEvent(ViewTouch vt) {

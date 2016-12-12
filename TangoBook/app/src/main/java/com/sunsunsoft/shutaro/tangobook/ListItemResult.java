@@ -43,7 +43,9 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     private ListItemResultType mType;
     private String mText;
     private TangoCard mCard;
+    private int mTextColor;
     private UButtonImage mStarButton;
+    private boolean mStudyMode;      // 学習モード false:wordA -> B true:wordB -> A
 
     /**
      * Get/Set
@@ -60,30 +62,35 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
      * Constructor
      */
     public ListItemResult(UListItemCallbacks listItemCallbacks,
-                          ListItemResultType type, boolean isTouchable,
-                          float x, int width, int color) {
+                          ListItemResultType type, boolean isTouchable, TangoCard card,
+                          float x, int width, int textColor, int color) {
         super(listItemCallbacks, isTouchable, x, width, 0, color);
         mType = type;
+        mTextColor = textColor;
+        mCard = card;
     }
 
     // ListItemResultType.Title のインスタンスを生成する
-    public static ListItemResult createTitle(String text, int width, int color)
+    public static ListItemResult createTitle(String text, int width,
+                                             int textColor,int bgColor)
     {
         ListItemResult instance = new ListItemResult(null, ListItemResultType.Title,
-                false, 0, width, color);
+                false, null, 0, width, textColor, bgColor);
         instance.mText = text;
         instance.size.height = TITLE_H;
         return instance;
     }
 
     // ListItemResultType.OKのインスタンスを生成する
-    public static ListItemResult createOK(TangoCard card, int width, int color) {
+    public static ListItemResult createOK(TangoCard card, boolean mode,
+                                          int width, int textColor,int bgColor) {
         ListItemResult instance = new ListItemResult(null,
-                ListItemResultType.OK, true,
-                0, width, color);
-        instance.mText = card.getWordA() + ":" + card.getWordB();
-        instance.mCard = card;
+                ListItemResultType.OK, true, card,
+                0, width, textColor, bgColor);
+
+        instance.mText = mode ? card.getWordB() : card.getWordA();
         instance.size.height = CARD_H;
+        instance.mStudyMode = mode;
         // Starボタンを追加(On/Offあり)
         instance.mStarButton = new UButtonImage(instance, ButtonIdStar, 100,
                 instance.size.width - 150, (instance.size.height - STAR_ICON_W) / 2,
@@ -95,11 +102,14 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     }
 
     // ListItemResultType.NGのインスタンスを生成する
-    public static ListItemResult createNG(TangoCard card, int width, int color) {
+    public static ListItemResult createNG(TangoCard card, boolean mode,
+                                          int width, int textColor,int bgColor)
+    {
         ListItemResult instance = new ListItemResult(null,
-                ListItemResultType.NG, true,
-                0, width, color);
-        instance.mText = card.getWordA() + ":" + card.getWordB();
+                ListItemResultType.NG, true, card,
+                0, width, textColor, bgColor);
+        instance.mText = mode ? card.getWordB() : card.getWordA();
+        instance.mStudyMode = mode;
         instance.size.height = CARD_H;
         return instance;
     }
@@ -125,7 +135,6 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
         if (isTouchable && isTouching) {
             _color = pressedColor;
         }
-        ULog.print(TAG, "isTouching:" + isTouching);
         UDraw.drawRectFill(canvas, paint,
                     new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),
                     _color, FRAME_WIDTH, FRAME_COLOR);
@@ -134,18 +143,18 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
             case Title:
             {
                 UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
-                        _pos.x + size.width / 2, _pos.y + size.height / 2, TEXT_COLOR);
+                        _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
             }
                 break;
             case OK:
             {
                 UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
-                        _pos.x + size.width / 2, _pos.y + size.height / 2, TEXT_COLOR);
+                        _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
             }
                 break;
             case NG:
                 UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
-                        _pos.x + size.width / 2, _pos.y + size.height / 2, TEXT_COLOR);
+                        _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
                 break;
         }
 

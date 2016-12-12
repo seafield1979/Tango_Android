@@ -55,7 +55,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
     public static final int MESSAGE_TEXT_SIZE = 50;
     public static final int TEXT_MARGIN_V = 50;
-    public static final int BUTTON_H = 100;
+    public static final int BUTTON_H = 140;
     public static final int BUTTON_MARGIN_H = 50;
     public static final int BUTTON_MARGIN_V = 30;
 

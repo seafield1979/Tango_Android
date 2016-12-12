@@ -99,6 +99,9 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         if (isUpdate) {
             isUpdate = false;
             updateLayout(canvas);
+
+            // 閉じるボタンの再配置
+            updateCloseIconPos();
         }
 
         // BG

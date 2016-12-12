@@ -53,5 +53,6 @@
 
     <string name="retry1">"すべて\nリトライ"</string>
     <string name="retry2">"NGのみ\nリトライ"</string>
+    <string name="title_result">"学習結果"</string>
 
 </resources>

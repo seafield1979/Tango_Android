@@ -24,7 +24,7 @@ public class PageViewResult extends UPageView
     private static final int ButtonIdRetry2 = 201;
     private static final int ButtonIdReturn = 202;
 
-    private static final int TOP_Y = 50;
+    private static final int TOP_Y = 30;
     private static final int PRIORITY_LV = 100;
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 50;
@@ -37,7 +37,7 @@ public class PageViewResult extends UPageView
 
     private static final int BUTTON_H = 200;
     private static final int TITLE_BG_COLOR = Color.rgb(100,100,200);
-    private static final int BUTTON_TEXT_COLOR = Color.BLACK;
+    private static final int BUTTON_TEXT_COLOR = Color.WHITE;
     private static final int BUTTON1_BG_COLOR = Color.rgb(100,200,100);
     private static final int BUTTON2_BG_COLOR = Color.rgb(200,100,100);
 
@@ -48,6 +48,7 @@ public class PageViewResult extends UPageView
     private ListViewResult mListView;
     private List<TangoCard> mOkCards;
     private List<TangoCard> mNgCards;
+    private boolean mStudyMode;             // 出題モード(false:英->日 / true:日->英)
 
     private UTextView mTitleText;           // タイトル
     private UTextView mBookNameText;        // Book名
@@ -81,7 +82,7 @@ public class PageViewResult extends UPageView
      */
 
     public void onShow() {
-
+        mStudyMode = MySharedPref.readBoolean(MySharedPref.StudyOption1Key);
     }
 
     public void onHide() {
@@ -99,25 +100,29 @@ public class PageViewResult extends UPageView
 
         float y = TOP_Y;
         // Title
-        mTitleText = UTextView.createInstance(mBook.getName(), TITLE_TEXT_SIZE, DRAW_PRIORITY,
+        mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
+                .title_result),
+                TITLE_TEXT_SIZE,
+                DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false, width / 2, y, width,
-                TEXT_COLOR, TITLE_BG_COLOR);
+                TEXT_COLOR, 0);
         mTitleText.addToDrawManager();
         y += mTitleText.size.height;
 
         // Book Name
-        mResultText = UTextView.createInstance(mBook.getName(), TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.None, width, false, false, MARGIN_H, y, width,
+        mBookNameText = UTextView.createInstance(mBook.getName(), TEXT_SIZE, DRAW_PRIORITY,
+                UAlignment.CenterX, width, false, false, width / 2, y, width,
                 TEXT_COLOR, 0);
-        mResultText.addToDrawManager();
+        mBookNameText.addToDrawManager();
+        y += mBookNameText.size.height;
 
         // Result
         String text = "OK: " + mOkCards.size() + "  NG: " + mNgCards.size();
         mResultText = UTextView.createInstance(text, TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.None, width, false, false, width / 2, y, width,
+                UAlignment.CenterX, width, false, false, width / 2, y, width,
                 TEXT_COLOR, 0);
         mResultText.addToDrawManager();
-        y += mTitleText.size.height;
+        y += mResultText.size.height;
 
         // Buttons
         int buttonW = (width - MARGIN_H * 4) / 3;
@@ -145,7 +150,8 @@ public class PageViewResult extends UPageView
         y += BUTTON_H + MARGIN_V;
 
         // ListView
-        mListView = new ListViewResult(this, mOkCards, mNgCards, PRIORITY_LV, MARGIN_H, y,
+        mListView = new ListViewResult(this, mOkCards, mNgCards, mStudyMode,
+                PRIORITY_LV, MARGIN_H, y,
                 width - MARGIN_H * 2, height - (int)y - MARGIN_V, Color.WHITE);
 
     }
@@ -168,6 +174,17 @@ public class PageViewResult extends UPageView
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
 
+        switch(id) {
+            case ButtonIdRetry1:
+                UPageViewManager.getInstance().startStudyPage(mBook, null, false);
+                break;
+            case ButtonIdRetry2:
+                UPageViewManager.getInstance().startStudyPage(mBook, mNgCards, false);
+                break;
+            case ButtonIdReturn:
+                UPageViewManager.getInstance().popPage();
+                break;
+        }
         return false;
     }
 
@@ -184,11 +201,17 @@ public class PageViewResult extends UPageView
 
         ListItemResult _item = (ListItemResult)item;
         if (_item.getType() != ListItemResult.ListItemResultType.Title) {
+            int _color;
+            if (_item.getType() == ListItemResult.ListItemResultType.OK) {
+                _color = Color.rgb(150, 250, 150);
+            } else {
+                _color = Color.rgb(250, 150, 150);
+            }
             mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
                     this, null, UDialogWindow.ButtonDir.Vertical,
                     UDialogWindow.DialogPosType.Center, false,
                     mParentView.getWidth(), mParentView.getHeight(),
-                    Color.BLACK, Color.rgb(150,250,150));
+                    Color.BLACK, _color);
             // 項目を追加
             TangoCard card = _item.getCard();
             mDialog.addTextView(card.getWordA(), UAlignment.CenterX, false, false, 50,

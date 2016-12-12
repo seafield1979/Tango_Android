@@ -94,9 +94,9 @@ public class PreStudyWindow extends UWindow {
         addCloseIcon(CloseIconPos.RightTop);
 
         // get options
-        option1 = MySharedPref.readBoolean(MySharedPref.Option1Key);
-        option2 = MySharedPref.readBoolean(MySharedPref.Option2Key);
-        option3 = MySharedPref.readBoolean(MySharedPref.Option3Key);
+        option1 = MySharedPref.readBoolean(MySharedPref.StudyOption1Key);
+        option2 = MySharedPref.readBoolean(MySharedPref.StudyOption2Key);
+        option3 = MySharedPref.readBoolean(MySharedPref.StudyOption3Key);
     }
 
     /**
@@ -345,9 +345,9 @@ public class PreStudyWindow extends UWindow {
         switch (id) {
             case PageViewStudySelect.ButtonIdStartStudy:
                 // オプションを保存
-                MySharedPref.writeBoolean(MySharedPref.Option1Key, option1);
-                MySharedPref.writeBoolean(MySharedPref.Option2Key, option2);
-                MySharedPref.writeBoolean(MySharedPref.Option3Key, option3);
+                MySharedPref.writeBoolean(MySharedPref.StudyOption1Key, option1);
+                MySharedPref.writeBoolean(MySharedPref.StudyOption2Key, option2);
+                MySharedPref.writeBoolean(MySharedPref.StudyOption3Key, option3);
 
                 if (mButtonCallbacks != null) {
                     mButtonCallbacks.UButtonClicked(id, pressedOn);

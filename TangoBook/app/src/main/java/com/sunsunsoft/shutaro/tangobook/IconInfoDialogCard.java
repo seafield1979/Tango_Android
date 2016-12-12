@@ -110,6 +110,9 @@ public class IconInfoDialogCard extends IconInfoDialog {
         if (isUpdate) {
             isUpdate = false;
             updateLayout(canvas);
+
+            // 閉じるボタンの再配置
+            updateCloseIconPos();
         }
 
         // BG
@@ -207,7 +210,6 @@ public class IconInfoDialogCard extends IconInfoDialog {
             pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
         }
         updateRect();
-
     }
 
     public boolean touchEvent(ViewTouch vt) {

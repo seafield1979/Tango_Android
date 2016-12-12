@@ -36,7 +36,7 @@ public class StudyCard extends UDrawable{
     /**
      * Consts
      */
-    public static final int WIDTH = 400;
+    public static final int WIDTH = 500;
     public static final int HEIGHT = 250;
 
     protected static final int MOVE_FRAME = 10;
@@ -48,7 +48,7 @@ public class StudyCard extends UDrawable{
 
     protected static final int ARROW_W = 150;
     protected static final int ARROW_H = 150;
-    protected static final int ARROW_MARGIN = 50;
+    protected static final int ARROW_MARGIN = 20;
 
     // スライド系
     // 左右にスライドできる距離。これ以上スライドするとOK/NGボックスに入る
@@ -211,7 +211,7 @@ public class StudyCard extends UDrawable{
         // Text
         if (!isMovingSize) {
             // タッチ中は正解を表示
-            String text = isTouching ? wordA : wordB;
+            String text = isTouching ? wordB : wordA;
             UDraw.drawText(canvas, text, UAlignment.Center, TEXT_SIZE,
                     _pos.x + size.width / 2, _pos.y + size.height / 2, TEXT_COLOR);
         }

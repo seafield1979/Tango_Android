@@ -226,14 +226,25 @@ public class UPageViewManager {
     }
 
     /**
+     * 学習ページを表示開始(リトライ時)
+     * @param book
+     * @param cards  リトライで学習するカード
+     */
+    public void startStudyPage(TangoBook book, List<TangoCard> cards, boolean stack) {
+        PageViewStudy page = (PageViewStudy)pages[PageView.Study.ordinal()];
+        page.setBook(book);
+        page.setCards(cards);
+        if (stack) {
+            stackPage(PageView.Study);
+        } else {
+            changePage(PageView.Study);
+        }
+    }
+
+    /**
      * リザルトページを開始
      * 他のページと異なり引数を受け取る必要があるため関数化
      */
-    public static void StartStudyResultPage(TangoBook book, List<TangoCard> okCards, List<TangoCard> ngCards) {
-        UPageViewManager instance = getInstance();
-        instance.startStudyResultPage(book, okCards, ngCards);
-    }
-
     public void startStudyResultPage(TangoBook book, List<TangoCard> okCards, List<TangoCard> ngCards) {
         PageViewResult page = (PageViewResult)pages[PageView.StudyResult.ordinal()];
         page.setBook(book);

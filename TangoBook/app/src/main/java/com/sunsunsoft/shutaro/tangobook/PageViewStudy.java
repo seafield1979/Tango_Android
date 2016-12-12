@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.View;
 
+import java.util.List;
+
 /**
  * Created by shutaro on 2016/12/05.
  *
@@ -63,8 +65,9 @@ public class PageViewStudy extends UPageView
     private UButtonText mExitButton;
     private UButtonText mOkCardsButton, mNgCardsButton;
 
-    // 学習する単語帳
+    // 学習する単語帳 or カードリスト
     private TangoBook mBook;
+    private List<TangoCard> mCards;
 
     // 終了確認ダイアログ
     private UDialogWindow mConfirmDialog;
@@ -76,6 +79,10 @@ public class PageViewStudy extends UPageView
      */
     public void setBook(TangoBook book) {
         mBook = book;
+    }
+
+    public void setCards(List<TangoCard> cards) {
+        mCards = cards;
     }
 
     /**
@@ -93,19 +100,20 @@ public class PageViewStudy extends UPageView
         UDrawManager.getInstance().init();
 
         mState = State.Main;
-
-        // get options
-        option1 = MySharedPref.readBoolean(MySharedPref.Option1Key);
-        option2 = MySharedPref.readBoolean(MySharedPref.Option2Key);
-        option3 = MySharedPref.readBoolean(MySharedPref.Option3Key);
-
-        mCardsManager = new StudyCardsManager(mBook, option1, option2, option3);
+        if (mCards != null) {
+            // リトライ時
+            mCardsManager = StudyCardsManager.createInstance(mCards);
+        } else {
+            // 通常時(選択された単語帳)
+            mCardsManager = StudyCardsManager.createInstance(mBook);
+        }
     }
 
     protected void onHide() {
         mCardsManager = null;
         mCardsStack.cleanUp();
         mCardsStack = null;
+        mCards = null;
         isFirst = true;
     }
 
@@ -172,7 +180,7 @@ public class PageViewStudy extends UPageView
                 DRAW_PRIORITY, "NG",
                 MARGIN_H, screenH - BUTTON2_H - MARGIN_V,
                 BUTTON2_W, BUTTON2_H,
-                TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
+                TEXT_SIZE, Color.BLACK, Color.rgb(200,100,100));
         UDrawManager.getInstance().addDrawable(mNgCardsButton);
 
         // OK/NGボタンの座標をCardsStackに教えてやる
@@ -215,7 +223,7 @@ public class PageViewStudy extends UPageView
                             true, mParentView.getWidth(), mParentView.getHeight(),
                             Color.BLACK, Color.LTGRAY);
                     mConfirmDialog.setTitle(mContext.getString(R.string.confirm_exit));
-                    mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.LTGRAY);
+                    mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
                     mConfirmDialog.addCloseButton("Cancel");
                 }
                 break;
