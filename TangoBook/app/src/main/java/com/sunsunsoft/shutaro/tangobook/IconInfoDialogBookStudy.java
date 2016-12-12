@@ -132,6 +132,10 @@ public class IconInfoDialogBookStudy extends IconInfoDialog {
     protected void updateLayout(Canvas canvas) {
 
         int y = TOP_ITEM_Y;
+        // Card count
+        long count = RealmManager.getItemPosDao().countInParentType(
+                TangoParentType.Book, mIcon.getTangoItem().getId()
+        );
 
         List<ActionIcons> icons = ActionIcons.getBookStudyIcons();
 
@@ -156,11 +160,19 @@ public class IconInfoDialogBookStudy extends IconInfoDialog {
             // アイコンの下に表示するテキストを設定
             imageButton.setTitle(icon.getTitle(mContext), 30, Color.BLACK);
 
+            // 学習アイコンは中のカード数が0なら無効化
+            if (icon == ActionIcons.Study) {
+                if (count <= 0) {
+                    imageButton.setEnabled(false);
+                }
+            }
+
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
 
             x += ICON_W + ICON_MARGIN_H;
         }
+
         y += ICON_W + MARGIN_V + 50;
 
         // Name
@@ -175,11 +187,6 @@ public class IconInfoDialogBookStudy extends IconInfoDialog {
                 TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;
-
-        // Card count
-        long count = RealmManager.getItemPosDao().countInParentType(
-                TangoParentType.Book, mIcon.getTangoItem().getId()
-        );
 
         // title
         textCountTitle = UTextView.createInstance( mContext.getString(R.string.card_count),

@@ -80,7 +80,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
 
         for (int i=0; i<buttons.length; i++) {
             ButtonId id = ButtonId.values()[i];
-            buttonType = UButtonType.BGColor;
+            buttonType = UButtonType.Press;
 
             buttons[i] = new UButtonText(this, buttonType, id.ordinal(), BUTTON_PRIORITY,
                     id.getTitle(mContext), 100, y,
@@ -91,6 +91,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
             UDrawManager.getInstance().addDrawable(buttons[i]);
             y += 150;
         }
+        buttons[2].setEnabled(false);
     }
 
     /**

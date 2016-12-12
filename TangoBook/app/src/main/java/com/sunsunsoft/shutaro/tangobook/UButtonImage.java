@@ -28,6 +28,7 @@ public class UButtonImage extends UButton {
      */
     protected LinkedList<Bitmap> images = new LinkedList<>();    // 画像
     protected Bitmap pressedImage;      // タッチ時の画像
+    protected Bitmap disabledImage;     // disable時の画像
     protected String title;             // 画像の下に表示するテキスト
     protected int titleSize;
     protected int titleColor;
@@ -38,6 +39,14 @@ public class UButtonImage extends UButton {
     /**
      * Get/Set
      */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        if (!enabled) {
+            if (disabledImage == null) {
+                disabledImage = UUtil.convToGrayBitmap(images.getFirst());
+            }
+        }
+    }
 
     /**
      * Constructor
@@ -137,7 +146,11 @@ public class UButtonImage extends UButton {
             _pos.y += offset.y;
         }
 
-        _image = images.get(stateId);
+        if (!enabled) {
+            _image = disabledImage;
+        } else {
+            _image = images.get(stateId);
+        }
         Rect _rect = new Rect((int)_pos.x, (int)_pos.y,
                         (int)_pos.x + size.width,(int)_pos.y + size.height);
         if (isPressed) {

@@ -1,5 +1,8 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.FloatMath;
 
 /**
@@ -28,5 +31,36 @@ public class UUtil {
      */
     public static float toDecel(float ratio) {
         return (float)(1.0 - Math.cos(ratio * 90 * RAD));
+    }
+
+    /**
+     * Bitmapをグレースケール（灰色）に変換する
+     * @param bmp
+     * @return
+     */
+    public static Bitmap convToGrayBitmap(Bitmap bmp) {
+        // グレースケール変換
+        int height = bmp.getHeight();
+        int width  = bmp.getWidth();
+        int size   = height * width;
+        int pix[]  = new int[size];
+        int pos = 0;
+        bmp.getPixels(pix, 0, width, 0, 0, width, height);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int pixel = pix[pos];
+                int red   = (pixel & 0x00ff0000) >> 16;
+                int green = (pixel & 0x0000ff00) >> 8;
+                int blue  = (pixel & 0x000000ff);
+                int alpha = (pixel & 0xff000000) >> 24;
+                int gray  = (red + green + blue) / 3;
+                pix[pos] = Color.argb(alpha, gray, gray, gray);
+                pos++;
+            }
+        }
+        Bitmap newBmp = Bitmap.createBitmap(pix, 0, width, width, height,
+                Bitmap.Config.ARGB_8888);
+
+        return newBmp;
     }
 }

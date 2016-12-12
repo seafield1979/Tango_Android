@@ -194,18 +194,6 @@ abstract public class UMenuBar extends UWindow {
     public void drawContent(Canvas canvas, Paint paint ) {
         if (!isShow) return;
 
-        // bg
-        // 内部を塗りつぶし
-        paint.setStyle(Paint.Style.FILL);
-        // 色
-        paint.setColor(0xff000000);
-
-        canvas.drawRect(pos.x,
-                pos.y,
-                pos.x + size.width,
-                pos.y + size.height,
-                paint);
-
         // トップのアイテムから描画
         for (UMenuItem item : topItems) {
             if (item != null && item.isShow) {

@@ -66,14 +66,9 @@ public class UButtonText extends UButton {
      * @param offset 独自の座標系を持つオブジェクトをスクリーン座標系に変換するためのオフセット値
      */
     public void draw(Canvas canvas, Paint paint, PointF offset) {
-        // 内部を塗りつぶし
-        paint.setStyle(Paint.Style.FILL);
-
         // 色
         // 押されていたら明るくする
         int _color = color;
-
-        paint.setColor(_color);
 
         PointF _pos = new PointF(pos.x, pos.y);
         if (offset != null) {
@@ -85,12 +80,20 @@ public class UButtonText extends UButton {
 
         if (type == UButtonType.BGColor) {
             // 押したら色が変わるボタン
-            if (isPressed) {
+            if (!enabled) {
+                _color = disabledColor;
+            }
+            else if (isPressed) {
                 _color = pressedColor;
             }
         }
         else {
+            int _pressedColor = pressedColor;
             // 押したら凹むボタン
+            if (!enabled) {
+                _color = disabledColor;
+                _pressedColor = disabledColor2;
+            }
             if (isPressed || pressedOn) {
                 _pos.y += PRESS_Y;
             } else {
@@ -99,7 +102,7 @@ public class UButtonText extends UButton {
                 UDraw.drawRoundRectFill(canvas, paint,
                         new RectF(_pos.x, _pos.y + size.height - height,
                                 _pos.x + size.width, _pos.y + size.height),
-                        BUTTON_RADIUS, pressedColor, 0, 0);
+                        BUTTON_RADIUS, _pressedColor, 0, 0);
             }
             _height -= PRESS_Y;
 

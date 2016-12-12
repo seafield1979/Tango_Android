@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -39,6 +40,7 @@ abstract public class UButton extends UDrawable {
     public static final String TAG = "UButton";
     protected static final int PRESS_Y = 16;
     protected static final int BUTTON_RADIUS = 16;
+    protected static final int DISABLED_COLOR = Color.rgb(160,160,160);
 
     /**
      * Member Variables
@@ -46,8 +48,11 @@ abstract public class UButton extends UDrawable {
     protected int id;
     protected UButtonType type;
     protected UButtonCallbacks buttonCallback;
+    protected boolean enabled;          // falseならdisableでボタンが押せなくなる
     protected boolean isPressed;
     protected int pressedColor;
+    protected int disabledColor;        // enabled == false のときの色
+    protected int disabledColor2;       // eanbled == false のときの濃い色
     protected boolean pressedOn;        // Press2タイプの時のOn状態
 
     /**
@@ -65,6 +70,10 @@ abstract public class UButton extends UDrawable {
         this.pressedOn = pressedOn;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     /**
      * Constructor
      */
@@ -73,6 +82,7 @@ abstract public class UButton extends UDrawable {
     {
         super(priority, x, y, width, height);
         this.id = id;
+        this.enabled = true;
         this.buttonCallback = callbacks;
         this.type = type;
         this.color = color;
@@ -81,6 +91,8 @@ abstract public class UButton extends UDrawable {
         } else {
             this.pressedColor = UColor.addBrightness(color, -0.3f);
         }
+        disabledColor = DISABLED_COLOR;
+        disabledColor2 = UColor.addBrightness(disabledColor, -0.3f);
     }
 
     /**
@@ -131,6 +143,8 @@ abstract public class UButton extends UDrawable {
     }
 
     public boolean touchEvent(ViewTouch vt, PointF offset) {
+        if (!enabled) return false;
+
         boolean done = false;
         if (offset == null) {
             offset = new PointF();

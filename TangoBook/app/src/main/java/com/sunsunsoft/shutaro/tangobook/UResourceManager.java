@@ -3,6 +3,7 @@ package com.sunsunsoft.shutaro.tangobook;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.View;
 
 import java.util.HashMap;
