@@ -11,11 +11,13 @@ import java.util.List;
 
 enum PageView {
     Title,              // タイトル画面
-    Edit,          // 単語帳を編集
+    Edit,               // 単語帳を編集
     StudySelect,        // 学習する単語帳を選択する
-    Study,         // 単語帳学習
+    Study,              // 単語帳学習
     StudyResult,        // 単語帳結果
-    Settings,
+    History,            // 履歴
+    Settings,           // 設定
+    Help,               // ヘルプ
     ;
 }
 
@@ -107,9 +109,17 @@ public class UPageViewManager {
         page = new PageViewResult(mContext, mParentView);
         pages[PageView.StudyResult.ordinal()] = page;
 
+        // History
+        page = new PageViewHistory(mContext, mParentView);
+        pages[PageView.History.ordinal()] = page;
+
         // Settings
         page = new PageViewSettings(mContext, mParentView);
         pages[PageView.Settings.ordinal()] = page;
+
+        // Help
+        page = new PageViewHelp(mContext, mParentView);
+        pages[PageView.Help.ordinal()] = page;
 
         // 最初に表示するページ
         stackPage(PageView.Title);

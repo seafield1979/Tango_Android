@@ -1,21 +1,20 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+/**
+ * Created by shutaro on 2016/12/13.
+ * 履歴ページ
+ */
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 
-/**
- * Created by shutaro on 2016/12/05.
- *
- * 設定ページ
- */
-
-public class PageViewSettings extends UPageView implements UButtonCallbacks{
+public class PageViewHistory extends UPageView implements UButtonCallbacks{
     /**
      * Constructor
      */
-    public PageViewSettings(Context context, View parentView) {
+    public PageViewHistory(Context context, View parentView) {
         super(context, parentView);
     }
 

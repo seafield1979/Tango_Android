@@ -6,16 +6,16 @@ import android.graphics.Paint;
 import android.view.View;
 
 /**
- * Created by shutaro on 2016/12/05.
+ * Created by shutaro on 2016/12/13.
  *
- * 設定ページ
+ * ヘルプページ
  */
 
-public class PageViewSettings extends UPageView implements UButtonCallbacks{
+public class PageViewHelp extends UPageView implements UButtonCallbacks{
     /**
      * Constructor
      */
-    public PageViewSettings(Context context, View parentView) {
+    public PageViewHelp(Context context, View parentView) {
         super(context, parentView);
     }
 

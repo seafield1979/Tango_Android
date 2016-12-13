@@ -3,6 +3,8 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="app_title">カラフル単語帳</string>
+
     <string name="edit_title_word_a">英語</string>
     <string name="edit_title_word_b">日本語</string>
     <string name="edit_title_hint_ab">ヒント 英 -> 日</string>
@@ -19,7 +21,9 @@
     <string name="card_count">カード数</string>
     <string name="title_edit">単語帳を作る</string>
     <string name="title_study">学習する</string>
+    <string name="title_history">履歴</string>
     <string name="title_settings">設定</string>
+    <string name="title_help">ヘルプ</string>
 
     <string name="open">開く</string>
     <string name="edit">編集</string>
