@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.view.View;
 
 import java.util.Date;
 
@@ -63,7 +64,7 @@ public class PreStudyWindow extends UWindow {
      * Member Variables
      */
     protected UButtonCallbacks mButtonCallbacks;
-    protected boolean isUpdate = true;
+    protected View mParentView;
     private UTextView textTitle, textCount, textLastStudied;
     private UTextView textOption1, textOption2, textOption3;
 
@@ -83,12 +84,14 @@ public class PreStudyWindow extends UWindow {
     /**
      * Constructor
      */
-    public PreStudyWindow(UWindowCallbacks windowCallbacks, UButtonCallbacks buttonCallbacks )
+    public PreStudyWindow(UWindowCallbacks windowCallbacks, UButtonCallbacks buttonCallbacks,
+                          View parentView)
     {
         // width, height はinit内で計算するのでここでは0を設定
         super(windowCallbacks, DrawPriority.Dialog.p(), 0, 0, 0, 0, BG_COLOR);
 
         mButtonCallbacks = buttonCallbacks;
+        mParentView = parentView;
         isShow = false;     // 初期状態は非表示
 
         addCloseIcon(CloseIconPos.RightTop);
@@ -109,6 +112,7 @@ public class PreStudyWindow extends UWindow {
     public void showWithBook(TangoBook book) {
         isShow = true;
         mBook = book;
+        updateLayout();
     }
 
     public boolean touchEvent(ViewTouch vt) {
@@ -151,11 +155,6 @@ public class PreStudyWindow extends UWindow {
      * @param paint
      */
     public void drawContent(Canvas canvas, Paint paint) {
-        if (isUpdate) {
-            isUpdate = false;
-            updateLayout(canvas);
-        }
-
         // BG
         UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
                 bgColor, FRAME_WIDTH, FRAME_COLOR);
@@ -176,29 +175,31 @@ public class PreStudyWindow extends UWindow {
 
     /**
      * レイアウト更新
-     * @param canvas
      */
-    protected void updateLayout(Canvas canvas) {
+    protected void updateLayout() {
 
         int y = TOP_ITEM_Y;
         int width = BUTTON_W * 2 + MARGIN_H * 3;
-
-        // タイトル(単語帳の名前)
-        String title = UResourceManager.getInstance().getStringById(R.string.book) + " : " + mBook
-                .getName();
-        textTitle = UTextView.createInstance( title, TEXT_SIZE_3, 0,
-                UAlignment.CenterX, canvas.getWidth(), false, true,
-                width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += TEXT_SIZE_3 + MARGIN_V;
+        int screenW = mParentView.getWidth();
+        int screenH = mParentView.getHeight();
 
         // カード数
         long count = RealmManager.getItemPosDao().countInParentType(
                 TangoParentType.Book, mBook.getId()
         );
+
+        // タイトル(単語帳の名前)
+        String title = UResourceManager.getInstance().getStringById(R.string.book) + " : " + mBook
+                .getName();
+        textTitle = UTextView.createInstance( title, TEXT_SIZE_3, 0,
+                UAlignment.CenterX, screenW, false, true,
+                width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
+        y += TEXT_SIZE_3 + MARGIN_V;
+
         textCount = UTextView.createInstance(
                 UResourceManager.getInstance().getStringById(R.string.card_count) + ":" + count,
                 TEXT_SIZE, 0,
-                UAlignment.CenterX, canvas.getWidth(), false, true,
+                UAlignment.CenterX, screenW, false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE + MARGIN_V;
 
@@ -208,7 +209,7 @@ public class PreStudyWindow extends UWindow {
                 UResourceManager.getStringById(R.string
                 .last_studied_date) + ":" + studiedTime,
                 TEXT_SIZE, 0,
-                UAlignment.CenterX, canvas.getWidth(), false, true,
+                UAlignment.CenterX, screenW, false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE + MARGIN_V + 40;
 
@@ -222,6 +223,9 @@ public class PreStudyWindow extends UWindow {
                 0, UResourceManager.getStringById(R.string.start), MARGIN_H, y,
                 BUTTON_W, BUTTON2_H,
                 TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
+        if (count == 0) {
+            buttons[ButtonId.Start.ordinal()].setEnabled(false);
+        }
 
         // キャンセルボタン
         buttons[ButtonId.Cancel.ordinal()] = new UButtonText(this, UButtonType.Press,
@@ -238,7 +242,7 @@ public class PreStudyWindow extends UWindow {
         textOption1 = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.study_type),
                 TEXT_SIZE_2, 0,
-                UAlignment.None, canvas.getWidth(), false, false,
+                UAlignment.None, screenW, false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE_2 + 20;
 
@@ -263,7 +267,7 @@ public class PreStudyWindow extends UWindow {
         textOption2 = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.order_type),
                 TEXT_SIZE_2, 0,
-                UAlignment.None, canvas.getWidth(), false, false,
+                UAlignment.None, screenW, false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         y += TEXT_SIZE_2 + 20;
 
@@ -289,7 +293,7 @@ public class PreStudyWindow extends UWindow {
         textOption3 = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.study_pattern),
                 TEXT_SIZE_2, 0,
-                UAlignment.None, canvas.getWidth(), false, false,
+                UAlignment.None, screenW, false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE_2 + 20;
 
@@ -324,8 +328,8 @@ public class PreStudyWindow extends UWindow {
         buttons[id.ordinal()].setPressedOn(true);
 
         // センタリング
-        pos.x = (canvas.getWidth() - size.width) / 2;
-        pos.y = (canvas.getHeight() - size.height) / 2;
+        pos.x = (screenW - size.width) / 2;
+        pos.y = (screenH - size.height) / 2;
 
         setSize(width, y);
 

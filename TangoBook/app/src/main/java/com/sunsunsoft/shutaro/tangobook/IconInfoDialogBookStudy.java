@@ -161,7 +161,7 @@ public class IconInfoDialogBookStudy extends IconInfoDialog {
             imageButton.setTitle(icon.getTitle(mContext), 30, Color.BLACK);
 
             // 学習アイコンは中のカード数が0なら無効化
-            if (icon == ActionIcons.Study) {
+            if (icon == ActionIcons.Study || icon == ActionIcons.Open) {
                 if (count <= 0) {
                     imageButton.setEnabled(false);
                 }
