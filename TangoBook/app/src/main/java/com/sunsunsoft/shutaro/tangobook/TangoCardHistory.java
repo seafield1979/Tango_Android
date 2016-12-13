@@ -27,8 +27,6 @@ public class TangoCardHistory extends RealmObject {
     @Index
     private int cardId;
 
-    private boolean learned;
-
     // 正解フラグの数(最大 CORRECT_HISTORY_MAX)
     private int correctFlagNum;
 
@@ -52,14 +50,6 @@ public class TangoCardHistory extends RealmObject {
 
     public void setCardId(int cardId) {
         this.cardId = cardId;
-    }
-
-    public boolean isLearned() {
-        return learned;
-    }
-
-    public void setLearned(boolean learned) {
-        learned = learned;
     }
 
     public int getCorrectFlagNum() {

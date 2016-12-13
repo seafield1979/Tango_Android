@@ -26,6 +26,9 @@ public class MySharedPref {
     // 出題単語 false:全部  true:未収得
     public static final String StudyOption3Key = "StudyOption3";
 
+    // Realmバックアップ保存場所
+    public static final String RealmBackupPathKey = "RealmBackupPath";
+
     /**
      * Static varialbes
      */
@@ -118,8 +121,9 @@ public class MySharedPref {
     /**
      * Shared Preferences の全てのデータを出力する
      */
-    public void showAllData() {
-        Map<String,?> keys = mPrefs.getAll();
+    public static void showAllData() {
+        MySharedPref instance = getInstance();
+        Map<String,?> keys = instance.mPrefs.getAll();
 
         for(Map.Entry<String,?> entry : keys.entrySet()){
             ULog.print( TAG, entry.getKey() + ": " + entry.getValue().toString() + "\n");

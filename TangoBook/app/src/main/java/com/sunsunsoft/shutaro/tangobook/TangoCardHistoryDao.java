@@ -55,12 +55,11 @@ public class TangoCardHistoryDao {
     /**
      * Add
      */
-    public boolean addOne(int cardId, boolean learned, boolean correctFlag) {
+    public boolean addOne(int cardId, boolean correctFlag) {
         TangoCardHistory history = new TangoCardHistory();
         history.setCardId(cardId);
         history.addCorrectFlags(correctFlag);
 
-        history.setLearned(learned);
         history.setStudiedDate(new Date());
 
         mRealm.beginTransaction();
@@ -69,6 +68,7 @@ public class TangoCardHistoryDao {
 
         return true;
     }
+
 
     /**
      * Delete
@@ -88,16 +88,32 @@ public class TangoCardHistoryDao {
     /**
      * Update
      */
-    public boolean updateOne(int cardId, boolean learned, boolean correctFlag) {
+    public boolean updateOne(int cardId, boolean correctFlag) {
         TangoCardHistory result = mRealm.where(TangoCardHistory.class)
                 .equalTo("cardId", cardId).findFirst();
-        if (result == null) return false;
+        if (result == null) {
+            // なかったら追加する
+            addOne(cardId, correctFlag);
+            return true;
+        }
 
         mRealm.beginTransaction();
         result.addCorrectFlags(correctFlag);
-        result.setLearned(learned);
 
         mRealm.commitTransaction();
         return true;
     }
+
+    /**
+     * Add or Update list
+     */
+    public void updateCards(List<TangoCard> okCards, List<TangoCard> ngCards) {
+        for (TangoCard card : okCards) {
+            updateOne(card.getId(), true);
+        }
+        for (TangoCard card : ngCards) {
+            updateOne(card.getId(), false);
+        }
+    }
+
 }

@@ -323,7 +323,8 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         switch (id) {
             case ButtonIdStartStudy:
                 // 学習開始
-                UPageViewManager.getInstance().startStudyPage((TangoBook)mIconBook.getTangoItem());
+                UPageViewManager.getInstance().startStudyPage((TangoBook)mIconBook.getTangoItem()
+                        , true);
                 break;
             case ButtonIdCancel:
                 mPreStudyWindow.setShow(false);

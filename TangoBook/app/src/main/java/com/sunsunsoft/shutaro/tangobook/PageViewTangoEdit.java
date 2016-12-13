@@ -166,6 +166,16 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 "fragment_dialog");
     }
 
+    // ダミーのCardを追加
+    private void addDummyCard() {
+        addCardIcon();
+    }
+
+    // ダミーのBookを追加
+    private void addDummyBook() {
+        addBookIcon();
+    }
+
     /**
      * Edit icon
      */
@@ -245,6 +255,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 break;
             case AddBook:
                 addBookDialog();
+                break;
+            case AddDummyCard:
+                addDummyCard();
+                break;
+            case AddDummyBook:
+                addDummyBook();
                 break;
             case SortTop:
                 break;

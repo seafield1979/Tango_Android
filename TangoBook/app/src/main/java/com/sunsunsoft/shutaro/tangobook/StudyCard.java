@@ -52,7 +52,7 @@ public class StudyCard extends UDrawable{
 
     // スライド系
     // 左右にスライドできる距離。これ以上スライドするとOK/NGボックスに入る
-    protected static final int SLIDE_LEN = 300;
+    protected static final int SLIDE_LEN = 200;
 
     /**
      * Member Variables

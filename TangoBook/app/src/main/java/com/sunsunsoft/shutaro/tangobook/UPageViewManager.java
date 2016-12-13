@@ -218,10 +218,12 @@ public class UPageViewManager {
      * 学習ページを表示開始
      * 他のページと異なり引数を受け取る必要があるため関数化
      * @param book
+     * @param firstStudy trueならリトライでない学習
      */
-    public void startStudyPage(TangoBook book) {
+    public void startStudyPage(TangoBook book, boolean firstStudy) {
         PageViewStudy page = (PageViewStudy)pages[PageView.Study.ordinal()];
         page.setBook(book);
+        page.setFirstStudy(firstStudy);
         stackPage(PageView.Study);
     }
 

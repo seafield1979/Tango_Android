@@ -15,6 +15,8 @@ public class MenuBarTangoEdit extends UMenuBar {
         AddTop,
         AddCard,
         AddBook,
+        AddDummyCard,
+        AddDummyBook,
         SortTop,
         Sort1,
         Sort2,
@@ -73,6 +75,8 @@ public class MenuBarTangoEdit extends UMenuBar {
         item = addTopMenuItem(MenuItemId.AddTop.ordinal(), R.drawable.add);
         addMenuItem(item, MenuItemId.AddCard.ordinal(), R.drawable.file_add);
         addMenuItem(item, MenuItemId.AddBook.ordinal(), R.drawable.folder_add);
+        addMenuItem(item, MenuItemId.AddDummyCard.ordinal(), R.drawable.number_1);
+        addMenuItem(item, MenuItemId.AddDummyBook.ordinal(), R.drawable.number_2);
 
         // Sort
         item = addTopMenuItem(MenuItemId.SortTop.ordinal(), R.drawable.sort);

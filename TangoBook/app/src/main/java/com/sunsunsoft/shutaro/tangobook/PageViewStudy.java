@@ -38,9 +38,9 @@ public class PageViewStudy extends UPageView
     private static final int TEXT_SIZE = 50;
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
-    private static final int BUTTON2_W = 150;
-    private static final int BUTTON2_H = 150;
-    private static final int MARGIN_V = 50;
+    private static final int BOX_W = 150;
+    private static final int BOX_H = 150;
+    private static final int MARGIN_V = 80;
     private static final int MARGIN_H = 50;
 
     private static final int DRAW_PRIORITY = 100;
@@ -56,14 +56,14 @@ public class PageViewStudy extends UPageView
      * Member variables
      */
     private State mState;
+    private boolean mFirstStudy;       // 単語帳を選択して最初の学習のみtrue。リトライ時はfalse
 
-    private boolean option1, option2, option3;
     private StudyCardsManager mCardsManager;
     private StudyCardsStack mCardsStack;
 
     private UTextView mTextCardCount;
     private UButtonText mExitButton;
-    private UButtonText mOkCardsButton, mNgCardsButton;
+    private UImageView mOkView, mNgView;
 
     // 学習する単語帳 or カードリスト
     private TangoBook mBook;
@@ -83,6 +83,10 @@ public class PageViewStudy extends UPageView
 
     public void setCards(List<TangoCard> cards) {
         mCards = cards;
+    }
+
+    public void setFirstStudy(boolean firstStudy) {
+        mFirstStudy = firstStudy;
     }
 
     /**
@@ -146,7 +150,7 @@ public class PageViewStudy extends UPageView
                 StudyCard.WIDTH,
                 mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
         );
-        UDrawManager.getInstance().addDrawable(mCardsStack);
+        mCardsStack.addToDrawManager();
 
 
         // あと〜枚
@@ -154,7 +158,7 @@ public class PageViewStudy extends UPageView
         mTextCardCount = UTextView.createInstance( title, TEXT_SIZE, DRAW_PRIORITY,
                 UAlignment.CenterX, screenW, false, true,
                 screenW / 2, 50, 300, Color.rgb(100,50,50), 0);
-        UDrawManager.getInstance().addDrawable(mTextCardCount);
+        mTextCardCount.addToDrawManager();
 
         // 終了ボタン
         mExitButton = new UButtonText(this, UButtonType.Press,
@@ -163,30 +167,27 @@ public class PageViewStudy extends UPageView
                 (screenW - BUTTON_W) / 2, screenH - 150,
                 BUTTON_W, BUTTON_H,
                 TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
-        UDrawManager.getInstance().addDrawable(mExitButton);
+        mExitButton.addToDrawManager();
 
-        // OKボタン
-        mOkCardsButton = new UButtonText(this, UButtonType.BGColor,
-                ButtonIdOk,
-                DRAW_PRIORITY, "OK",
-                screenW - BUTTON2_W - MARGIN_H, screenH - BUTTON2_H - MARGIN_V,
-                BUTTON2_W, BUTTON2_H,
-                TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
-        UDrawManager.getInstance().addDrawable(mOkCardsButton);
+        // OK
+        mOkView = new UImageView(DRAW_PRIORITY, R.drawable.box1,
+                       screenW - BOX_W - MARGIN_H, screenH - BOX_H - MARGIN_V,
+                        BOX_W, BOX_H);
+        mOkView.setTitle("OK", 50, Color.BLACK);
+        mOkView.addToDrawManager();
 
-        // NGボタン
-        mNgCardsButton = new UButtonText(this, UButtonType.BGColor,
-                ButtonIdNg,
-                DRAW_PRIORITY, "NG",
-                MARGIN_H, screenH - BUTTON2_H - MARGIN_V,
-                BUTTON2_W, BUTTON2_H,
-                TEXT_SIZE, Color.BLACK, Color.rgb(200,100,100));
-        UDrawManager.getInstance().addDrawable(mNgCardsButton);
+        // NG
+        mNgView = new UImageView(DRAW_PRIORITY, R.drawable.box1,
+                MARGIN_H, screenH - BOX_H - MARGIN_V,
+                BOX_W, BOX_H);
+        mNgView.setTitle("NG", 50, Color.BLACK);
+        mNgView.addToDrawManager();
+
 
         // OK/NGボタンの座標をCardsStackに教えてやる
-        PointF _pos = mOkCardsButton.getPos();
+        PointF _pos = mOkView.getPos();
         mCardsStack.setOkBoxPos(_pos.x - mCardsStack.pos.x, _pos.y - mCardsStack.pos.y);
-        _pos = mNgCardsButton.getPos();
+        _pos = mNgView.getPos();
         mCardsStack.setNgBoxPos(_pos.x - mCardsStack.pos.x, _pos.y - mCardsStack.pos.y);
     }
 
@@ -264,13 +265,37 @@ public class PageViewStudy extends UPageView
     }
 
     /**
+     * 学習終了時のイベント
      */
     public void CardsStackFinished() {
-        // カードが０になったので学習完了
+        if (mFirstStudy) {
+            // 学習結果をDBに保存する
+            mFirstStudy = false;
+
+            saveStudyResult();
+        }
+
+        // カードが０になったので学習完了。リザルトページに遷移
         mState = State.Finish;
         UPageViewManager.getInstance().startStudyResultPage( mBook,
                 mCardsManager.getOkCards(), mCardsManager.getNgCards());
 
         mParentView.invalidate();
+    }
+
+    /**
+     * 学習結果を保存
+     */
+    private void saveStudyResult() {
+        List<TangoCard> okCards = mCardsManager.getOkCards();
+        List<TangoCard> ngCards = mCardsManager.getNgCards();
+
+        // 単語帳の学習履歴
+        RealmManager.getBookHistoryDao().addOne(mBook.getId(), false, okCards.size(), ngCards
+                .size());
+
+        // カードの学習履歴
+        TangoCardHistoryDao cardHistoryDao = RealmManager.getCardHistoryDao();
+        cardHistoryDao.updateCards(okCards, ngCards);
     }
 }

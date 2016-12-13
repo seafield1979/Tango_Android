@@ -66,6 +66,7 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
                 add(item);
             }
         }
+        updateWindow();
     }
 
     /**
