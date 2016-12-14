@@ -23,6 +23,8 @@ public class ListViewStudyHistory extends UListView{
     private static final int ITEM_BG_COLOR = Color.WHITE;
     private static final int ITEM_TEXT_COLOR = Color.BLACK;
 
+    private static final int LIMIT = 100;
+
     /**
      * Member variables
      */
@@ -40,7 +42,8 @@ public class ListViewStudyHistory extends UListView{
     {
         super(null, listItemCallbacks, priority, x, y, width, height, color);
 
-        List<TangoBookHistory> histories = RealmManager.getBookHistoryDao().selectAll();
+        List<TangoBookHistory> histories = RealmManager.getBookHistoryDao().selectAllWithLimit
+                (true, LIMIT);
 
         for (TangoBookHistory history : histories) {
             ListItemStudiedBook item = ListItemStudiedBook.createHistory( history,

@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
 
 import java.util.LinkedList;
 
@@ -22,12 +23,14 @@ public class UListView extends UScrollWindow
     /**
      * Constants
      */
+    public static final int MARGIN_V = 20;
 
     /**
      * Member variables
      */
     protected LinkedList<UListItem> mItems = new LinkedList<>();
     protected UListItemCallbacks mListItemCallbacks;
+    protected Rect mClipRect;
 
     // リストの最後のアイテムの下端の座標
     protected float mBottomY;
@@ -45,8 +48,11 @@ public class UListView extends UScrollWindow
                      int priority, float x, float y, int width, int
                              height, int color)
     {
-        super(callbacks, priority, x, y, width, height, color);
+        super(callbacks, priority, x, y, width, height + MARGIN_V * 2, color);
         mListItemCallbacks = listItemCallbacks;
+        mClipRect = new Rect((int)pos.x, (int)pos.y + MARGIN_V,
+                (int)pos.x + width, (int)pos.y + height);
+
     }
 
     /**
@@ -96,16 +102,16 @@ public class UListView extends UScrollWindow
 
     public void drawContent(Canvas canvas, Paint paint) {
         // BG
-        UDraw.drawRectFill(canvas, paint, rect, Color.LTGRAY, 0, 0);
+        drawBG(canvas, paint);
 
         // クリッピング前の状態を保存
         canvas.save();
 
         // クリッピングを設定
-        canvas.clipRect(rect);
+        canvas.clipRect(mClipRect);
 
         // アイテムを描画
-        PointF _offset = new PointF(pos.x, pos.y - contentTop.y);
+        PointF _offset = new PointF(pos.x, pos.y + MARGIN_V - contentTop.y);
         for (UListItem item : mItems) {
             if (item.getBottom() < contentTop.y) continue;
 

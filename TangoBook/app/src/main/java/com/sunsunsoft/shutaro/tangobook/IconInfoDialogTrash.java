@@ -25,7 +25,6 @@ public class IconInfoDialogTrash extends IconInfoDialog {
     private static final String TAG = "IconInfoDialogTrash";
     private static final int BG_COLOR = Color.LTGRAY;
     private static final int DLG_MARGIN = 100;
-    private static final int TOP_ITEM_Y = 50;
     private static final int TEXT_VIEW_H = 100;
     private static final int ICON_W = 120;
     private static final int ICON_MARGIN_H = 30;
@@ -140,7 +139,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         y += TEXT_SIZE + 30;
 
         // Action buttons
-        int x = ICON_MARGIN_H;
+        int x = (width - ICON_W * 2 - MARGIN_H) / 2;
         for (ActionIcons icon : icons) {
             UButtonImage imageButton = UButtonImage.createButton( this,
                     icon.ordinal(), 0,
@@ -163,14 +162,16 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         );
 
         textCountTitle = UTextView.createInstance( mParentView.getContext().getString(R.string
-                        .card_count), TEXT_SIZE, 0,
+                        .item_count), TEXT_SIZE, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
         textCountTitle.setMarginH(false);
 
         textNumber = UTextView.createInstance( "" + count, TEXT_SIZE, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR,
+                MARGIN_H * 2 + textCountTitle.size.width, y, width - (MARGIN_H * 3 + textCountTitle
+                        .size.width),
+                TEXT_COLOR,
                 TEXT_BG_COLOR);
 
         y += TEXT_VIEW_H + MARGIN_V;

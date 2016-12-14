@@ -1,10 +1,13 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by shutaro on 2016/12/04.
@@ -32,10 +35,39 @@ public class TangoBookHistoryDao {
     /**
      * Select
      */
-    public List<TangoBookHistory> selectAll() {
-        RealmResults<TangoBookHistory> results = mRealm.where(TangoBookHistory.class).findAll();
+    /**
+     * 全て選択
+     * @param reverse  並び順を逆順にする
+     * @return
+     */
+    public List<TangoBookHistory> selectAll(boolean reverse) {
+        Sort sort = reverse ? Sort.DESCENDING : Sort.ASCENDING;
+        RealmResults<TangoBookHistory> results = mRealm.where(TangoBookHistory.class)
+                .findAllSorted("studiedDateTime", sort);
         return results;
     }
+
+    public List<TangoBookHistory> selectAllWithLimit(boolean reverse, int limit) {
+        Sort sort = reverse ? Sort.DESCENDING : Sort.ASCENDING;
+        RealmResults<TangoBookHistory> results = mRealm.where(TangoBookHistory.class)
+                .findAllSorted("studiedDateTime", sort);
+
+        if (results.size() > limit) {
+            LinkedList<TangoBookHistory> list = new LinkedList<>();
+            int limitCount = 0;
+            for (TangoBookHistory history : results) {
+                list.add(history);
+                limitCount++;
+                if ( limitCount >= limit) {
+                    break;
+                }
+            }
+            return list;
+        }
+
+        return results;
+    }
+
 
     /**
      * Book情報から選択

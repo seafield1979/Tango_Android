@@ -98,7 +98,7 @@ public class UButtonText extends UButton {
                 _pos.y += PRESS_Y;
             } else {
                 // ボタンの影用に下に矩形を描画
-                int height = PRESS_Y + 20;
+                int height = PRESS_Y + 40;
                 UDraw.drawRoundRectFill(canvas, paint,
                         new RectF(_pos.x, _pos.y + size.height - height,
                                 _pos.x + size.width, _pos.y + size.height),

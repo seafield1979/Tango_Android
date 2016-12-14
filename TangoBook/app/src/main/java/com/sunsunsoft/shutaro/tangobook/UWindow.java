@@ -310,6 +310,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * @param paint
      */
     public void drawFrame(Canvas canvas, Paint paint) {
+
         // Close Button
         if (closeIcon != null && closeIcon.isShow()) {
             closeIcon.draw(canvas, paint, pos);
