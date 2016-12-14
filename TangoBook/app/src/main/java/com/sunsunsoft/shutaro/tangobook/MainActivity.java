@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
+
             mTopFragment = new TopFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
             // SharedPreferencesの初期化
             MySharedPref.init(this);
-        }
+
     }
 
 //
