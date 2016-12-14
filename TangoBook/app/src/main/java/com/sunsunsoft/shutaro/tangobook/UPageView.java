@@ -51,7 +51,7 @@ abstract public class UPageView {
      * スタックの先頭でなくなって表示されなくなる前に呼ばれる
      */
     protected void onHide() {
-
+        isFirst = true;
     }
 
     /**

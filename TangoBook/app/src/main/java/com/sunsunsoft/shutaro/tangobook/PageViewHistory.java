@@ -22,6 +22,14 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks{
      * Methods
      */
 
+    protected void onShow() {
+
+    }
+
+    protected void onHide() {
+        super.onHide();
+    }
+
     /**
      * 描画処理
      * サブクラスのdrawでこのメソッドを最初に呼び出す

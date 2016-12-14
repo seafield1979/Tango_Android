@@ -50,7 +50,7 @@ public class TopView extends View
         this.setOnTouchListener(this);
         mContext = context;
 
-        mPageManager = UPageViewManager.createInstance(context, this);
+        mPageManager = PageViewManagerTango.createInstance(context, this);
 
         UResourceManager.createInstance(context, this);
     }

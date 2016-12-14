@@ -9,18 +9,6 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
-enum PageView {
-    Title,              // タイトル画面
-    Edit,               // 単語帳を編集
-    StudySelect,        // 学習する単語帳を選択する
-    Study,              // 単語帳学習
-    StudyResult,        // 単語帳結果
-    History,            // 履歴
-    Settings,           // 設定
-    Help,               // ヘルプ
-    ;
-}
-
 /**
  * Created by shutaro on 2016/12/05.
  *
@@ -28,7 +16,7 @@ enum PageView {
  * 現在のページ番号を元に配下の PageView の処理を呼び出す
  */
 
-public class UPageViewManager {
+abstract public class UPageViewManager {
     /**
      * Enums
      */
@@ -39,36 +27,14 @@ public class UPageViewManager {
     /**
      * Member Variables
      */
-    private Context mContext;
-    private View mParentView;
-    private UPageView[] pages = new UPageView[PageView.values().length];
-    private LinkedList<PageView> pageIdStack = new LinkedList<>();
+    protected Context mContext;
+    protected View mParentView;
+    protected UPageView[] pages = new UPageView[PageView.values().length];
+    protected LinkedList<PageView> pageIdStack = new LinkedList<>();
 
     /**
      * Get/Set
      */
-
-    /**
-     * Constructor
-     */
-    // Singletonオブジェクト
-    private static UPageViewManager singleton;
-
-    // Singletonオブジェクトを作成する
-    public static UPageViewManager createInstance(Context context, View parentView) {
-        if (singleton == null) {
-            singleton = new UPageViewManager(context, parentView);
-        }
-        return singleton;
-    }
-    public static UPageViewManager getInstance() { return singleton; }
-
-    private UPageViewManager(Context context, View parentView) {
-        mContext = context;
-        mParentView = parentView;
-
-        initPages();
-    }
 
     /**
      * Methods
@@ -87,43 +53,7 @@ public class UPageViewManager {
     /**
      * 配下のページを追加する
      */
-    public void initPages() {
-        UPageView page;
-        // Title
-        page = new PageViewTitle(mContext, mParentView);
-        pages[PageView.Title.ordinal()] = page;
-
-        // Edit
-        page = new PageViewTangoEdit(mContext, mParentView);
-        pages[PageView.Edit.ordinal()] = page;
-
-        // StudySelect
-        page = new PageViewStudySelect(mContext, mParentView);
-        pages[PageView.StudySelect.ordinal()] = page;
-
-        // Study
-        page = new PageViewStudy(mContext, mParentView);
-        pages[PageView.Study.ordinal()] = page;
-
-        // TangoResult
-        page = new PageViewResult(mContext, mParentView);
-        pages[PageView.StudyResult.ordinal()] = page;
-
-        // History
-        page = new PageViewHistory(mContext, mParentView);
-        pages[PageView.History.ordinal()] = page;
-
-        // Settings
-        page = new PageViewSettings(mContext, mParentView);
-        pages[PageView.Settings.ordinal()] = page;
-
-        // Help
-        page = new PageViewHelp(mContext, mParentView);
-        pages[PageView.Help.ordinal()] = page;
-
-        // 最初に表示するページ
-        stackPage(PageView.Title);
-    }
+    abstract public void initPages();
 
     /**
      * 描画処理
@@ -223,49 +153,4 @@ public class UPageViewManager {
         }
         return false;
     }
-
-    /**
-     * 学習ページを表示開始
-     * 他のページと異なり引数を受け取る必要があるため関数化
-     * @param book
-     * @param firstStudy trueならリトライでない学習
-     */
-    public void startStudyPage(TangoBook book, boolean firstStudy) {
-        PageViewStudy page = (PageViewStudy)pages[PageView.Study.ordinal()];
-        page.setBook(book);
-        page.setFirstStudy(firstStudy);
-        stackPage(PageView.Study);
-    }
-
-    /**
-     * 学習ページを表示開始(リトライ時)
-     * @param book
-     * @param cards  リトライで学習するカード
-     */
-    public void startStudyPage(TangoBook book, List<TangoCard> cards, boolean stack) {
-        PageViewStudy page = (PageViewStudy)pages[PageView.Study.ordinal()];
-        page.setBook(book);
-        page.setCards(cards);
-        if (stack) {
-            stackPage(PageView.Study);
-        } else {
-            changePage(PageView.Study);
-        }
-    }
-
-    /**
-     * リザルトページを開始
-     * 他のページと異なり引数を受け取る必要があるため関数化
-     */
-    public void startStudyResultPage(TangoBook book, List<TangoCard> okCards, List<TangoCard> ngCards) {
-        PageViewResult page = (PageViewResult)pages[PageView.StudyResult.ordinal()];
-        page.setBook(book);
-        page.setCardsLists(okCards, ngCards);
-        changePage(PageView.StudyResult);
-    }
-
-    /**
-     * Callbacks
-     */
-
 }

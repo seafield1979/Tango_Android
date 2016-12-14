@@ -75,7 +75,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     }
 
     public void onHide() {
-        isFirst = true;
+        super.onHide();
     }
 
     protected void initDrawables() {

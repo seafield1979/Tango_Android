@@ -86,7 +86,7 @@ public class PageViewResult extends UPageView
     }
 
     public void onHide() {
-        isFirst = true;
+        super.onHide();
     }
 
     /**
@@ -176,13 +176,13 @@ public class PageViewResult extends UPageView
 
         switch(id) {
             case ButtonIdRetry1:
-                UPageViewManager.getInstance().startStudyPage(mBook, null, false);
+                PageViewManagerTango.getInstance().startStudyPage(mBook, null, false);
                 break;
             case ButtonIdRetry2:
-                UPageViewManager.getInstance().startStudyPage(mBook, mNgCards, false);
+                PageViewManagerTango.getInstance().startStudyPage(mBook, mNgCards, false);
                 break;
             case ButtonIdReturn:
-                UPageViewManager.getInstance().popPage();
+                PageViewManagerTango.getInstance().popPage();
                 break;
         }
         return false;

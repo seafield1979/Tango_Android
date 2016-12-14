@@ -83,7 +83,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
     }
 
     public void onHide() {
-        isFirst = true;
+        super.onHide();
     }
 
     /**
@@ -155,19 +155,19 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         ButtonId buttonId = ButtonId.toEnum(id);
         switch(buttonId) {
             case Edit:
-                UPageViewManager.getInstance().stackPage(PageView.Edit);
+                PageViewManagerTango.getInstance().stackPage(PageView.Edit);
                 break;
             case Study:
-                UPageViewManager.getInstance().stackPage(PageView.StudySelect);
+                PageViewManagerTango.getInstance().stackPage(PageView.StudySelect);
                 break;
             case History:
-                UPageViewManager.getInstance().stackPage(PageView.History);
+                PageViewManagerTango.getInstance().stackPage(PageView.History);
                 break;
             case Settings:
-                UPageViewManager.getInstance().stackPage(PageView.Settings);
+                PageViewManagerTango.getInstance().stackPage(PageView.Settings);
                 break;
             case Help:
-                UPageViewManager.getInstance().stackPage(PageView.Help);
+                PageViewManagerTango.getInstance().stackPage(PageView.Help);
                 break;
         }
         return false;

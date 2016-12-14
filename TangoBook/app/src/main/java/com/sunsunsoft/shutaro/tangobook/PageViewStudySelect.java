@@ -100,8 +100,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     }
 
     public void onHide() {
-        // 次回表示時に initDrawables が呼ばれるようにする
-        isFirst = true;
+        super.onHide();
     }
 
     protected void initDrawables() {
@@ -323,7 +322,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         switch (id) {
             case ButtonIdStartStudy:
                 // 学習開始
-                UPageViewManager.getInstance().startStudyPage((TangoBook)mIconBook.getTangoItem()
+                PageViewManagerTango.getInstance().startStudyPage((TangoBook)mIconBook.getTangoItem()
                         , true);
                 break;
             case ButtonIdCancel:

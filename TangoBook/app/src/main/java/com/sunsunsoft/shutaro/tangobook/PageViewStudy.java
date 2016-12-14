@@ -114,11 +114,11 @@ public class PageViewStudy extends UPageView
     }
 
     protected void onHide() {
+        super.onHide();
         mCardsManager = null;
         mCardsStack.cleanUp();
         mCardsStack = null;
         mCards = null;
-        isFirst = true;
     }
 
     /**
@@ -247,7 +247,7 @@ public class PageViewStudy extends UPageView
     public void dialogClosed(UDialogWindow dialog) {
         if (isCloseOk) {
             // 終了して前のページに戻る
-            UPageViewManager.getInstance().popPage();
+            PageViewManagerTango.getInstance().popPage();
         }
         if (dialog == mConfirmDialog) {
             mConfirmDialog = null;
@@ -277,7 +277,7 @@ public class PageViewStudy extends UPageView
 
         // カードが０になったので学習完了。リザルトページに遷移
         mState = State.Finish;
-        UPageViewManager.getInstance().startStudyResultPage( mBook,
+        PageViewManagerTango.getInstance().startStudyResultPage( mBook,
                 mCardsManager.getOkCards(), mCardsManager.getNgCards());
 
         mParentView.invalidate();
