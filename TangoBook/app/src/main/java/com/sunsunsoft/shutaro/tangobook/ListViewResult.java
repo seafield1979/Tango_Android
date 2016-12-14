@@ -85,14 +85,4 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
     /**
      * Callbacks
      */
-    /**
-     * UButtonCallbacks
-     */
-    public boolean UButtonClicked(int id, boolean pressedOn) {
-        switch (id) {
-
-        }
-        return false;
-    }
-
 }

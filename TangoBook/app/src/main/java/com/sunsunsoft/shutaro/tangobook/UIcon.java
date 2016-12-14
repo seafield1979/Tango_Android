@@ -29,7 +29,7 @@ abstract public class UIcon extends UDrawable {
     public static final int DRAG_ICON_PRIORITY = 10;
 
     protected static final int TEXT_SIZE = 40;
-    protected static final int TEXT_MARGIN = 20;
+    protected static final int TEXT_MARGIN = 10;
 
     private static int count;
 

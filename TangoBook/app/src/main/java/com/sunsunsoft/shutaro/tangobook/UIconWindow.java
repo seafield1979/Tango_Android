@@ -68,8 +68,8 @@ public class UIconWindow extends UWindow {
 
     public static final int ICON_MARGIN = 30;
 
-    public static final int ICON_W = 200;
-    public static final int ICON_H = 200;
+    public static final int ICON_W = 180;
+    public static final int ICON_H = 150;
     protected static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 
     protected static final int MOVING_TIME = 10;

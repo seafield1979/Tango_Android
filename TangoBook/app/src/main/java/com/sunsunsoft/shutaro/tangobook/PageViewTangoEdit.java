@@ -451,8 +451,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             // 戻り値を取得
             card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
             card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
-            card.setHintAB(args.getString(EditCardDialogFragment.KEY_HINT_AB, ""));
-            card.setHintBA(args.getString(EditCardDialogFragment.KEY_HINT_BA, ""));
             card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
 
             iconCard.updateTitle();
@@ -468,8 +466,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             TangoCard card = (TangoCard)editingIcon.getTangoItem();
             card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
             card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
-            card.setHintAB(args.getString(EditCardDialogFragment.KEY_HINT_AB, ""));
-            card.setHintBA(args.getString(EditCardDialogFragment.KEY_HINT_BA, ""));
             card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
 
             editingIcon.updateTitle();

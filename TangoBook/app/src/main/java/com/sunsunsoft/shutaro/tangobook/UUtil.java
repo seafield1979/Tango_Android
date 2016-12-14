@@ -5,6 +5,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.FloatMath;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by shutaro on 2016/12/07.
  *
@@ -62,5 +66,15 @@ public class UUtil {
                 Bitmap.Config.ARGB_8888);
 
         return newBmp;
+    }
+
+    /**
+     * 日付(Date)のフォーマット変換
+     * @param date
+     * @return
+     */
+    public static String convDateFormat(Date date) {
+        final DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        return df.format(date);
     }
 }

@@ -47,8 +47,6 @@ public class EditCardDialogFragment extends DialogFragment {
     public static final String KEY_MODE = "key_mode";
     public static final String KEY_WORD_A = "key_word_a";
     public static final String KEY_WORD_B = "key_word_b";
-    public static final String KEY_HINT_AB = "key_hint_ab";
-    public static final String KEY_HINT_BA = "key_hint_ba";
     public static final String KEY_COMMENT = "key_comment";
 
     /**
@@ -58,14 +56,10 @@ public class EditCardDialogFragment extends DialogFragment {
     private int mMode;
     private EditText mEditWordA;
     private EditText mEditWordB;
-    private EditText mEditHintAB;
-    private EditText mEditHintBA;
     private EditText mEditComment;
 
     private String mWordA;
     private String mWordB;
-    private String mHintAB;
-    private String mHintBA;
     private String mComment;
 
     /**
@@ -97,12 +91,6 @@ public class EditCardDialogFragment extends DialogFragment {
             if (card.getWordB() != null) {
                 args.putString(KEY_WORD_B, card.getWordB());
             }
-            if (card.getHintAB() != null) {
-                args.putString(KEY_HINT_AB, card.getHintAB());
-            }
-            if (card.getHintBA() != null) {
-                args.putString(KEY_HINT_BA, card.getHintBA());
-            }
             if (card.getComment() != null) {
                 args.putString(KEY_COMMENT, card.getComment());
             }
@@ -126,8 +114,6 @@ public class EditCardDialogFragment extends DialogFragment {
             mMode = args.getInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
             mWordA = args.getString(KEY_WORD_A, "");
             mWordB = args.getString(KEY_WORD_B, "");
-            mHintAB = args.getString(KEY_HINT_AB, "");
-            mHintBA = args.getString(KEY_HINT_BA, "");
             mComment = args.getString(KEY_COMMENT, "");
         }
     }
@@ -150,12 +136,6 @@ public class EditCardDialogFragment extends DialogFragment {
 
         mEditWordB = (EditText)view.findViewById(R.id.editWordB);
         mEditWordB.setText(mWordB);
-
-        mEditHintAB = (EditText)view.findViewById(R.id.editHintAB);
-        mEditHintAB.setText(mHintAB);
-
-        mEditHintBA = (EditText)view.findViewById(R.id.editHintBA);
-        mEditHintBA.setText(mHintBA);
 
         mEditComment = (EditText)view.findViewById(R.id.editComment);
         mEditComment.setText(mComment);
@@ -189,8 +169,6 @@ public class EditCardDialogFragment extends DialogFragment {
         args.putInt(KEY_MODE, mMode);
         args.putString(KEY_WORD_A, mEditWordA.getText().toString());
         args.putString(KEY_WORD_B, mEditWordB.getText().toString());
-        args.putString(KEY_HINT_AB, mEditHintAB.getText().toString());
-        args.putString(KEY_HINT_BA, mEditHintBA.getText().toString());
         args.putString(KEY_COMMENT, mEditComment.getText().toString());
 
         if (dialogCallbacks != null) {
@@ -219,8 +197,6 @@ public class EditCardDialogFragment extends DialogFragment {
 
         mEditWordA.setText("A " + value);
         mEditWordB.setText("B " + value);
-        mEditHintAB.setText("HA " + value);
-        mEditHintBA.setText("HB " + value);
         mEditComment.setText("C " + value);
     }
 
