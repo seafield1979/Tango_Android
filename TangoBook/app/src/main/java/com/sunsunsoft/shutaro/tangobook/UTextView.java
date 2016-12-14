@@ -82,10 +82,9 @@ public class UTextView extends UDrawable {
 
         // テキストを描画した時のサイズを取得
         if (width == 0) {
-            setSize(size.width, size.height);
-        } else {
-            updateSize();
+            size = getTextSize(canvasW);
         }
+        updateSize();
     }
 
     public static UTextView createInstance(String text, int textSize, int priority,

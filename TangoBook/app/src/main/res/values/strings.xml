@@ -62,4 +62,13 @@
     <string name="retry2">"NGのみ\nリトライ"</string>
     <string name="title_result">"学習結果"</string>
 
+    <string name="backup_path_title">バックアップファイルの場所</string>
+    <string name="backup">バックアップ</string>
+    <string name="restore">復元</string>
+    <string name="confirm_backup">バックアップしますか？</string>
+    <string name="finish_backup">バックアップが完了しました</string>
+    <string name="confirm_restore">バックアップから復元しますか？</string>
+    <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
+    <string name="finish_restore">復元が完了しました</string>
+
 </resources>

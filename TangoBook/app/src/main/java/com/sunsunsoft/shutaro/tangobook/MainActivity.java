@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             ULog.init();
 
             // Realmの初期化
-            RealmManager.initRealm(getApplicationContext());
+            RealmManager.initRealm(getApplicationContext(), false);
 
             // SharedPreferencesの初期化
             MySharedPref.init(this);

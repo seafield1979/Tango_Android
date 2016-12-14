@@ -50,14 +50,15 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
     public static final int CloseDialogId = 10000123;
 
-    public static final int MARGIN_H = 100;
-    public static final int ANIMATION_FRAME = 10;
+    protected static final int MARGIN_H = 100;
+    protected static final int ANIMATION_FRAME = 10;
 
-    public static final int MESSAGE_TEXT_SIZE = 50;
-    public static final int TEXT_MARGIN_V = 50;
-    public static final int BUTTON_H = 140;
-    public static final int BUTTON_MARGIN_H = 50;
-    public static final int BUTTON_MARGIN_V = 30;
+    protected static final int MESSAGE_TEXT_SIZE = 50;
+    protected static final int TEXT_MARGIN_V = 50;
+    protected static final int BUTTON_H = 140;
+    protected static final int BUTTON_MARGIN_H = 50;
+    protected static final int BUTTON_MARGIN_V = 30;
+    protected static final int TITLE_TEXT_SIZE = 50;
 
     /**
      * Member variables
@@ -194,6 +195,17 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         return instance;
     }
 
+    // 最小限の引数で作成
+    public static UDialogWindow createInstance(UButtonCallbacks buttonCallbacks,
+                                               int screenW, int screenH)
+    {
+        return createInstance(DialogType.Mordal, buttonCallbacks,
+                null,
+                ButtonDir.Horizontal, DialogPosType.Center,
+                true, screenW, screenH,
+                Color.BLACK, Color.WHITE);
+    }
+
     public void setDialogPos(float x, float y) {
         pos.x = x;
         pos.y = y;
@@ -321,7 +333,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         // タイトル、メッセージ
         int y = TEXT_MARGIN_V;
         if (title != null && mTitleView == null) {
-            mTitleView = UTextView.createInstance(title, 70, 0, UAlignment.CenterX,
+            mTitleView = UTextView.createInstance(title, TITLE_TEXT_SIZE, 0, UAlignment.CenterX,
                     canvas.getWidth(), true, true,
                     size.width / 2, y,
                     size.width, color, 0);

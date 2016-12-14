@@ -2,21 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f079b00a-59e8-49ef-9b4e-2ddb192d2a9f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/IconBook.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/IconBook.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/IconBox.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/IconBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/IconCard.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/IconCard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoBook.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoBook.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoBookDao.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoBookDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoBox.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoBoxDao.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoBoxDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoCardDao.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoCardDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoItemManager.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoItemManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoItemPos.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoItemPos.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoItemPosDao.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TangoItemPosDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TopView.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/TopView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UIcon.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UIcon.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UIconManager.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UIconManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UIconWindow.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UIconWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/PageViewSettings.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/PageViewSettings.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UDialogWindow.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UDialogWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UDrawable.java" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/java/com/sunsunsoft/shutaro/tangobook/UDrawable.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TangoBook/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/TangoBook/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="Tango_Android.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -74,12 +63,12 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane />
       </pane>
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -188,7 +177,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1867" height="1177" extended-state="0" />
+    <frame x="0" y="23" width="1867" height="1177" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />

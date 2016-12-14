@@ -299,7 +299,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 break;
             case Debug2RealmCopy:
             {
-                RealmManager.createCopyToStorage();
+                RealmManager.backup();
                 UPopupWindow popup = new UPopupWindow( UPopupType.OK,
                         "Copy realm file", true, mParentView.getWidth(), mParentView.getHeight());
                 UDrawManager.getInstance().addDrawable(popup);
