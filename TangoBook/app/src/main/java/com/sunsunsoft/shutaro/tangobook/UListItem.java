@@ -91,8 +91,6 @@ abstract public class UListItem extends UDrawable {
                 }
                 break;
             case Click:
-                ULog.print(TAG, "rect:" + rect.toString() + " pos:" + (vt.touchX() - offset.x) +
-                        " " + (vt.touchY() - offset.y));
                 if (rect.contains((int) (vt.touchX() - offset.x),
                         (int) (vt.touchY() - offset.y)))
                 {
@@ -105,9 +103,4 @@ abstract public class UListItem extends UDrawable {
         }
         return isDraw;
     }
-
-    /**
-     * 高さを返す
-     */
-    abstract public int getHeight();
 }

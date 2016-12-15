@@ -19,6 +19,7 @@ enum PageView {
     History,            // 履歴
     Settings,           // 設定
     Help,               // ヘルプ
+    Debug               // Debug
     ;
 }
 
@@ -79,6 +80,11 @@ public class PageViewManager extends UPageViewManager{
         // Help
         page = new PageViewHelp(mContext, mParentView, UResourceManager.getStringById(R.string.title_help));
         pages[PageView.Help.ordinal()] = page;
+
+        // Debug
+        page = new PageViewDebug(mContext, mParentView, "Debug");
+        pages[PageView.Debug.ordinal()] = page;
+
 
         // 最初に表示するページ
         stackPage(PageView.Title);

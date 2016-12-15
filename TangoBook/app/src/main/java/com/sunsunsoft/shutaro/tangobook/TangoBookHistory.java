@@ -3,6 +3,8 @@ package com.sunsunsoft.shutaro.tangobook;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
+import io.realm.annotations.PrimaryKey;
+
 import java.util.Date;
 
 /**
@@ -13,6 +15,14 @@ import java.util.Date;
  */
 
 public class TangoBookHistory extends RealmObject {
+    /**
+     * Constants
+     */
+    public static final int CARD_IDS_MAX = 100;
+
+    @PrimaryKey
+    private int id;
+
     @Index
     private int bookId;
 
@@ -31,10 +41,17 @@ public class TangoBookHistory extends RealmObject {
     // 学習日
     private Date studiedDateTime;
 
-
     /**
      * Get/Set
      */
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getBookId() {
         return bookId;
     }

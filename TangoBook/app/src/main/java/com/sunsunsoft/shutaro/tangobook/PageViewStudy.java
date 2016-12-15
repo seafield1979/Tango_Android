@@ -289,8 +289,10 @@ public class PageViewStudy extends UPageView
         List<TangoCard> ngCards = mCardsManager.getNgCards();
 
         // 単語帳の学習履歴
-        RealmManager.getBookHistoryDao().addOne(mBook.getId(), false, okCards.size(), ngCards
-                .size());
+        int historyId = RealmManager.getBookHistoryDao().addOne(mBook.getId(), false, okCards.size(), ngCards.size());
+
+        // 学習したカード番号
+        RealmManager.getStudiedCardDao().addStudiedCards(historyId, okCards, ngCards);
 
         // カードの学習履歴
         TangoCardHistoryDao cardHistoryDao = RealmManager.getCardHistoryDao();

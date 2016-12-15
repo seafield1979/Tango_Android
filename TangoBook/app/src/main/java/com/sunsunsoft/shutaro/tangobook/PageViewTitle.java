@@ -20,8 +20,8 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         Study(R.string.title_study, Color.rgb(200,100,100)),
         History(R.string.title_history, Color.rgb(200,200,0)),
         Settings(R.string.title_settings, Color.rgb(153,204,255)),
-        Help(R.string.title_help, Color.rgb(255,178,102))
-
+        Help(R.string.title_help, Color.rgb(255,178,102)),
+        Debug(R.string.title_debug, Color.rgb(150,150,150)),
         ;
 
         private int textId;
@@ -98,14 +98,6 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         // 描画オブジェクトクリア
         UDrawManager.getInstance().init();
 
-        // タイトル
-//        mTitleText = new UTextView(UResourceManager.getStringById(R.string.app_title),
-//                TITLE_TEXT_SIZE, DRAW_PRIORITY,
-//                UAlignment.CenterX, width, false, false, false,
-//                width / 2, y, width, UColor.getRandomColor(), 0);
-//        mTitleText.addToDrawManager();
-//        y += mTitleText.size.height + MARGIN_V;
-
         // ボタンの配置
         // 1行に２つづつ配置
         float x;
@@ -115,6 +107,12 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         }
         for (int i = 0; i< mButtons.length; i++) {
             ButtonId id = ButtonId.values()[i];
+
+            // デバッグモードがONの場合のみDebugを表示
+            if (id == ButtonId.Debug) {
+                if (!UDebug.isDebug) continue;
+            }
+
             buttonType = UButtonType.Press;
 
             if (i % 2 == 0) {
@@ -168,6 +166,9 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
                 break;
             case Help:
                 PageViewManager.getInstance().stackPage(PageView.Help);
+                break;
+            case Debug:
+                PageViewManager.getInstance().stackPage(PageView.Debug);
                 break;
         }
         return false;

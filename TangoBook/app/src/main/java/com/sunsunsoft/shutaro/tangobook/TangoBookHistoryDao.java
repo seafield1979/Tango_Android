@@ -84,8 +84,19 @@ public class TangoBookHistoryDao {
     /**
      * Add
      */
-    public boolean addOne(int bookId, boolean learned, int okNum, int ngNum) {
+    /**
+     * レコードを１つ追加
+     * @param bookId
+     * @param learned
+     * @param okNum
+     * @param ngNum
+     * @return 作成したレコードのid
+     */
+    public int addOne(int bookId, boolean learned, int okNum, int ngNum)
+    {
         TangoBookHistory history = new TangoBookHistory();
+        int id = getNextId();
+        history.setId(id);
         history.setBookId(bookId);
         history.setLearned(learned);
         history.setOkNum(okNum);
@@ -97,7 +108,7 @@ public class TangoBookHistoryDao {
         mRealm.insert(history);
         mRealm.commitTransaction();
 
-        return true;
+        return id;
     }
 
     /**
@@ -118,5 +129,20 @@ public class TangoBookHistoryDao {
     /**
      * Update
      */
-    // Unnecessary
+
+    /**
+     * かぶらないプライマリIDを取得する
+     * @return
+     */
+    public int getNextId() {
+        // 初期化
+        int nextId = 1;
+        // userIdの最大値を取得
+        Number maxId = mRealm.where(TangoCard.class).max("id");
+        // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
+        if(maxId != null) {
+            nextId = maxId.intValue() + 1;
+        }
+        return nextId;
+    }
 }

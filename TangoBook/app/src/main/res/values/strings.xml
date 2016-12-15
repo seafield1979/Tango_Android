@@ -29,6 +29,7 @@
     <string name="title_history">履歴</string>
     <string name="title_settings">設定</string>
     <string name="title_help">ヘルプ</string>
+    <string name="title_debug">Debug</string>
 
     <string name="open">開く</string>
     <string name="edit">編集</string>
