@@ -42,7 +42,7 @@ public class StudyCardsStack extends UDrawable {
     public static final String TAG = "StudyCardsStack";
 
     // layout
-    public static final int MARGIN_V = 50;
+    public static final int MARGIN_V = 30;
     protected static final int MOVING_FRAME = 10;
 
 

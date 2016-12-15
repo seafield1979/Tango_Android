@@ -44,7 +44,10 @@ public class StudyCard extends UDrawable{
 
     protected static final int TEXT_SIZE = 50;
     protected static final int TEXT_COLOR = Color.BLACK;
-    protected static final int BG_COLOR = Color.rgb(200,100,200);
+    protected static final int BG_COLOR = Color.WHITE;
+    protected static final int FRAME_COLOR = Color.rgb(150,150,150);
+    protected static final int OK_BG_COLOR = Color.rgb(100,200,100);
+    protected static final int NG_BG_COLOR = Color.rgb(200,100,100);
 
     protected static final int ARROW_W = 150;
     protected static final int ARROW_H = 150;
@@ -203,10 +206,19 @@ public class StudyCard extends UDrawable{
         _pos.x += slideX;
 
         // BG
-        int color = isTouching ? Color.rgb(100,100,200) : BG_COLOR;
+        // スライド量に合わせて色を帰る
+        int color;
+        if (isTouching) {
+        else if (slideX == 0) {
+            color = BG_COLOR;
+        } else if (slideX < 0) {
+            color = UColor.mixRGBColor(BG_COLOR, NG_BG_COLOR, -slideX / (float)SLIDE_LEN);
+        } else {
+            color = UColor.mixRGBColor(BG_COLOR, OK_BG_COLOR, slideX / (float)SLIDE_LEN);
+        }
         UDraw.drawRoundRectFill(canvas, paint,
                 new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + size.height),
-                10, color, 0, 0);
+                10, color, 5, FRAME_COLOR);
 
         // Text
         if (!isMovingSize) {

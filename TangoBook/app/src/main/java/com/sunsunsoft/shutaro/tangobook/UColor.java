@@ -84,4 +84,29 @@ public class UColor extends Color {
 
         return _argb;
     }
+
+    /**
+     * 2つの色を指定の割合で合成する
+     * @param color1
+     * @param color2
+     * @param ratio  合成比率 0.0 : color1=100%, colo2=0%
+     *                      1.0 : color1=0%, color2=100%
+     * @return
+     */
+    public static int mixRGBColor(int color1, int color2, float ratio) {
+        int a = (int)(((color1 & 0xff000000) >> 24) * (1.0f - ratio) +
+                ((color2 & 0xff000000) >> 24) * ratio);
+        if (a > 255) a = 255;
+        int r = (int)(((color1 & 0xff0000) >> 16) * (1.0f - ratio) +
+                ((color2 & 0xff0000) >> 16) * ratio);
+        if (r > 255) r = 255;
+        int g = (int)(((color1 & 0xff00) >> 8) * (1.0f - ratio) +
+                ((color2 & 0xff00) >> 8) * ratio);
+        if (g > 255) g = 255;
+        int b = (int)((color1 & 0xff) * (1.0f - ratio) +
+                (color2 & 0xff) * ratio);
+        if (b > 255) b = 255;
+
+        return (a << 24) | (r << 16) | (g << 8) | b;
+    }
 }
