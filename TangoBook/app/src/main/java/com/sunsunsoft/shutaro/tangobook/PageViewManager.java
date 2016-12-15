@@ -22,23 +22,21 @@ enum PageView {
     ;
 }
 
-public class PageViewManagerTango extends UPageViewManager{
+public class PageViewManager extends UPageViewManager{
     /**
      * Constructor
      */
     // Singletonオブジェクト
-    private static PageViewManagerTango singleton;
+    private static PageViewManager singleton;
 
     // Singletonオブジェクトを作成する
-    public static PageViewManagerTango createInstance(Context context, View parentView) {
-        //if (singleton == null) {
-            singleton = new PageViewManagerTango(context, parentView);
-        //}
+    public static PageViewManager createInstance(Context context, View parentView) {
+        singleton = new PageViewManager(context, parentView);
         return singleton;
     }
-    public static PageViewManagerTango getInstance() { return singleton; }
+    public static PageViewManager getInstance() { return singleton; }
 
-    private PageViewManagerTango(Context context, View parentView) {
+    private PageViewManager(Context context, View parentView) {
         mContext = context;
         mParentView = parentView;
 
@@ -51,35 +49,35 @@ public class PageViewManagerTango extends UPageViewManager{
     public void initPages() {
         UPageView page;
         // Title
-        page = new PageViewTitle(mContext, mParentView);
+        page = new PageViewTitle(mContext, mParentView, UResourceManager.getStringById(R.string.app_title));
         pages[PageView.Title.ordinal()] = page;
 
         // Edit
-        page = new PageViewTangoEdit(mContext, mParentView);
+        page = new PageViewTangoEdit(mContext, mParentView, UResourceManager.getStringById(R.string.title_edit));
         pages[PageView.Edit.ordinal()] = page;
 
         // StudySelect
-        page = new PageViewStudySelect(mContext, mParentView);
+        page = new PageViewStudySelect(mContext, mParentView, UResourceManager.getStringById(R.string.title_study_select));
         pages[PageView.StudySelect.ordinal()] = page;
 
         // Study
-        page = new PageViewStudy(mContext, mParentView);
+        page = new PageViewStudy(mContext, mParentView, UResourceManager.getStringById(R.string.title_studying));
         pages[PageView.Study.ordinal()] = page;
 
         // TangoResult
-        page = new PageViewResult(mContext, mParentView);
+        page = new PageViewResult(mContext, mParentView, UResourceManager.getStringById(R.string.title_result));
         pages[PageView.StudyResult.ordinal()] = page;
 
         // History
-        page = new PageViewHistory(mContext, mParentView);
+        page = new PageViewHistory(mContext, mParentView, UResourceManager.getStringById(R.string.title_history));
         pages[PageView.History.ordinal()] = page;
 
         // Settings
-        page = new PageViewSettings(mContext, mParentView);
+        page = new PageViewSettings(mContext, mParentView, UResourceManager.getStringById(R.string.title_settings));
         pages[PageView.Settings.ordinal()] = page;
 
         // Help
-        page = new PageViewHelp(mContext, mParentView);
+        page = new PageViewHelp(mContext, mParentView, UResourceManager.getStringById(R.string.title_help));
         pages[PageView.Help.ordinal()] = page;
 
         // 最初に表示するページ

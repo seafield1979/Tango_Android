@@ -62,8 +62,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     /**
      * Get/Set
      */
-    public PageViewTangoEdit(Context context, View parentView) {
-        super(context, parentView);
+
+    /**
+     * Constructor
+     */
+    public PageViewTangoEdit(Context context, View parentView, String title) {
+        super(context, parentView, title);
     }
 
 

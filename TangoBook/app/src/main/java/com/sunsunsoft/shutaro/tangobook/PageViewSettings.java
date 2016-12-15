@@ -43,7 +43,6 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     /**
      * Member variables
      */
-    private UTextView mTitleText;
     private UTextView mBackupTitle;
     private UTextView mBackupPath;
     private UButtonText mBackupButton;
@@ -57,8 +56,8 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     /**
      * Constructor
      */
-    public PageViewSettings(Context context, View parentView) {
-        super(context, parentView);
+    public PageViewSettings(Context context, View parentView, String title) {
+        super(context, parentView, title);
     }
 
     /**
@@ -109,15 +108,6 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
 
         float x = MARGIN_H;
         float y = TOP_Y;
-
-        // Title
-        mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
-                        .title_settings),
-                TITLE_TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.CenterX, width, false, false,
-                width / 2, y, width, TITLE_TEXT_COLOR, 0);
-        mTitleText.addToDrawManager();
-        y += mTitleText.size.height + MARGIN_H;
 
         // Backup
         // title
@@ -209,7 +199,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
             }
                 break;
             case ButtonIdReturn:
-                PageViewManagerTango.getInstance().popPage();
+                PageViewManager.getInstance().popPage();
                 break;
             case ButtonIdBackupOK: {
                 // バックアップ

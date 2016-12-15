@@ -15,8 +15,8 @@ public class PageViewHelp extends UPageView implements UButtonCallbacks{
     /**
      * Constructor
      */
-    public PageViewHelp(Context context, View parentView) {
-        super(context, parentView);
+    public PageViewHelp(Context context, View parentView, String title) {
+        super(context, parentView, title);
     }
 
     /**

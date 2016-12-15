@@ -23,9 +23,7 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
 
-    private static final int TITLE_TEXT_SIZE = 70;
-    private static final int TITLE_TEXT_COLOR = Color.rgb(150,150,50);
-
+    private static final int TEXT_SIZE = 50;
     private static final int ButtonIdReturn = 100;
 
     /**
@@ -38,8 +36,8 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
     /**
      * Constructor
      */
-    public PageViewHistory(Context context, View parentView) {
-        super(context, parentView);
+    public PageViewHistory(Context context, View parentView, String title) {
+        super(context, parentView, title);
     }
 
     /**
@@ -93,12 +91,12 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
-                .title_history),
-                TITLE_TEXT_SIZE, DRAW_PRIORITY,
+                .history_book),
+                TEXT_SIZE, DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false,
-                width / 2, y, width, TITLE_TEXT_COLOR, 0);
+                width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.size.height + MARGIN_H;
+        y += mTitleText.size.height;
 
         // ListView
         int listViewH = height - (TOP_Y + MARGIN_H * 3 + mTitleText.size.height + BUTTON_H);
@@ -135,7 +133,7 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch(id) {
             case ButtonIdReturn:
-                PageViewManagerTango.getInstance().popPage();
+                PageViewManager.getInstance().popPage();
                 break;
         }
         return false;

@@ -1,9 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.View;
 
@@ -92,8 +90,8 @@ public class PageViewStudy extends UPageView
     /**
      * Constructor
      */
-    public PageViewStudy(Context context, View parentView) {
-        super(context, parentView);
+    public PageViewStudy(Context context, View parentView, String title) {
+        super(context, parentView, title);
 
     }
 
@@ -247,7 +245,7 @@ public class PageViewStudy extends UPageView
     public void dialogClosed(UDialogWindow dialog) {
         if (isCloseOk) {
             // 終了して前のページに戻る
-            PageViewManagerTango.getInstance().popPage();
+            PageViewManager.getInstance().popPage();
         }
         if (dialog == mConfirmDialog) {
             mConfirmDialog = null;
@@ -277,7 +275,7 @@ public class PageViewStudy extends UPageView
 
         // カードが０になったので学習完了。リザルトページに遷移
         mState = State.Finish;
-        PageViewManagerTango.getInstance().startStudyResultPage( mBook,
+        PageViewManager.getInstance().startStudyResultPage( mBook,
                 mCardsManager.getOkCards(), mCardsManager.getNgCards());
 
         mParentView.invalidate();

@@ -22,6 +22,7 @@ abstract public class UPageView {
      */
     protected Context mContext;
     protected View mParentView;
+    protected String mTitle;
 
     // UDrawManagerで描画を行うページ番号
     protected boolean isFirst = true;
@@ -29,13 +30,17 @@ abstract public class UPageView {
     /**
      * Get/Set
      */
+    public String getTitle() {
+        return mTitle;
+    }
 
     /**
      * Constructor
      */
-    public UPageView(Context context, View parentView) {
+    public UPageView(Context context, View parentView, String title) {
         mContext = context;
         mParentView = parentView;
+        mTitle = title;
     }
 
     /**

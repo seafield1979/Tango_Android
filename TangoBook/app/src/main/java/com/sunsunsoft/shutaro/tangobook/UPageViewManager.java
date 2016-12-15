@@ -1,9 +1,12 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -112,6 +115,7 @@ abstract public class UPageViewManager {
         // 新しいページの前処理(onShow)
         pageId = pageIdStack.getLast();
         pages[pageId.ordinal()].onShow();
+        setActionBarTitle(pages[pageId.ordinal()].getTitle());
     }
 
     /**
@@ -128,8 +132,16 @@ abstract public class UPageViewManager {
         }
 
         pageIdStack.add(pageId);
-        if (pages[pageId.ordinal()] != null) {
-            pages[pageId.ordinal()].onShow();
+
+        UPageView page = pages[pageId.ordinal()];
+        if (page != null) {
+            page.onShow();
+            setActionBarTitle(pages[pageId.ordinal()].getTitle());
+        }
+
+        // アクションバーに戻るボタンを表示
+        if (pageIdStack.size() >= 2) {
+            showActionBarBack(true);
         }
     }
 
@@ -148,9 +160,32 @@ abstract public class UPageViewManager {
             // 新しいページの前処理
             page = pageIdStack.getLast();
             pages[page.ordinal()].onShow();
+            setActionBarTitle(pages[page.ordinal()].getTitle());
 
+            if (pageIdStack.size() > 0) {
+                showActionBarBack(false);
+            }
             return true;
         }
         return false;
+    }
+
+    /**
+     * アクションバーの戻るボタン(←)を表示する
+     * @param show false:非表示 / true:表示
+     */
+    private void showActionBarBack(boolean show) {
+        ActionBar actionBar = ((AppCompatActivity)mContext).getSupportActionBar();
+        actionBar.setHomeButtonEnabled(show);
+        actionBar.setDisplayHomeAsUpEnabled(show);
+    }
+
+    /**
+     * アクションバーのタイトル文字を設定する
+     * @param text
+     */
+    public void setActionBarTitle(String text) {
+        ActionBar actionBar = ((AppCompatActivity)mContext).getSupportActionBar();
+        actionBar.setTitle(text);
     }
 }

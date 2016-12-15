@@ -1,13 +1,8 @@
 package com.sunsunsoft.shutaro.tangobook;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PointF;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 /**
@@ -91,8 +86,8 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     /**
      * Get/Set
      */
-    public PageViewStudySelect(Context context, View parentView) {
-        super(context, parentView);
+    public PageViewStudySelect(Context context, View parentView, String title) {
+        super(context, parentView, title);
     }
 
     public void onShow() {
@@ -322,7 +317,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         switch (id) {
             case ButtonIdStartStudy:
                 // 学習開始
-                PageViewManagerTango.getInstance().startStudyPage((TangoBook)mIconBook.getTangoItem()
+                PageViewManager.getInstance().startStudyPage((TangoBook)mIconBook.getTangoItem()
                         , true);
                 break;
             case ButtonIdCancel:

@@ -24,6 +24,8 @@
     <string name="item_count">アイテム数</string>
     <string name="title_edit">単語帳を作る</string>
     <string name="title_study">学習する</string>
+    <string name="title_studying">単語帳学習</string>
+    <string name="title_study_select">学習する</string>
     <string name="title_history">履歴</string>
     <string name="title_settings">設定</string>
     <string name="title_help">ヘルプ</string>
@@ -42,6 +44,7 @@
     <string name="last">最終学習日時</string>
     <string name="start">開始</string>
     <string name="cancel">キャンセル</string>
+    <string name="history_book">単語帳の学習履歴</string>
 
     <string name="study_type">出題方法</string>
     <string name="e_to_j">英語->日本語</string>
@@ -61,6 +64,7 @@
     <string name="retry1">"すべて\nリトライ"</string>
     <string name="retry2">"NGのみ\nリトライ"</string>
     <string name="title_result">"学習結果"</string>
+    <string name="title_result2">"%sの学習結果"</string>
 
     <string name="backup_path_title">バックアップファイルの場所</string>
     <string name="backup">バックアップ</string>

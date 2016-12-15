@@ -1,9 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.View;
 
 import java.util.List;
@@ -51,7 +49,7 @@ public class PageViewResult extends UPageView
     private boolean mStudyMode;             // 出題モード(false:英->日 / true:日->英)
 
     private UTextView mTitleText;           // タイトル
-    private UTextView mBookNameText;        // Book名
+//    private UTextView mBookNameText;        // Book名
     private UTextView mResultText;          // 結果
     private UButtonText mButtonRetry1;      // 全部リトライ
     private UButtonText mButtonRetry2;      // OKのみリトライ
@@ -74,8 +72,8 @@ public class PageViewResult extends UPageView
     /**
      * Constructor
      */
-    public PageViewResult(Context context, View parentView) {
-        super(context, parentView);
+    public PageViewResult(Context context, View parentView, String title) {
+        super(context, parentView, title);
     }
     /**
      * Methods
@@ -100,8 +98,9 @@ public class PageViewResult extends UPageView
 
         float y = TOP_Y;
         // Title
-        mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
-                .title_result),
+        String title = String.format(UResourceManager.getStringById(R.string
+                .title_result2), mBook.getName());
+        mTitleText = UTextView.createInstance(title,
                 TITLE_TEXT_SIZE,
                 DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false, width / 2, y, width,
@@ -109,12 +108,12 @@ public class PageViewResult extends UPageView
         mTitleText.addToDrawManager();
         y += mTitleText.size.height;
 
-        // Book Name
-        mBookNameText = UTextView.createInstance(mBook.getName(), TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.CenterX, width, false, false, width / 2, y, width,
-                TEXT_COLOR, 0);
-        mBookNameText.addToDrawManager();
-        y += mBookNameText.size.height;
+//        // Book Name
+//        mBookNameText = UTextView.createInstance(mBook.getName(), TEXT_SIZE, DRAW_PRIORITY,
+//                UAlignment.CenterX, width, false, false, width / 2, y, width,
+//                TEXT_COLOR, 0);
+//        mBookNameText.addToDrawManager();
+//        y += mBookNameText.size.height;
 
         // Result
         String text = "OK: " + mOkCards.size() + "  NG: " + mNgCards.size();
@@ -176,13 +175,13 @@ public class PageViewResult extends UPageView
 
         switch(id) {
             case ButtonIdRetry1:
-                PageViewManagerTango.getInstance().startStudyPage(mBook, null, false);
+                PageViewManager.getInstance().startStudyPage(mBook, null, false);
                 break;
             case ButtonIdRetry2:
-                PageViewManagerTango.getInstance().startStudyPage(mBook, mNgCards, false);
+                PageViewManager.getInstance().startStudyPage(mBook, mNgCards, false);
                 break;
             case ButtonIdReturn:
-                PageViewManagerTango.getInstance().popPage();
+                PageViewManager.getInstance().popPage();
                 break;
         }
         return false;

@@ -70,8 +70,8 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
     /**
      * Constructor
      */
-    public PageViewTitle(Context context, View parentView) {
-        super(context, parentView);
+    public PageViewTitle(Context context, View parentView, String title) {
+        super(context, parentView, title);
     }
 
     /**
@@ -99,12 +99,12 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         UDrawManager.getInstance().init();
 
         // タイトル
-        mTitleText = new UTextView(UResourceManager.getStringById(R.string.app_title),
-                TITLE_TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.CenterX, width, false, false, false,
-                width / 2, y, width, UColor.getRandomColor(), 0);
-        mTitleText.addToDrawManager();
-        y += mTitleText.size.height + MARGIN_V;
+//        mTitleText = new UTextView(UResourceManager.getStringById(R.string.app_title),
+//                TITLE_TEXT_SIZE, DRAW_PRIORITY,
+//                UAlignment.CenterX, width, false, false, false,
+//                width / 2, y, width, UColor.getRandomColor(), 0);
+//        mTitleText.addToDrawManager();
+//        y += mTitleText.size.height + MARGIN_V;
 
         // ボタンの配置
         // 1行に２つづつ配置
@@ -155,19 +155,19 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         ButtonId buttonId = ButtonId.toEnum(id);
         switch(buttonId) {
             case Edit:
-                PageViewManagerTango.getInstance().stackPage(PageView.Edit);
+                PageViewManager.getInstance().stackPage(PageView.Edit);
                 break;
             case Study:
-                PageViewManagerTango.getInstance().stackPage(PageView.StudySelect);
+                PageViewManager.getInstance().stackPage(PageView.StudySelect);
                 break;
             case History:
-                PageViewManagerTango.getInstance().stackPage(PageView.History);
+                PageViewManager.getInstance().stackPage(PageView.History);
                 break;
             case Settings:
-                PageViewManagerTango.getInstance().stackPage(PageView.Settings);
+                PageViewManager.getInstance().stackPage(PageView.Settings);
                 break;
             case Help:
-                PageViewManagerTango.getInstance().stackPage(PageView.Help);
+                PageViewManager.getInstance().stackPage(PageView.Help);
                 break;
         }
         return false;
