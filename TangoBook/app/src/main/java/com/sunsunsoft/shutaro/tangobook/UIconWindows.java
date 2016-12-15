@@ -94,7 +94,7 @@ public class UIconWindows implements UWindowCallbacks {
      * @param animation
      */
     public void showWindow(UIconWindow window, boolean animation) {
-        window.isShow = true;
+        window.setShow(true);
         window.setAppearance(true);
 
         updateLayout(animation);

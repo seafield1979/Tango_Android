@@ -165,6 +165,9 @@ public class UIconWindow extends UWindow {
     public TangoParentType getParentType() {
         return parentType;
     }
+    public int getParentId() {
+        return parentId;
+    }
 
     /**
      * 状態を設定する
@@ -234,7 +237,7 @@ public class UIconWindow extends UWindow {
 
         // ゴミ箱を配置
         if (parentType == TangoParentType.Home) {
-            mIconManager.addNewIcon(IconType.Trash, AddPos.Top);
+            mIconManager.addNewIcon(IconType.Trash, TangoParentType.Home, 0, AddPos.Top);
         }
 
         for (TangoItem item : items) {

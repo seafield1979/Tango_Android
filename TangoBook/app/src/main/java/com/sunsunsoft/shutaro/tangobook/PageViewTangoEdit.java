@@ -173,6 +173,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     // ダミーのCardを追加
     private void addDummyCard() {
         addCardIcon();
+        mParentView.invalidate();
     }
 
     // ダミーのBookを追加
@@ -225,18 +226,32 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     }
 
     // card
-    private void addCardIcon() {
-        UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-        iconManager.addNewIcon(IconType.Card, AddPos.Tail);
-        mIconWinManager.getMainWindow().sortIcons(true);
+    private IconCard addCardIcon() {
 
-        mParentView.invalidate();
+        // Bookのサブウィンドウが開いていたらそちらに追加する
+        UIconManager iconManager = null;
+        UIconWindow window = null;
+        IconCard cardIcon = null;
+
+        window = mIconWinManager.getSubWindow();
+        if (window.isShow() && window.getParentType() == TangoParentType.Book) {
+            iconManager = window.getIconManager();
+            cardIcon = (IconCard)iconManager.addNewIcon(IconType.Card, TangoParentType.Book, window.getParentId(), AddPos.Tail);
+        } else {
+            window = mIconWinManager.getMainWindow();
+            iconManager = window.getIconManager();
+            cardIcon = (IconCard)iconManager.addNewIcon(IconType.Card, TangoParentType.Home, 0,
+                    AddPos.Tail);
+        }
+        window.sortIcons(true);
+
+        return cardIcon;
     }
 
     // book
     private void addBookIcon() {
         UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-        iconManager.addNewIcon(IconType.Book, AddPos.Tail);
+        iconManager.addNewIcon(IconType.Book, TangoParentType.Home, 0, AddPos.Tail);
         mIconWinManager.getMainWindow().sortIcons(true);
 
         mParentView.invalidate();
@@ -373,9 +388,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         switch (icon.getType()) {
             case Book:
             {
-//                UIconWindow mainWindow = mIconWinManager.getMainWindow();
-//                mainWindow.
-//
                 UIconWindow window = mIconWinManager.getSubWindow();
                 window.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
 
@@ -447,9 +459,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         if (mode == EditCardDialogMode.Create.ordinal()) {
             // 新たにアイコンを追加する
 
-            UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-            IconCard iconCard = (IconCard)(iconManager
-                    .addNewIcon(IconType.Card, AddPos.Tail));
+            IconCard iconCard = addCardIcon();
             if (iconCard == null) {
                 return;
             }
@@ -464,9 +474,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
             // DB更新
             RealmManager.getCardDao().updateOne(card);
-
-            // アイコン整列
-            mIconWinManager.getMainWindow().sortIcons(false);
         } else {
             // 既存のアイコンを更新する
 
@@ -499,7 +506,8 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         if (mode == EditCardDialogMode.Create.ordinal()) {
             // 新たにアイコンを追加する
             UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-            IconBook bookIcon = (IconBook) (iconManager.addNewIcon(IconType.Book, AddPos.Tail));
+            IconBook bookIcon = (IconBook) (iconManager.addNewIcon(
+                    IconType.Book, TangoParentType.Home, 0, AddPos.Tail));
             if (bookIcon == null) {
                 return;
             }

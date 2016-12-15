@@ -172,14 +172,14 @@ public class UIconManager implements UIconCallbacks{
      * @param addPos
      * @return
      */
-    public UIcon addNewIcon(IconType type, AddPos addPos) {
+    public UIcon addNewIcon(IconType type, TangoParentType parentType,
+                            int parentId, AddPos addPos) {
         UIcon icon = null;
         switch (type) {
             case Card: {
                 TangoCard card = TangoCard.createDummyCard();
                 RealmManager.getCardDao().addOne(card);
-                TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, TangoParentType
-                        .Home, 0);
+                TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, parentType, parentId);
                 card.setItemPos(itemPos);
                 icon = new IconCard(card, mParentWindow, this);
             }
@@ -205,8 +205,10 @@ public class UIconManager implements UIconCallbacks{
         if (addPos == AddPos.Top) {
             icons.push(icon);
         } else {
-            UIcon lastIcon = icons.getLast();
-
+            UIcon lastIcon = null;
+            if (icons.size() > 0) {
+                lastIcon = icons.getLast();
+            }
             icons.add(icon);
 
             // 出現位置は最後のアイコン
