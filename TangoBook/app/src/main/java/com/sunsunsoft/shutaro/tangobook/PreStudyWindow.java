@@ -3,6 +3,7 @@ package com.sunsunsoft.shutaro.tangobook;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
@@ -154,7 +155,7 @@ public class PreStudyWindow extends UWindow {
      * @param canvas
      * @param paint
      */
-    public void drawContent(Canvas canvas, Paint paint) {
+    public void drawContent(Canvas canvas, Paint paint, PointF offset) {
         // BG
         UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
                 bgColor, FRAME_WIDTH, FRAME_COLOR);

@@ -48,11 +48,9 @@ public class UListView extends UScrollWindow
                      int priority, float x, float y, int width, int
                              height, int color)
     {
-        super(callbacks, priority, x, y, width, height + MARGIN_V * 2, color);
+        super(callbacks, priority, x, y, width, height, color, 0, 0, 30);
         mListItemCallbacks = listItemCallbacks;
-        mClipRect = new Rect((int)pos.x, (int)pos.y + MARGIN_V,
-                (int)pos.x + width, (int)pos.y + height);
-
+        mClipRect = new Rect();
     }
 
     /**
@@ -100,18 +98,24 @@ public class UListView extends UScrollWindow
     }
 
 
-    public void drawContent(Canvas canvas, Paint paint) {
+    public void drawContent(Canvas canvas, Paint paint, PointF offset) {
         // BG
         drawBG(canvas, paint);
 
         // クリッピング前の状態を保存
         canvas.save();
 
+        PointF _pos = new PointF(pos.x + offset.x, pos.y + offset.y);
         // クリッピングを設定
+        mClipRect.left = (int)_pos.x;
+        mClipRect.right = (int)_pos.x + clientSize.width;
+        mClipRect.top = (int)_pos.y;
+        mClipRect.bottom = (int)_pos.y + clientSize.height;
+
         canvas.clipRect(mClipRect);
 
         // アイテムを描画
-        PointF _offset = new PointF(pos.x, pos.y + MARGIN_V - contentTop.y);
+        PointF _offset = new PointF(_pos.x, _pos.y - contentTop.y);
         for (UListItem item : mItems) {
             if (item.getBottom() < contentTop.y) continue;
 

@@ -211,7 +211,7 @@ public class ULogWindow extends UWindow {
      * @param canvas
      * @param paint
      */
-    public void drawContent(Canvas canvas, Paint paint) {
+    public void drawContent(Canvas canvas, Paint paint, PointF offset) {
         if (!isShow) return;
 
         // 背景

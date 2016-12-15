@@ -52,7 +52,7 @@ abstract public class UPageViewManager {
 
     /**
      * 配下のページを追加する
-     */
+     *
     abstract public void initPages();
 
     /**

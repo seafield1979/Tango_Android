@@ -191,7 +191,7 @@ abstract public class UMenuBar extends UWindow {
      * @param canvas
      * @param paint
      */
-    public void drawContent(Canvas canvas, Paint paint ) {
+    public void drawContent(Canvas canvas, Paint paint, PointF offset ) {
         if (!isShow) return;
 
         // トップのアイテムから描画

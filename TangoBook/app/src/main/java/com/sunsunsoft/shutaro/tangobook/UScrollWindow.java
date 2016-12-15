@@ -3,6 +3,7 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PointF;
 
 /**
  * Created by shutaro on 2016/12/09.
@@ -30,9 +31,9 @@ public class UScrollWindow extends UWindow {
      * Constructor
      */
     public UScrollWindow(UWindowCallbacks callbacks, int priority, float x, float y, int width, int
-            height, int color)
+            height, int color, int topBarH, int frameW, int frameH)
     {
-        super(callbacks, priority, x, y, width, height, color);
+        super(callbacks, priority, x, y, width, height, color, topBarH, frameW, frameH);
     }
 
     /**
@@ -42,7 +43,7 @@ public class UScrollWindow extends UWindow {
         return false;
     }
 
-    public void drawContent(Canvas canvas, Paint paint) {
+    public void drawContent(Canvas canvas, Paint paint, PointF offset) {
 
     }
 
@@ -57,8 +58,8 @@ public class UScrollWindow extends UWindow {
                 if (vt.moveX != 0) {
                     contentTop.x -= vt.moveX;
                     if (contentTop.x < 0) contentTop.x = 0;
-                    if (contentTop.x + size.width > contentSize.width) {
-                        contentTop.x = contentSize.width - size.width;
+                    if (contentTop.x + clientSize.width > contentSize.width) {
+                        contentTop.x = contentSize.width - clientSize.width;
                     }
                     mScrollBarH.updateScroll((long)contentTop.x);
                     isDraw = true;
@@ -69,8 +70,8 @@ public class UScrollWindow extends UWindow {
                 if (vt.moveY != 0) {
                     contentTop.y -= vt.moveY;
                     if (contentTop.y < 0) contentTop.y = 0;
-                    if (contentTop.y + size.height > contentSize.height) {
-                        contentTop.y = contentSize.height - size.height;
+                    if (contentTop.y + clientSize.height > contentSize.height) {
+                        contentTop.y = contentSize.height - clientSize.height;
                     }
                     mScrollBarV.updateScroll((long)contentTop.y);
                     isDraw = true;

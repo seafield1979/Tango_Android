@@ -435,7 +435,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * @param canvas
      * @param paint
      */
-    public void drawContent(Canvas canvas, Paint paint) {
+    public void drawContent(Canvas canvas, Paint paint, PointF offset) {
 
         if (isAnimating) {
             // Open/Close animatin

@@ -332,7 +332,7 @@ public class UIconWindow extends UWindow {
      * @param paint
      * @return trueなら描画継続
      */
-    public void drawContent(Canvas canvas, Paint paint)
+    public void drawContent(Canvas canvas, Paint paint, PointF offset)
     {
         if (!isShow) return;
 
@@ -480,10 +480,10 @@ public class UIconWindow extends UWindow {
         // メニューバーに重ならないように下にマージンを設ける
         if (dir == WindowDir.Vertical) {
             setContentSize(size.width, maxSize + MARGIN_D, true);
-            contentTop.y = mScrollBarV.updateContent(contentSize);
+            contentTop.y = mScrollBarV.updateContent(contentSize.height);
         } else {
             setContentSize(maxSize + MARGIN_D, size.height, true);
-            contentTop.x = mScrollBarH.updateContent(contentSize);
+            contentTop.x = mScrollBarH.updateContent(contentSize.width);
         }
 
         // 必要があれば選択アイコンをクリア
