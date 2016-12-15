@@ -17,11 +17,6 @@ public class ListViewStudyHistory extends UListView{
     /**
      * Constants
      */
-    private static final int TITLE_TEXT_COLOR = Color.WHITE;
-    private static final int TITLE_OK_COLOR = Color.rgb(50,200,50);
-    private static final int TITLE_NG_COLOR = Color.rgb(200,50,50);
-    private static final int ITEM_BG_COLOR = Color.WHITE;
-    private static final int ITEM_TEXT_COLOR = Color.BLACK;
 
     private static final int LIMIT = 100;
 

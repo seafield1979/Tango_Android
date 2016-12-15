@@ -31,9 +31,9 @@ public class PageViewManagerTango extends UPageViewManager{
 
     // Singletonオブジェクトを作成する
     public static PageViewManagerTango createInstance(Context context, View parentView) {
-        if (singleton == null) {
+        //if (singleton == null) {
             singleton = new PageViewManagerTango(context, parentView);
-        }
+        //}
         return singleton;
     }
     public static PageViewManagerTango getInstance() { return singleton; }

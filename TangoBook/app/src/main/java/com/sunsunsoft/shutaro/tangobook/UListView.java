@@ -129,7 +129,7 @@ public class UListView extends UScrollWindow
 
     public boolean touchEvent(ViewTouch vt) {
         // アイテムのクリック判定処理
-        PointF offset = new PointF(pos.x, pos.y + contentTop.y);
+        PointF offset = new PointF(pos.x, pos.y - contentTop.y);
         boolean isDraw = false;
 
         for (UListItem item : mItems) {

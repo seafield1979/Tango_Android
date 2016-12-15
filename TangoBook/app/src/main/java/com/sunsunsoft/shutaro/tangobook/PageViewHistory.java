@@ -104,7 +104,6 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
         int listViewH = height - (TOP_Y + MARGIN_H * 3 + mTitleText.size.height + BUTTON_H);
         mListView = new ListViewStudyHistory(this, DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
-        mListView.addToDrawManager();
         mListView.setFrameColor(Color.BLACK);
 
         y += listViewH + MARGIN_H;

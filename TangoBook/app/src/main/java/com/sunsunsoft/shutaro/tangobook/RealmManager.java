@@ -109,8 +109,8 @@ public class RealmManager {
     public static String backup() {
 
         File exportRealmFile = null;
+        File exportRealmPATH = getBackupPath();
 
-        File exportRealmPATH = context.getExternalFilesDir(null);
         String exportRealmFileName = DefaultFileName;
 
         Log.d(TAG, "Realm DB Path = " + realm.getPath());
@@ -164,7 +164,7 @@ public class RealmManager {
     private static String copyBundledRealmFile(String oldFilePath, String outFileName) {
         try {
             // output file path
-            File file = new File(context.getFilesDir(), outFileName);
+            File file = new File(getBackupPath(), outFileName);
 
             Log.d(TAG, "context.getFilesDir() = " + context.getFilesDir().toString());
             FileOutputStream outputStream = new FileOutputStream(file);
@@ -182,6 +182,15 @@ public class RealmManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private static File getBackupPath() {
+        if (false) {
+            return context.getExternalFilesDir(null);
+        } else {
+            return Environment.getExternalStoragePublicDirectory
+                    (Environment.DIRECTORY_DOCUMENTS);
+        }
     }
 
     private String dbPath(){

@@ -369,6 +369,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         switch (icon.getType()) {
             case Book:
             {
+//                UIconWindow mainWindow = mIconWinManager.getMainWindow();
+//                mainWindow.
+//
                 UIconWindow window = mIconWinManager.getSubWindow();
                 window.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
 

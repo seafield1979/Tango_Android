@@ -22,8 +22,10 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     private static final int TOP_Y = 50;
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 50;
-    private static final int BUTTON_W = 350;
+    private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
+    private static final int BUTTON2_W = 350;
+    private static final int BUTTON2_H = 200;
 
     private static final int TITLE_TEXT_SIZE = 70;
     private static final int TITLE_TEXT_COLOR = Color.rgb(150,150,50);
@@ -110,7 +112,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
-                        .title_history),
+                        .title_settings),
                 TITLE_TEXT_SIZE, DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false,
                 width / 2, y, width, TITLE_TEXT_COLOR, 0);
@@ -132,22 +134,22 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                 MySharedPref.readString(MySharedPref.RealmBackupPathKey),
                 TEXT_SIZE, DRAW_PRIORITY,
                 UAlignment.None, width, true, true,
-                MARGIN_H, y, 0, TEXT_COLOR, Color.LTGRAY);
+                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, Color.LTGRAY);
         mBackupPath.addToDrawManager();
         y += mBackupPath.size.height + MARGIN_H;
 
         // backup button
-        x = (width - BUTTON_W * 2 - MARGIN_H) / 2;
+        x = (width - BUTTON2_W * 2 - MARGIN_H) / 2;
         mBackupButton = new UButtonText(this, UButtonType.Press, ButtonIdBackup, DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.backup),
-                x, y, BUTTON_W, BUTTON_W, TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
+                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
         mBackupButton.addToDrawManager();
+        x += BUTTON2_W + MARGIN_H;
 
         // restore button
-        x += BUTTON_W + MARGIN_H;
         mRestoreButton = new UButtonText(this, UButtonType.Press, ButtonIdRestore, DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.restore),
-                x, y, BUTTON_W, BUTTON_W, TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
+                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
         mRestoreButton.addToDrawManager();
 
         y += BUTTON_W + MARGIN_V;
@@ -155,7 +157,8 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
         // Button
         mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
                 DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
-                (width - BUTTON_W)/2, y, BUTTON_W, BUTTON_H, 50, Color.WHITE, Color.rgb(100,200,
+                (width - BUTTON_W)/2, height - BUTTON_H - MARGIN_H, BUTTON_W, BUTTON_H, 50, Color
+                .WHITE, Color.rgb(100,200,
                 100));
         mReturnButton.addToDrawManager();
 
@@ -209,6 +212,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                 PageViewManagerTango.getInstance().popPage();
                 break;
             case ButtonIdBackupOK: {
+                // バックアップ
                 String filePath = RealmManager.backup();
                 if (filePath != null) {
                     mBackupPath.setText(filePath);
@@ -218,6 +222,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
             }
                 break;
             case ButtonIdRestoreOK:
+                // バックアップから復元
                 RealmManager.restore();
 
                 mDialog.startClosing();

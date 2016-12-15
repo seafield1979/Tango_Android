@@ -304,7 +304,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         UButtonText button = new UButtonText(this, UButtonType.Press, CloseDialogId,
                 0, text, 0, 0,
                 0, 0,
-                50, Color.WHITE, Color.RED);
+                50, Color.WHITE, Color.rgb(200,100,100));
         mButtons.add(button);
         isUpdate = true;
     }

@@ -325,6 +325,17 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         }
     }
 
+    public boolean autoMoving() {
+        // Windowはサイズ変更時にclientSizeも変更する必要がある
+        if (!isMoving) return false;
+
+        boolean ret = super.autoMoving();
+
+        clientSize = size;
+
+        return ret;
+    }
+
     /**
      * Viewをスクロールする処理
      * Viewの空きスペースをドラッグすると表示領域をスクロールすることができる
