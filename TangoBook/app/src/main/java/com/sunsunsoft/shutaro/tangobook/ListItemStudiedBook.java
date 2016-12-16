@@ -11,15 +11,16 @@ import android.graphics.Rect;
  *
  * 単語帳の学習履歴ListView(ListViewStudyHistory)に表示する項目
  */
+enum ListItemStudiedBookType {
+    Title,
+    History     // 単語帳の学習履歴
+}
+
 
 public class ListItemStudiedBook extends UListItem{
     /**
      * Enums
      */
-    enum ListItemStudiedBookType {
-        Title,
-        History     // 単語帳の学習履歴
-    }
 
     /**
      * Constants
@@ -58,6 +59,9 @@ public class ListItemStudiedBook extends UListItem{
         return mType;
     }
 
+    public TangoBookHistory getBookHistory() {
+        return mBookHistory;
+    }
 
     /**
      * Constructor
