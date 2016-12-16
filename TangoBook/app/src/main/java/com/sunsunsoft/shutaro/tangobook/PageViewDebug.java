@@ -16,22 +16,6 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks{
     /**
      * Enums
      */
-    enum DebugMenu {
-        StudiedCards,
-        DrawableDialog,
-        ShowDrawable,
-        Test4,
-        Test5,
-        Test6
-        ;
-
-        public static DebugMenu toEnum(int value) {
-            if (value < DebugMenu.values().length) {
-                return DebugMenu.values()[value];
-            }
-            return StudiedCards;
-        }
-    }
 
     /**
      * Constants
@@ -55,7 +39,6 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks{
      * Member variables
      */
     private UListView mListView;
-    private UDialogWindow mDialog;
 
 
     /**
@@ -106,28 +89,11 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks{
                 Color.WHITE);
         mListView.addToDrawManager();
 
-        for (DebugMenu menu : DebugMenu.values()) {
-            ListItemDebug item = new ListItemDebug(this, menu.toString(),
-                    true, 0, mListView.size.width);
+        for (int i=0; i<10; i++) {
+            ListItemDebug item = new ListItemDebug(this, "hoge", true, 0, mListView.size.width);
             mListView.add(item);
         }
-    }
 
-    /**
-     * Drawableを表示するダイアログ表示テスト
-     */
-    private void showDrawableDialog() {
-        if (mDialog != null) {
-            mDialog.closeDialog();
-        }
-        mDialog = UDialogWindow.createInstance(null, mParentView.getWidth(), mParentView
-                .getHeight());
-        mDialog.addToDrawManager();
-
-        UTextView textView = UTextView.createInstance("hello world", 0, mParentView.getWidth(),
-                false, 0, 0);
-        mDialog.addDrawable(textView);
-        mDialog.addCloseButton("close");
     }
 
     /**
@@ -162,19 +128,9 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks{
     public void ListItemClicked(UListItem item) {
         ULog.print(TAG, "item clicked:" + item.mIndex);
 
-        switch(DebugMenu.toEnum(item.mIndex)) {
-            case StudiedCards:
-                RealmManager.getStudiedCardDao().selectAll();
-                break;
-            case DrawableDialog:
-                showDrawableDialog();
-                break;
-            case ShowDrawable:
-                UDrawManager.getInstance().showAllList(true, true);
-                break;
-            case Test4:
-                break;
-            case Test5:
+        switch(item.mIndex) {
+            case 0:
+
                 break;
         }
     }

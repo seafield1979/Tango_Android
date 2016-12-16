@@ -99,14 +99,13 @@ public class UListView extends UScrollWindow
 
 
     public void drawContent(Canvas canvas, Paint paint, PointF offset) {
+        // BG
+        drawBG(canvas, paint);
+
         // クリッピング前の状態を保存
         canvas.save();
 
-        PointF _pos = new PointF(pos.x, pos.y);
-        if (offset != null) {
-            _pos.x += offset.x;
-            _pos.y += offset.y;
-        }
+        PointF _pos = new PointF(pos.x + offset.x, pos.y + offset.y);
         // クリッピングを設定
         mClipRect.left = (int)_pos.x;
         mClipRect.right = (int)_pos.x + clientSize.width;

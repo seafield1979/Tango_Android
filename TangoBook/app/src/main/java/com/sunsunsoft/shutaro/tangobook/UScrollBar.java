@@ -205,17 +205,13 @@ public class UScrollBar {
         return topPos;
     }
 
-    public void draw(Canvas canvas, Paint paint, PointF offset) {
+    public void draw(Canvas canvas, Paint paint) {
         if (!isShow) return;
 
         paint.setStyle(Paint.Style.FILL);
 
         float baseX = pos.x + parentPos.x;
         float baseY = pos.y + parentPos.y;
-        if (offset != null) {
-            baseX += offset.x;
-            baseY += offset.y;
-        }
 
         float _barLength = barLength;
         float _barPos = barPos;

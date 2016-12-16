@@ -389,7 +389,7 @@ public class UDraw {
      * １行テキストの描画サイズを取得する
      */
     public static Size getOneLineTextSize(Paint paint, String text, int textSize) {
-        paint.setTextSize(textSize);
+
         return new Size((int)paint.measureText( text), textSize);
     }
 }

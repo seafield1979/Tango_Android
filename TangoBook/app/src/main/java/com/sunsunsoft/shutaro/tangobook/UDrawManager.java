@@ -300,6 +300,7 @@ public class UDrawManager {
             list.showAll(ascending, isShowOnly);
         }
     }
+
 }
 
 
@@ -477,7 +478,6 @@ class DrawList
      */
     /**
      * 描画オブジェクトをすべて出力する
-     * @param isShowOnly  画面に表示中のもののみログを出力する
      */
     public void showAll(boolean ascending, boolean isShowOnly) {
         // パッケージ名を除去

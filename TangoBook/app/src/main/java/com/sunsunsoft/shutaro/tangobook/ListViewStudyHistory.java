@@ -40,7 +40,6 @@ public class ListViewStudyHistory extends UListView{
         List<TangoBookHistory> histories = RealmManager.getBookHistoryDao().selectAllWithLimit
                 (true, LIMIT);
 
-        // add items
         for (TangoBookHistory history : histories) {
             ListItemStudiedBook item = ListItemStudiedBook.createHistory( history,
                 width, Color.BLACK, Color.WHITE);

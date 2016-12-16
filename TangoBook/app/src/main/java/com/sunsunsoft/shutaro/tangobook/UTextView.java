@@ -21,10 +21,6 @@ public class UTextView extends UDrawable {
     protected static final int MARGIN_H = 50;
     protected static final int MARGIN_V = 20;
 
-    protected static final int DEFAULT_TEXT_SIZE = 50;
-    protected static final int DEFAULT_COLOR = Color.BLACK;
-    protected static final int DEFAULT_BG_COLOR = Color.WHITE;
-
     /**
      * Member variables
      */
@@ -102,17 +98,6 @@ public class UTextView extends UDrawable {
                 multiLine, isDrawBG, true,
                 x, y, width, color, bgColor);
 
-        return instance;
-    }
-
-    // シンプルなTextViewを作成
-    public static UTextView createInstance(String text, int priority,
-                                           int canvasW, boolean isDrawBG,
-                                           float x, float y)
-    {
-        UTextView instance = new UTextView(text, DEFAULT_TEXT_SIZE, priority, UAlignment.None,
-                canvasW, false, isDrawBG, true,
-                x, y, 0, DEFAULT_COLOR, DEFAULT_BG_COLOR);
         return instance;
     }
 
