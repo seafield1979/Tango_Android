@@ -198,10 +198,14 @@ public class TangoItemPosDao {
                     if (card.getId() == itemPos.getItemId()) {
                         sortedCards.add(card);
                         cards.remove(i);
-                        break;
                     }
                 }
             }
+            // posが重複していた等の理由でcardsが余っていたらまとめてsortedCardsに追加
+            for (TangoCard card : cards) {
+                sortedCards.add(card);
+            }
+
             cards = sortedCards;
         } else {
             cards = new LinkedList<>();

@@ -807,10 +807,10 @@ public class UIconWindow extends UWindow {
 
             // ドロップ処理をチェックする
             if (dragedIcon.canDrop(dropIcon, winX, winY)) {
+                ret.dropedIcon = dropIcon;
                 switch (dropIcon.getType()) {
                     case Card:
                         // ドラッグ位置のアイコンと場所を交換する
-                        ret.dropedIcon = dropIcon;
                         ret.movingType = IconMovingType.Exchange;
                         ret.isDroped = true;
                         break;
@@ -1205,10 +1205,14 @@ public class UIconWindow extends UWindow {
 
             // データベース更新
             // 挿入位置以降の全てのposを更新
-            RealmManager.getItemPosDao().updatePoses(icons1, icons1.get(index1).getTangoItem()
-                    .getPos());
-            RealmManager.getItemPosDao().updatePoses(icons2, icons2.get(index2).getTangoItem()
-                    .getPos());
+            if (index1 < icons1.size()) {
+                RealmManager.getItemPosDao().updatePoses(icons1, icons1.get(index1).getTangoItem()
+                        .getPos());
+            }
+            if (index1 < icons2.size()) {
+                RealmManager.getItemPosDao().updatePoses(icons2, icons2.get(index2).getTangoItem()
+                        .getPos());
+            }
         } else {
             // データベース更新
             // 挿入位置でずれた先頭以降のposを更新
@@ -1240,9 +1244,11 @@ public class UIconWindow extends UWindow {
         UIconWindow window2 = container.getSubWindow();
         List<UIcon> icons1 = window1.getIcons();
         List<UIcon> icons2 = container.getIcons();
+        List<UIcon> win2Icons = window2.getIcons();
 
         icons1.remove(icon1);
         icons2.add(icon1);
+        win2Icons.add(icon1);
 
         if (window2 != null && window2.isShow()) {
             window2.sortIcons(false);
@@ -1259,6 +1265,9 @@ public class UIconWindow extends UWindow {
                 itemId);
 
         sortIcons(true);
+        if (icons1 != icons2) {
+            window2.sortIcons(true);
+        }
     }
 
     /**

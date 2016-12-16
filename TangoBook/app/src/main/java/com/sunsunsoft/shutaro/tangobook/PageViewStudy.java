@@ -221,6 +221,7 @@ public class PageViewStudy extends UPageView
                             UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
                             true, mParentView.getWidth(), mParentView.getHeight(),
                             Color.BLACK, Color.LTGRAY);
+                    mConfirmDialog.addToDrawManager();
                     mConfirmDialog.setTitle(mContext.getString(R.string.confirm_exit));
                     mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
                     mConfirmDialog.addCloseButton("Cancel");
