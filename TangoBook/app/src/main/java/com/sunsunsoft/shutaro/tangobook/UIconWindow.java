@@ -55,7 +55,8 @@ public class UIconWindow extends UWindow {
      */
     enum IconMovingType {
         Exchange,       // exchange A and B
-        Insert          // insert A before B
+        Insert,         // insert A before B
+        MoveIn          // move A into B
     }
 
     /**
@@ -693,12 +694,15 @@ public class UIconWindow extends UWindow {
 
             // 移動あり
             if (isDroped && ret.dropedIcon != null) {
-                if (ret.movingType == IconMovingType.Insert) {
-                    // ドロップ先の位置に挿入
-                    insertIcons(dragedIcon, ret.dropedIcon, true);
-                } else {
-                    // ドロップ先のアイコンと場所交換
-                    changeIcons(dragedIcon, ret.dropedIcon);
+                switch(ret.movingType) {
+                    case Insert:
+                        // ドロップ先の位置に挿入
+                        insertIcons(dragedIcon, ret.dropedIcon, true);
+                        break;
+                    case Exchange:
+                        // ドロップ先のアイコンと場所交換
+                        changeIcons(dragedIcon, ret.dropedIcon);
+                        break;
                 }
             }
 
@@ -719,6 +723,7 @@ public class UIconWindow extends UWindow {
                     }
                 } else {
                     isMoved = true;
+                    isDroped = true;
                 }
 
                 if (isMoved) {
@@ -819,6 +824,7 @@ public class UIconWindow extends UWindow {
                     case Trash:
                         // Containerの中に挿入する　
                         moveIconIn(dragedIcon, dropIcon);
+                        ret.movingType = IconMovingType.MoveIn;
 
                         for (UIconWindow win : windows.getWindows()) {
                             UIconManager manager = win.getIconManager();
@@ -1244,11 +1250,14 @@ public class UIconWindow extends UWindow {
         UIconWindow window2 = container.getSubWindow();
         List<UIcon> icons1 = window1.getIcons();
         List<UIcon> icons2 = container.getIcons();
-        List<UIcon> win2Icons = window2.getIcons();
 
         icons1.remove(icon1);
         icons2.add(icon1);
-        win2Icons.add(icon1);
+
+        if (window2.isShow()) {
+            List<UIcon> win2Icons = window2.getIcons();
+            win2Icons.add(icon1);
+        }
 
         if (window2 != null && window2.isShow()) {
             window2.sortIcons(false);

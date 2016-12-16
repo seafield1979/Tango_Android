@@ -40,7 +40,7 @@ public class ULog {
     // 初期化、アプリ起動時に１回だけ呼ぶ
     public static void init() {
         setEnable(ViewTouch.TAG, false);
-        setEnable(UDrawManager.TAG, true);
+        setEnable(UDrawManager.TAG, false);
         setEnable(UMenuBar.TAG, false);
         setEnable(UScrollBar.TAG, false);
         setEnable(UIconWindow.TAG, false);

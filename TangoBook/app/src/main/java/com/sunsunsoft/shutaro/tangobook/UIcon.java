@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.View;
 
@@ -30,6 +31,9 @@ abstract public class UIcon extends UDrawable {
 
     protected static final int TEXT_SIZE = 40;
     protected static final int TEXT_MARGIN = 10;
+
+    // タッチ領域の拡張幅
+    protected static final int TOUCH_MARGIN = 30;
 
     private static int count;
 
@@ -74,6 +78,11 @@ abstract public class UIcon extends UDrawable {
     }
 
     abstract public void updateTitle();
+
+    public Rect getRect() {
+        return new Rect(rect.left - TOUCH_MARGIN, rect.top - TOUCH_MARGIN,
+                rect.right + TOUCH_MARGIN, rect.bottom + TOUCH_MARGIN);
+    }
 
     /**
      * Constructor
@@ -320,10 +329,6 @@ abstract public class UIcon extends UDrawable {
                 }
                 break;
             case LongClick:
-//                if (getRect().contains((int)vt.touchX(offset.x), (int)vt.touchY(offset.y))) {
-//                    longClick();
-//                    done = true;
-//                }
                 break;
             case Moving:
                 if (vt.isMoveStart()) {
