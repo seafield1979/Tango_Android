@@ -106,10 +106,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
         // Main
         UIconWindow mainWindow = UIconWindow.createInstance(this, this, true, winDir, size1.width, size1.height, Color.WHITE);
+        mainWindow.addToDrawManager();
         mWindows[WindowType.Icon1.ordinal()] = mainWindow;
 
         // Sub
         UIconWindow subWindow = UIconWindow.createInstance(this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
+        subWindow.addToDrawManager();
         subWindow.isShow = false;
         mWindows[WindowType.Icon2.ordinal()] = subWindow;
 

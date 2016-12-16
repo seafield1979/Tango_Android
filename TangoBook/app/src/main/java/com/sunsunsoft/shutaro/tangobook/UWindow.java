@@ -219,7 +219,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         }
 
         // 描画オブジェクトに登録する
-        drawList = UDrawManager.getInstance().addDrawable(this);
+//        drawList = UDrawManager.getInstance().addDrawable(this);
     }
 
 
@@ -306,11 +306,23 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     public void draw(Canvas canvas, Paint paint, PointF offset) {
         if (!isShow) return;
 
+        // BG
+        if (offset != null) {
+            drawBG(canvas, paint, offset);
+        } else {
+            drawBG(canvas, paint);
+        }
+
         // Window内部
-        drawContent(canvas, paint, new PointF(frameSize.width, frameSize.height + topBarH));
+        PointF _pos = new PointF(frameSize.width, frameSize.height + topBarH);
+        if (offset != null) {
+            _pos.x += offset.x;
+            _pos.y += offset.y;
+        }
+        drawContent(canvas, paint, _pos);
 
         // Window枠
-        drawFrame(canvas, paint);
+        drawFrame(canvas, paint, offset);
     }
 
     /**
@@ -339,57 +351,66 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         this.drawBG(canvas, paint, rect);
     }
 
+    protected void drawBG(Canvas canvas, Paint paint, PointF offset) {
+        this.drawBG(canvas, paint, new Rect((int)offset.x + rect.left,
+                (int)offset.y + rect.top, (int)offset.x + rect.right, (int)offset.y + rect.bottom));
+    }
+
     /**
      * Windowの枠やバー、ボタンを描画する
      * @param canvas
      * @param paint
      */
-    public void drawFrame(Canvas canvas, Paint paint) {
-
+    public void drawFrame(Canvas canvas, Paint paint, PointF offset) {
+        PointF _pos = new PointF(pos.x, pos.y);
+        if (offset != null) {
+            _pos.x += offset.x;
+            _pos.y += offset.y;
+        }
         // Frame
         if (frameSize.width > 0 && frameColor != 0) {
             // 左右
             UDraw.drawRectFill(canvas, paint,
-                    new Rect((int)pos.x, (int)pos.y,
-                            (int)pos.x + frameSize.width, (int)pos.y + size.height),
+                    new Rect((int)_pos.x, (int)_pos.y,
+                            (int)_pos.x + frameSize.width, (int)_pos.y + size.height),
                     frameColor, 0, 0);
             UDraw.drawRectFill(canvas, paint,
-                    new Rect((int)pos.x + size.width - frameSize.width, (int)pos.y,
-                            (int)pos.x + size.width, (int)pos.y + size.height),
+                    new Rect((int)_pos.x + size.width - frameSize.width, (int)_pos.y,
+                            (int)_pos.x + size.width, (int)_pos.y + size.height),
                     frameColor, 0, 0);
         }
 
         if (frameSize.height > 0 && frameColor != 0) {
             // 上下
-            UDraw.drawRectFill(canvas, paint, new Rect((int)pos.x, (int)pos.y,
-                            (int)pos.x + size.width, (int)pos.y + frameSize.height),
+            UDraw.drawRectFill(canvas, paint, new Rect((int)_pos.x, (int)_pos.y,
+                            (int)_pos.x + size.width, (int)_pos.y + frameSize.height),
                     0, 0, 0);
             UDraw.drawRectFill(canvas, paint,
-                    new Rect((int)pos.x, (int)pos.y + size.height - frameSize.height,
-                            (int)pos.x + size.width, (int)pos.y + size.height), 0, 0,
+                    new Rect((int)_pos.x, (int)_pos.y + size.height - frameSize.height,
+                            (int)_pos.x + size.width, (int)_pos.y + size.height), 0, 0,
                     0);
         }
 
         // TopBar
         if (topBarH > 0 && topBarColor != 0) {
             UDraw.drawRectFill(canvas, paint,
-                    new Rect((int)pos.x, (int)pos.y + frameSize.height,
-                            (int)pos.x + size.width - frameSize.width, (int)pos.y + frameSize
+                    new Rect((int)_pos.x, (int)_pos.y + frameSize.height,
+                            (int)_pos.x + size.width - frameSize.width, (int)_pos.y + frameSize
                             .height + topBarH), topBarColor, 0, 0);
         }
 
         // Close Button
         if (closeIcon != null && closeIcon.isShow()) {
-            closeIcon.draw(canvas, paint, pos);
+            closeIcon.draw(canvas, paint, _pos);
         }
 
         // スクロールバー
         if (mScrollBarV != null && mScrollBarV.isShow()) {
 
-            mScrollBarV.draw(canvas, paint);
+            mScrollBarV.draw(canvas, paint, offset);
         }
         if (mScrollBarH != null && mScrollBarH.isShow()) {
-            mScrollBarH.draw(canvas, paint);
+            mScrollBarH.draw(canvas, paint, offset);
         }
     }
 

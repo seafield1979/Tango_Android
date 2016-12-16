@@ -208,8 +208,9 @@ public class StudyCard extends UDrawable{
         // BG
         // スライド量に合わせて色を帰る
         int color;
-        if (isTouching) {
-        else if (slideX == 0) {
+        if (isTouching && Math.abs(slideX) < 20) {
+            color = Color.LTGRAY;
+        } else if (slideX == 0) {
             color = BG_COLOR;
         } else if (slideX < 0) {
             color = UColor.mixRGBColor(BG_COLOR, NG_BG_COLOR, -slideX / (float)SLIDE_LEN);
