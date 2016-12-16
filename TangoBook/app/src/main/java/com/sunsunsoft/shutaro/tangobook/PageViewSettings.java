@@ -180,6 +180,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                 }
                 mDialog = UDialogWindow.createInstance(this, mParentView.getWidth(), mParentView
                         .getHeight());
+                mDialog.addToDrawManager();
                 mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_backup));
                 mDialog.addButton(ButtonIdBackupOK, "OK", Color.BLACK, Color.LTGRAY);
                 mDialog.addCloseButton("Cancel");
@@ -193,6 +194,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                 }
                 mDialog = UDialogWindow.createInstance(this, mParentView.getWidth(), mParentView
                         .getHeight());
+                mDialog.addToDrawManager();
                 mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_restore));
                 mDialog.addButton(ButtonIdRestoreOK, "OK", Color.BLACK, Color.LTGRAY);
                 mDialog.addCloseButton("Cancel");

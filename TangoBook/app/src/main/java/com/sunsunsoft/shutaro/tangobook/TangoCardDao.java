@@ -148,6 +148,38 @@ public class TangoCardDao {
     }
 
     /**
+     * 学習したカードリストからカードのリストを取得する
+     * @param studiedCards
+     * @param ok  true:OKのみ取得 false:NGのみ取得
+     * @return
+     */
+    public List<TangoCard> selectByStudiedCards(List<TangoStudiedCard> studiedCards,
+                                                boolean ok, boolean changeable)
+    {
+        if (studiedCards.size() <= 0) return null;
+
+        RealmQuery<TangoCard> query = mRealm.where(TangoCard.class);
+
+        boolean isFirst = true;
+        for (TangoStudiedCard card : studiedCards) {
+            if (card.isOkFlag() != ok) continue;
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                query.or();
+            }
+            query.equalTo("id", card.getCardId());
+        }
+        RealmResults<TangoCard> results = query.findAll();
+
+        if (results != null && changeable) {
+            return toChangeable(results);
+        }
+
+        return results;
+    }
+
+    /**
      * 要素を追加
      * @param
      * @param

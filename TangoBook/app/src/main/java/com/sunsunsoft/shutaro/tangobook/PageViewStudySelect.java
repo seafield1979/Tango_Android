@@ -139,6 +139,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
 
         // PreStudyWindow 学習開始前に設定を行うウィンドウ
         mPreStudyWindow = new PreStudyWindow( this, this, mParentView);
+        mPreStudyWindow.addToDrawManager();
 
         // UMenuBar
         mMenuBar = MenuBarStudySelect.createInstance( this, width, height,

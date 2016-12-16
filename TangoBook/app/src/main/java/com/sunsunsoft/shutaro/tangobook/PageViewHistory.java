@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import java.util.List;
+
 public class PageViewHistory extends UPageView implements UButtonCallbacks, UListItemCallbacks{
     /**
      * Constants
@@ -32,6 +34,7 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
     private UTextView mTitleText;
     private ListViewStudyHistory mListView;
     private UButtonText mReturnButton;
+    private UDialogWindow mDialog;      // OK/NGのカード一覧を表示するダイアログ
 
     /**
      * Constructor
@@ -103,6 +106,7 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
         mListView = new ListViewStudyHistory(this, DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
+        mListView.addToDrawManager();
 
         y += listViewH + MARGIN_H;
 
@@ -147,6 +151,28 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
      * @param item
      */
     public void ListItemClicked(UListItem item) {
+        // クリックされた項目の学習カード一覧を表示する
+        if (!(item instanceof ListItemStudiedBook)) return;
 
+        int width = mParentView.getWidth();
+
+        ListItemStudiedBook studiedBook = (ListItemStudiedBook)item;
+        if (studiedBook.getType() != ListItemStudiedBookType.History) return;
+
+        TangoBookHistory history = studiedBook.getBookHistory();
+        List<TangoStudiedCard> cards = RealmManager
+                .getStudiedCardDao().selectByHistoryId(history.getId());
+
+        // Dialog
+        mDialog = UDialogWindow.createInstance(null, width, mParentView
+                .getHeight());
+        mDialog.addToDrawManager();
+        ListViewResult listView = new ListViewResult(null, cards, false,
+                10, 0, 0,
+                mDialog.size.width - MARGIN_H * 2, 700, Color.LTGRAY
+                );
+        mDialog.addDrawable(listView);
+
+        mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
     }
 }

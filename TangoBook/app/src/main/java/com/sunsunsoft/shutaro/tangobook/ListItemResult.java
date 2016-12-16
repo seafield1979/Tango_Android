@@ -82,34 +82,36 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     }
 
     // ListItemResultType.OKのインスタンスを生成する
-    public static ListItemResult createOK(TangoCard card, boolean mode,
+    // @param star 覚えたアイコン(Star)を表示するかどうか
+    public static ListItemResult createOK(TangoCard card, boolean studyMode, boolean star,
                                           int width, int textColor,int bgColor) {
         ListItemResult instance = new ListItemResult(null,
                 ListItemResultType.OK, true, card,
                 0, width, textColor, bgColor);
 
-        instance.mText = mode ? card.getWordB() : card.getWordA();
+        instance.mText = studyMode ? card.getWordB() : card.getWordA();
         instance.size.height = CARD_H;
-        instance.mStudyMode = mode;
+        instance.mStudyMode = studyMode;
         // Starボタンを追加(On/Offあり)
-        instance.mStarButton = new UButtonImage(instance, ButtonIdStar, 100,
-                instance.size.width - 150, (instance.size.height - STAR_ICON_W) / 2,
-                STAR_ICON_W, STAR_ICON_W, R.drawable.favorites, -1);
-        instance.mStarButton.addState(R.drawable.favorites2);
-        instance.mStarButton.setState(card.getStar() ? 1 : 0);
-
+        if (star) {
+            instance.mStarButton = new UButtonImage(instance, ButtonIdStar, 100,
+                    instance.size.width - 150, (instance.size.height - STAR_ICON_W) / 2,
+                    STAR_ICON_W, STAR_ICON_W, R.drawable.favorites, -1);
+            instance.mStarButton.addState(R.drawable.favorites2);
+            instance.mStarButton.setState(card.getStar() ? 1 : 0);
+        }
         return instance;
     }
 
     // ListItemResultType.NGのインスタンスを生成する
-    public static ListItemResult createNG(TangoCard card, boolean mode,
+    public static ListItemResult createNG(TangoCard card, boolean studyMode,
                                           int width, int textColor,int bgColor)
     {
         ListItemResult instance = new ListItemResult(null,
                 ListItemResultType.NG, true, card,
                 0, width, textColor, bgColor);
-        instance.mText = mode ? card.getWordB() : card.getWordA();
-        instance.mStudyMode = mode;
+        instance.mText = studyMode ? card.getWordB() : card.getWordA();
+        instance.mStudyMode = studyMode;
         instance.size.height = CARD_H;
         return instance;
     }

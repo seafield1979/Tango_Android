@@ -39,17 +39,40 @@ public class TangoStudiedCardDao {
      * TangoTag 全要素取得
      * @return nameのString[]
      */
-    public List<TangoTag> selectByHistoryId(int bookHistoryId) {
+    public List<TangoStudiedCard> selectAll() {
+        RealmResults<TangoStudiedCard> results = mRealm.where(TangoStudiedCard.class)
+                .findAll();
 
-        RealmResults<TangoTag> results = mRealm.where(TangoTag.class)
+        if (UDebug.debugDAO) {
+            Log.d(TAG, "TangoStudiedCard selectAll");
+            for (TangoStudiedCard card : results) {
+                Log.d(TAG, " historyId:" + card.getBookHistoryId() +
+                        " cardId:" + card.getCardId() +
+                        " okFlag:" + card.isOkFlag()
+                        );
+            }
+        }
+        return results;
+    }
+
+    /**
+     * 指定bookHistoryIdに関連付けられたカードを取得
+     * @param bookHistoryId
+     * @return
+     */
+    public List<TangoStudiedCard> selectByHistoryId(int bookHistoryId) {
+
+        RealmResults<TangoStudiedCard> results = mRealm.where(TangoStudiedCard.class)
                 .equalTo("bookHistoryId", bookHistoryId)
                 .findAll();
 
         if (UDebug.debugDAO) {
-            Log.d(TAG, "TangoTag selectAll");
-            for (TangoTag tag : results) {
-                Log.d(TAG, "itemType:" + tag.getItemType() +
-                        " itemid:" + tag.getItemId());
+            Log.d(TAG, "TangoStudiedCard selectAll");
+            for (TangoStudiedCard card : results) {
+                Log.d(TAG, " historyId:" + card.getBookHistoryId() +
+                        " cardId:" + card.getCardId() +
+                        " okFlag:" + card.isOkFlag()
+                );
             }
         }
         return results;
