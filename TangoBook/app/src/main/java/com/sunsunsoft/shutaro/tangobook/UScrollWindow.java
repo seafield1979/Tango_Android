@@ -47,12 +47,15 @@ public class UScrollWindow extends UWindow {
 
     }
 
-    public boolean touchEvent(ViewTouch vt) {
-        if (super.touchEvent(vt)) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
+        if (super.touchEvent(vt, offset)) {
             return true;
         }
         // スクロール処理
         boolean isDraw = false;
+        if (vt.type == TouchType.Touch) {
+            return true;
+        }
         if (vt.type == TouchType.Moving) {
             if (contentSize.width > clientSize.width) {
                 if (vt.moveX != 0) {

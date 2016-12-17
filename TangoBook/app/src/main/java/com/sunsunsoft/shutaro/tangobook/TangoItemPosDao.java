@@ -15,8 +15,24 @@ import io.realm.Sort;
  */
 
 public class TangoItemPosDao {
+    /**
+     * Enums
+     */
+    // 単語帳内のカード数のカウント
+    enum BookCountType {
+        OK,     // OK Only
+        NG,     // NG Only
+        All     // All
+    }
+
+    /**
+     * Constants
+     */
     public static final String TAG = "TangoItemPosDao";
 
+    /**
+     * Member variables
+     */
     private Realm mRealm;
 
     public TangoItemPosDao(Realm realm) {
@@ -188,7 +204,7 @@ public class TangoItemPosDao {
         List<TangoCard> cards;
         if (cardPoses.size() > 0) {
             cards = RealmManager.getCardDao()
-                    .selectByIds(cardPoses, false, changeable);
+                    .selectByIds(cardPoses, false, true);
             // cardsはposでソートされていないので自前でソートする(select sort)
             LinkedList<TangoCard> sortedCards = new LinkedList<>();
             for (TangoItemPos itemPos : cardPoses) {
@@ -1071,16 +1087,46 @@ public class TangoItemPosDao {
      * @param parentId
      * @return
      */
-    public long countInParentType(TangoParentType parentType, int parentId) {
-
+    public int countInParentType(TangoParentType parentType, int parentId)
+    {
         RealmQuery query = mRealm.where(TangoItemPos.class)
                 .equalTo("parentType", parentType.ordinal());
-
         if (parentId > 0) {
              query = query.equalTo("parentId", parentId);
         }
-        long count = query.count();
+        int count = (int)query.count();
 
+        return count;
+    }
+
+    /**
+     * 指定のBook以下のカード数を取得する
+     * @param bookId
+     * @param countType
+     * @return
+     */
+    public int countCardInBook(int bookId, BookCountType countType) {
+        List<TangoItem> items = selectByBookId( bookId, false);
+
+        int count = 0;
+        switch( countType) {
+            case OK:
+            case NG:
+            {
+                for (TangoItem item : items) {
+                    if (!(item instanceof TangoCard)) continue;
+                    TangoCard card = (TangoCard)item;
+                    if(card.getStar()) {
+                        if (countType == BookCountType.OK) count++;
+                    } else {
+                        if (countType == BookCountType.NG) count++;
+                    }
+                }
+            }
+                break;
+            case All:
+                count = items.size();
+        }
         return count;
     }
 }

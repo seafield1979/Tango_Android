@@ -191,8 +191,8 @@ abstract public class IconInfoDialog extends UWindow{
      * Methods
      */
 
-    public boolean touchEvent(ViewTouch vt) {
-        if (super.touchEvent(vt)) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
+        if (super.touchEvent(vt, offset)) {
             return true;
         }
         return false;

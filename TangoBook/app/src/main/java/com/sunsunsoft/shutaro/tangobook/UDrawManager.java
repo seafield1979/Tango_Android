@@ -427,8 +427,7 @@ class DrawList
     protected boolean touchUpEvent(ViewTouch vt) {
         boolean isRedraw = false;
 
-        for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();){
-            UDrawable obj = (UDrawable)it.previous();
+        for(UDrawable obj : list){
             if (obj.touchUpEvent(vt)) {
                 isRedraw = true;
             }
@@ -452,16 +451,17 @@ class DrawList
         if (manager.getTouchingObj() != null &&
                 vt.type != TouchType.Touch)
         {
-            if (manager.getTouchingObj().touchEvent(vt)) {
+            if (manager.getTouchingObj().touchEvent(vt, null)) {
                 return true;
             }
             return false;
         }
 
-        for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();){
-            UDrawable obj = (UDrawable)it.previous();
+        for (UDrawable obj : list) {
             if (!obj.isShow()) continue;
-            if (obj.touchEvent(vt)) {
+            PointF offset = obj.getDrawOffset();
+
+            if (obj.touchEvent(vt, offset)) {
                 if (vt.type == TouchType.Touch) {
                     manager.setTouchingObj(obj);
                 }

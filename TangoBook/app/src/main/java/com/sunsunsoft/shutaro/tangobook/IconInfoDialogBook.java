@@ -217,10 +217,10 @@ public class IconInfoDialogBook extends IconInfoDialog {
         return list;
     }
 
-    public boolean touchEvent(ViewTouch vt) {
-        PointF offset = pos;
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
+        offset = pos;
 
-        if (super.touchEvent(vt)) {
+        if (super.touchEvent(vt, offset)) {
             return true;
         }
 

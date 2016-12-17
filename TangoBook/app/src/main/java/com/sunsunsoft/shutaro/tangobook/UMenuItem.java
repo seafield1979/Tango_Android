@@ -216,7 +216,7 @@ public class UMenuItem extends UDrawable {
      * @param vt
      * @return
      */
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
         return false;
     }
 

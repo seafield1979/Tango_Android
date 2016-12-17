@@ -103,7 +103,7 @@ public class PageViewStudySelect2 extends UPageView
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
-                        .history_book),
+                        .title_study2),
                 TEXT_SIZE, DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false,
                 width / 2, y, width, Color.BLACK, 0);
@@ -111,11 +111,12 @@ public class PageViewStudySelect2 extends UPageView
         y += mTitleText.size.height;
 
         // ListView
-        int listViewH = height - (TOP_Y + MARGIN_H * 3 + mTitleText.size.height + BUTTON_H);
+        int listViewH = height - (MARGIN_H * 3 + mTitleText.size.height + BUTTON_H);
         mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
+
         // アイテムを追加
         List<TangoItem> books = RealmManager.getItemPosDao().selectItemsByParentType(
                 TangoParentType.Home, 0, TangoItemType.Book, true);
@@ -150,7 +151,7 @@ public class PageViewStudySelect2 extends UPageView
      * @return
      */
     public boolean onBackKeyDown() {
-        if (mPreStudyWindow != null) {
+        if (mPreStudyWindow.isShow()) {
             mPreStudyWindow.setShow(false);
             return true;
         }

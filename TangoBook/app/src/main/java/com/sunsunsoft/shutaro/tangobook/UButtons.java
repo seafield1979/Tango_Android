@@ -129,7 +129,7 @@ public class UButtons extends UDrawable {
      * @param vt
      * @return
      */
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
 
         for (UButton button : buttons) {
             if (button.touchEvent(vt, pos)) {

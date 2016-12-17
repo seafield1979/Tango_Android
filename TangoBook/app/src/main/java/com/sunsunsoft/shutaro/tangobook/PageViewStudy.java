@@ -184,9 +184,11 @@ public class PageViewStudy extends UPageView
 
         // OK/NGボタンの座標をCardsStackに教えてやる
         PointF _pos = mOkView.getPos();
-        mCardsStack.setOkBoxPos(_pos.x - mCardsStack.pos.x, _pos.y - mCardsStack.pos.y);
+        mCardsStack.setOkBoxPos(_pos.x - mCardsStack.pos.x - BOX_W / 2, _pos.y - mCardsStack.pos.y);
         _pos = mNgView.getPos();
-        mCardsStack.setNgBoxPos(_pos.x - mCardsStack.pos.x, _pos.y - mCardsStack.pos.y);
+        mCardsStack.setNgBoxPos(_pos.x - mCardsStack.pos.x, _pos.y -
+                mCardsStack.pos
+                .y);
     }
 
     private String getCardsRemainText(int count) {

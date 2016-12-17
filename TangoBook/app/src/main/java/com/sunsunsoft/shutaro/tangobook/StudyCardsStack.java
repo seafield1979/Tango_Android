@@ -248,7 +248,7 @@ public class StudyCardsStack extends UDrawable {
      * @param vt
      * @return true:処理中
      */
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
         for (StudyCard card : mCards) {
             if (card.touchEvent(vt, pos)) {
                 return true;

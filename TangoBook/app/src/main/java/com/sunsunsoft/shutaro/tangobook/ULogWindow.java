@@ -145,9 +145,9 @@ public class ULogWindow extends UWindow {
      * @param vt
      * @return trueならViewを再描画
      */
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
         if (!isShow) return false;
-        if (super.touchEvent(vt)) {
+        if (super.touchEvent(vt, offset)) {
             return true;
         }
 

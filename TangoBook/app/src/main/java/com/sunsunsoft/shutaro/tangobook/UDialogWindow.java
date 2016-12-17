@@ -199,7 +199,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     public static UDialogWindow createInstance(UButtonCallbacks buttonCallbacks,
                                                int screenW, int screenH)
     {
-        return createInstance(DialogType.Normal, buttonCallbacks,
+        return createInstance(DialogType.Mordal, buttonCallbacks,
                 null,
                 ButtonDir.Horizontal, DialogPosType.Center,
                 true, screenW, screenH,
@@ -517,8 +517,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * @param vt
      * @return
      */
-    public boolean touchEvent(ViewTouch vt) {
-        PointF offset = pos;
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
+        offset = pos;
 
         boolean isRedraw = false;
 
@@ -544,7 +544,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
         // タッチ処理(Drawable)
         for (UDrawable obj : mDrawables) {
-            if (obj.touchEvent(vt)) {
+            if (obj.touchEvent(vt, offset)) {
                 return true;
             }
         }
@@ -569,7 +569,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             }
         }
 
-        if (super.touchEvent(vt)) {
+        if (super.touchEvent(vt, offset)) {
             return true;
         }
 

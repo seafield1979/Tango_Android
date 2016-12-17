@@ -132,18 +132,33 @@ public class UListView extends UScrollWindow
         canvas.restore();
     }
 
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
+        if (offset == null) {
+            offset = new PointF();
+        }
+        // 領域外なら何もしない
+        if (!getClientRect().contains((int)vt.touchX(-pos.x - offset.x),
+                (int)vt.touchY(-pos.y - offset.y)))
+        {
+            return false;
+        }
+
         // アイテムのクリック判定処理
-        PointF offset = new PointF(pos.x, pos.y - contentTop.y);
+        PointF _offset = new PointF(pos.x + offset.x, pos.y - contentTop.y + offset.y);
         boolean isDraw = false;
 
         for (UListItem item : mItems) {
-            if (item.touchEvent(vt, offset)) {
+            if (item.getBottom() < contentTop.y) continue;
+            if (item.touchEvent(vt, _offset)) {
                 isDraw = true;
+            }
+            if (item.pos.y + item.size.height > contentTop.y + clientSize.height) {
+                // アイテムの下端が画面外にきたので以降のアイテムは表示されない
+                break;
             }
         }
 
-        if (super.touchEvent(vt)) {
+        if (super.touchEvent(vt, offset)) {
             isDraw = true;
         }
         return isDraw;

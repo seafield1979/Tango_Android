@@ -49,11 +49,10 @@ public class PageViewResult extends UPageView
     private boolean mStudyMode;             // 出題モード(false:英->日 / true:日->英)
 
     private UTextView mTitleText;           // タイトル
-//    private UTextView mBookNameText;        // Book名
     private UTextView mResultText;          // 結果
     private UButtonText mButtonRetry1;      // 全部リトライ
-    private UButtonText mButtonRetry2;      // OKのみリトライ
-    private UButtonText mButtonReturn;      // 戻るボタン
+    private UButtonText mButtonRetry2;      // NGのみリトライ
+    private UButtonText mButtonExit;      // 戻るボタン
 
     private UDialogWindow mDialog;
 
@@ -108,13 +107,6 @@ public class PageViewResult extends UPageView
         mTitleText.addToDrawManager();
         y += mTitleText.size.height;
 
-//        // Book Name
-//        mBookNameText = UTextView.createInstance(mBook.getName(), TEXT_SIZE, DRAW_PRIORITY,
-//                UAlignment.CenterX, width, false, false, width / 2, y, width,
-//                TEXT_COLOR, 0);
-//        mBookNameText.addToDrawManager();
-//        y += mBookNameText.size.height;
-
         // Result
         String text = "OK: " + mOkCards.size() + "  NG: " + mNgCards.size();
         mResultText = UTextView.createInstance(text, TEXT_SIZE, DRAW_PRIORITY,
@@ -126,6 +118,7 @@ public class PageViewResult extends UPageView
         // Buttons
         int buttonW = (width - MARGIN_H * 4) / 3;
         float x = MARGIN_H;
+        // Retury1
         mButtonRetry1 = new UButtonText(this, UButtonType.Press, ButtonIdRetry1,
                 DRAW_PRIORITY,UResourceManager.getStringById(R.string.retry1),
                 x, y, buttonW, BUTTON_H,
@@ -133,18 +126,23 @@ public class PageViewResult extends UPageView
         mButtonRetry1.addToDrawManager();
         x += buttonW + MARGIN_H;
 
+        // Retry2
         mButtonRetry2 = new UButtonText(this, UButtonType.Press, ButtonIdRetry2,
                 DRAW_PRIORITY, UResourceManager.getStringById(R.string.retry2),
                 x, y, buttonW, BUTTON_H,
                 BUTTON_TEXT_SIZE, BUTTON_TEXT_COLOR, BUTTON1_BG_COLOR);
         mButtonRetry2.addToDrawManager();
+        if (mNgCards.size() == 0) {
+            mButtonRetry2.setEnabled(false);
+        }
         x += buttonW + MARGIN_H;
 
-        mButtonReturn = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
+        // Exit
+        mButtonExit = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
                 DRAW_PRIORITY, UResourceManager.getStringById(R.string.finish),
                 x, y, buttonW, BUTTON_H,
                 BUTTON_TEXT_SIZE, BUTTON_TEXT_COLOR, BUTTON2_BG_COLOR);
-        mButtonReturn.addToDrawManager();
+        mButtonExit.addToDrawManager();
 
         y += BUTTON_H + MARGIN_V;
 

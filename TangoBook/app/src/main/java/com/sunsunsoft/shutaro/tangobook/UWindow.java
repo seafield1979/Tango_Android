@@ -85,6 +85,11 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         }
     }
 
+    public Rect getClientRect() {
+        return new Rect(frameSize.width, frameSize.height + topBarH,
+                frameSize.width + clientSize.width, frameSize.height + topBarH + clientSize.height);
+    }
+
     public PointF getContentTop() {
         return contentTop;
     }
@@ -469,7 +474,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      * @param vt
      * @return true:再描画
      */
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
         if (closeIcon != null && closeIcon.isShow()) {
             if (closeIcon.touchEvent(vt, pos)) {
                 return true;

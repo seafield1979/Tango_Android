@@ -124,7 +124,7 @@ abstract public class UMenuBar extends UWindow {
      * 現状はクリック以外は受け付けない
      * メニューバー以下の項目(メニューの子要素も含めて全て)のクリック判定
      */
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
         if (!isShow) return false;
 
         boolean done = false;

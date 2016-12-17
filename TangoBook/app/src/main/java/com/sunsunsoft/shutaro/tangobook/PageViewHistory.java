@@ -18,6 +18,7 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
      * Constants
      */
     private static final int DRAW_PRIORITY = 100;
+    private static final int DRAW_PRIORYTY_DIALOG = 50;
 
     private static final int TOP_Y = 50;
     private static final int MARGIN_H = 50;
@@ -102,7 +103,7 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
         y += mTitleText.size.height;
 
         // ListView
-        int listViewH = height - (TOP_Y + MARGIN_H * 3 + mTitleText.size.height + BUTTON_H);
+        int listViewH = height - (MARGIN_H * 3 + mTitleText.size.height + BUTTON_H);
         mListView = new ListViewStudyHistory(this, DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
@@ -168,7 +169,7 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
                 .getHeight());
         mDialog.addToDrawManager();
         ListViewResult listView = new ListViewResult(null, cards, false,
-                10, 0, 0,
+                DRAW_PRIORYTY_DIALOG, 0, 0,
                 mDialog.size.width - MARGIN_H * 2, 700, Color.LTGRAY
                 );
         mDialog.addDrawable(listView);

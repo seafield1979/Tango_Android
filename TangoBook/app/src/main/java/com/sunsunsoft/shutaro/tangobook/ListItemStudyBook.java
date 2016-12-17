@@ -25,6 +25,7 @@ public class ListItemStudyBook extends UListItem {
     public static final String TAG = "ListItemStudiedBook";
 
     private static final int TEXT_SIZE = 50;
+    private static final int TEXT_SIZE2 = 42;
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int ICON_W = 100;
 
@@ -62,10 +63,14 @@ public class ListItemStudyBook extends UListItem {
         // 単語帳名
         mTextName = UResourceManager.getStringById(R.string.book_name) + " : " + book.getName();
 
-        // カード数
-        int count = (int)RealmManager
+        // カード数 & 覚えていないカード数
+        int count = RealmManager
                 .getItemPosDao().countInParentType(TangoParentType.Book, book.getId());
-        mCardCount = UResourceManager.getStringById(R.string.card_count) + " : " + count;
+        int ngCount = RealmManager.getItemPosDao().countCardInBook(book.getId(),
+                TangoItemPosDao.BookCountType.NG);
+
+        mCardCount = UResourceManager.getStringById(R.string.card_count) + ": " + count + "  " +
+                UResourceManager.getStringById(R.string.card_count_not_learned) + ": " + ngCount;
 
         // 最終学習日
         Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(book.getId());
@@ -109,13 +114,13 @@ public class ListItemStudyBook extends UListItem {
                 .rgb(50,150,50));
         y += TEXT_SIZE + MARGIN_V;
         // 学習日時
-        UDraw.drawTextOneLine(canvas, paint, mStudiedDate, UAlignment.None, TEXT_SIZE, x, y,
+        UDraw.drawTextOneLine(canvas, paint, mStudiedDate, UAlignment.None, TEXT_SIZE2, x, y,
                 TEXT_COLOR);
         y += TEXT_SIZE + MARGIN_V;
 
         // カード数
-        UDraw.drawTextOneLine(canvas, paint, mCardCount , UAlignment.None, TEXT_SIZE - 5,
-                x, y, TEXT_COLOR);
+        UDraw.drawTextOneLine(canvas, paint, mCardCount , UAlignment.None, TEXT_SIZE2,
+                x, y, UColor.DarkGray);
     }
 
     /**

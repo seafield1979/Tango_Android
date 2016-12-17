@@ -215,8 +215,9 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
 
         // BG
         // スライド量に合わせて色を帰る
-        int color;
-        if (slideX == 0) {
+        if (isMovingSize) {
+        }
+        else if (slideX == 0) {
             color = BG_COLOR;
         } else if (slideX < 0) {
             color = UColor.mixRGBColor(BG_COLOR, NG_BG_COLOR, -slideX / (float)SLIDE_LEN);

@@ -27,9 +27,11 @@
     <string name="card">カード</string>
     <string name="book">単語帳</string>
     <string name="card_count">カード数</string>
+    <string name="card_count_not_learned">未収得数</string>
     <string name="item_count">アイテム数</string>
     <string name="title_edit">単語帳を作る</string>
     <string name="title_study">学習する</string>
+    <string name="title_study2">学習する単語帳を選択</string>
     <string name="title_studying">単語帳学習</string>
     <string name="title_study_select">学習する</string>
     <string name="title_history">履歴</string>

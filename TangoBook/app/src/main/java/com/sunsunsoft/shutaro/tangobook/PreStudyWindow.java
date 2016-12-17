@@ -116,7 +116,7 @@ public class PreStudyWindow extends UWindow {
         updateLayout();
     }
 
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
         if (!isShow) return false;
 
         boolean isRedraw = false;
@@ -133,7 +133,7 @@ public class PreStudyWindow extends UWindow {
                 return true;
             }
         }
-        if (super.touchEvent(vt)) {
+        if (super.touchEvent(vt, offset)) {
             return true;
         }
 
@@ -186,9 +186,11 @@ public class PreStudyWindow extends UWindow {
         int screenH = mParentView.getHeight();
 
         // カード数
-        long count = RealmManager.getItemPosDao().countInParentType(
+        int count = RealmManager.getItemPosDao().countInParentType(
                 TangoParentType.Book, mBook.getId()
         );
+        int ngCount = RealmManager.getItemPosDao().countCardInBook(mBook.getId(),
+                TangoItemPosDao.BookCountType.NG);
 
         // タイトル(単語帳の名前)
         String title = UResourceManager.getInstance().getStringById(R.string.book) + " : " + mBook
@@ -198,8 +200,12 @@ public class PreStudyWindow extends UWindow {
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE_3 + MARGIN_V;
 
+        // カード数
+        String cardCount = UResourceManager.getStringById(R.string.card_count) + ": " + count +
+                "  " + UResourceManager.getStringById(R.string.card_count_not_learned) + ": " + ngCount;
+
         textCount = UTextView.createInstance(
-                UResourceManager.getInstance().getStringById(R.string.card_count) + ":" + count,
+                cardCount,
                 TEXT_SIZE, 0,
                 UAlignment.CenterX, screenW, false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
@@ -207,14 +213,13 @@ public class PreStudyWindow extends UWindow {
 
         // 最終学習日時
         Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(mBook.getId());
-
         textLastStudied = UTextView.createInstance(
                 UResourceManager.getStringById(R.string
                 .last_studied_date) + ": " + UUtil.convDateFormat(date),
                 TEXT_SIZE - 5, 0,
                 UAlignment.CenterX, screenW, false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += TEXT_SIZE + MARGIN_V + 40;
+        y += TEXT_SIZE + MARGIN_V;
 
 
         /**
@@ -238,7 +243,7 @@ public class PreStudyWindow extends UWindow {
                 BUTTON_W, BUTTON2_H,
                 TEXT_SIZE, Color.WHITE, Color.rgb(200,100,100));
 
-        y += BUTTON2_H + MARGIN_V + 30;
+        y += BUTTON2_H + MARGIN_V;
 
         // Option1 出題方法
         // タイトル
@@ -305,14 +310,14 @@ public class PreStudyWindow extends UWindow {
                 ButtonIdOption3_1,
                 0, UResourceManager.getStringById(R.string.all),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, UColor.Violet);
+                TEXT_SIZE, Color.WHITE, UColor.Violet);
 
         // 未収得
         buttons[ButtonId.Option3_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_2,
                 0, UResourceManager.getStringById(R.string.not_learned),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, UColor.Violet);
+                TEXT_SIZE, Color.WHITE, UColor.Violet);
 
         y += BUTTON_H + MARGIN_V;
 

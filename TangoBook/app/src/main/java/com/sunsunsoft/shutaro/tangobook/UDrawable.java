@@ -241,7 +241,8 @@ abstract public class UDrawable {
      * @param vt
      * @return
      */
-    public boolean touchEvent(ViewTouch vt) {
+    public boolean touchEvent(ViewTouch vt, PointF offset)
+    {
         return false;
     }
 
