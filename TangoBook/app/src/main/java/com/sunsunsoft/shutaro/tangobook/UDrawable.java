@@ -127,6 +127,16 @@ abstract public class UDrawable {
         }
     }
 
+    public void scaleRect(float scale) {
+        float scaleW = size.width * (scale - 1.0f) / 2;
+        float scaleH = size.height * (scale - 1.0f) / 2;
+
+        rect.left = (int)(pos.x + -scaleW);
+        rect.top = (int)(pos.y + -scaleH);
+        rect.right = (int)(pos.x + size.width + scaleW);
+        rect.bottom = (int)(pos.y + size.height + scaleH);
+    }
+
     public float getRight() {
         return pos.x + size.width;
     }

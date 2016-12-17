@@ -460,8 +460,8 @@ class DrawList
 
         for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();){
             UDrawable obj = (UDrawable)it.previous();
+            if (!obj.isShow()) continue;
             if (obj.touchEvent(vt)) {
-
                 if (vt.type == TouchType.Touch) {
                     manager.setTouchingObj(obj);
                 }

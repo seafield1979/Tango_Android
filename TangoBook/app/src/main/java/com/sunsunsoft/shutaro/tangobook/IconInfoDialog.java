@@ -34,16 +34,6 @@ enum ActionIcons{
         return list;
     }
 
-    // Book
-    public static List<ActionIcons> getBookIcons() {
-        LinkedList<ActionIcons> list = new LinkedList<>();
-        list.add(Open);
-        list.add(Copy);
-        list.add(MoveToTrash);
-        list.add(Favorite);
-        return list;
-    }
-
     // Book Study
     public static List<ActionIcons> getBookStudyIcons() {
         LinkedList<ActionIcons> list = new LinkedList<>();

@@ -99,6 +99,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                     STAR_ICON_W, STAR_ICON_W, R.drawable.favorites, -1);
             instance.mStarButton.addState(R.drawable.favorites2);
             instance.mStarButton.setState(card.getStar() ? 1 : 0);
+            instance.mStarButton.scaleRect(1.2f);
         }
         return instance;
     }

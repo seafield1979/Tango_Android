@@ -74,7 +74,8 @@ public class UUtil {
      * @return
      */
     public static String convDateFormat(Date date) {
-        final DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        final DateFormat df = new SimpleDateFormat(UResourceManager.getStringById(R
+                .string.date_format2));
         return df.format(date);
     }
 }

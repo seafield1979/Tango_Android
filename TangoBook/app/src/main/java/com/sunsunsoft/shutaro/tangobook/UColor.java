@@ -9,6 +9,60 @@ import java.util.Random;
 
 public class UColor extends Color {
     public static final String TAG = "UColor";
+    public static final int Orange = 0xFFFFA500;
+    public static final int Aqua = 0xFF00FFFF;
+    public static final int AquaMarine = 0xFF7FFFD4;
+    public static final int Beige = 0xFFF5F5DC;
+    public static final int Blue = 0xFF0000FF;
+    public static final int Brown = 0xFFA52A2A;
+    public static final int Chocolate = 0xFFD2691E;
+    public static final int Coral = 0xFFFF7F50;
+    public static final int Cyan = 0xFF00FFFF;
+    public static final int Darkblue = 0xFF00008B;
+    public static final int Darkcyan = 0xFF008B8B;
+    public static final int Darkgray = 0xFFA9A9A9;
+    public static final int Darkgreen = 0xFF006400;
+    public static final int Darkorange = 0xFFFF8C00;
+    public static final int Darkred = 0xFF8B0000;
+    public static final int Darkviolet = 0xFF9400D3;
+    public static final int DeepPink = 0xFF1493;
+    public static final int Gold = 0xFFFFD700;
+    public static final int Gray = 0xFF808080;
+    public static final int Green = 0xFF008000;
+    public static final int GreenYellow = 0xFFADFF2F;
+    public static final int HotPink = 0xFFFF69B4;
+    public static final int Indigo = 0xFF4B0082;
+    public static final int LightBlue = 0xFFADD8E6;
+    public static final int LightCyan = 0xFFE0FFFF;
+    public static final int LightGreen = 0xFF90EE90;
+    public static final int LightGray = 0xFFD3D3D3;
+    public static final int LightPink = 0xFFFFB6C1;
+    public static final int LightSalmon = 0xFFFFA07A;
+    public static final int LightSkyBlue = 0xFF87CEFA;
+    public static final int LightYellow = 0xFFFFFFE0;
+    public static final int Lime = 0xFF00FF00;
+    public static final int LimeGreen = 0xFF32CD32;
+    public static final int Magenta = 0xFFFF00FF;
+    public static final int Maroon = 0xFF800000;
+    public static final int MidnightBlue = 0xFF191970;
+    public static final int Navy = 0xFF000080;
+    public static final int Olive = 0xFF808000;
+    public static final int OrangeRed = 0xFFFF4500;
+    public static final int Purple = 0xFF800080;
+    public static final int Red = 0xFFFF0000;
+    public static final int Salmon = 0xFFFA8072;
+    public static final int SeaGreen = 0xFF2E8B57;
+    public static final int SeaShell = 0xFFFFF5EE;
+    public static final int Silver = 0xFFC0C0C0;
+    public static final int SkyBlue = 0xFF87CEEB;
+    public static final int Snow = 0xFFFFFAFA;
+    public static final int Tomato = 0xFFFF6347;
+    public static final int Violet = 0xFFEE82EE;
+    public static final int Wheat = 0xFFF5DEB3;
+    public static final int White = 0xFFFFFFFF;
+    public static final int Yellow = 0xFFFFFF00;
+    public static final int YellowGreen = 0xFF9ACD32;
+
 
     /**
      * ランダムな色を取得

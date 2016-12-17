@@ -132,7 +132,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
         int y = TOP_ITEM_Y;
 
-        List<ActionIcons> icons = ActionIcons.getBookIcons();
+        List<ActionIcons> icons = getBookIcons();
 
         int width = ICON_W * icons.size() +
                 ICON_MARGIN_H * (icons.size() + 1);
@@ -204,6 +204,17 @@ public class IconInfoDialogBook extends IconInfoDialog {
             pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
         }
         updateRect();
+    }
+
+    // Book
+    // アイコンのリストを取得
+    public static List<ActionIcons> getBookIcons() {
+        LinkedList<ActionIcons> list = new LinkedList<>();
+        list.add(ActionIcons.Open);
+        list.add(ActionIcons.Edit);
+        list.add(ActionIcons.Copy);
+        list.add(ActionIcons.MoveToTrash);
+        return list;
     }
 
     public boolean touchEvent(ViewTouch vt) {

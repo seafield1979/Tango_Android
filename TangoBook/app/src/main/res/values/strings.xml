@@ -5,13 +5,15 @@
 
     <string name="return1">戻る</string>
     <string name="close">閉じる</string>
+    <string name="date_format">yyyy/MM/dd HH:mm</string>
+    <string name="date_format2">yyyy年MM月dd日 HH:mm</string>
 
     <string name="app_title">カラフル単語帳</string>
 
     <string name="edit_title_word_a">英語</string>
     <string name="edit_title_word_b">日本語</string>
-    <string name="edit_title_hint_ab">ヒント 英 -> 日</string>
-    <string name="edit_title_hint_ba">ヒント 日 -> 英</string>
+    <string name="edit_title_hint_ab">ヒント 英 > 日</string>
+    <string name="edit_title_hint_ba">ヒント 日 > 英</string>
     <string name="edit_title_comment">コメント</string>
     <string name="edit_title_book_name">単語帳の名前</string>
     <string name="edit_title_book_color">単語帳の色</string>
@@ -52,8 +54,8 @@
     <string name="history_book">単語帳の学習履歴</string>
 
     <string name="study_type">出題方法</string>
-    <string name="e_to_j">英語->日本語</string>
-    <string name="j_to_e">日本語->英語</string>
+    <string name="e_to_j">英 > 日</string>
+    <string name="j_to_e">日 > 英</string>
 
     <string name="order_type">出題順</string>
     <string name="order_normal">通常</string>

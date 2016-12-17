@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by shutaro on 2016/12/16.
+ *
+ * 学習する単語帳を選択するページ(リストビュー版)
  */
 
 public class PageViewStudySelect2 extends UPageView
@@ -149,8 +151,7 @@ public class PageViewStudySelect2 extends UPageView
      */
     public boolean onBackKeyDown() {
         if (mPreStudyWindow != null) {
-            mPreStudyWindow.closeWindow();
-            mPreStudyWindow = null;
+            mPreStudyWindow.setShow(false);
             return true;
         }
 

@@ -15,7 +15,7 @@ import android.graphics.RectF;
  * 左右にスライドしてボックスに振りわ得ることができる
  */
 
-public class StudyCard extends UDrawable{
+public class StudyCard extends UDrawable implements UButtonCallbacks{
     /**
      * Enums
      */
@@ -53,9 +53,12 @@ public class StudyCard extends UDrawable{
     protected static final int ARROW_H = 150;
     protected static final int ARROW_MARGIN = 20;
 
+    protected static final int ButtonIdArrowL = 200;
+    protected static final int ButtonIdArrowR = 201;
+
     // スライド系
     // 左右にスライドできる距離。これ以上スライドするとOK/NGボックスに入る
-    protected static final int SLIDE_LEN = 200;
+    protected static final int SLIDE_LEN = 250;
 
     /**
      * Member Variables
@@ -68,7 +71,7 @@ public class StudyCard extends UDrawable{
     protected boolean isTouching;
     protected float slideX;
     protected boolean showArrow;
-    protected Bitmap arrowL, arrowR;
+    protected UButtonImage mArrowL, mArrowR;
 
     // ボックス移動要求（親への通知用)
     protected RequestToParent moveRequest = RequestToParent.None;
@@ -118,8 +121,13 @@ public class StudyCard extends UDrawable{
         mState = State.None;
         mCard = card;
 
-        arrowL = UResourceManager.getInstance().getBitmapById(R.drawable.arrow_l);
-        arrowR = UResourceManager.getInstance().getBitmapById(R.drawable.arrow_r);
+        mArrowL = UButtonImage.createButton(this, ButtonIdArrowL, 0,
+                -ARROW_MARGIN - ARROW_W, (size.height - ARROW_H) / 2,
+                ARROW_W, ARROW_H, R.drawable.arrow_l, -1);
+
+        mArrowR = UButtonImage.createButton(this, ButtonIdArrowR, 0,
+                size.width + ARROW_MARGIN, (size.height - ARROW_H) / 2,
+                ARROW_W, ARROW_H, R.drawable.arrow_r, -1);
     }
 
     /**
@@ -208,9 +216,7 @@ public class StudyCard extends UDrawable{
         // BG
         // スライド量に合わせて色を帰る
         int color;
-        if (isTouching && Math.abs(slideX) < 20) {
-            color = Color.LTGRAY;
-        } else if (slideX == 0) {
+        if (slideX == 0) {
             color = BG_COLOR;
         } else if (slideX < 0) {
             color = UColor.mixRGBColor(BG_COLOR, NG_BG_COLOR, -slideX / (float)SLIDE_LEN);
@@ -231,18 +237,8 @@ public class StudyCard extends UDrawable{
 
         // 矢印
         if (showArrow && !isTouching) {
-            int y = (int)(_pos.y + (size.height - ARROW_H) / 2);
-            canvas.drawBitmap(arrowL,
-                    new Rect(0,0,arrowL.getWidth(), arrowL.getHeight()),
-                    new Rect((int)_pos.x - ARROW_MARGIN - ARROW_W, y,
-                            (int)_pos.x - ARROW_MARGIN, y + ARROW_H),
-                    paint);
-
-            canvas.drawBitmap(arrowR,
-                    new Rect(0,0,arrowR.getWidth(), arrowR.getHeight()),
-                    new Rect((int)_pos.x + size.width + ARROW_MARGIN, y,
-                            (int)_pos.x + size.width + ARROW_MARGIN + ARROW_W, y + ARROW_H),
-                    paint);
+            mArrowL.draw(canvas, paint, _pos);
+            mArrowR.draw(canvas, paint, _pos);
         }
     }
 
@@ -257,6 +253,23 @@ public class StudyCard extends UDrawable{
 
     public boolean touchEvent(ViewTouch vt, PointF parentPos) {
         boolean done = false;
+
+        // 矢印
+        if ( mArrowL.touchUpEvent(vt) ) {
+            done = true;
+        }
+        if ( mArrowR.touchUpEvent(vt) ) {
+            done = true;
+        }
+
+        PointF offset = new PointF(parentPos.x + pos.x, parentPos.y + pos.y);
+        if ( mArrowL.touchEvent(vt, offset) ) {
+            return true;
+        }
+        if (mArrowR.touchEvent(vt, offset)) {
+            return true;
+        }
+
         switch(vt.type) {
             case Touch:        // タッチ開始
                 if (rect.contains((int)(vt.touchX() - parentPos.x), (int)(vt.touchY() - parentPos.y))) {
@@ -283,6 +296,9 @@ public class StudyCard extends UDrawable{
                     }
                 }
                 break;
+            case Click: {
+            }
+                break;
         }
         if (vt.isTouchUp()) {
             if (isTouching) {
@@ -303,4 +319,26 @@ public class StudyCard extends UDrawable{
     /**
      * Callbacks
      */
+    /**
+     * UButtonCallbacks
+     */
+    /**
+     * ボタンがクリックされた時の処理
+     * @param id  button id
+     * @param pressedOn  押された状態かどうか(On/Off)
+     * @return
+     */
+    public boolean UButtonClicked(int id, boolean pressedOn) {
+        switch(id) {
+            case ButtonIdArrowL:
+                showArrow = false;
+                moveRequest = lastRequest = RequestToParent.MoveToNG;
+                return true;
+            case ButtonIdArrowR:
+                showArrow = false;
+                moveRequest = lastRequest = RequestToParent.MoveToOK;
+                return true;
+        }
+        return false;
+    }
 }

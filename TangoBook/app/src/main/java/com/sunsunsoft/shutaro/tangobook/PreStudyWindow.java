@@ -117,8 +117,9 @@ public class PreStudyWindow extends UWindow {
     }
 
     public boolean touchEvent(ViewTouch vt) {
-        boolean isRedraw = false;
+        if (!isShow) return false;
 
+        boolean isRedraw = false;
 
         for (UButton button : buttons) {
             if (button == null) continue;
@@ -205,11 +206,12 @@ public class PreStudyWindow extends UWindow {
         y += TEXT_SIZE + MARGIN_V;
 
         // 最終学習日時
-        Date studiedTime = mBook.getStudyTime();
+        Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(mBook.getId());
+
         textLastStudied = UTextView.createInstance(
                 UResourceManager.getStringById(R.string
-                .last_studied_date) + ":" + studiedTime,
-                TEXT_SIZE, 0,
+                .last_studied_date) + ": " + UUtil.convDateFormat(date),
+                TEXT_SIZE - 5, 0,
                 UAlignment.CenterX, screenW, false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE + MARGIN_V + 40;
@@ -247,19 +249,19 @@ public class PreStudyWindow extends UWindow {
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += TEXT_SIZE_2 + 20;
 
-        // 英語->日本語
+        // 英語->日本語 Button
         buttons[ButtonId.Option1_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_1,
                 0, UResourceManager.getStringById(R.string.e_to_j),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
 
-        // 日本語->英語
+        // 日本語->英語 Button
         buttons[ButtonId.Option1_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption1_2,
                 0, UResourceManager.getStringById(R.string.j_to_e),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
 
         y += BUTTON_H + MARGIN_V;
 
@@ -277,14 +279,14 @@ public class PreStudyWindow extends UWindow {
                 ButtonIdOption2_1,
                 0, UResourceManager.getStringById(R.string.order_normal),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, UColor.Gold);
 
         // ランダム
         buttons[ButtonId.Option2_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption2_2,
                 0, UResourceManager.getStringById(R.string.order_random),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, UColor.Gold);
 
         y += BUTTON_H + MARGIN_V;
 
@@ -303,14 +305,14 @@ public class PreStudyWindow extends UWindow {
                 ButtonIdOption3_1,
                 0, UResourceManager.getStringById(R.string.all),
                 MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, UColor.Violet);
 
         // 未収得
         buttons[ButtonId.Option3_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
                 ButtonIdOption3_2,
                 0, UResourceManager.getStringById(R.string.not_learned),
                 MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, Color.LTGRAY);
+                TEXT_SIZE, TEXT_COLOR, UColor.Violet);
 
         y += BUTTON_H + MARGIN_V;
 
