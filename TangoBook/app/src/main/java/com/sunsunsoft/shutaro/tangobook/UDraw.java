@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -391,5 +392,15 @@ public class UDraw {
     public static Size getOneLineTextSize(Paint paint, String text, int textSize) {
         paint.setTextSize(textSize);
         return new Size((int)paint.measureText( text), textSize);
+    }
+
+    /**
+     * Bitmap画像
+     */
+    public static void drawBitmap(Canvas canvas, Paint paint, Bitmap image,
+                                  float x, float y, int width, int height)
+    {
+        canvas.drawBitmap(image, new Rect( 0, 0, image.getWidth(), image.getHeight()),
+                new Rect((int)x, (int)y, (int)x + width,(int)y + height), paint);
     }
 }

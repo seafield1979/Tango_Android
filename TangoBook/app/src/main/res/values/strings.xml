@@ -16,6 +16,9 @@
     <string name="edit_title_book_name">単語帳の名前</string>
     <string name="edit_title_book_color">単語帳の色</string>
 
+    <string name="book_name">単語帳名</string>
+
+
     <string name="word_a_top">英</string>
     <string name="word_b_top">日</string>
     <string name="name">名前</string>
@@ -62,6 +65,7 @@
     <string name="finish">終了</string>
     <string name="cards_remain">あと%d枚</string>
     <string name="confirm_exit">学習を終了しますか？</string>
+    <string name="confirm_cleanup_trash">ゴミ箱を空にしますか？</string>
 
     <string name="retry1">"すべて\nリトライ"</string>
     <string name="retry2">"NGのみ\nリトライ"</string>

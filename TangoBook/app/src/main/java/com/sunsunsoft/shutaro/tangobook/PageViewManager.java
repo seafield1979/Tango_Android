@@ -58,7 +58,8 @@ public class PageViewManager extends UPageViewManager{
         pages[PageView.Edit.ordinal()] = page;
 
         // StudySelect
-        page = new PageViewStudySelect(mContext, mParentView, UResourceManager.getStringById(R.string.title_study_select));
+        page = new PageViewStudySelect2(mContext, mParentView, UResourceManager.getStringById
+                (R.string.title_study_select));
         pages[PageView.StudySelect.ordinal()] = page;
 
         // Study

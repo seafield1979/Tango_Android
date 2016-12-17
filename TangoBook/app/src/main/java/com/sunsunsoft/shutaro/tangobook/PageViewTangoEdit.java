@@ -142,6 +142,13 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      * @return
      */
     public boolean onBackKeyDown() {
+        // アイコンダイアログが開いていたら閉じる
+        if (mIconInfoDlg != null) {
+            mIconInfoDlg.closeWindow();
+            mIconInfoDlg = null;
+            return true;
+        }
+
         // サブウィンドウが表示されていたら閉じる
         UIconWindow subWindow = mIconWinManager.getSubWindow();
         if (subWindow.isShow()) {
@@ -149,6 +156,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 return true;
             }
         }
+
         return false;
     }
 
@@ -625,12 +633,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
 
             // 確認のダイアログを表示する
-            mDialog.setTitle("Do you clean up?");
+            mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_cleanup_trash));
 
             // ボタンを追加
             mDialog.addButton(CleanupDialogButtonOK, "OK", Color.WHITE,
                     Color.rgb(150, 80, 80));
-            mDialog.addCloseButton("Cancel");
+            mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
             // 描画マネージャに登録
             mDialog.setDrawPriority(DrawPriority.Dialog.p());

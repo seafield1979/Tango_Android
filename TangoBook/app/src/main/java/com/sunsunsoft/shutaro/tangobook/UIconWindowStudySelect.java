@@ -42,10 +42,6 @@ public class UIconWindowStudySelect extends UIconWindow {
         UIconWindowStudySelect instance = new UIconWindowStudySelect( windowCallbacks,
                 iconCallbacks, isHome, dir, width, height, bgColor);
 
-
-        // 描画はDrawManagerに任せるのでDrawManagerに登録
-        instance.drawList = UDrawManager.getInstance().addDrawable(instance);
-
         return instance;
     }
 

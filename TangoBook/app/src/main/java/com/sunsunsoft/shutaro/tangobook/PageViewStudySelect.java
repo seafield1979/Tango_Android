@@ -13,7 +13,7 @@ import android.view.View;
  * ホームにCardアイコンは表示しない
  */
 
-public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks,
+public class PageViewStudySelect extends UPageView implements
         UIconCallbacks, UWindowCallbacks, UButtonCallbacks,
         IconInfoDialogCallbacks, UDialogCallbacks
 {
@@ -23,7 +23,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     enum WindowType {
         Icon1,
         Icon2,
-        MenuBar,
+//        MenuBar,
         Log
     }
 
@@ -75,7 +75,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     private DebugDialogs debugDialogs;
 
     // メニューバー
-    private MenuBarStudySelect mMenuBar;
+//    private MenuBarStudySelect mMenuBar;
 
     private IconInfoDialog mIconInfoDlg;
 
@@ -122,13 +122,16 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
 
         // Main
         UIconWindowStudySelect mainWindow = UIconWindowStudySelect.createInstance( this, this, true, winDir, size1.width, size1.height, Color.WHITE);
+        mainWindow.addToDrawManager();
         mWindows[WindowType.Icon1.ordinal()] = mainWindow;
 
         // Sub
         UIconWindow subWindow = UIconWindow.createInstance( this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
+        subWindow.addToDrawManager();
         subWindow.isShow = false;
         mWindows[WindowType.Icon2.ordinal()] = subWindow;
 
+        // Window Manager
         mIconWinManager = UIconWindows.createInstance(mainWindow, subWindow, width, height);
         mainWindow.setWindows(mIconWinManager);
         subWindow.setWindows(mIconWinManager);
@@ -142,9 +145,9 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
         mPreStudyWindow.addToDrawManager();
 
         // UMenuBar
-        mMenuBar = MenuBarStudySelect.createInstance( this, width, height,
-                Color.BLACK);
-        mWindows[WindowType.MenuBar.ordinal()] = mMenuBar;
+//        mMenuBar = MenuBarStudySelect.createInstance( this, width, height,
+//                Color.BLACK);
+//        mWindows[WindowType.MenuBar.ordinal()] = mMenuBar;
 
         // ULogWindow
         if (mLogWin == null) {
@@ -160,6 +163,12 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
      * @return
      */
     public boolean onBackKeyDown() {
+        if (mIconInfoDlg != null) {
+            mIconInfoDlg.closeWindow();
+            mIconInfoDlg = null;
+            return true;
+        }
+
         // サブウィンドウが表示されていたら閉じる
         UIconWindow subWindow = mIconWinManager.getSubWindow();
         if (subWindow.isShow()) {
@@ -167,6 +176,7 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
                 return true;
             }
         }
+
         return false;
     }
 
@@ -176,48 +186,48 @@ public class PageViewStudySelect extends UPageView implements UMenuItemCallbacks
     /**
      * メニューアイテムをタップした時のコールバック
      */
-    public void menuItemClicked(int id, int stateId) {
-        MenuBarStudySelect.MenuItemId itemId = MenuBarStudySelect.MenuItemId.toEnum(id);
-
-        switch (itemId) {
-            case SortTop:
-                break;
-            case Sort1:
-                break;
-            case Sort2:
-                break;
-            case Sort3:
-                break;
-            case ListTypeTop:
-                break;
-            case ListType1:
-                break;
-            case ListType2:
-                break;
-            case ListType3:
-                break;
-            case Debug1:
-                // ログウィンドウの表示切り替え
-                mLogWin.toggle();
-                mParentView.invalidate();
-                break;
-            case Debug2:
-                debugDialogs.showDialog(DebugDialogs.DialogType.SelectDao);
-                break;
-            case Debug3:
-                debugDialogs.showDialog(DebugDialogs.DialogType.DeleteDao);
-                break;
-            case Debug4:
-                debugDialogs.showDialog(DebugDialogs.DialogType.Icons);
-                break;
-            case Debug5:
-                break;
-            case Debug6:
-                UDrawManager.getInstance().showAllList(true, false);
-                break;
-        }
-        ULog.print(TAG, "menu item clicked " + id);
-    }
+//    public void menuItemClicked(int id, int stateId) {
+//        MenuBarStudySelect.MenuItemId itemId = MenuBarStudySelect.MenuItemId.toEnum(id);
+//
+//        switch (itemId) {
+//            case SortTop:
+//                break;
+//            case Sort1:
+//                break;
+//            case Sort2:
+//                break;
+//            case Sort3:
+//                break;
+//            case ListTypeTop:
+//                break;
+//            case ListType1:
+//                break;
+//            case ListType2:
+//                break;
+//            case ListType3:
+//                break;
+//            case Debug1:
+//                // ログウィンドウの表示切り替え
+//                mLogWin.toggle();
+//                mParentView.invalidate();
+//                break;
+//            case Debug2:
+//                debugDialogs.showDialog(DebugDialogs.DialogType.SelectDao);
+//                break;
+//            case Debug3:
+//                debugDialogs.showDialog(DebugDialogs.DialogType.DeleteDao);
+//                break;
+//            case Debug4:
+//                debugDialogs.showDialog(DebugDialogs.DialogType.Icons);
+//                break;
+//            case Debug5:
+//                break;
+//            case Debug6:
+//                UDrawManager.getInstance().showAllList(true, false);
+//                break;
+//        }
+//        ULog.print(TAG, "menu item clicked " + id);
+//    }
 
     /**
      * UIconCallbacks

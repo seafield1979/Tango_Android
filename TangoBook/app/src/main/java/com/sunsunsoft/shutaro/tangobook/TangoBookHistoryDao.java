@@ -82,6 +82,18 @@ public class TangoBookHistoryDao {
     }
 
     /**
+     * 指定のBookの最後の学習日を取得
+     * @param bookId
+     * @return
+     */
+    Date selectMaxDateByBook(int bookId) {
+        Date date = mRealm.where(TangoBookHistory.class)
+                .equalTo("bookId", bookId)
+                .maximumDate("studiedDateTime");
+        return date;
+    }
+
+    /**
      * Add
      */
     /**

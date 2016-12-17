@@ -88,7 +88,8 @@ public class ListItemStudiedBook extends UListItem{
 
         instance.mTextDate = String.format("学習日時: %s",
                 UUtil.convDateFormat(history.getStudiedDateTime()));
-        instance.mTextName = "単語帳名: " + book.getName();
+        instance.mTextName = UResourceManager.getStringById(R.string.book_name) + ": " + book
+                .getName();
         instance.mTextInfo = String.format("  OK:%d  NG:%d    OK率:%.3f", history.getOkNum(), history
                 .getNgNum(), history.getCorrectRatio());
         instance.size.height = ITEM_HISTORY_H;
