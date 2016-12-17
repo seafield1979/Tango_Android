@@ -18,6 +18,14 @@ import java.util.List;
  */
 
 public class IconInfoDialogTrash extends IconInfoDialog {
+    /**
+     * Enums
+     */
+    // アクションアイコンボタンのIndex
+    enum ButtonIndex {
+        Open,
+        EmptyTrash
+    }
 
     /**
      * Consts
@@ -127,6 +135,10 @@ public class IconInfoDialogTrash extends IconInfoDialog {
 
         List<ActionIcons> icons = ActionIcons.getTrashIcons();
 
+        int count = RealmManager.getItemPosDao().countInParentType(
+                TangoParentType.Trash, 0
+        );
+
         int width = ICON_W * icons.size() +
                 ICON_MARGIN_H * (icons.size() + 1);
         if (width < MIN_WIDTH) width = MIN_WIDTH;
@@ -154,13 +166,14 @@ public class IconInfoDialogTrash extends IconInfoDialog {
 
             x += ICON_W + ICON_MARGIN_H;
         }
+        // ゴミ箱を空にするアイコンはアイテム数が０ならDisable
+        if (count == 0) {
+            imageButtons.get(ButtonIndex.EmptyTrash.ordinal()).setEnabled(false);
+        }
+
         y += ICON_W + MARGIN_V + 50;
 
         // Number of items in trash
-        long count = RealmManager.getItemPosDao().countInParentType(
-                TangoParentType.Trash, 0
-        );
-
         textCountTitle = UTextView.createInstance( mParentView.getContext().getString(R.string
                         .item_count), TEXT_SIZE, 0,
                 UAlignment.None, canvas.getWidth(), false, true,

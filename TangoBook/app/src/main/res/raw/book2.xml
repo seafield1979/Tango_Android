@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmlTangoBook name="Week day">
+    <comment>曜日</comment>
+    <cards>
+        <xmlTangoCard>
+            <wordA>sunday</wordA>
+            <wordB>日曜日</wordB>
+            <comment>楽しい</comment>
+        </xmlTangoCard>
+        <xmlTangoCard>
+            <wordA>monday</wordA>
+            <wordB>月曜日</wordB>
+            <comment>だるい</comment>
+        </xmlTangoCard>
+        <xmlTangoCard>
+            <wordA>tuesday</wordA>
+            <wordB>火曜日</wordB>
+            <comment>ふつう</comment>
+        </xmlTangoCard>
+        <xmlTangoCard>
+            <wordA>wedensday</wordA>
+            <wordB>水曜日</wordB>
+            <comment>本調子</comment>
+        </xmlTangoCard>
+        <xmlTangoCard>
+            <wordA>thursday</wordA>
+            <wordB>木曜日</wordB>
+            <comment>いい感じ</comment>
+        </xmlTangoCard>
+        <xmlTangoCard>
+            <wordA>friday</wordA>
+            <wordB>金曜日</wordB>
+            <comment>ラストスパート</comment>
+        </xmlTangoCard>
+        <xmlTangoCard>
+            <wordA>saturday</wordA>
+            <wordB>土曜日</wordB>
+            <comment>休息</comment>
+        </xmlTangoCard>
+    </cards>
+</xmlTangoBook>
+
+

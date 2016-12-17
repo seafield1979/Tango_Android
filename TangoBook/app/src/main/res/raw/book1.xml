@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmlTangoBook name="Fruits">
+    <comment>果物</comment>
+    <cards>
+        <xmlTangoCard>
+            <wordA>apple</wordA>
+            <wordB>りんご</wordB>
+            <comment>おいしい</comment>
+        </xmlTangoCard>
+        <xmlTangoCard>
+            <wordA>orange</wordA>
+            <wordB>オレンジ</wordB>
+            <comment>固い</comment>
+        </xmlTangoCard>
+        <xmlTangoCard>
+            <wordA>banana</wordA>
+            <wordB>バナナ</wordB>
+            <comment>黄色い</comment>
+        </xmlTangoCard>
+    </cards>
+</xmlTangoBook>
+

@@ -8,6 +8,8 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Window;
 
+import java.io.InputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     TopFragment mTopFragment;
@@ -17,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
-
 
         mTopFragment = new TopFragment();
 
@@ -43,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         // SharedPreferencesの初期化
         MySharedPref.init(this);
 
+        // PresetBookManager
+        PresetBookManager.createInstance(this);
+        PresetBookManager.makeBookList();
+
+        UXmlParser.realTangoBook(this, R.raw.book2);
     }
 
     /**

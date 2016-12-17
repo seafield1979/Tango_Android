@@ -627,21 +627,18 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
                     this, this,
                     UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
-                    false,
+                    true,
                     mParentView.getWidth(), mParentView.getHeight(),
                     Color.rgb(200,100,100), Color.WHITE);
-
+            mDialog.addToDrawManager();
 
             // 確認のダイアログを表示する
             mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_cleanup_trash));
 
             // ボタンを追加
-            mDialog.addButton(CleanupDialogButtonOK, "OK", Color.WHITE,
-                    Color.rgb(150, 80, 80));
+            mDialog.addButton(CleanupDialogButtonOK, "OK", Color.BLACK,
+                    UColor.LightGreen);
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-
-            // 描画マネージャに登録
-            mDialog.setDrawPriority(DrawPriority.Dialog.p());
         }
     }
 
