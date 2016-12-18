@@ -21,7 +21,7 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
      */
     public static final String TAG = "ListItemResult";
 
-    private static final int ButtonIdAdd = 100100;
+    public static final int ButtonIdAdd = 100100;
     private static final int ITEM_H = 200;
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 15;
@@ -57,24 +57,14 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
     {
         super(listItemCallbacks, true, 0, width, ITEM_H, BG_COLOR);
         mBook = book;
-    }
 
-    // ListItemResultType.OKのインスタンスを生成する
-    // @param star 覚えたアイコン(Star)を表示するかどうか
-    public static ListItemPresetBook createInstance(PresetBook book, int width)
-    {
-        ListItemPresetBook instance = new ListItemPresetBook(null, book, width);
-
-        instance.size.height = ITEM_H;
         // Add Button
-        instance.mAddButton = new UButtonImage(instance, ButtonIdAdd, 100,
-                instance.size.width - 150, (instance.size.height - STAR_ICON_W) / 2,
-                STAR_ICON_W, STAR_ICON_W, R.drawable.favorites, -1);
-        instance.mAddButton.scaleRect(1.2f);
+        mAddButton = new UButtonImage(this, ButtonIdAdd, 0,
+                size.width - 150, (size.height - STAR_ICON_W) / 2,
+                STAR_ICON_W, STAR_ICON_W, R.drawable.add, -1);
+        mAddButton.scaleRect(1.2f);
 
-        return instance;
     }
-
 
     /**
      * Methods
@@ -111,15 +101,16 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
                 ICON_W, ICON_W );
         x += ICON_W + MARGIN_H;
 
-        // WordA
+        // Name
         UDraw.drawTextOneLine(canvas, paint, mBook.mName, UAlignment.None, TEXT_SIZE,
                 x, y, TEXT_COLOR);
         y += TEXT_SIZE + MARGIN_V;
 
-        // WordB
+        // Comment
         UDraw.drawTextOneLine(canvas, paint, mBook.mComment, UAlignment.None, TEXT_SIZE,
                 x, y, TEXT_COLOR);
 
+        // Add Button
         if (mAddButton != null) {
             mAddButton.draw(canvas, paint, _pos);
         }
@@ -130,7 +121,6 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
      * @return
      */
     public boolean touchEvent(ViewTouch vt, PointF offset) {
-        // Starボタンのクリック処理
         if (mAddButton != null) {
             PointF offset2 = new PointF(pos.x + offset.x, pos.y + offset.y);
             if (mAddButton.touchEvent(vt, offset2)) {
@@ -154,7 +144,8 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
      * UButtonCallbacks
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
-        if (id == ButtonIdAdd) {
+        if (mListItemCallbacks != null) {
+            mListItemCallbacks.ListItemButtonClicked(this, id);
             return true;
         }
         return false;

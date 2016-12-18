@@ -83,7 +83,7 @@ public class PresetBookManager {
 
     /**
      * データベースにプリセット単語帳のデータを登録
-     * @return 作成したBookのId
+     * @return 作成したBook
      */
     public TangoBook addBookToDB(PresetBook presetBook) {
         // まずは単語帳を作成
@@ -106,7 +106,7 @@ public class PresetBookManager {
 
     /**
      * プリセット単語帳を追加  テスト用
-     * @return  作成したBookのId
+     * @return  作成したBook
      */
     public TangoBook test1() {
         PresetBook book = mBooks.get(0);

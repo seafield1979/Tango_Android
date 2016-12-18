@@ -198,6 +198,9 @@ public class PageViewStudySelect2 extends UPageView
         mPreStudyWindow.showWithBook(bookItem.getBook());
         mBook = bookItem.getBook();
     }
+    public void ListItemButtonClicked(UListItem item, int buttonId) {
+
+    }
 
     /**
      * UWindowCallbacks

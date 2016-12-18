@@ -143,6 +143,7 @@ abstract public class UPageViewManager {
         if (pageIdStack.size() >= 2) {
             showActionBarBack(true);
         }
+
     }
 
     /**

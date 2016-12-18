@@ -178,4 +178,7 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks{
                 break;
         }
     }
+    public void ListItemButtonClicked(UListItem item, int buttonId) {
+
+    }
 }

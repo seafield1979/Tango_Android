@@ -176,4 +176,8 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
 
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
     }
+
+    public void ListItemButtonClicked(UListItem item, int buttonId) {
+
+    }
 }

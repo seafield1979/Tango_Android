@@ -221,4 +221,8 @@ public class PageViewResult extends UPageView
             mDialog.addCloseButton("Close");
         }
     }
+
+    public void ListItemButtonClicked(UListItem item, int buttonId) {
+
+    }
 }

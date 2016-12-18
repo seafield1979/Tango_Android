@@ -14,7 +14,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="@string/edit_title_word_a"
+                android:text="@string/word_a"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView"/>
@@ -28,7 +28,7 @@
                 android:id="@+id/editWordA"/>
 
             <TextView
-                android:text="@string/edit_title_word_b"
+                android:text="@string/word_b"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView2"/>
@@ -42,7 +42,7 @@
                 android:id="@+id/editWordB"/>
 
             <!--<TextView-->
-                <!--android:text="@string/edit_title_hint_ab"-->
+                <!--android:text="@string/hint_ab"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:id="@+id/textView3"/>-->
@@ -56,7 +56,7 @@
                 <!--android:id="@+id/editHintAB"/>-->
 
             <!--<TextView-->
-                <!--android:text="@string/edit_title_hint_ba"-->
+                <!--android:text="@string/hint_ba"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:id="@+id/textView4"/>-->
@@ -69,7 +69,7 @@
                 <!--android:id="@+id/editHintBA"/>-->
 
             <TextView
-                android:text="@string/edit_title_comment"
+                android:text="@string/comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView5"/>

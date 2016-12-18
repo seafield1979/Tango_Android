@@ -10,15 +10,15 @@
 
     <string name="app_title">カラフル単語帳</string>
 
-    <string name="edit_title_word_a">英語</string>
-    <string name="edit_title_word_b">日本語</string>
-    <string name="edit_title_hint_ab">ヒント 英 > 日</string>
-    <string name="edit_title_hint_ba">ヒント 日 > 英</string>
-    <string name="edit_title_comment">コメント</string>
-    <string name="edit_title_book_name">単語帳の名前</string>
-    <string name="edit_title_book_color">単語帳の色</string>
+    <string name="word_a">英語</string>
+    <string name="word_b">日本語</string>
+    <string name="hint_ab">ヒント 英 > 日</string>
+    <string name="hint_ba">ヒント 日 > 英</string>
+    <string name="comment">コメント</string>
+    <string name="book_name">単語帳の名前</string>
+    <string name="book_color">単語帳の色</string>
 
-    <string name="book_name">単語帳名</string>
+    <string name="book_name2">単語帳名</string>
 
 
     <string name="word_a_top">英</string>
@@ -85,6 +85,7 @@
     <string name="confirm_restore">バックアップから復元しますか？</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
     <string name="finish_restore">復元が完了しました</string>
+    <string name="confirm_add_book">%sを追加しますか？</string>
 
     <string name="preset_title2">Addボタンをタップしてプリセットを追加します</string>
 

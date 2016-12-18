@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class PageViewPresetBook extends UPageView
-        implements UButtonCallbacks, UListItemCallbacks{
+        implements UButtonCallbacks, UListItemCallbacks, UDialogCallbacks{
     /**
      * Constants
      */
@@ -26,8 +26,12 @@ public class PageViewPresetBook extends UPageView
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
 
+    private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_SIZE = 50;
+
+    // button id
     private static final int ButtonIdReturn = 100;
+    private static final int ButtonIdAddOk = 200;
 
     /**
      * Member variables
@@ -36,6 +40,10 @@ public class PageViewPresetBook extends UPageView
     private UListView mListView;
     private UButtonText mReturnButton;
     private UDialogWindow mDialog;      // OK/NGのカード一覧を表示するダイアログ
+    private PresetBook mBook;
+
+    // 終了確認ダイアログ
+    private UDialogWindow mConfirmDialog;
 
     /**
      * Constructor
@@ -137,15 +145,21 @@ public class PageViewPresetBook extends UPageView
         mDialog = UDialogWindow.createInstance(null, width, mParentView
                 .getHeight());
         mDialog.addToDrawManager();
+
+        // Title
+        mDialog.setTitle(book.mName);
+
+        // ListView
         UListView listView = new UListView(null, this,
                 DRAW_PRIORYTY_DIALOG, 0, 0,
-                mDialog.size.width - MARGIN_H * 2, 700, Color.LTGRAY
+                mDialog.size.width, mParentView.getHeight() - 350, Color.LTGRAY
         );
         mDialog.addDrawable(listView);
 
         // Add items to ListView
-        for (PresetCard card : book.mCards) {
-//            ListItem
+        for (PresetCard presetCard : book.mCards) {
+            ListItemCard itemCard = new ListItemCard(null, presetCard, listView.clientSize.width);
+            listView.add(itemCard);
         }
 
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
@@ -172,6 +186,14 @@ public class PageViewPresetBook extends UPageView
             case ButtonIdReturn:
                 PageViewManager.getInstance().popPage();
                 break;
+            case ButtonIdAddOk: {
+                // プリセットを追加するかの確認ダイアログでOKボタンを押した
+                if (mBook != null) {
+                    PresetBookManager.getInstance().addBookToDB(mBook);
+                }
+                mConfirmDialog.closeDialog();
+            }
+                break;
         }
         return false;
     }
@@ -189,5 +211,48 @@ public class PageViewPresetBook extends UPageView
 
         ListItemPresetBook book = (ListItemPresetBook) item;
         showDialog(book.getBook());
+    }
+
+    /**
+     * 項目のボタンがクリックされた
+     * @param item
+     * @param buttonId
+     */
+    public void ListItemButtonClicked(UListItem item, int buttonId) {
+        if (!(item instanceof ListItemPresetBook)) return;
+
+        switch(buttonId) {
+            case ListItemPresetBook.ButtonIdAdd: {
+                ListItemPresetBook book = (ListItemPresetBook)item;
+
+                // 追加するかを確認する
+                // 終了ボタンを押したら確認用のモーダルダイアログを表示
+                if (mConfirmDialog == null) {
+                    mConfirmDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                            this, this,
+                            UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
+                            true, mParentView.getWidth(), mParentView.getHeight(),
+                            Color.BLACK, Color.LTGRAY);
+                    mConfirmDialog.addToDrawManager();
+                    String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book), book.getBook().mName);
+                    mConfirmDialog.setTitle(title);
+                    mConfirmDialog.addButton(ButtonIdAddOk, "OK", Color.BLACK, Color.WHITE);
+                    mConfirmDialog.addCloseButton("Cancel");
+
+                    // クリックされた項目のBookを記憶しておく
+                    mBook = book.getBook();
+                }
+            }
+                break;
+        }
+    }
+
+    /**
+     * UDialogCallbacks
+     */
+    public void dialogClosed(UDialogWindow dialog) {
+        if (dialog == mConfirmDialog) {
+            mConfirmDialog = null;
+        }
     }
 }

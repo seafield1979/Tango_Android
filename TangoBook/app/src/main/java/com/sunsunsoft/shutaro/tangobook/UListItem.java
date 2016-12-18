@@ -14,6 +14,11 @@ interface UListItemCallbacks {
      * @param item
      */
     void ListItemClicked(UListItem item);
+
+    /**
+     * 項目のボタンがクリックされた
+     */
+    void ListItemButtonClicked(UListItem item, int buttonId);
 }
 
 abstract public class UListItem extends UDrawable {
@@ -91,13 +96,14 @@ abstract public class UListItem extends UDrawable {
                 }
                 break;
             case Click:
-                if (rect.contains((int) (vt.touchX() - offset.x),
-                        (int) (vt.touchY() - offset.y)))
-                {
-                    if (mListItemCallbacks != null) {
-                        mListItemCallbacks.ListItemClicked(this);
+                if (isTouchable && isTouching) {
+                    if (rect.contains((int) (vt.touchX() - offset.x),
+                            (int) (vt.touchY() - offset.y))) {
+                        if (mListItemCallbacks != null) {
+                            mListItemCallbacks.ListItemClicked(this);
+                        }
+                        isDraw = true;
                     }
-                    isDraw = true;
                 }
                 break;
         }

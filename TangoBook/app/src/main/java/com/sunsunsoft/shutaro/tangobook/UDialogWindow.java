@@ -353,6 +353,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         // テキスト
         for (UTextView textView : mTextViews) {
             textView.pos.y = y;
+            textView.updateRect();
             y += textView.size.height + BUTTON_MARGIN_H;
         }
 
@@ -361,6 +362,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         for (UDrawable obj : mDrawables) {
             obj.pos.x = (size.width - obj.size.width) / 2;
             obj.pos.y = y;
+            obj.updateRect();
             y += obj.size.height + 20;
         }
 
@@ -453,9 +455,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             _pos.y += offset.y;
         }
         drawContent(canvas, paint, _pos);
-
-        // Window枠
-//        drawFrame(canvas, paint, offset);
     }
 
     /**
@@ -487,16 +486,18 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         } else {
             // BG
             drawBG(canvas, paint, rect);
+            PointF _offset = pos;
 
             // Title
-            PointF _offset = pos;
             if (mTitleView != null) {
                 mTitleView.draw(canvas, paint, _offset);
             }
+
             // TextViews
             for (UTextView textView : mTextViews) {
                 textView.draw(canvas, paint, _offset);
             }
+
             // Drawables
             for (UDrawable obj : mDrawables) {
                 obj.draw(canvas, paint, _offset);

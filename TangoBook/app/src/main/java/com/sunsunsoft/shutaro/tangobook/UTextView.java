@@ -145,8 +145,8 @@ public class UTextView extends UDrawable {
     void draw(Canvas canvas, Paint paint, PointF offset) {
         PointF _pos = new PointF(pos.x, pos.y);
         if (offset != null) {
-            _pos.x = pos.x + offset.x;
-            _pos.y = pos.y + offset.y;
+            _pos.x += offset.x;
+            _pos.y += offset.y;
         }
         PointF _linePos = new PointF(_pos.x, _pos.y);
 
@@ -179,7 +179,9 @@ public class UTextView extends UDrawable {
                 }
             }
 
-            drawBG(canvas, paint, bgPos);
+            if (bgColor != 0) {
+                drawBG(canvas, paint, bgPos);
+            }
 
             // BGの中央にテキストを表示したいため、aligmentを書き換える
             if (!multiLine) {

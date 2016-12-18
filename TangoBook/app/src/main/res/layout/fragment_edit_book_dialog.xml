@@ -6,7 +6,7 @@
               android:layout_height="match_parent">
 
     <TextView
-        android:text="@string/edit_title_book_name"
+        android:text="@string/book_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView"/>
@@ -20,7 +20,7 @@
         android:id="@+id/editName"/>
 
     <TextView
-        android:text="@string/edit_title_comment"
+        android:text="@string/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView2"/>
@@ -35,7 +35,7 @@
 
 
     <TextView
-        android:text="@string/edit_title_book_color"
+        android:text="@string/book_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView3"/>

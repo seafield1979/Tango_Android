@@ -23,9 +23,10 @@ public class ListItemCard extends UListItem {
      */
     public static final String TAG = "ListItemCard";
 
-    private static final int TEXT_SIZE = 50;
+    private static final int TEXT_SIZE = 40;
     private static final int TEXT_SIZE2 = 42;
     private static final int TEXT_COLOR = Color.BLACK;
+    private static final int BG_COLOR = Color.WHITE;
     private static final int ICON_W = 100;
 
     private static final int MARGIN_H = 50;
@@ -38,42 +39,21 @@ public class ListItemCard extends UListItem {
     /**
      * Member variables
      */
-    private String mTextName;
-    private String mStudiedDate;
-    private String mCardCount;
-    private TangoBook mBook;
+    private PresetCard mPresetCard;
 
     /**
      * Get/Set
      */
-    public TangoBook getBook() {
-        return mBook;
-    }
+
 
     /**
      * Constructor
      */
     public ListItemCard(UListItemCallbacks listItemCallbacks,
-                             TangoBook book, int width, int color)
+                             PresetCard card, int width)
     {
-        super(listItemCallbacks, true, 0, width, ITEM_H, color);
-        mBook = book;
-
-        // 単語帳名
-        mTextName = UResourceManager.getStringById(R.string.book_name) + " : " + book.getName();
-
-        // カード数 & 覚えていないカード数
-        int count = RealmManager
-                .getItemPosDao().countInParentType(TangoParentType.Book, book.getId());
-        int ngCount = RealmManager.getItemPosDao().countCardInBook(book.getId(),
-                TangoItemPosDao.BookCountType.NG);
-
-        mCardCount = UResourceManager.getStringById(R.string.card_count) + ": " + count + "  " +
-                UResourceManager.getStringById(R.string.card_count_not_learned) + ": " + ngCount;
-
-        // 最終学習日
-        Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(book.getId());
-        mStudiedDate = String.format("学習日時 : %s", UUtil.convDateFormat(date));
+        super(listItemCallbacks, true, 0, width, ITEM_H, BG_COLOR);
+        mPresetCard = card;
     }
 
     /**
@@ -104,40 +84,29 @@ public class ListItemCard extends UListItem {
         float x = _pos.x + MARGIN_H;
         float y = _pos.y + MARGIN_V;
         // Icon image
-        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.notebook), x,
+        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.card2), x,
                 _pos.y + (ITEM_H - ICON_W) / 2,
                 ICON_W, ICON_W );
         x += ICON_W + MARGIN_H;
-        // Book名
-        UDraw.drawTextOneLine(canvas, paint, mTextName, UAlignment.None, TEXT_SIZE, x, y, Color
-                .rgb(50,150,50));
+
+        // WordA
+        UDraw.drawTextOneLine(canvas, paint,
+                UResourceManager.getStringById(R.string.word_a) + ": " + mPresetCard.mWordA,
+                UAlignment.None, TEXT_SIZE,
+                x, y, TEXT_COLOR);
         y += TEXT_SIZE + MARGIN_V;
-        // 学習日時
-        UDraw.drawTextOneLine(canvas, paint, mStudiedDate, UAlignment.None, TEXT_SIZE2, x, y,
-                TEXT_COLOR);
+
+        // WordB
+        UDraw.drawTextOneLine(canvas, paint,
+                UResourceManager.getStringById(R.string.word_b) + ": " + mPresetCard.mWordB,
+                UAlignment.None, TEXT_SIZE,
+                x, y, TEXT_COLOR);
         y += TEXT_SIZE + MARGIN_V;
 
-        // カード数
-        UDraw.drawTextOneLine(canvas, paint, mCardCount , UAlignment.None, TEXT_SIZE2,
-                x, y, UColor.DarkGray);
-    }
-
-    /**
-     *
-     * @param vt
-     * @return
-     */
-    public boolean touchEvent(ViewTouch vt, PointF offset) {
-        if (super.touchEvent(vt, offset)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * UButtonCallbacks
-     */
-    public boolean UButtonClicked(int id, boolean pressedOn) {
-        return false;
+        // Comment
+        UDraw.drawTextOneLine(canvas, paint,
+                UResourceManager.getStringById(R.string.comment) + ": " + mPresetCard.mComment,
+                UAlignment.None, TEXT_SIZE,
+                x, y, TEXT_COLOR);
     }
 }
