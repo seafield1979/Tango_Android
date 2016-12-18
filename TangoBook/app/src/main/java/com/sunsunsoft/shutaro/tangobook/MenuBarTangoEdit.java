@@ -12,30 +12,44 @@ public class MenuBarTangoEdit extends UMenuBar {
      */
     // メニューをタッチした時に返されるID
     enum MenuItemId {
-        AddTop,
-        AddCard,
-        AddBook,
-        AddDummyCard,
-        AddDummyBook,
-        SortTop,
-        Sort1,
-        Sort2,
-        Sort3,
-        ListTypeTop,
-        ListType1,
-        ListType2,
-        ListType3,
-        DebugTop,
-        Debug1,
-        Debug2,
-        Debug3,
-        Debug4,
-        Debug5,
-        Debug6,
-        Debug2Top,
-        Debug2RealmCopy,
-        Debug2RealmRestore
+        AddTop(R.drawable.add, true),
+        AddCard(R.drawable.file_add, false),
+        AddBook(R.drawable.folder_add, false),
+        AddDummyCard(R.drawable.number_1, false),
+        AddDummyBook(R.drawable.number_2, false),
+        AddPresetBook(R.drawable.number_3, false),
+        SortTop(R.drawable.sort, true),
+        Sort1(R.drawable.sort_by_alphabet2_asc, false),
+        Sort2(R.drawable.sort_by_alphabet2_desc, false),
+        ListTypeTop(R.drawable.list, true),
+        ListType1(R.drawable.list1, false),
+        ListType2(R.drawable.grid_icons, false),
+        DebugTop(R.drawable.debug, true),
+        Debug1(R.drawable.number_1, false),
+        Debug2(R.drawable.number_2, false),
+        Debug3(R.drawable.number_3, false),
+        Debug4(R.drawable.number_4, false),
+        Debug5(R.drawable.number_5, false),
+        Debug6(R.drawable.number_6, false),
+        Debug2Top(R.drawable.debug, true),
+        Debug2RealmCopy(R.drawable.number_1, false),
+        Debug2RealmRestore(R.drawable.number_2, false),
         ;
+
+        private boolean isTop;
+        private int imageId;
+
+        MenuItemId(int imageId, boolean isTop) {
+            this.imageId = imageId;
+            this.isTop = isTop;
+        }
+
+        public int getImageId() {
+            return imageId;
+        }
+        public boolean isTop() {
+            return isTop;
+        }
 
         public static MenuItemId toEnum(int value) {
             if (value >= values().length) return AddTop;
@@ -69,38 +83,18 @@ public class MenuBarTangoEdit extends UMenuBar {
 
 
     protected void initMenuBar() {
-        UMenuItem item = null;
+        UMenuItem itemTop = null;
 
-        // Add
-        item = addTopMenuItem(MenuItemId.AddTop.ordinal(), R.drawable.add);
-        addMenuItem(item, MenuItemId.AddCard.ordinal(), R.drawable.file_add);
-        addMenuItem(item, MenuItemId.AddBook.ordinal(), R.drawable.folder_add);
-        addMenuItem(item, MenuItemId.AddDummyCard.ordinal(), R.drawable.number_1);
-        addMenuItem(item, MenuItemId.AddDummyBook.ordinal(), R.drawable.number_2);
-
-        // Sort
-        item = addTopMenuItem(MenuItemId.SortTop.ordinal(), R.drawable.sort);
-        addMenuItem(item, MenuItemId.Sort1.ordinal(), R.drawable.sort_by_alphabet2_asc);
-        addMenuItem(item, MenuItemId.Sort2.ordinal(), R.drawable.sort_by_alphabet2_desc);
-
-        // ListType
-        item = addTopMenuItem(MenuItemId.ListTypeTop.ordinal(), R.drawable.list);
-        addMenuItem(item, MenuItemId.ListType1.ordinal(), R.drawable.list1);
-        addMenuItem(item, MenuItemId.ListType2.ordinal(), R.drawable.grid_icons);
-        // Debug
-        item = addTopMenuItem(MenuItemId.DebugTop.ordinal(), R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug1.ordinal(), R.drawable.number_1);
-        addMenuItem(item, MenuItemId.Debug2.ordinal(), R.drawable.number_2);
-        addMenuItem(item, MenuItemId.Debug3.ordinal(), R.drawable.number_3);
-        addMenuItem(item, MenuItemId.Debug4.ordinal(), R.drawable.number_4);
-        addMenuItem(item, MenuItemId.Debug5.ordinal(), R.drawable.number_5);
-        addMenuItem(item, MenuItemId.Debug6.ordinal(), R.drawable.number_6);
-
-        // Debug2
-        item = addTopMenuItem(MenuItemId.Debug2Top.ordinal(), R.drawable.debug);
-        addMenuItem(item, MenuItemId.Debug2RealmCopy.ordinal(), R.drawable.number_1);
-        addMenuItem(item, MenuItemId.Debug2RealmRestore.ordinal(), R.drawable.number_2);
-
+        // add menu items
+        for (MenuItemId itemId : MenuItemId.values()) {
+            if (itemId.isTop()) {
+                // Parent
+                itemTop = addTopMenuItem(itemId.ordinal(), itemId.getImageId());
+            } else {
+                // Child
+                addMenuItem(itemTop, itemId.ordinal(), itemId.getImageId());
+            }
+        }
 
         mDrawList = UDrawManager.getInstance().addDrawable(this);
         updateBGSize();

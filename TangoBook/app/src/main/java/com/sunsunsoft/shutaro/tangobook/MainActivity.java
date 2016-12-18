@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         // PresetBookManager
         PresetBookManager.createInstance(this);
-        PresetBookManager.makeBookList();
+        PresetBookManager.getInstance().makeBookList();
 
         UXmlParser.realTangoBook(this, R.raw.book2);
     }

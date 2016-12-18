@@ -207,12 +207,15 @@ public class TangoCardDao {
      * 要素を追加 TangoCardオブジェクトをそのまま追加
      * @param card
      */
-    public void addOne(TangoCard card) {
+    public void addOne(TangoCard card, TangoParentType parentType, int parentId) {
         card.setId(getNextId());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(card);
         mRealm.commitTransaction();
+
+        TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, parentType, parentId);
+        card.setItemPos(itemPos);
     }
 
     /**

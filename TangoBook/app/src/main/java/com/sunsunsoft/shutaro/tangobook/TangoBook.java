@@ -25,7 +25,6 @@ public class TangoBook extends RealmObject implements TangoItem {
     private Date studyTime;     // 最後に学習した日
 
     @Ignore
-    private boolean isChecked;  // ListViewで選択状態を示す
     private TangoItemPos itemPos;   // どこにあるか？
 
 
@@ -92,14 +91,6 @@ public class TangoBook extends RealmObject implements TangoItem {
 
     public void setStudyTime(Date studyTime) {
         this.studyTime = studyTime;
-    }
-
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isChecked = checked;
     }
 
     public TangoItemPos getItemPos() {

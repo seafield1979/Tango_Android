@@ -56,12 +56,10 @@ public class PresetBookManager {
     /**
      * 一覧に表示するためのプリセット単語帳リストを作成する
      */
-    public static void makeBookList() {
-        PresetBookManager instance = getInstance();
-
+    public void makeBookList() {
         // xmlからプリセット単語帳とカード情報を読み込んで mBooksに追加する
         for (int xmlId : presetXmls) {
-            XmlTangoBook xmlBook = UXmlParser.realTangoBook(instance.mContext, xmlId);
+            XmlTangoBook xmlBook = UXmlParser.realTangoBook(mContext, xmlId);
             if (xmlBook == null) continue;
             PresetBook book = new PresetBook(xmlBook.getName(), xmlBook.getComment());
             for (XmlTangoCard xmlCard : xmlBook.getCards()) {
@@ -69,14 +67,49 @@ public class PresetBookManager {
                         .getComment());
                 book.addCard(card);
             }
-            instance.mBooks.add(book);
+            mBooks.add(book);
         }
-        for (PresetBook book : instance.mBooks) {
+        for (PresetBook book : mBooks) {
             book.log();
         }
     }
+
+    /**
+     * データベースにプリセット単語帳のデータを登録
+     * @return 作成したBookのId
+     */
+    public TangoBook addBookToDB(PresetBook presetBook) {
+        // まずは単語帳を作成
+        TangoBook book = new TangoBook();
+        book.setName(presetBook.mName);
+        book.setComment(presetBook.mComment);
+        RealmManager.getBookDao().addOne(book);
+
+        // 中のカードを作成する
+        for (PresetCard presetCard : presetBook.mCards) {
+            TangoCard card = new TangoCard();
+            card.setWordA(presetCard.mWordA);
+            card.setWordB(presetCard.mWordB);
+            card.setComment(presetCard.mComment);
+            RealmManager.getCardDao().addOne(card, TangoParentType.Book, book.getId());
+        }
+
+        return book;
+    }
+
+    /**
+     * プリセット単語帳を追加  テスト用
+     * @return  作成したBookのId
+     */
+    public TangoBook test1() {
+        PresetBook book = mBooks.get(0);
+        return addBookToDB(book);
+    }
 }
 
+/**
+ * プリセット単語帳を保持するクラス
+ */
 class PresetBook {
     public String mName;
     public String mComment;
@@ -103,6 +136,10 @@ class PresetBook {
     }
 
 }
+
+/**
+ * プリセット単語帳の中のカードクラス
+ */
 class PresetCard {
     public String mWordA;
     public String mWordB;

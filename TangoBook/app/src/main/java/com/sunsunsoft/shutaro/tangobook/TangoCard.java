@@ -31,7 +31,6 @@ public class TangoCard extends RealmObject implements TangoItem{
     private Date studiedTime;     // 最後に学習した日
 
     @Ignore
-    private boolean isChecked;  // ListViewで選択状態を示す
     private TangoItemPos itemPos;   // どこにあるか？
 
     // GetSet
@@ -75,11 +74,6 @@ public class TangoCard extends RealmObject implements TangoItem{
 
     public byte[] getHistory() { return history; }
     public void setHistory(byte[] history) { this.history = history; }
-
-    public boolean isChecked() { return isChecked; }
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
 
     public TangoItemPos getItemPos() {
         return itemPos;

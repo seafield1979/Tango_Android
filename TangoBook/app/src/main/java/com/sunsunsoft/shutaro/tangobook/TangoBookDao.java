@@ -145,6 +145,10 @@ public class TangoBookDao {
         mRealm.beginTransaction();
         mRealm.copyToRealm(book);
         mRealm.commitTransaction();
+
+        // 位置情報を追加（単語帳はホームにしか作れないので作成場所にホームを指定）
+        TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
+        book.setItemPos(itemPos);
     }
 
     /**

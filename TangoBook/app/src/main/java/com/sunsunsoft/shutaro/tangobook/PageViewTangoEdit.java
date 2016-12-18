@@ -191,6 +191,18 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         addBookIcon();
     }
 
+    // プリセットの単語帳を追加する
+    private void addPresetBook() {
+        TangoBook book = PresetBookManager.getInstance().test1();
+
+        // DBの情報を元にアイコンを追加する
+        UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
+        iconManager.addIcon(book, AddPos.Tail);
+        mIconWinManager.getMainWindow().sortIcons(false);
+
+        mParentView.invalidate();
+    }
+
     /**
      * Edit icon
      */
@@ -291,21 +303,20 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             case AddDummyBook:
                 addDummyBook();
                 break;
+            case AddPresetBook:
+                addPresetBook();
+                break;
             case SortTop:
                 break;
             case Sort1:
                 break;
             case Sort2:
                 break;
-            case Sort3:
-                break;
             case ListTypeTop:
                 break;
             case ListType1:
                 break;
             case ListType2:
-                break;
-            case ListType3:
                 break;
             case Debug1:
                 // ログウィンドウの表示切り替え

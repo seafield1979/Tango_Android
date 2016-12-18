@@ -119,10 +119,7 @@ public class UIconManager implements UIconCallbacks{
         switch (copySrc.getType()) {
             case Card: {
                 TangoCard card = (TangoCard)copySrc.getTangoItem();
-                RealmManager.getCardDao().addOne(card);
-                TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, TangoParentType
-                        .Home, 0);
-                card.setItemPos(itemPos);
+                RealmManager.getCardDao().addOne(card, TangoParentType.Home, 0);
                 icon = new IconCard(card, mParentWindow, this);
             }
             break;
@@ -131,8 +128,6 @@ public class UIconManager implements UIconCallbacks{
                 TangoBook book = (TangoBook)copySrc.getTangoItem();
 
                 RealmManager.getBookDao().addOne(book);
-                TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
-                book.setItemPos(itemPos);
                 icon = new IconBook(book, mParentWindow, this);
 
             }
@@ -178,9 +173,7 @@ public class UIconManager implements UIconCallbacks{
         switch (type) {
             case Card: {
                 TangoCard card = TangoCard.createDummyCard();
-                RealmManager.getCardDao().addOne(card);
-                TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, parentType, parentId);
-                card.setItemPos(itemPos);
+                RealmManager.getCardDao().addOne(card, parentType, parentId);
                 icon = new IconCard(card, mParentWindow, this);
             }
                 break;
@@ -188,8 +181,6 @@ public class UIconManager implements UIconCallbacks{
             {
                 TangoBook book = TangoBook.createDummyBook();
                 RealmManager.getBookDao().addOne(book);
-                TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
-                book.setItemPos(itemPos);
                 icon = new IconBook(book, mParentWindow, this);
             }
                 break;
