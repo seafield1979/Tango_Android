@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import java.util.List;
+
 /**
  * Created by shutaro on 2016/12/05.
  *
@@ -34,6 +36,8 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      * Constants
      */
     public static final String TAG = "TopView";
+
+    private static final int MARGIN_H = 50;
 
     /**
      * Member varialbes
@@ -193,14 +197,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
     // プリセットの単語帳を追加する
     private void addPresetBook() {
-        TangoBook book = PresetBookManager.getInstance().test1();
-
-        // DBの情報を元にアイコンを追加する
-        UIconManager iconManager = mIconWinManager.getMainWindow().getIconManager();
-        iconManager.addIcon(book, AddPos.Tail);
-        mIconWinManager.getMainWindow().sortIcons(false);
-
-        mParentView.invalidate();
+        PageViewManager.getInstance().stackPage(PageView.PresetBook);
     }
 
     /**

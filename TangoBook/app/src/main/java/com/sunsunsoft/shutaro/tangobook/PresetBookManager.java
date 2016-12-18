@@ -31,6 +31,13 @@ public class PresetBookManager {
     private Context mContext;
 
     /**
+     * Get/Set
+     */
+    public List<PresetBook> getBooks() {
+        return mBooks;
+    }
+
+    /**
      * Constructor
      */
     // Singletonオブジェクト

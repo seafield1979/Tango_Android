@@ -1042,15 +1042,14 @@ public class UIconWindow extends UWindow {
         if (!isShow) return false;
         if (state == WindowState.icon_moving) return false;
 
+        if (offset == null) {
+            offset = new PointF(pos.x, pos.y);
+        }
         if (super.touchEvent(vt, offset)) {
             return true;
         }
-        boolean done = false;
 
-        // 範囲外なら除外
-        if (!(rect.contains((int)vt.touchX(), (int)vt.touchY()))) {
-            return false;
-        }
+        boolean done = false;
 
         List<UIcon> icons = getIcons();
         if (icons != null) {
@@ -1109,7 +1108,12 @@ public class UIconWindow extends UWindow {
             if (scrollView(vt)){
                 done = true;
             }
+
+            if (super.touchEvent2(vt, offset)) {
+                return true;
+            }
         }
+
         return done;
     }
 

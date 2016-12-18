@@ -3,19 +3,19 @@
     <comment>動物</comment>
     <cards>
         <xmlTangoCard>
-            <name>cat</name>
-            <word>猫</word>
-            <int1>かわいい</int1>
+            <wordA>cat</wordA>
+            <wordB>猫</wordB>
+            <comment>かわいい</comment>
         </xmlTangoCard>
         <xmlTangoCard>
-            <name>dog</name>
-            <word>犬</word>
-            <int1>賢い</int1>
+            <wordA>dog</wordA>
+            <wordB>犬</wordB>
+            <comment>賢い</comment>
         </xmlTangoCard>
         <xmlTangoCard>
-            <name>bird</name>
-            <word>鳥</word>
-            <int1>飛ぶ</int1>
+            <wordA>bird</wordA>
+            <wordB>鳥</wordB>
+            <comment>飛ぶ</comment>
         </xmlTangoCard>
     </cards>
 </xmlTangoBook>

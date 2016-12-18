@@ -34,6 +34,7 @@
     <string name="title_study2">学習する単語帳を選択</string>
     <string name="title_studying">単語帳学習</string>
     <string name="title_study_select">学習する</string>
+    <string name="title_preset_book">プリセット単語帳</string>
     <string name="title_history">履歴</string>
     <string name="title_settings">設定</string>
     <string name="title_help">ヘルプ</string>
@@ -84,5 +85,7 @@
     <string name="confirm_restore">バックアップから復元しますか？</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
     <string name="finish_restore">復元が完了しました</string>
+
+    <string name="preset_title2">Addボタンをタップしてプリセットを追加します</string>
 
 </resources>

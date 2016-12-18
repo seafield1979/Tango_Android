@@ -18,6 +18,7 @@ enum PageView {
     StudyResult,        // 単語帳結果
     History,            // 履歴
     Settings,           // 設定
+    PresetBook,         // プリセット単語帳選択
     Help,               // ヘルプ
     Debug               // Debug
     ;
@@ -69,6 +70,11 @@ public class PageViewManager extends UPageViewManager{
         // TangoResult
         page = new PageViewResult(mContext, mParentView, UResourceManager.getStringById(R.string.title_result));
         pages[PageView.StudyResult.ordinal()] = page;
+
+        // Preset Book
+        page = new PageViewPresetBook(mContext, mParentView, UResourceManager.getStringById(R.string.title_preset_book));
+        pages[PageView.PresetBook.ordinal()] = page;
+
 
         // History
         page = new PageViewHistory(mContext, mParentView, UResourceManager.getStringById(R.string.title_history));

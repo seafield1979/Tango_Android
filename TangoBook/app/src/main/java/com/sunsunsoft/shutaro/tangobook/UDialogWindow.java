@@ -522,6 +522,10 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
         boolean isRedraw = false;
 
+        if (super.touchEvent(vt, offset)) {
+            return true;
+        }
+
         // タッチアップ処理(Button)
         for (UButton button : mButtons) {
             if (button.touchUpEvent(vt)) {
@@ -554,8 +558,8 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             if (vt.type == TouchType.Touch) {
                 if (!getDialogRect().contains(vt.touchX(), vt.touchY())) {
                     startClosing();
-                    return true;
                 }
+                return true;
             }
         }
         // モーダルなら他のオブジェクトにタッチ処理を渡さない
@@ -569,7 +573,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
             }
         }
 
-        if (super.touchEvent(vt, offset)) {
+        if (super.touchEvent2(vt, offset)) {
             return true;
         }
 

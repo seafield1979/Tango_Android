@@ -8,6 +8,8 @@ import android.graphics.Rect;
 
 /**
  * Created by shutaro on 2016/12/11.
+ *
+ * 学習結果ListView(ListViewResult)のアイテム
  */
 
 public class ListItemResult extends UListItem implements UButtonCallbacks {

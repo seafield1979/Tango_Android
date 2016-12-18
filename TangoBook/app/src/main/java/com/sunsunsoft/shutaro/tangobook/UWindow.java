@@ -470,13 +470,16 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     }
 
     /**
-     * タッチイベント処理
+     * タッチイベント処理、子クラスのタッチイベント処理より先に呼び出す
      * @param vt
      * @return true:再描画
      */
     public boolean touchEvent(ViewTouch vt, PointF offset) {
+        if (offset == null) {
+            offset = new PointF(pos.x, pos.y);
+        }
         if (closeIcon != null && closeIcon.isShow()) {
-            if (closeIcon.touchEvent(vt, pos)) {
+            if (closeIcon.touchEvent(vt, offset)) {
                 return true;
             }
         }
@@ -488,6 +491,20 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         }
         if (mScrollBarH.touchEvent(vt) && mScrollBarH.isShow()) {
             contentTop.x = mScrollBarH.getTopPos();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 子クラスのタッチ処理の後に呼び出すタッチイベント
+     * @param vt
+     * @param offset
+     * @return
+     */
+    public boolean touchEvent2(ViewTouch vt, PointF offset) {
+        // 配下にタッチイベントを送らないようにウィンドウ内がタッチされたらtureを返す
+        if (rect.contains((int)vt.touchX(offset.x), (int)vt.touchY(offset.y))) {
             return true;
         }
         return false;

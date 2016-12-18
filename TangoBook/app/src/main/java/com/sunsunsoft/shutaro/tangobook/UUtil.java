@@ -74,6 +74,7 @@ public class UUtil {
      * @return
      */
     public static String convDateFormat(Date date) {
+        if (date == null) return null;
         final DateFormat df = new SimpleDateFormat(UResourceManager.getStringById(R
                 .string.date_format2));
         return df.format(date);

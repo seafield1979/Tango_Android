@@ -119,6 +119,13 @@ public class PreStudyWindow extends UWindow {
     public boolean touchEvent(ViewTouch vt, PointF offset) {
         if (!isShow) return false;
 
+        if (offset == null) {
+            offset = new PointF(pos.x, pos.y);
+        }
+        if (super.touchEvent(vt, offset)) {
+            return true;
+        }
+
         boolean isRedraw = false;
 
         for (UButton button : buttons) {
@@ -129,11 +136,12 @@ public class PreStudyWindow extends UWindow {
         }
         for (UButton button : buttons) {
             if (button == null) continue;
-            if (button.touchEvent(vt, pos)) {
+            if (button.touchEvent(vt, offset)) {
                 return true;
             }
         }
-        if (super.touchEvent(vt, offset)) {
+
+        if (super.touchEvent2(vt, offset)) {
             return true;
         }
 
