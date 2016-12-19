@@ -31,6 +31,12 @@ public class UScrollWindow extends UWindow {
      * Constructor
      */
     public UScrollWindow(UWindowCallbacks callbacks, int priority, float x, float y, int width, int
+            height, int color)
+    {
+        this(callbacks, priority, x, y, width, height, color, 0, 0, 0);
+    }
+
+    public UScrollWindow(UWindowCallbacks callbacks, int priority, float x, float y, int width, int
             height, int color, int topBarH, int frameW, int frameH)
     {
         super(callbacks, priority, x, y, width, height, color, topBarH, frameW, frameH);
