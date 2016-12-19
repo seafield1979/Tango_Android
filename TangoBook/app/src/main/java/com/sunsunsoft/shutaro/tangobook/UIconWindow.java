@@ -820,7 +820,11 @@ public class UIconWindow extends UWindow {
                         ret.isDroped = true;
                         break;
                     case Book:
-                        if (dragedIcon.getType() != IconType.Card) break;
+                        if (dragedIcon.getType() != IconType.Card) {
+                            ret.movingType = IconMovingType.Exchange;
+                            ret.isDroped = true;
+                            break;
+                        }
                     case Trash:
                         // Containerの中に挿入する　
                         moveIconIn(dragedIcon, dropIcon);
@@ -1087,14 +1091,18 @@ public class UIconWindow extends UWindow {
                 }
                 break;
             case MoveEnd:
-                if (state == WindowState.drag) {
-                    if (dragEndNormal(vt)) {
-                        done = true;
-                    }
-                } else {
-                    if (dragEndChecked(vt)) {
-                        done = true;
-                    }
+                switch(state) {
+                    case none:
+                    case drag:
+                        if (dragEndNormal(vt)) {
+                            done = true;
+                        }
+                        break;
+                    case icon_selecting:
+                        if (dragEndChecked(vt)) {
+                            done = true;
+                        }
+                        break;
                 }
                 break;
             case MoveCancel:

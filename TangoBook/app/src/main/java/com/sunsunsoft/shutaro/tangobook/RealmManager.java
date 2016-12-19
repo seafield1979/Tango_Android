@@ -148,14 +148,9 @@ public class RealmManager {
      */
     public static void restore() {
 
+        realm.close();
         //Restore
-        String FileName = DefaultFileName;
-
-        String restoreFilePath = context.getExternalFilesDir(null) + "/" + FileName;
-
-        Log.d(TAG, "oldFilePath = " + restoreFilePath);
-
-        copyBundledRealmFile(restoreFilePath, FileName);
+        copyBundledRealmFile();
 
         Log.d(TAG, "Data restore is done");
 
@@ -164,19 +159,16 @@ public class RealmManager {
 
     /**
      *
-     * @param oldFilePath
-     * @param outFileName
      * @return
      */
-    private static String copyBundledRealmFile(String oldFilePath, String outFileName) {
+    private static String copyBundledRealmFile() {
         try {
-            // output file path
-            File file = new File(getBackupPath(), outFileName);
+            // バックアップ元ファイル
+            File backupFile = new File(getBackupPath(), DefaultFileName);
+            FileInputStream inputStream = new FileInputStream(backupFile);
 
-            Log.d(TAG, "context.getFilesDir() = " + context.getFilesDir().toString());
-            FileOutputStream outputStream = new FileOutputStream(file);
-
-            FileInputStream inputStream = new FileInputStream(new File(oldFilePath));
+            // バックアップ先(Realmのデフォルトのファイルパス)
+            FileOutputStream outputStream = new FileOutputStream(realm.getPath());
 
             byte[] buf = new byte[1024];
             int bytesRead;
@@ -184,7 +176,7 @@ public class RealmManager {
                 outputStream.write(buf, 0, bytesRead);
             }
             outputStream.close();
-            return file.getAbsolutePath();
+            return backupFile.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -26,7 +26,6 @@ public class IconBook extends IconContainer {
     private static final int TEXT_PAD_X = 10;
     private static final int TEXT_PAD_Y = 10;
 
-    private static final int DISP_TITLE_LEN = 6;
     private static final int TEXT_SIZE = 40;
     private static final int ICON_COLOR = Color.rgb(100,200,100);
 

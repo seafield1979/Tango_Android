@@ -25,6 +25,9 @@ interface UIconCallbacks {
  */
 abstract public class UIcon extends UDrawable {
 
+    /**
+     * Constants
+     */
     private static final String TAG = "UIcon";
     private static final int DRAW_PRIORITY = 200;
     public static final int DRAG_ICON_PRIORITY = 10;
@@ -35,6 +38,12 @@ abstract public class UIcon extends UDrawable {
     // タッチ領域の拡張幅
     protected static final int TOUCH_MARGIN = 30;
 
+    public static final int DISP_TITLE_LEN = 8;
+
+
+    /**
+     * Member variables
+     */
     private static int count;
 
     public int id;

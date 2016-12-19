@@ -18,7 +18,6 @@ public class IconCard extends UIcon{
      */
     private static final int ICON_W = 120;
     private static final int ICON_H = 120;
-    private static final int DISP_TITLE_LEN = 6;
     private static final int ICON_COLOR = Color.rgb(100,100,200);
 
     /**

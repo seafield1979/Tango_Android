@@ -35,7 +35,7 @@
     <string name="title_studying">単語帳学習</string>
     <string name="title_study_select">学習する</string>
     <string name="title_preset_book">プリセット単語帳</string>
-    <string name="title_history">履歴</string>
+    <string name="title_history">学習の記録</string>
     <string name="title_settings">設定</string>
     <string name="title_help">ヘルプ</string>
     <string name="title_debug">Debug</string>
@@ -54,7 +54,7 @@
     <string name="last">最終学習日時</string>
     <string name="start">開始</string>
     <string name="cancel">キャンセル</string>
-    <string name="history_book">単語帳の学習履歴</string>
+    <string name="history_book">単語帳の学習記録</string>
 
     <string name="study_type">出題方法</string>
     <string name="e_to_j">英 > 日</string>

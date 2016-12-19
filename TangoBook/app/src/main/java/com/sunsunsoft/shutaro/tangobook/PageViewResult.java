@@ -97,8 +97,8 @@ public class PageViewResult extends UPageView
 
         float y = TOP_Y;
         // Title
-        String title = UResourceManager.getStringById(R.string
-                .preset_title2);
+        String title = String.format(UResourceManager.getStringById(R.string
+                .title_result2), mBook.getName());
         mTitleText = UTextView.createInstance(title,
                 TITLE_TEXT_SIZE,
                 DRAW_PRIORITY,
