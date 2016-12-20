@@ -24,12 +24,13 @@ public class UColor extends Color {
     public static final int DarkGreen = 0xFF006400;
     public static final int DarkOrange = 0xFFFF8C00;
     public static final int DarkRed = 0xFF8B0000;
+    public static final int DarkYellow = 0xFF8B0000;
     public static final int DarkViolet = 0xFF9400D3;
     public static final int DeepPink = 0xFF1493;
     public static final int Gold = 0xFFFFD700;
     public static final int Gray = 0xFF808080;
     public static final int Green = 0xFF008000;
-    public static final int GreenYellow = 0xFFADFF2F;
+    public static final int GreenYellow = 0xFF746508;
     public static final int HotPink = 0xFFFF69B4;
     public static final int Indigo = 0xFF4B0082;
     public static final int LightBlue = 0xFFADD8E6;
@@ -37,6 +38,7 @@ public class UColor extends Color {
     public static final int LightGreen = 0xFF90EE90;
     public static final int LightGray = 0xFFD3D3D3;
     public static final int LightPink = 0xFFFFB6C1;
+    public static final int LightRed = 0xFFEE9090;
     public static final int LightSalmon = 0xFFFFA07A;
     public static final int LightSkyBlue = 0xFF87CEFA;
     public static final int LightYellow = 0xFFFFFFE0;

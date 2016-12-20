@@ -226,7 +226,7 @@ public class PageViewStudy extends UPageView
                     mConfirmDialog.addToDrawManager();
                     mConfirmDialog.setTitle(mContext.getString(R.string.confirm_exit));
                     mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
-                    mConfirmDialog.addCloseButton("Cancel");
+                    mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
                 }
                 break;
             case ButtonIdOk:

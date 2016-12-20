@@ -61,7 +61,7 @@ public class ListItemStudyBook extends UListItem {
         mBook = book;
 
         // 単語帳名
-        mTextName = UResourceManager.getStringById(R.string.book_name) + " : " + book.getName();
+        mTextName = UResourceManager.getStringById(R.string.book_name2) + " : " + book.getName();
 
         // カード数 & 覚えていないカード数
         int count = RealmManager

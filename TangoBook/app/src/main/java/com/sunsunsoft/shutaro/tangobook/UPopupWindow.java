@@ -45,7 +45,7 @@ public class UPopupWindow extends UDialogWindow {
             addButton(OKButtonId, "OK", Color.BLACK, Color.LTGRAY);
         } else {
             addButton(OKButtonId, "OK", Color.BLACK, Color.LTGRAY);
-            addCloseButton("cancel");
+            addCloseButton(UResourceManager.getStringById(R.string.cancel));
         }
     }
 

@@ -342,7 +342,16 @@ public class UDraw {
             drawLine(canvas, textPaint, x, y - 50, x, y + 50, 3, Color.YELLOW);
         }
 
-        Size size = getTextSize(canvas.getWidth(), text, textSize);
+
+        // 改行ができるようにTextPaintとStaticLayoutを使用する
+        textPaint.setTextSize(textSize);
+        textPaint.setColor(color);
+
+        StaticLayout mTextLayout = new StaticLayout(text, textPaint,
+                canvas.getWidth() * 4 / 5, Layout.Alignment.ALIGN_NORMAL,
+                1.0f, 0.0f, false);
+
+        Size size = getTextSize(mTextLayout);
         switch (alignment) {
             case CenterX:
                 x = x - size.width / 2;
@@ -357,14 +366,6 @@ public class UDraw {
             case None:
                 break;
         }
-
-        // 改行ができるようにTextPaintとStaticLayoutを使用する
-        textPaint.setTextSize(textSize);
-        textPaint.setColor(color);
-
-        StaticLayout mTextLayout = new StaticLayout(text, textPaint,
-                canvas.getWidth() * 4 / 5, Layout.Alignment.ALIGN_NORMAL,
-                1.0f, 0.0f, false);
 
         canvas.save();
         canvas.translate(x, y);
@@ -388,9 +389,25 @@ public class UDraw {
         TextPaint textPaint = new TextPaint();
         textPaint.setTextSize(textSize);
         StaticLayout textLayout = new StaticLayout(text, textPaint,
-                canvasW, Layout.Alignment.ALIGN_NORMAL,
+                canvasW * 4 / 5, Layout.Alignment.ALIGN_NORMAL,
                 1.0f, 0.0f, false);
 
+        int height = textLayout.getHeight();
+        int maxWidth = 0;
+        int _width;
+
+        // 各行の最大の幅を計算する
+        for (int i = 0; i < textLayout.getLineCount(); i++) {
+            _width = (int)textLayout.getLineWidth(i);
+            if (_width > maxWidth) {
+                maxWidth = _width;
+            }
+        }
+
+        return new Size(maxWidth, height);
+    }
+
+    private static Size getTextSize(StaticLayout textLayout) {
         int height = textLayout.getHeight();
         int maxWidth = 0;
         int _width;

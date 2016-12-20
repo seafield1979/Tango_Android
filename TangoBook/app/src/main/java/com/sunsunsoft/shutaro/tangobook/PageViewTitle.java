@@ -16,20 +16,22 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
      * Enums
      */
     enum ButtonId {
-        Edit(R.string.title_edit, Color.rgb(100, 200, 100)),
-        Study(R.string.title_study, Color.rgb(200,100,100)),
-        History(R.string.title_history, Color.rgb(200,200,0)),
-        Settings(R.string.title_settings, Color.rgb(153,204,255)),
-        Help(R.string.title_help, Color.rgb(255,178,102)),
-        Debug(R.string.title_debug, Color.rgb(150,150,150)),
+        Edit(R.string.title_edit, UColor.White, Color.rgb(100, 200, 100)),
+        Study(R.string.title_study, Color.WHITE, Color.rgb(200,100,100)),
+        History(R.string.title_history, UColor.DarkYellow, Color.rgb(200,200,0)),
+        Settings(R.string.title_settings, UColor.DarkBlue, Color.rgb(153,204,255)),
+        Help(R.string.title_help, UColor.White, Color.rgb(255,178,102)),
+        Debug(R.string.title_debug, UColor.WHITE, Color.rgb(150,150,150)),
         ;
 
         private int textId;
-        private int color;
+        private int textColor;
+        private int bgColor;
 
-        ButtonId(int textId, int color) {
+        ButtonId(int textId, int textColor, int bgColor) {
             this.textId = textId;
-            this.color = color;
+            this.textColor = textColor;
+            this.bgColor = bgColor;
         }
         String getTitle(Context context) {
             return context.getString(textId);
@@ -91,7 +93,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
      */
     public void initDrawables() {
         int width = mParentView.getWidth();
-        float y = TOP_Y;
+        int height = mParentView.getHeight();
 
         UButtonType buttonType;
 
@@ -99,13 +101,27 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         UDrawManager.getInstance().init();
 
         // ボタンの配置
-        // 1行に２つづつ配置
-        float x;
-        int buttonW = BUTTON_W;
-        if (buttonW * 2 + MARGIN_H * 3 > width) {
-            buttonW = (width - MARGIN_H * 3) / 2;
+        // 横向きなら３列、縦向きなら３列
+        int columnNum;
+        int rowNum;
+        if( width > mParentView.getHeight()) {
+            columnNum = 3;
+            rowNum =2;
+        } else {
+            columnNum = 2;
+            rowNum = 3;
         }
+
+        int buttonW = (width - (columnNum + 1) * MARGIN_H) / columnNum;
+        int buttonH = (height - (rowNum + 1) * MARGIN_H) / rowNum;
+        float x = MARGIN_H;
+        float y = MARGIN_V;
+
         for (int i = 0; i< mButtons.length; i++) {
+            if (i != 0 && (i % columnNum) == 0) {
+                x = MARGIN_H;
+                y += buttonH + MARGIN_H;
+            }
             ButtonId id = ButtonId.values()[i];
 
             // デバッグモードがONの場合のみDebugを表示
@@ -115,21 +131,15 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
 
             buttonType = UButtonType.Press;
 
-            if (i % 2 == 0) {
-                x = width / 2 - buttonW - MARGIN_H / 2;
-            } else {
-                x = width / 2 + MARGIN_H / 2;
-            }
             mButtons[i] = new UButtonText(this, buttonType, id.ordinal(), DRAW_PRIORITY,
                     id.getTitle(mContext), x, y,
-                    buttonW, buttonW,
-                    TEXT_SIZE, Color.WHITE, id.color);
+                    buttonW, buttonH,
+                    TEXT_SIZE, id.textColor, id.bgColor);
 
 
             UDrawManager.getInstance().addDrawable(mButtons[i]);
-            if (i % 2 == 1) {
-                y += buttonW + MARGIN_V;
-            }
+
+            x += buttonW + MARGIN_H;
         }
     }
 

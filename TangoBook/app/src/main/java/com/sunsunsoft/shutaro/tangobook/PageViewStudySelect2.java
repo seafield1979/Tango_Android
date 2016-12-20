@@ -24,6 +24,7 @@ public class PageViewStudySelect2 extends UPageView
     private static final int TOP_Y = 50;
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 50;
+    private static final int MARGIN_V_S = 30;
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
 
@@ -99,7 +100,7 @@ public class PageViewStudySelect2 extends UPageView
         int height = mParentView.getHeight();
 
         float x = MARGIN_H;
-        float y = TOP_Y;
+        float y = MARGIN_V_S;
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
@@ -108,10 +109,10 @@ public class PageViewStudySelect2 extends UPageView
                 UAlignment.CenterX, width, false, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.size.height;
+        y += mTitleText.size.height + MARGIN_V_S;
 
         // ListView
-        int listViewH = height - (MARGIN_H * 3 + mTitleText.size.height + BUTTON_H);
+        int listViewH = height - (MARGIN_V_S * 3 + mTitleText.size.height);
         mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
@@ -127,19 +128,19 @@ public class PageViewStudySelect2 extends UPageView
             mListView.add(listItem);
         }
 
-        y += listViewH + MARGIN_H;
+        y += listViewH + MARGIN_V_S;
 
         // Button
-        mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
-                DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
-                (width - BUTTON_W)/2, y, BUTTON_W, BUTTON_H, 50, Color.WHITE, Color.rgb(100,200,
-                100));
-        mReturnButton.addToDrawManager();
-
+        if (false) {
+            mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
+                    DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
+                    (width - BUTTON_W) / 2, y, BUTTON_W, BUTTON_H, 50, Color.WHITE, Color.rgb(200, 100,
+                    100));
+            mReturnButton.addToDrawManager();
+        }
         // PreStudyWindow 学習開始前に設定を行うウィンドウ
-        mPreStudyWindow = new PreStudyWindow( this, this, mParentView);
+        mPreStudyWindow = new PreStudyWindow(this, this, mParentView);
         mPreStudyWindow.addToDrawManager();
-
     }
 
     private void initListView() {
@@ -151,7 +152,7 @@ public class PageViewStudySelect2 extends UPageView
      * @return
      */
     public boolean onBackKeyDown() {
-        if (mPreStudyWindow.isShow()) {
+        if (mPreStudyWindow != null && mPreStudyWindow.isShow()) {
             mPreStudyWindow.setShow(false);
             return true;
         }

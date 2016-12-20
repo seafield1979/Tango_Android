@@ -205,7 +205,7 @@ public class PreStudyWindow extends UWindow {
         String title = UResourceManager.getInstance().getStringById(R.string.book) + " : " + mBook
                 .getName();
         textTitle = UTextView.createInstance( title, TEXT_SIZE_3, 0,
-                UAlignment.CenterX, screenW, false, true,
+                UAlignment.CenterX, screenW, false, false,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += textTitle.getHeight() + MARGIN_V;
 
@@ -216,7 +216,7 @@ public class PreStudyWindow extends UWindow {
         textCount = UTextView.createInstance(
                 cardCount,
                 TEXT_SIZE, 0,
-                UAlignment.CenterX, screenW, false, true,
+                UAlignment.CenterX, screenW, false, false,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
         y += textCount.getHeight() + MARGIN_V;
 
@@ -226,10 +226,9 @@ public class PreStudyWindow extends UWindow {
                 UResourceManager.getStringById(R.string
                 .last_studied_date) + ": " + UUtil.convDateFormat(date, ConvDateMode.DateTime),
                 TEXT_SIZE_2, 0,
-                UAlignment.CenterX, screenW, false, true,
+                UAlignment.CenterX, screenW, false, false,
                 width / 2, y, TITLE_WIDTH, TEXT_DATE_COLOR, 0);
         y += textLastStudied.getHeight() + MARGIN_V;
-
 
         /**
          * Buttons
@@ -261,7 +260,7 @@ public class PreStudyWindow extends UWindow {
                 TEXT_SIZE_2, 0,
                 UAlignment.None, screenW, false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += TEXT_SIZE_2 + 20;
+        y += textOption1.getHeight();
 
         // 英語->日本語 Button
         buttons[ButtonId.Option1_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
@@ -286,7 +285,7 @@ public class PreStudyWindow extends UWindow {
                 TEXT_SIZE_2, 0,
                 UAlignment.None, screenW, false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
-        y += TEXT_SIZE_2 + 20;
+        y += textOption2.getHeight();
 
         // 順番通り
         buttons[ButtonId.Option2_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
@@ -312,7 +311,7 @@ public class PreStudyWindow extends UWindow {
                 TEXT_SIZE_2, 0,
                 UAlignment.None, screenW, false, false,
                 MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += TEXT_SIZE_2 + 20;
+        y += textOption3.getHeight();
 
         // すべて
         buttons[ButtonId.Option3_1.ordinal()] = new UButtonText(this, UButtonType.Press3,

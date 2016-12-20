@@ -259,7 +259,7 @@ public class PageViewPresetBook extends UPageView
                     String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book), book.getBook().mName);
                     mConfirmDialog.setTitle(title);
                     mConfirmDialog.addButton(ButtonIdAddOk, "OK", Color.BLACK, Color.WHITE);
-                    mConfirmDialog.addCloseButton("Cancel");
+                    mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
                     // クリックされた項目のBookを記憶しておく
                     mBook = book.getBook();

@@ -125,7 +125,7 @@ public class UTextView extends UDrawable {
         if (isDrawBG) {
             size = addBGPadding(size);
         }
-        setSize(this.size.width, size.height);
+        setSize(size.width, size.height);
     }
 
     /**

@@ -29,6 +29,9 @@ public class MySharedPref {
     // Realmバックアップ保存場所
     public static final String RealmBackupPathKey = "RealmBackupPath";
 
+    // Realmバックアップ日時
+    public static final String RealmBackupDateKey = "RealmBackupDate";
+
     /**
      * Static varialbes
      */

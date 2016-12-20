@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import java.util.Date;
+
 /**
  * Created by shutaro on 2016/12/05.
  *
@@ -22,6 +24,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     private static final int TOP_Y = 50;
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 50;
+    private static final int MARGIN_V_S = 20;
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
     private static final int BUTTON2_W = 350;
@@ -29,9 +32,8 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
 
     private static final int TITLE_TEXT_SIZE = 70;
     private static final int TITLE_TEXT_COLOR = Color.rgb(150,150,50);
-    private static final int TEXT_SIZE_S = 35;
+    private static final int TEXT_SIZE_S = 40;
     private static final int TEXT_SIZE = 50;
-    private static final int TEXT_COLOR = Color.WHITE;
 
     private static final int ButtonIdBackup = 100;
     private static final int ButtonIdRestore = 101;
@@ -43,8 +45,16 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     /**
      * Member variables
      */
+
+    // バックアップタイトル
     private UTextView mBackupTitle;
+
+    // バックアップパス
     private UTextView mBackupPath;
+
+    // バックアップ日時
+    private UTextView mBackupDate;
+
     private UButtonText mBackupButton;
     private UButtonText mRestoreButton;
     private UButtonText mReturnButton;
@@ -106,7 +116,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
+        float x;
         float y = TOP_Y;
 
         // Backup
@@ -117,40 +127,55 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                 UAlignment.None, width, false, false,
                 MARGIN_H, y, width, Color.BLACK, 0);
         mBackupTitle.addToDrawManager();
-        y += mBackupTitle.size.height;
+        y += mBackupTitle.size.height + MARGIN_V_S;
 
-        // backup path
-        mBackupPath = UTextView.createInstance(
-                MySharedPref.readString(MySharedPref.RealmBackupPathKey),
+        // backup file path
+        String backupPath = MySharedPref.readString(MySharedPref.RealmBackupPathKey);
+        if (backupPath.length() == 0) {
+            backupPath = UResourceManager.getStringById(R.string.no_backup);
+        }
+        mBackupPath = UTextView.createInstance(backupPath,
                 TEXT_SIZE, DRAW_PRIORITY,
                 UAlignment.None, width, true, true,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, Color.LTGRAY);
+                MARGIN_H, y, 0, UColor.DarkGreen, Color.LTGRAY);
         mBackupPath.addToDrawManager();
         y += mBackupPath.size.height + MARGIN_H;
+
+        // backup date time
+        String backupDate = UResourceManager.getStringById(R.string.backup_datetime) + " : " +
+                MySharedPref.readString(MySharedPref.RealmBackupDateKey);
+
+        mBackupDate = UTextView.createInstance( backupDate,
+                TEXT_SIZE_S, DRAW_PRIORITY,
+                UAlignment.None, width, false, false,
+                MARGIN_H, y, width, Color.BLACK, 0);
+        mBackupDate.addToDrawManager();
+        y += mBackupDate.size.height + MARGIN_V;
 
         // backup button
         x = (width - BUTTON2_W * 2 - MARGIN_H) / 2;
         mBackupButton = new UButtonText(this, UButtonType.Press, ButtonIdBackup, DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.backup),
-                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
+                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor.LightGreen);
         mBackupButton.addToDrawManager();
         x += BUTTON2_W + MARGIN_H;
 
         // restore button
         mRestoreButton = new UButtonText(this, UButtonType.Press, ButtonIdRestore, DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.restore),
-                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
+                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, UColor.DarkYellow, UColor.LightYellow);
         mRestoreButton.addToDrawManager();
 
         y += BUTTON_W + MARGIN_V;
 
-        // Button
-        mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
-                DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
-                (width - BUTTON_W)/2, height - BUTTON_H - MARGIN_H, BUTTON_W, BUTTON_H, 50, Color
-                .WHITE, Color.rgb(100,200,
-                100));
-        mReturnButton.addToDrawManager();
+        // 戻るボタン
+        if (false) {
+            mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
+                    DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
+                    (width - BUTTON_W) / 2, height - BUTTON_H - MARGIN_H, BUTTON_W, BUTTON_H, 50,
+                    UColor.DarkRed, UColor.LightRed);
+            mReturnButton.addToDrawManager();
+        }
 
     }
 
@@ -182,8 +207,8 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                         .getHeight());
                 mDialog.addToDrawManager();
                 mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_backup));
-                mDialog.addButton(ButtonIdBackupOK, "OK", Color.BLACK, Color.LTGRAY);
-                mDialog.addCloseButton("Cancel");
+                mDialog.addButton(ButtonIdBackupOK, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
             }
                 break;
             case ButtonIdRestore:
@@ -196,8 +221,8 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                         .getHeight());
                 mDialog.addToDrawManager();
                 mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_restore));
-                mDialog.addButton(ButtonIdRestoreOK, "OK", Color.BLACK, Color.LTGRAY);
-                mDialog.addCloseButton("Cancel");
+                mDialog.addButton(ButtonIdRestoreOK, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
             }
                 break;
             case ButtonIdReturn:
@@ -207,8 +232,14 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                 // バックアップ
                 String filePath = RealmManager.backup();
                 if (filePath != null) {
+                    String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
+
                     mBackupPath.setText(filePath);
+                    mBackupDate.setText(UResourceManager.getStringById(R.string.backup_datetime) +
+                            " : " +
+                            dateTime);
                     MySharedPref.writeString(MySharedPref.RealmBackupPathKey, filePath);
+                    MySharedPref.writeString(MySharedPref.RealmBackupDateKey, dateTime);
                 }
                 mDialog.startClosing();
             }
