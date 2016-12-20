@@ -96,10 +96,13 @@ public class TangoCardHistory extends RealmObject {
     private void toCorrectArray() {
         if (correctFlagsList.size() > CORRECT_HISTORY_MAX) return;
 
-        correctFlagNum = correctFlagsList.size();
+        setCorrectFlagNum(correctFlagsList.size());
+
+        byte[] flags = new byte[CORRECT_HISTORY_MAX];
         for (int i=0; i<correctFlagNum; i++) {
-            correctFlags[i] = correctFlagsList.get(i);
+            flags[i] = correctFlagsList.get(i);
         }
+        setCorrectFlags(flags);
     }
 
     /**
@@ -128,10 +131,11 @@ public class TangoCardHistory extends RealmObject {
     public String getCorrectFlagsAsString() {
         if (correctFlagNum == 0) return "---";
 
-        StringBuffer strBuf = new StringBuffer("");
-        for (Byte flag : correctFlagsList) {
-            strBuf.append((flag == 0) ? "×" : "○");
+        StringBuffer strBuf = new StringBuffer("old ");
+        for (int i=0; i<correctFlagNum; i++) {
+            strBuf.append((correctFlags[i] == 0) ? "×" : "○");
         }
+        strBuf.append(" new");
         return strBuf.toString();
     }
 }

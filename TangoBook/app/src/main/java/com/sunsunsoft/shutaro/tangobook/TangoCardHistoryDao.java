@@ -1,5 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +39,14 @@ public class TangoCardHistoryDao {
      */
     public List<TangoCardHistory> selectAll() {
         RealmResults<TangoCardHistory> results = mRealm.where(TangoCardHistory.class).findAll();
+
+        if (UDebug.debugDAO) {
+            Log.d(TAG, "TangoCardHistory selectAll");
+            for (TangoCardHistory history : results) {
+                Log.d(TAG, "cardId:" + history.getCardId() + " correctNum:" + history.getCorrectFlagNum() + " flags:" + history.getCorrectFlagsAsString());
+            }
+        }
+
         return results;
     }
 

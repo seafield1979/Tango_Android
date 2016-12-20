@@ -26,6 +26,7 @@ public class PageViewResult extends UPageView
     private static final int PRIORITY_LV = 100;
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 50;
+    private static final int MARGIN_V_S = 20;
 
     private static final int TITLE_TEXT_SIZE = 70;
     private static final int DRAW_PRIORITY = 100;
@@ -105,7 +106,7 @@ public class PageViewResult extends UPageView
                 UAlignment.CenterX, width, false, false, width / 2, y, width,
                 TEXT_COLOR, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.size.height;
+        y += mTitleText.size.height + MARGIN_V_S;
 
         // Result
         String text = "OK: " + mOkCards.size() + "  NG: " + mNgCards.size();
@@ -113,7 +114,7 @@ public class PageViewResult extends UPageView
                 UAlignment.CenterX, width, false, false, width / 2, y, width,
                 TEXT_COLOR, 0);
         mResultText.addToDrawManager();
-        y += mResultText.size.height;
+        y += mResultText.size.height + MARGIN_V_S;
 
         // Buttons
         int buttonW = (width - MARGIN_H * 4) / 3;

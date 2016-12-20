@@ -30,6 +30,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
         SelectBook(102),
         SelectBox(103),
         SelectItemPos(104),
+        SelectCardHistory(105),
 
         // DeleteDao のボタン
         DeleteCardAll(201),
@@ -61,6 +62,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
             ids.add(SelectBook);
             ids.add(SelectBox);
             ids.add(SelectItemPos);
+            ids.add(SelectCardHistory);
             return ids;
         }
         // Delete
@@ -144,6 +146,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
                 false,
                 mParentView.getWidth(), mParentView.getHeight(),
                 Color.rgb(200,100,100), Color.WHITE);
+        mDialog.addToDrawManager();
 
         switch(type) {
             case SelectDao:
@@ -230,7 +233,9 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
             case SelectItemPos:
                 RealmManager.getItemPosDao().selectAll();
                 return true;
-
+            case SelectCardHistory:
+                RealmManager.getCardHistoryDao().selectAll();
+                return true;
             // Delete
             case DeleteCardAll:
                 RealmManager.getCardDao().deleteAll();

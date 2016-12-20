@@ -139,8 +139,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         List<ActionIcons> icons = ActionIcons.getCardIcons();
 
-        int width = ICON_W * icons.size() +
-                ICON_MARGIN_H * (icons.size() + 1);
+        int width = ICON_W * icons.size() + ICON_MARGIN_H * (icons.size() + 1) + 100;
         int fontSize = UDraw.getFontSize(FontSize.M);
 
         // カード
@@ -180,7 +179,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
 
         // アクションボタン
-        int x = ICON_MARGIN_H;
+        int x = (width - (ICON_W * icons.size() + MARGIN_H * (icons.size() - 1))) / 2;
         for (ActionIcons icon : icons) {
             UButtonImage imageButton = UButtonImage.createButton( this,
                             icon.ordinal(), 0,
