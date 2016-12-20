@@ -51,6 +51,7 @@ public class PreStudyWindow extends UWindow {
     private static final int BG_COLOR = Color.WHITE;
     private static final int FRAME_COLOR = Color.rgb(120,120,120);
     private static final int TEXT_COLOR = Color.BLACK;
+    private static final int TEXT_DATE_COLOR = UColor.DarkGray;
 
     // button Id
     private static final int ButtonIdOption1_1 = 101;
@@ -206,7 +207,7 @@ public class PreStudyWindow extends UWindow {
         textTitle = UTextView.createInstance( title, TEXT_SIZE_3, 0,
                 UAlignment.CenterX, screenW, false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += TEXT_SIZE_3 + MARGIN_V;
+        y += textTitle.getHeight() + MARGIN_V;
 
         // カード数
         String cardCount = UResourceManager.getStringById(R.string.card_count) + ": " + count +
@@ -217,17 +218,17 @@ public class PreStudyWindow extends UWindow {
                 TEXT_SIZE, 0,
                 UAlignment.CenterX, screenW, false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += TEXT_SIZE + MARGIN_V;
+        y += textCount.getHeight() + MARGIN_V;
 
         // 最終学習日時
         Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(mBook.getId());
         textLastStudied = UTextView.createInstance(
                 UResourceManager.getStringById(R.string
                 .last_studied_date) + ": " + UUtil.convDateFormat(date, ConvDateMode.DateTime),
-                TEXT_SIZE - 5, 0,
+                TEXT_SIZE_2, 0,
                 UAlignment.CenterX, screenW, false, true,
-                width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += TEXT_SIZE + MARGIN_V;
+                width / 2, y, TITLE_WIDTH, TEXT_DATE_COLOR, 0);
+        y += textLastStudied.getHeight() + MARGIN_V;
 
 
         /**

@@ -384,9 +384,9 @@ public class UDraw {
      * @param canvasW
      * @return
      */
-    public static Size getTextSize(int canvasW, String text, int size) {
+    public static Size getTextSize(int canvasW, String text, int textSize) {
         TextPaint textPaint = new TextPaint();
-        textPaint.setTextSize(size);
+        textPaint.setTextSize(textSize);
         StaticLayout textLayout = new StaticLayout(text, textPaint,
                 canvasW, Layout.Alignment.ALIGN_NORMAL,
                 1.0f, 0.0f, false);

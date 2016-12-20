@@ -37,12 +37,14 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
      * Consts
      */
     public static final int WIDTH = 500;
-    public static final int HEIGHT = 250;
+    public static final int MIN_HEIGHT = 150;
 
     protected static final int MOVE_FRAME = 10;
     protected static final int MOVE_IN_FRAME = 20;
 
     protected static final int TEXT_SIZE = 50;
+    protected static final int MARGIN_TEXT_V = 20;
+
     protected static final int TEXT_COLOR = Color.BLACK;
     protected static final int BG_COLOR = Color.WHITE;
     protected static final int FRAME_COLOR = Color.rgb(150,150,150);
@@ -105,8 +107,8 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
      * @param card
      * @param studyType 出題タイプ false:英語 -> 日本語 / true:日本語 -> 英語
      */
-    public StudyCard(TangoCard card, boolean studyType) {
-        super(0, 0, 0, WIDTH, HEIGHT);
+    public StudyCard(TangoCard card, boolean studyType, int canvasW) {
+        super(0, 0, 0, WIDTH, 0);
         if (studyType) {
             wordA = card.getWordB();
             wordB = card.getWordA();
@@ -120,6 +122,15 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
         }
         mState = State.None;
         mCard = card;
+
+        // カードの高さを計算する
+        // WordA,WordBの大きい方の高さに合わせる
+        Size sizeA = UDraw.getTextSize(canvasW, wordA, TEXT_SIZE);
+        Size sizeB = UDraw.getTextSize(canvasW, wordB, TEXT_SIZE);
+        int height = (sizeA.height > sizeB.height) ? sizeA.height : sizeB.height;
+        height += MARGIN_TEXT_V * 2;
+        if (height < MIN_HEIGHT) height = MIN_HEIGHT;
+        size.height = height;
 
         mArrowL = UButtonImage.createButton(this, ButtonIdArrowL, 0,
                 -ARROW_MARGIN - ARROW_W, (size.height - ARROW_H) / 2,

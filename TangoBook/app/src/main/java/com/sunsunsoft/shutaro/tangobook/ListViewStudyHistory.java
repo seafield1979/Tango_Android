@@ -44,7 +44,9 @@ public class ListViewStudyHistory extends UListView{
         for (TangoBookHistory history : histories) {
             ListItemStudiedBook item = ListItemStudiedBook.createHistory( history,
                 width, Color.BLACK, Color.WHITE);
-            add(item);
+            if (item != null) {
+                add(item);
+            }
         }
 
         updateWindow();

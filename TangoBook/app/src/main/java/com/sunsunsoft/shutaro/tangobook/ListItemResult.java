@@ -27,6 +27,8 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
      */
     public static final String TAG = "ListItemResult";
 
+    private static final int MAX_TEXT = 20;
+
     private static final int ButtonIdStar = 100100;
     private static final int TITLE_H = 80;
     private static final int CARD_H = 120;
@@ -91,7 +93,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                 ListItemResultType.OK, true, card,
                 0, width, textColor, bgColor);
 
-        instance.mText = studyMode ? card.getWordB() : card.getWordA();
+        instance.mText = convString(studyMode ? card.getWordB() : card.getWordA());
         instance.size.height = CARD_H;
         instance.mStudyMode = studyMode;
         // Starボタンを追加(On/Offあり)
@@ -113,7 +115,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
         ListItemResult instance = new ListItemResult(null,
                 ListItemResultType.NG, true, card,
                 0, width, textColor, bgColor);
-        instance.mText = studyMode ? card.getWordB() : card.getWordA();
+        instance.mText = convString(studyMode ? card.getWordB() : card.getWordA());
         instance.mStudyMode = studyMode;
         instance.size.height = CARD_H;
         return instance;
@@ -206,5 +208,21 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 表示するためのテキストに変換（改行なし、最大文字数制限）
+     * @param text
+     * @return
+     */
+    private static String convString(String text) {
+        // 改行を除去
+        String _text = text.replace("\n", " ");
+
+        // 最大文字数制限
+        if (_text.length() > MAX_TEXT) {
+            return _text.substring(0, MAX_TEXT - 1);
+        }
+        return _text;
     }
 }

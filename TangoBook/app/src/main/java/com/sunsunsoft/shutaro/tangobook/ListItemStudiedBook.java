@@ -84,6 +84,10 @@ public class ListItemStudiedBook extends UListItem{
                 0, width, textColor, bgColor);
 
         TangoBook book = RealmManager.getBookDao().selectById(history.getBookId());
+        if (book == null) {
+            // 削除されるなどして存在しない場合は表示しない
+            return null;
+        }
 
         instance.mTextDate = String.format("学習日時: %s",
                 UUtil.convDateFormat(history.getStudiedDateTime(), ConvDateMode.DateTime));

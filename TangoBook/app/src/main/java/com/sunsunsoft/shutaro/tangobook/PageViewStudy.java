@@ -32,7 +32,7 @@ public class PageViewStudy extends UPageView
     public static final String TAG = "PageViewStudy";
 
     private static final int TOP_AREA_H = 200;
-    private static final int BOTTOM_AREA_H = 200;
+    private static final int BOTTOM_AREA_H = 300;
     private static final int TEXT_SIZE = 50;
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
@@ -145,7 +145,7 @@ public class PageViewStudy extends UPageView
         // カードスタック
         mCardsStack = new StudyCardsStack(mCardsManager, this,
                 (mParentView.getWidth() - StudyCard.WIDTH) / 2, TOP_AREA_H,
-                StudyCard.WIDTH,
+                screenW, StudyCard.WIDTH,
                 mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
         );
         mCardsStack.addToDrawManager();

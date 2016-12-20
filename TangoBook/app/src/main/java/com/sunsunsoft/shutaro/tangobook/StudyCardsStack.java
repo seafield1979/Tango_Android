@@ -49,7 +49,6 @@ public class StudyCardsStack extends UDrawable {
     /**
      * Member Variables
      */
-    protected int mMaxCardNum;
     protected StudyCardsManager mCardManager;
     protected CardsStackCallbacks cardsStackCallbacks;
 
@@ -89,17 +88,16 @@ public class StudyCardsStack extends UDrawable {
      */
     public StudyCardsStack(StudyCardsManager cardManager,
                            CardsStackCallbacks cardsStackCallbacks,
-                           float x, float y,
+                           float x, float y, int canvasW,
                            int width, int maxHeight)
     {
         super(90, x, y, width, 0 );
 
         this.cardsStackCallbacks = cardsStackCallbacks;
-        mMaxCardNum = maxHeight / (StudyCard.HEIGHT + MARGIN_V);
-        size.height = mMaxCardNum * (StudyCard.HEIGHT + MARGIN_V);
+        size.height = maxHeight;
         mCardManager = cardManager;
 
-        setInitialCards();
+        setInitialCards(canvasW);
     }
 
     /**
@@ -108,10 +106,10 @@ public class StudyCardsStack extends UDrawable {
     /**
      * 初期表示分のカードを取得
      */
-    protected void setInitialCards() {
+    protected void setInitialCards(int canvasW) {
         while(mCardManager.getCardCount() > 0) {
             TangoCard tangoCard = mCardManager.popCard();
-            StudyCard studyCard = new StudyCard(tangoCard, mCardManager.getStudyType());
+            StudyCard studyCard = new StudyCard(tangoCard, mCardManager.getStudyType(), canvasW);
             mCardsInBackYard.add(studyCard);
         }
     }
@@ -122,14 +120,15 @@ public class StudyCardsStack extends UDrawable {
      */
     public boolean doAction() {
         // 表示待ちのカードを表示させるかの判定
-        if (mCardsInBackYard.size() > 0 && mCards.size() <= mMaxCardNum - 1) {
+        if (mCardsInBackYard.size() > 0) {
             boolean startFlag = false;
             if (mCards.size() == 0 ) {
+                // 表示中のカードが0なら無条件で投入
                 startFlag = true;
             } else {
                 // 現在表示中のカードが一定位置より下に来たら次のカードを投入する
                 StudyCard card = mCards.getLast();
-                if (card.pos.y >= StudyCard.HEIGHT) {
+                if (card.pos.y >= card.getHeight()) {
                     startFlag = true;
                 }
             }
@@ -141,8 +140,6 @@ public class StudyCardsStack extends UDrawable {
         // スライドしたカードをボックスに移動する処理
         for (int i=0; i<mCards.size(); i++) {
             StudyCard card = mCards.get(i);
-            // ボックスへの移動開始
-            boolean breakLoop = false;
 
             if (card.getMoveRequest() == StudyCard.RequestToParent.MoveToOK ||
                     card.getMoveRequest() == StudyCard.RequestToParent.MoveToNG)
@@ -157,10 +154,13 @@ public class StudyCardsStack extends UDrawable {
 
                 card.setMoveRequest(StudyCard.RequestToParent.None);
                 // スライドして無くなったすきまを埋めるための移動
+                float bottomY = card.getBottom();
+
                 for (int j=i+1; j<mCards.size(); j++) {
                     StudyCard card2 = mCards.get(j);
-                    card2.startMoving(0, (mMaxCardNum - j) * (StudyCard.HEIGHT + MARGIN_V),
+                    card2.startMoving(0, bottomY - card2.getHeight(),
                             MOVING_FRAME + 5);
+                    bottomY -= card2.getHeight() + MARGIN_V;
                 }
                 mToBoxCards.add(card);
                 mCards.remove(card);
@@ -168,10 +168,6 @@ public class StudyCardsStack extends UDrawable {
                 if (cardsStackCallbacks != null) {
                     cardsStackCallbacks.CardsStackChangedCardNum(getCardCount());
                 }
-            }
-
-            if (breakLoop) {
-                break;
             }
         }
 
@@ -215,15 +211,33 @@ public class StudyCardsStack extends UDrawable {
      * バックヤードから１つカードを補充
      */
     protected void appearCardFromBackYard() {
+        if (mCardsInBackYard.size() == 0) {
+            return;
+        }
+
         // バックヤードから取り出して表示用のリストに追加
-        StudyCard _card = mCardsInBackYard.pop();
-        mCards.add(_card);
+        StudyCard card = mCardsInBackYard.pop();
 
         // 初期座標設定
-        _card.setPos(0, -StudyCard.HEIGHT);
-        float dstY = (mMaxCardNum - mCards.size()) * (StudyCard.HEIGHT + MARGIN_V);
-        _card.startMoving(0, dstY, MOVING_FRAME);
-        _card.setBasePos(0, dstY);
+        card.setPos(0, -card.getHeight());
+
+        float dstY;
+
+        if (mCards.size() > 0) {
+            // スタックの最後のカードの上に配置
+            int height = 0;
+            for (StudyCard _card : mCards) {
+                height += _card.getHeight() + MARGIN_V;
+            }
+            dstY = size.height - height - card.getHeight();
+        } else {
+            dstY = size.height - card.getHeight();
+        }
+
+        mCards.add(card);
+
+        card.startMoving(0, dstY, MOVING_FRAME);
+        card.setBasePos(0, dstY);
     }
 
 
