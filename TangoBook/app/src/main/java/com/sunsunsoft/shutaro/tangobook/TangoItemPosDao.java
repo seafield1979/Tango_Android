@@ -648,7 +648,7 @@ public class TangoItemPosDao {
         LinkedList<Integer> bookIds = new LinkedList<>();
 
         for (TangoItemPos itemPos : results) {
-            if (TangoParentType.toEnum(itemPos.getParentType()) == TangoParentType.Book) {
+            if (TangoItemType.toEnum(itemPos.getItemType()) == TangoItemType.Book) {
                 // Bookなら子要素をまとめて削除
                 deleteItemsByParentType(TangoParentType.Book.ordinal(), itemPos.getItemId(), false);
             }

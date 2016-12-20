@@ -5,8 +5,10 @@
 
     <string name="return1">戻る</string>
     <string name="close">閉じる</string>
-    <string name="date_format">yyyy/MM/dd HH:mm</string>
-    <string name="date_format2">yyyy年MM月dd日 HH:mm</string>
+    <string name="date_format">yyyy/MM/dd</string>
+    <string name="date_format2">yyyy年MM月dd日</string>
+    <string name="datetime_format">yyyy/MM/dd HH:mm</string>
+    <string name="datetime_format2">yyyy年MM月dd日 HH:mm</string>
 
     <string name="app_title">カラフル単語帳</string>
 
@@ -17,7 +19,6 @@
     <string name="comment">コメント</string>
     <string name="book_name">単語帳の名前</string>
     <string name="book_color">単語帳の色</string>
-
     <string name="book_name2">単語帳名</string>
 
 
@@ -27,7 +28,9 @@
     <string name="card">カード</string>
     <string name="book">単語帳</string>
     <string name="card_count">カード数</string>
-    <string name="card_count_not_learned">未収得数</string>
+    <string name="study_history">学習履歴</string>
+
+    <string name="count_not_learned">未収得数</string>
     <string name="item_count">アイテム数</string>
     <string name="title_edit">単語帳を作る</string>
     <string name="title_study">学習する</string>
@@ -50,6 +53,7 @@
     <string name="favorite">お気に入り</string>
     <string name="learned">覚えた</string>
     <string name="return_to_home">元に戻す</string>
+    <string name="studied_date">学習日時</string>
     <string name="last_studied_date">最終学習日時</string>
     <string name="last">最終学習日時</string>
     <string name="start">開始</string>
@@ -86,6 +90,7 @@
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
     <string name="finish_restore">復元が完了しました</string>
     <string name="confirm_add_book">%sを追加しますか？</string>
+    <string name="confirm_add_book2">%sを追加しました</string>
 
     <string name="preset_title2">Addボタンをタップしてプリセットを追加します</string>
 

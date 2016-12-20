@@ -210,7 +210,7 @@ public class PreStudyWindow extends UWindow {
 
         // カード数
         String cardCount = UResourceManager.getStringById(R.string.card_count) + ": " + count +
-                "  " + UResourceManager.getStringById(R.string.card_count_not_learned) + ": " + ngCount;
+                "  " + UResourceManager.getStringById(R.string.count_not_learned) + ": " + ngCount;
 
         textCount = UTextView.createInstance(
                 cardCount,
@@ -223,7 +223,7 @@ public class PreStudyWindow extends UWindow {
         Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(mBook.getId());
         textLastStudied = UTextView.createInstance(
                 UResourceManager.getStringById(R.string
-                .last_studied_date) + ": " + UUtil.convDateFormat(date),
+                .last_studied_date) + ": " + UUtil.convDateFormat(date, ConvDateMode.DateTime),
                 TEXT_SIZE - 5, 0,
                 UAlignment.CenterX, screenW, false, true,
                 width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);

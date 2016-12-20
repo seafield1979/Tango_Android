@@ -106,7 +106,10 @@ public class UScrollBar {
     }
 
     public boolean isShow() {
-        return isShow;
+        if (isShow && barLength > 0) {
+            return true;
+        }
+        return false;
     }
 
     public void setShow(boolean show) {

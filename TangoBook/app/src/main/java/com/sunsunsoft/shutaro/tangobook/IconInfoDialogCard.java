@@ -32,11 +32,10 @@ public class IconInfoDialogCard extends IconInfoDialog {
     private static final String TAG = "IconInfoDialogCard";
     private static final int BG_COLOR = Color.LTGRAY;
     private static final int DLG_MARGIN = 100;
-    private static final int TEXT_VIEW_W = 300;
-    private static final int TEXT_VIEW_H = 100;
     private static final int ICON_W = 120;
     private static final int ICON_MARGIN_H = 30;
     private static final int MARGIN_V = 40;
+    private static final int MARGIN_V_S = 30;
     private static final int MARGIN_H = 40;
     private static final int TEXT_SIZE = 50;
     private static final int TITLE_WIDTH = 100;
@@ -48,9 +47,10 @@ public class IconInfoDialogCard extends IconInfoDialog {
      * Member Variables
      */
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
-    private UTextView textTitle, textWordATitle, textWordBTitle;
+    private UTextView textTitle;
     private UTextView textWordA;
     private UTextView textWordB;
+    private UTextView textHistory;
     private TangoCard mCard;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
 
@@ -119,10 +119,10 @@ public class IconInfoDialogCard extends IconInfoDialog {
                 bgColor, FRAME_WIDTH, FRAME_COLOR);
 
         textTitle.draw(canvas, paint, pos);
-        textWordATitle.draw(canvas, paint, pos);
-        textWordBTitle.draw(canvas, paint, pos);
         textWordA.draw(canvas, paint, pos);
         textWordB.draw(canvas, paint, pos);
+        textHistory.draw(canvas, paint, pos);
+
         // Buttons
         for (UButtonImage button : imageButtons) {
             button.draw(canvas, paint, pos);
@@ -141,13 +141,43 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         int width = ICON_W * icons.size() +
                 ICON_MARGIN_H * (icons.size() + 1);
+        int fontSize = UDraw.getFontSize(FontSize.M);
 
-        // 種別
+        // カード
         textTitle = UTextView.createInstance( mContext.getString(R.string.card),
                 TEXT_SIZE, 0,
                 UAlignment.CenterX, canvas.getWidth(), false, false,
                 width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
-        y += TEXT_SIZE + 30;
+        y += TEXT_SIZE + MARGIN_V_S;
+
+        // WordA
+        String wordA = UResourceManager.getStringById(R.string.word_a) + " : " + mCard.getWordA();
+        textWordA = UTextView.createInstance( wordA, fontSize, 0,
+                UAlignment.None, canvas.getWidth(), true, false,
+                MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
+        y += textWordA.size.height + MARGIN_V;
+
+        // WordB
+        String wordB = UResourceManager.getStringById(R.string.word_b) + " : " + mCard.getWordB();
+        textWordB = UTextView.createInstance( wordB, fontSize, 0,
+                UAlignment.None, canvas.getWidth(), true, false,
+                MARGIN_H, y, width - MARGIN_H, TEXT_COLOR, 0);
+        y += textWordB.size.height + MARGIN_V;
+
+        // History
+        TangoCardHistory history = RealmManager.getCardHistoryDao().selectByCard(mCard);
+        String historyStr;
+        if (history != null) {
+            historyStr = history.getCorrectFlagsAsString();
+        } else {
+            historyStr = "---";
+        }
+
+        textHistory = UTextView.createInstance( UResourceManager.getStringById(R.string.study_history) + " : " + historyStr, fontSize, 0,
+                UAlignment.None, canvas.getWidth(), false, false,
+                MARGIN_H, y, width - MARGIN_H, TEXT_COLOR, 0);
+        y += fontSize + MARGIN_V + 20;
+
 
         // アクションボタン
         int x = ICON_MARGIN_H;
@@ -174,30 +204,6 @@ public class IconInfoDialogCard extends IconInfoDialog {
             x += ICON_W + ICON_MARGIN_H;
         }
         y += ICON_W + MARGIN_V + 50;
-
-        // WordA (Title & 本文)
-        textWordATitle = UTextView.createInstance( "英", TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
-        textWordATitle.setMarginH(false);
-
-        textWordA = UTextView.createInstance( mCard.getWordA(), TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR, TEXT_BG_COLOR);
-
-        y += TEXT_VIEW_H + MARGIN_V;
-
-        // WordB
-        textWordBTitle = UTextView.createInstance( "日", TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
-        textWordBTitle.setMarginH(false);
-
-        textWordB = UTextView.createInstance( mCard.getWordB(), TEXT_SIZE, 0,
-                UAlignment.None, TEXT_VIEW_W, false, true,
-                MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR, TEXT_BG_COLOR);
-
-        y += TEXT_VIEW_H + MARGIN_V + 50;
 
         setSize(width, y);
 

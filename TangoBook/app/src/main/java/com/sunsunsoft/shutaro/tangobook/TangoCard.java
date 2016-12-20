@@ -26,10 +26,6 @@ public class TangoCard extends RealmObject implements TangoItem{
 
     private boolean star;       // お気に入り
 
-    // メタデータ
-    private byte[] history;     // 過去のOK/NG履歴
-    private Date studiedTime;     // 最後に学習した日
-
     @Ignore
     private TangoItemPos itemPos;   // どこにあるか？
 
@@ -72,9 +68,6 @@ public class TangoCard extends RealmObject implements TangoItem{
     public Date getUpdateTime() { return updateTime; }
     public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
 
-    public byte[] getHistory() { return history; }
-    public void setHistory(byte[] history) { this.history = history; }
-
     public TangoItemPos getItemPos() {
         return itemPos;
     }
@@ -106,10 +99,6 @@ public class TangoCard extends RealmObject implements TangoItem{
         card.hintBA = "HA " + randVal;
         card.comment = "C " + randVal;
         card.star = false;
-        card.history = new byte[3];
-        for (int i = 0; i < card.history.length; i++) {
-            card.history[i] = 1;
-        }
         return card;
     }
 

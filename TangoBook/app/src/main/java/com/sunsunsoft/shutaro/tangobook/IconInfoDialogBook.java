@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,14 +27,13 @@ public class IconInfoDialogBook extends IconInfoDialog {
     private static final String TAG = "IconInfoDialogBook";
     private static final int BG_COLOR = Color.LTGRAY;
     private static final int DLG_MARGIN = 100;
-    private static final int TEXT_VIEW_H = 100;
     private static final int ICON_W = 120;
     private static final int ICON_MARGIN_H = 30;
     private static final int MARGIN_V = 40;
+    private static final int MARGIN_V_S = 30;
     private static final int MARGIN_H = 40;
     private static final int TEXT_SIZE = 50;
-    private static final int TITLE_WIDTH = 150;
-    private static final int TITLE_WIDTH2 = 250;
+    private static final int TEXT_SIZE_S = 40;
 
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
@@ -42,9 +42,10 @@ public class IconInfoDialogBook extends IconInfoDialog {
      * Member Variables
      */
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
-    private UTextView textTitle, textNameTitle, textCountTitle;
+    private UTextView textTitle;
     private UTextView textName;
     private UTextView textCount;
+    private UTextView mLastStudied;
     private TangoBook mBook;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
 
@@ -118,10 +119,9 @@ public class IconInfoDialogBook extends IconInfoDialog {
         }
 
         textTitle.draw(canvas, paint, pos);
-        textNameTitle.draw(canvas, paint, pos);
         textName.draw(canvas, paint, pos);
-        textCountTitle.draw(canvas, paint, pos);
         textCount.draw(canvas, paint, pos);
+        mLastStudied.draw(canvas, paint, pos);
     }
 
     /**
@@ -136,12 +136,47 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
         int width = ICON_W * icons.size() +
                 ICON_MARGIN_H * (icons.size() + 1);
-        // 種別
+        // 単語帳
         textTitle = UTextView.createInstance( mContext.getString(R.string.book),
                 TEXT_SIZE, 0,
                 UAlignment.CenterX, canvas.getWidth(), false, false,
                 width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + 30;
+
+        // Name
+        String name = mContext.getString(R.string.name) + " : " + mBook.getName();
+        textName = UTextView.createInstance( name, TEXT_SIZE_S, 0,
+                UAlignment.None, canvas.getWidth(), false, false,
+                MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
+        y += TEXT_SIZE_S + MARGIN_V_S;
+
+        // Card count
+        int bookId = mIcon.getTangoItem().getId();
+        long count = RealmManager.getItemPosDao().countInParentType(
+                TangoParentType.Book, bookId );
+        int ngCount = RealmManager.getItemPosDao().countCardInBook(bookId,
+                TangoItemPosDao.BookCountType.NG);
+
+        // title
+        String title = mContext.getString(R.string.card_count) + " : " + count + "   " + mContext.getString(R.string.count_not_learned) + " : " + ngCount;
+        textCount = UTextView.createInstance( title,
+                TEXT_SIZE_S, 0,
+                UAlignment.None, canvas.getWidth(), false, false,
+                MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
+        textCount.setMarginH(false);
+        y += TEXT_SIZE_S + MARGIN_V_S;
+
+        // 最終学習日時
+        Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(mBook.getId());
+        String dateStr = (date == null) ? " --- " :
+                UUtil.convDateFormat(date, ConvDateMode.Date);
+        mLastStudied = UTextView.createInstance(
+                UResourceManager.getStringById(R.string
+                        .studied_date) + ": " + dateStr,
+                TEXT_SIZE_S, 0,
+                UAlignment.None, canvas.getWidth(), false, false,
+                MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
+        y += TEXT_SIZE + MARGIN_V_S + 20;
 
         // Action buttons
         int x = ICON_MARGIN_H;
@@ -158,41 +193,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
             x += ICON_W + ICON_MARGIN_H;
         }
-        y += ICON_W + MARGIN_V + 50;
-
-        // Name
-        textNameTitle = UTextView.createInstance( mContext.getString(R.string.name), TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
-        textNameTitle.setMarginH(false);
-
-        textName = UTextView.createInstance( mBook.getName(), TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H + TITLE_WIDTH, y, width - (MARGIN_H * 2 + TITLE_WIDTH), TEXT_COLOR, TEXT_BG_COLOR);
-
-        y += TEXT_VIEW_H + MARGIN_V;
-
-        // Card count
-        long count = RealmManager.getItemPosDao().countInParentType(
-                TangoParentType.Book, mIcon.getTangoItem().getId()
-        );
-
-        // title
-        textCountTitle = UTextView.createInstance( mContext.getString(R.string
-                .card_count),
-                TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, TITLE_WIDTH2, TEXT_COLOR, Color.argb(1,0,0,0));
-        textCountTitle.setMarginH(false);
-
-        // body
-        textCount = UTextView.createInstance( "" + count, TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H + TITLE_WIDTH2, y, width - (MARGIN_H * 2 + TITLE_WIDTH2), TEXT_COLOR,
-                TEXT_BG_COLOR);
-
-        y += TEXT_VIEW_H + MARGIN_V;
-
+        y += ICON_W + MARGIN_V + 30;
 
         setSize(width, y);
 

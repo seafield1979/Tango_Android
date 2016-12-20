@@ -14,6 +14,10 @@ import java.util.Date;
  *
  * 便利関数
  */
+enum ConvDateMode {
+    Date,
+    DateTime
+}
 
 public class UUtil {
     public static final double RAD = 3.1415 / 180.0;
@@ -73,10 +77,18 @@ public class UUtil {
      * @param date
      * @return
      */
-    public static String convDateFormat(Date date) {
+    public static String convDateFormat(Date date, ConvDateMode mode) {
         if (date == null) return null;
-        final DateFormat df = new SimpleDateFormat(UResourceManager.getStringById(R
-                .string.date_format2));
+
+        final DateFormat df;
+
+        if (mode == ConvDateMode.Date) {
+            df = new SimpleDateFormat(UResourceManager.getStringById(R
+                    .string.date_format2));
+        } else {
+            df = new SimpleDateFormat(UResourceManager.getStringById(R
+                    .string.datetime_format2));
+        }
         return df.format(date);
     }
 }

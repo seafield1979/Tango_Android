@@ -108,9 +108,15 @@ public class IconCard extends UIcon{
      * タイトルに表示する文字列を更新
      */
     public void updateTitle() {
-        int len = (card.getWordA().length() < DISP_TITLE_LEN) ? card.getWordA().length() :
-                DISP_TITLE_LEN;
-        this.title = card.getWordA().substring(0, len);
+        // 改行ありなら１行目のみ切り出す
+        if (card.getWordA() == null) return;
+        String[] strs = card.getWordA().split("\n");
+
+        if (strs[0].length() < DISP_TITLE_LEN) {
+            this.title = strs[0];
+        } else {
+            this.title = strs[0].substring(0, DISP_TITLE_LEN);
+        }
     }
 
     /**

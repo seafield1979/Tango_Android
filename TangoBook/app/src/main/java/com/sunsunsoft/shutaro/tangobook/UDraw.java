@@ -20,12 +20,32 @@ enum UAlignment {
     Center
 }
 
+enum FontSize {
+    S,
+    M,
+    L
+}
+
 /**
  * 自前の描画処理
  * OnDrawの中から呼び出す
  */
 
 public class UDraw {
+
+    // フォントのサイズ
+    public static int getFontSize(FontSize size) {
+        switch(size) {
+            case S:
+                return 30;
+            case M:
+                return 40;
+            case L:
+            default:
+                return 50;
+        }
+    }
+
     // ラジアン角度
     public static final double RAD = 3.1415 / 180.0;
 

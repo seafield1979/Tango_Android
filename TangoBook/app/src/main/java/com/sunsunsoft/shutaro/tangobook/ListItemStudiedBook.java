@@ -86,7 +86,7 @@ public class ListItemStudiedBook extends UListItem{
         TangoBook book = RealmManager.getBookDao().selectById(history.getBookId());
 
         instance.mTextDate = String.format("学習日時: %s",
-                UUtil.convDateFormat(history.getStudiedDateTime()));
+                UUtil.convDateFormat(history.getStudiedDateTime(), ConvDateMode.DateTime));
         instance.mTextName = UResourceManager.getStringById(R.string.book_name) + ": " + book
                 .getName();
         instance.mTextInfo = String.format("OK:%d  NG:%d    OK率:%.3f", history.getOkNum(), history

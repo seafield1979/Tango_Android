@@ -45,11 +45,11 @@ public class TangoCardHistoryDao {
      * @param card
      * @return
      */
-    List<TangoCardHistory> selectByCard(TangoCard card) {
-        RealmResults<TangoCardHistory> results = mRealm.where(TangoCardHistory.class)
+    TangoCardHistory selectByCard(TangoCard card) {
+        TangoCardHistory result = mRealm.where(TangoCardHistory.class)
                 .equalTo("cardId", card.getId())
-                .findAll();
-        return results;
+                .findFirst();
+        return result;
     }
 
     /**

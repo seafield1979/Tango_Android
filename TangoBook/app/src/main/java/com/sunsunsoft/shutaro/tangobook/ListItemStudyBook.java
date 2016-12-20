@@ -70,11 +70,12 @@ public class ListItemStudyBook extends UListItem {
                 TangoItemPosDao.BookCountType.NG);
 
         mCardCount = UResourceManager.getStringById(R.string.card_count) + ": " + count + "  " +
-                UResourceManager.getStringById(R.string.card_count_not_learned) + ": " + ngCount;
+                UResourceManager.getStringById(R.string.count_not_learned) + ": " + ngCount;
 
         // 最終学習日
         Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(book.getId());
-        mStudiedDate = String.format("学習日時 : %s", UUtil.convDateFormat(date));
+        String dateStr = (date == null) ? " --- " : UUtil.convDateFormat(date, ConvDateMode.DateTime);
+        mStudiedDate = String.format("学習日時 : %s", dateStr);
     }
 
     /**

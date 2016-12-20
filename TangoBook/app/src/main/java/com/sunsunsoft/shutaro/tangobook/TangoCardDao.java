@@ -238,7 +238,6 @@ public class TangoCardDao {
         for (int i=0; i<history.length; i++) {
             history[i] = 1;
         }
-        card.setHistory(history);
 
         Date now = new Date();
         card.setCreateTime(now);

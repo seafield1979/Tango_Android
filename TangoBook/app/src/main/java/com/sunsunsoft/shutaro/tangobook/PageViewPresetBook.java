@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by shutaro on 2016/12/18.
+ *
+ * プリセット単語帳リストを表示、追加するページ
  */
 
 public class PageViewPresetBook extends UPageView
@@ -32,6 +34,7 @@ public class PageViewPresetBook extends UPageView
     // button id
     private static final int ButtonIdReturn = 100;
     private static final int ButtonIdAddOk = 200;
+    private static final int ButtonIdAddOk2 = 201;
 
     /**
      * Member variables
@@ -44,6 +47,7 @@ public class PageViewPresetBook extends UPageView
 
     // 終了確認ダイアログ
     private UDialogWindow mConfirmDialog;
+    private UDialogWindow mMessageDialog;
 
     /**
      * Constructor
@@ -165,6 +169,20 @@ public class PageViewPresetBook extends UPageView
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
     }
 
+    private void showMessageDialog() {
+        if (mMessageDialog == null) {
+            mMessageDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                    this, this,
+                    UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
+                    true, mParentView.getWidth(), mParentView.getHeight(),
+                    Color.BLACK, Color.LTGRAY);
+            mMessageDialog.addToDrawManager();
+            String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book2), mBook.mName);
+            mMessageDialog.setTitle(title);
+            mMessageDialog.addButton(ButtonIdAddOk2, "OK", Color.BLACK, Color.WHITE);
+        }
+    }
+
     /**
      * ソフトウェアキーの戻るボタンを押したときの処理
      * @return
@@ -192,7 +210,11 @@ public class PageViewPresetBook extends UPageView
                     PresetBookManager.getInstance().addBookToDB(mBook);
                 }
                 mConfirmDialog.closeDialog();
+                showMessageDialog();
             }
+                break;
+            case ButtonIdAddOk2:
+                mMessageDialog.closeDialog();
                 break;
         }
         return false;
@@ -253,6 +275,9 @@ public class PageViewPresetBook extends UPageView
     public void dialogClosed(UDialogWindow dialog) {
         if (dialog == mConfirmDialog) {
             mConfirmDialog = null;
+        }
+        else if (dialog == mMessageDialog) {
+            mMessageDialog = null;
         }
     }
 }

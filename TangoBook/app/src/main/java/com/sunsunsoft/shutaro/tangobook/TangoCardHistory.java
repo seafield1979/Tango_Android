@@ -120,4 +120,18 @@ public class TangoCardHistory extends RealmObject {
         // Arrayに戻す
         toCorrectArray();
     }
+
+    /**
+     * correctFlagsを文字列で取得
+     * 正解は○、不正解は×
+     */
+    public String getCorrectFlagsAsString() {
+        if (correctFlagNum == 0) return "---";
+
+        StringBuffer strBuf = new StringBuffer("");
+        for (Byte flag : correctFlagsList) {
+            strBuf.append((flag == 0) ? "×" : "○");
+        }
+        return strBuf.toString();
+    }
 }
