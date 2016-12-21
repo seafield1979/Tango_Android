@@ -302,22 +302,37 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             case AddPresetBook:
                 addPresetBook();
                 break;
-            case SortTop:
-                break;
-            case SortByWordAsc:
+            case SortByWordAsc: {
+                UIconWindow window = getCurrentWindow();
+                window.mIconManager.sortWithMode(UIconManager.SortMode
+                        .TitleAsc);
+                window.sortIcons(true);
+            }
                 break;
             case SortByWordDesc:
+            {
+                UIconWindow window = getCurrentWindow();
+                window.mIconManager.sortWithMode(UIconManager.SortMode
+                        .TitleDesc);
+                window.sortIcons(true);
+            }
                 break;
             case SortByTimeAsc:
+            {
+                UIconWindow window = getCurrentWindow();
+                window.mIconManager.sortWithMode(UIconManager.SortMode
+                        .UpdateDateAsc);
+                window.sortIcons(true);
+            }
                 break;
             case SortByTimeDesc:
+            {
+                UIconWindow window = getCurrentWindow();
+                window.mIconManager.sortWithMode(UIconManager.SortMode
+                        .UpdateDateDesc);
+                window.sortIcons(true);
+            }
                 break;
-//            case ListTypeTop:
-//                break;
-//            case ListType1:
-//                break;
-//            case ListType2:
-//                break;
             case Debug1:
                 // ログウィンドウの表示切り替え
                 mLogWin.toggle();
@@ -408,6 +423,18 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
     public void iconDroped(UIcon icon) {
         ULog.print(TAG, "iconDroped");
+    }
+
+    /**
+     * カレントIconWindowを取得する
+     * サブが開いていたらサブを、開いていなかったらメインを返す
+     * @return
+     */
+    private UIconWindow getCurrentWindow() {
+        if (mIconWinManager.getSubWindow().isShow()) {
+            return mIconWinManager.getSubWindow();
+        }
+        return mIconWinManager.getMainWindow();
     }
 
     /**

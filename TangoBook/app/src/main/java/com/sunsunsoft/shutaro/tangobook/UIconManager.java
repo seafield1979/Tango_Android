@@ -3,6 +3,8 @@ package com.sunsunsoft.shutaro.tangobook;
 import android.graphics.Point;
 import android.view.View;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,8 +22,19 @@ enum AddPos {
  */
 public class UIconManager implements UIconCallbacks{
     /**
+     * Enums
+     */
+    enum SortMode {
+        TitleAsc,       // タイトル文字昇順(カードはWordA,単語帳はName)
+        TitleDesc,      // タイトル文字降順
+        UpdateDateAsc,  // 更新日時 昇順
+        UpdateDateDesc  // 更新日時 降順
+    }
+
+    /**
      * Consts
      */
+    public static final String TAG = "UIconManager";
 
     /**
      * Member Variables
@@ -284,6 +297,19 @@ public class UIconManager implements UIconCallbacks{
         icons.remove(icon);
     }
 
+    /**
+     * アイテムを追加する
+     * @return
+     */
+    public List<TangoItem> getTangoItems() {
+        LinkedList<TangoItem> list = new LinkedList<>();
+        for (UIcon icon : icons) {
+            if (icon.getTangoItem() != null) {
+                list.add(icon.getTangoItem());
+            }
+        }
+        return list;
+    }
 
     /**
      * アイコンを内包するRectを求める
@@ -302,6 +328,56 @@ public class UIconManager implements UIconCallbacks{
     public UIcon getOverlappedIcon(Point pos, List<UIcon> exceptIcons) {
         return mBlockManager.getOverlapedIcon(pos, exceptIcons);
     }
+
+    /**
+     * ソートする
+     * @param mode
+     */
+    public void sortWithMode(SortMode mode) {
+        UIcon[] _icons = getIcons().toArray(new UIcon[0]);
+        final SortMode _mode = mode;
+
+        // _icons を SortMode の方法でソートする
+        Arrays.sort(_icons, new Comparator<UIcon>() {
+            public int compare(UIcon icon1, UIcon icon2) {
+                if (icon1.getTangoItem() == null || icon2.getTangoItem() == null) {
+                    return 0;
+                }
+                switch(_mode) {
+                    case TitleAsc:       // タイトル文字昇順(カードはWordA,単語帳はName)
+                        return icon1.getTangoItem().getTitle().compareTo (
+                                icon2.getTangoItem().getTitle());
+                    case TitleDesc:      // タイトル文字降順
+                        return icon2.getTangoItem().getTitle().compareTo(
+                                icon1.getTangoItem().getTitle());
+                    case UpdateDateAsc:  // 更新日時 昇順
+                        return icon1.getTangoItem().getUpdateTime().compareTo(
+                                icon2.getTangoItem().getUpdateTime());
+                    case UpdateDateDesc:  // 更新日時 降順
+                        return icon2.getTangoItem().getUpdateTime().compareTo(
+                                icon1.getTangoItem().getUpdateTime());
+                }
+                return 0;
+            }
+        });
+
+        // ソート済みの新しいアイコンリストを作成する
+        icons.clear();
+
+        int pos = 1;
+        for (UIcon icon : _icons) {
+            icons.add(icon);
+
+            if (icon.getTangoItem() == null) continue;
+
+            // DB更新用にItemPosを設定しておく
+            icon.getTangoItem().setPos(pos);
+            pos++;
+        }
+        // DBの位置情報を更新
+        RealmManager.getItemPosDao().updateAll(getTangoItems(), TangoParentType.Home, 0);
+    }
+
 
     /**
      * UIconCallbacks

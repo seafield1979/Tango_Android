@@ -878,8 +878,7 @@ public class TangoItemPosDao {
     }
 
     /**
-     * リストの全要素を更新する
-     * ParentIdを指定しないHome/Trash用
+     * 指定のParent以下のリストの全要素を現在の並び順で更新する
      *
      * @param items アイコンのリスト
      */

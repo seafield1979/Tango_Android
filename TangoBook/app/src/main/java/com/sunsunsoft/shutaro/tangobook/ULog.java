@@ -43,9 +43,10 @@ public class ULog {
         setEnable(UDrawManager.TAG, false);
         setEnable(UMenuBar.TAG, false);
         setEnable(UScrollBar.TAG, false);
-        setEnable(UIconWindow.TAG, false);
+        setEnable(UIconWindow.TAG, true);
         setEnable(UButton.TAG, true);
         setEnable(UColor.TAG, false);
+        setEnable(UXmlParser.TAG, false);
     }
 
     // ログ出力

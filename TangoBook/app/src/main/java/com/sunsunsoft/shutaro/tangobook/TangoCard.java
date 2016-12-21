@@ -76,6 +76,8 @@ public class TangoCard extends RealmObject implements TangoItem{
         this.itemPos = itemPos;
     }
 
+    public String getTitle(){ return wordA; }
+
     @Override
     public int getPos() {
         if (itemPos == null) return 0;

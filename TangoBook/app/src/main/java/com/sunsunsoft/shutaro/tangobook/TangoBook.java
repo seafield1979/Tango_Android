@@ -45,6 +45,8 @@ public class TangoBook extends RealmObject implements TangoItem {
         this.id = id;
     }
 
+    public String getTitle() { return name; }
+
     public String getName() {
         return name;
     }

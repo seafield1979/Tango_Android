@@ -10,6 +10,8 @@ import android.graphics.RectF;
 import android.view.SurfaceView;
 import android.view.View;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,6 +60,7 @@ public class UIconWindow extends UWindow {
         Insert,         // insert A before B
         MoveIn          // move A into B
     }
+
 
     /**
      * Consts
@@ -414,11 +417,11 @@ public class UIconWindow extends UWindow {
 
         int i=0;
         if (dir == WindowDir.Vertical) {
-            int column = ((int)clientSize.width - ICON_MARGIN) / (ICON_W + ICON_MARGIN);
+            int column = (clientSize.width - ICON_MARGIN) / (ICON_W + ICON_MARGIN);
             if (column <= 0) {
                 return;
             }
-            int margin = ((int)clientSize.width - ICON_W * column) / (column + 1);
+            int margin = (clientSize.width - ICON_W * column) / (column + 1);
             for (UIcon icon : icons) {
                 int x = margin + (i % column) * (ICON_W + margin);
                 int y = margin + (i / column) * (ICON_H + margin);
@@ -439,11 +442,11 @@ public class UIconWindow extends UWindow {
                 i++;
             }
         } else {
-            int column = ((int)clientSize.height - ICON_MARGIN) / (ICON_H + ICON_MARGIN);
+            int column = (clientSize.height - ICON_MARGIN) / (ICON_H + ICON_MARGIN);
             if (column <= 0) {
                 return;
             }
-            int margin = ((int)clientSize.height - ICON_H * column) / (column + 1);
+            int margin = (clientSize.height - ICON_H * column) / (column + 1);
             for (UIcon icon : icons) {
                 int x = margin + (i / column) * (ICON_W + margin);
                 int y = margin + (i % column) * (ICON_H + margin);
@@ -1466,6 +1469,7 @@ public class UIconWindow extends UWindow {
         mScrollBarH.setShow(false);
         mScrollBarV.setShow(false);
     }
+
 
     /**
      * UButtonCallbacks
