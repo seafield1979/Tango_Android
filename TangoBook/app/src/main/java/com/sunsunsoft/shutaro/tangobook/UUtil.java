@@ -72,6 +72,39 @@ public class UUtil {
         return newBmp;
     }
 
+
+    /**
+     * 単色Bitmap画像の色を変更する
+     */
+    public static Bitmap convBitmapColor(Bitmap bmp, int newColor) {
+        // グレースケール変換
+        int height = bmp.getHeight();
+        int width  = bmp.getWidth();
+        int size   = height * width;
+        int pix[]  = new int[size];
+        int pos = 0;
+        int _newColor = newColor & 0xffffff;
+
+        bmp.getPixels(pix, 0, width, 0, 0, width, height);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int pixel = pix[pos];
+                int alpha = pixel & 0xff000000;
+                // 白はそのまま
+                if ((pixel & 0xffffff) == 0xffffff) {
+                    pix[pos] = pixel;
+                } else {
+                    pix[pos] = alpha | _newColor;
+                }
+                pos++;
+            }
+        }
+        Bitmap newBmp = Bitmap.createBitmap(pix, 0, width, width, height,
+                Bitmap.Config.ARGB_8888);
+
+        return newBmp;
+    }
+
     /**
      * 日付(Date)のフォーマット変換
      * @param date

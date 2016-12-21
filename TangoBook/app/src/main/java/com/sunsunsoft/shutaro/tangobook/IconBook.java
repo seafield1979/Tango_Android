@@ -60,7 +60,8 @@ public class IconBook extends IconContainer {
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        image = UResourceManager.getBitmapById(R.drawable.notebook);
+        Bitmap _image = UResourceManager.getBitmapById(R.drawable.notebook);
+        image = UUtil.convBitmapColor(_image, book.getColor());
 
         // データベースから配下のCardを読み込む
         List<TangoCard> cards = RealmManager.getItemPosDao().selectCardsByBookId(book.getId());
@@ -143,6 +144,14 @@ public class IconBook extends IconContainer {
             }
         }
         return false;
+    }
+
+    /**
+     * 画像を更新する
+     * アイコンの色が変更された際に呼び出す
+     */
+    public void updateIconImage() {
+        image = UUtil.convBitmapColor(image, color);
     }
 
     @Override

@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
-
-import java.util.HashMap;
-import java.util.LinkedList;
+import android.view.View.OnClickListener;
 import java.util.Random;
 
 
@@ -40,17 +38,26 @@ enum EditBookDialogMode {
  *
  * 全画面表示
  */
-public class EditBookDialogFragment extends DialogFragment {
-
+public class EditBookDialogFragment extends DialogFragment implements OnClickListener{
     /**
      * Constract
      */
+    public static final String TAG = "EditBookDialogFragment";
 
     // key names
     public static final String KEY_MODE = "key_mode";
     public static final String KEY_NAME = "key_name";
     public static final String KEY_COMMENT = "key_comment";
     public static final String KEY_COLOR = "key_color";
+
+    private int[] colorViewIds = {
+            R.id.current_color,
+            R.id.color_red,
+            R.id.color_limegreen,
+            R.id.color_blue,
+            R.id.color_orange,
+            R.id.color_darkviolet
+    };
 
     /**
      * Member variables
@@ -60,9 +67,13 @@ public class EditBookDialogFragment extends DialogFragment {
 
     private String mName;
     private String mComment;
+    private int mColor;
 
     private EditText mEditName;
     private EditText mEditComment;
+
+    // 選択された色を表示するView
+    private ColorView mColorView;
 
     /**
      * Get/Set
@@ -112,6 +123,7 @@ public class EditBookDialogFragment extends DialogFragment {
             mMode = args.getInt(KEY_MODE, EditBookDialogMode.Create.ordinal());
             mName = args.getString(KEY_NAME, "");
             mComment = args.getString(KEY_COMMENT, "");
+            mColor = args.getInt(KEY_COLOR, 0);
         }
     }
 
@@ -135,6 +147,9 @@ public class EditBookDialogFragment extends DialogFragment {
         mEditComment = (EditText)view.findViewById(R.id.editComment);
         mEditComment.setText(mComment);
 
+        mColorView = (ColorView)view.findViewById(R.id.current_color);
+        mColorView.setColor(mColor);
+
         // Listener
         (view.findViewById(R.id.buttonOK)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -154,8 +169,21 @@ public class EditBookDialogFragment extends DialogFragment {
             }
         });
 
+        for (int id : colorViewIds) {
+            view.findViewById(id).setOnClickListener(this);
+        }
+
 
         setStyle(STYLE_NORMAL, android.R.style.Theme);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v instanceof ColorView) {
+            ColorView colorView = (ColorView)v;
+            mColorView.setColor(colorView.getColor());
+            mColorView.invalidate();
+        }
     }
 
     /**
@@ -167,6 +195,7 @@ public class EditBookDialogFragment extends DialogFragment {
         args.putInt(KEY_MODE, mMode);
         args.putString(KEY_NAME, mEditName.getText().toString());
         args.putString(KEY_COMMENT, mEditName.getText().toString());
+        args.putInt(KEY_COLOR, mColorView.getColor());
 
         if (dialogCallbacks != null) {
             dialogCallbacks.submitEditBook(args);

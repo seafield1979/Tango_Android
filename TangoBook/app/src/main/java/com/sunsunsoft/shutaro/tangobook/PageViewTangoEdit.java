@@ -556,9 +556,19 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         } else {
             // 既存のアイコンを更新する
 
-            TangoBook book = (TangoBook)editingIcon.getTangoItem();
+            IconBook bookIcon = (IconBook)editingIcon;
+            TangoBook book = (TangoBook)bookIcon.getTangoItem();
+
             book.setName(args.getString(EditBookDialogFragment.KEY_NAME, ""));
             book.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+            int color = book.getColor();
+            book.setColor(args.getInt(EditBookDialogFragment.KEY_COLOR, 0));
+
+            // アイコンの画像を更新する
+            if (color != book.getColor()) {
+                bookIcon.setColor(book.getColor());
+                bookIcon.updateIconImage();
+            }
 
             editingIcon.updateTitle();
             // DB更新

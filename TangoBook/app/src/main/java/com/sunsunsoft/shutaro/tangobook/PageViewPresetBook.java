@@ -41,7 +41,6 @@ public class PageViewPresetBook extends UPageView
      */
     private UTextView mTitleText;
     private UListView mListView;
-    private UButtonText mReturnButton;
     private UDialogWindow mDialog;      // OK/NGのカード一覧を表示するダイアログ
     private PresetBook mBook;
 
@@ -112,10 +111,10 @@ public class PageViewPresetBook extends UPageView
                 UAlignment.CenterX, width, false, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.size.height;
+        y += mTitleText.size.height + MARGIN_V;
 
         // ListView
-        int listViewH = height - (MARGIN_H * 3 + mTitleText.size.height + BUTTON_H);
+        int listViewH = height - (MARGIN_H * 3 + mTitleText.size.height);
         mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
@@ -129,13 +128,6 @@ public class PageViewPresetBook extends UPageView
         }
 
         y += listViewH + MARGIN_H;
-
-        // Button
-        mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
-                DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
-                (width - BUTTON_W)/2, y, BUTTON_W, BUTTON_H, 50, Color.WHITE, Color.rgb(100,200,
-                100));
-        mReturnButton.addToDrawManager();
     }
 
     /**
