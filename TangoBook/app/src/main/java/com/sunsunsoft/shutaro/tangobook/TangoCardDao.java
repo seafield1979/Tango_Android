@@ -209,6 +209,8 @@ public class TangoCardDao {
      */
     public void addOne(TangoCard card, TangoParentType parentType, int parentId) {
         card.setId(getNextId());
+        card.setUpdateTime(new Date());
+        card.setCreateTime(new Date());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(card);

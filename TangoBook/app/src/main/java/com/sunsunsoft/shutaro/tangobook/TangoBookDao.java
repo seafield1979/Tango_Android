@@ -141,6 +141,8 @@ public class TangoBookDao {
      */
     public void addOne(TangoBook book) {
         book.setId(getNextId());
+        book.setUpdateTime(new Date());
+        book.setCreateTime(new Date());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(book);

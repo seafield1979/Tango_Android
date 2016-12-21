@@ -27,8 +27,8 @@ public class UIconManager implements UIconCallbacks{
     enum SortMode {
         TitleAsc,       // タイトル文字昇順(カードはWordA,単語帳はName)
         TitleDesc,      // タイトル文字降順
-        UpdateDateAsc,  // 更新日時 昇順
-        UpdateDateDesc  // 更新日時 降順
+        CreateDateAsc,  // 更新日時 昇順
+        CreateDateDesc  // 更新日時 降順
     }
 
     /**
@@ -340,22 +340,28 @@ public class UIconManager implements UIconCallbacks{
         // _icons を SortMode の方法でソートする
         Arrays.sort(_icons, new Comparator<UIcon>() {
             public int compare(UIcon icon1, UIcon icon2) {
-                if (icon1.getTangoItem() == null || icon2.getTangoItem() == null) {
+                TangoItem item1 = icon1.getTangoItem();
+                TangoItem item2 = icon2.getTangoItem();
+                if (item1 == null || item2 == null) {
                     return 0;
                 }
                 switch(_mode) {
                     case TitleAsc:       // タイトル文字昇順(カードはWordA,単語帳はName)
-                        return icon1.getTangoItem().getTitle().compareTo (
-                                icon2.getTangoItem().getTitle());
+                        return item1.getTitle().compareTo (
+                                item2.getTitle());
                     case TitleDesc:      // タイトル文字降順
-                        return icon2.getTangoItem().getTitle().compareTo(
-                                icon1.getTangoItem().getTitle());
-                    case UpdateDateAsc:  // 更新日時 昇順
-                        return icon1.getTangoItem().getUpdateTime().compareTo(
-                                icon2.getTangoItem().getUpdateTime());
-                    case UpdateDateDesc:  // 更新日時 降順
-                        return icon2.getTangoItem().getUpdateTime().compareTo(
-                                icon1.getTangoItem().getUpdateTime());
+                        return item2.getTitle().compareTo(
+                                item1.getTitle());
+                    case CreateDateAsc:  // 作成日時 昇順
+                        if (item1.getCreateTime() == null || item2.getCreateTime() == null)
+                            break;
+                        return item1.getCreateTime().compareTo(
+                                item2.getCreateTime());
+                    case CreateDateDesc:  // 作成日時 降順
+                        if (item1.getCreateTime() == null || item2.getCreateTime() == null)
+                            break;
+                        return item2.getCreateTime().compareTo(
+                                item1.getCreateTime());
                 }
                 return 0;
             }

@@ -153,6 +153,8 @@ abstract public class UMenuBar extends UWindow {
             if (0 <= clickX && clickX <= size.width &&
                     0 <= clickY && clickY <= size.height)
             {
+                // クリック時に後ろのアイテムに反応するのを防ぐ
+                vt.setTouching(false);
                 return true;
             }
         }

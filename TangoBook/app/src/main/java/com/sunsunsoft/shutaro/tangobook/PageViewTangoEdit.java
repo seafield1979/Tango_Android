@@ -321,7 +321,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             {
                 UIconWindow window = getCurrentWindow();
                 window.mIconManager.sortWithMode(UIconManager.SortMode
-                        .UpdateDateAsc);
+                        .CreateDateAsc);
                 window.sortIcons(true);
             }
                 break;
@@ -329,7 +329,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             {
                 UIconWindow window = getCurrentWindow();
                 window.mIconManager.sortWithMode(UIconManager.SortMode
-                        .UpdateDateDesc);
+                        .CreateDateDesc);
                 window.sortIcons(true);
             }
                 break;
