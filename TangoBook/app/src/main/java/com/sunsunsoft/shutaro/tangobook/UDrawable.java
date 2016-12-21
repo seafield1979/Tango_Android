@@ -43,17 +43,19 @@ abstract public class UDrawable {
     protected int color;
     protected int drawPriority;     // DrawManagerに渡す描画優先度
 
-    // 自動移動用
+    // 自動移動、サイズ変更、色変更
     protected boolean isMoving;
     protected boolean isMovingPos;
     protected boolean isMovingSize;
+
     protected boolean isShow;
-    protected boolean isDraw;
     protected MovingType movingType;
     protected int movingFrame;
     protected int movingFrameMax;
+
     protected PointF srcPos = new PointF();
     protected PointF dstPos = new PointF();
+
     protected Size srcSize = new Size();
     protected Size dstSize = new Size();
 
@@ -216,7 +218,9 @@ abstract public class UDrawable {
      * サブクラスでオーバーライドして使用する
      * @return true:処理中 / false:処理完了
      */
-    public boolean doAction(){ return false; }
+    public boolean doAction(){
+        return false;
+    }
 
     /**
      * Rectをライン描画する for Debug
@@ -383,8 +387,8 @@ abstract public class UDrawable {
     }
 
     /**
-     * 移動
-     * 移動開始位置、終了位置、経過フレームから現在位置を計算する
+     * 移動、サイズ変更、色変更
+     * 移動開始位置、終了位置、経過フレームから現在の値を計算する
      * @return true:移動中
      */
     public boolean autoMoving() {
@@ -403,6 +407,7 @@ abstract public class UDrawable {
             isMoving = false;
             isMovingPos = false;
             isMovingSize = false;
+
             updateRect();
             endMoving();
         } else {
@@ -427,7 +432,6 @@ abstract public class UDrawable {
                 setSize((int) (srcSize.width + (dstSize.width - srcSize.width) * ratio),
                         (int) (srcSize.height + (dstSize.height - srcSize.height) * ratio));
             }
-
         }
         return true;
     }

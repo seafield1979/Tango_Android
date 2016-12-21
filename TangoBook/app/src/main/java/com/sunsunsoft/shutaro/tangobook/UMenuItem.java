@@ -166,6 +166,8 @@ public class UMenuItem extends UDrawable {
      * @param parentPos
      */
     public void draw(Canvas canvas, Paint paint, PointF parentPos) {
+        if (!isShow) return;
+
         // スタイル(内部を塗りつぶし)
         paint.setStyle(Paint.Style.FILL);
         // 色
@@ -184,6 +186,13 @@ public class UMenuItem extends UDrawable {
             if (isAnimating) {
                 int alpha = getAnimeAlpha();
                 paint.setColor((alpha << 24) | mAnimeColor);
+            } else if (isMoving) {
+                float ratio = (float)movingFrame / (float)movingFrameMax;
+                if (isClosing) {
+                    ratio = 1.0f - ratio;
+                }
+                int _color = (int)(255 * ratio) << 24;
+                paint.setColor(_color);
             } else {
                 paint.setColor(0xff000000);
             }
