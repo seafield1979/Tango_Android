@@ -128,8 +128,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         subWindow.init();
 
         // UMenuBar
-        mMenuBar = MenuBarTangoEdit.createInstance(mParentView, this, width, height,
-                Color.BLACK);
+        mMenuBar = MenuBarTangoEdit.createInstance(mParentView, this, width, height, 0);
         mWindows[WindowType.MenuBar.ordinal()] = mMenuBar;
 
         // ULogWindow
@@ -305,9 +304,13 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 break;
             case SortTop:
                 break;
-            case Sort1:
+            case SortByWordAsc:
                 break;
-            case Sort2:
+            case SortByWordDesc:
+                break;
+            case SortByTimeAsc:
+                break;
+            case SortByTimeDesc:
                 break;
             case ListTypeTop:
                 break;
@@ -334,15 +337,26 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             case Debug6:
                 UDrawManager.getInstance().showAllList(true, false);
                 break;
-            case Debug2RealmCopy:
+            case ShowMenuName:
             {
-                RealmManager.backup();
-                UPopupWindow popup = new UPopupWindow( UPopupType.OK,
-                        "Copy realm file", true, mParentView.getWidth(), mParentView.getHeight());
-                UDrawManager.getInstance().addDrawable(popup);
+                MenuHelpMode helpMode = MySharedPref.getMenuHelpMode();
+                if (helpMode == MenuHelpMode.Name) {
+                    helpMode = MenuHelpMode.None;
+                } else {
+                    helpMode = MenuHelpMode.Name;
+                }
+                MySharedPref.setMenuHelpMode(helpMode);
             }
-            break;
-            case Debug2RealmRestore:
+                break;
+            case ShowMenuHelp: {
+                MenuHelpMode helpMode = MySharedPref.getMenuHelpMode();
+                if (helpMode == MenuHelpMode.Help) {
+                    helpMode = MenuHelpMode.None;
+                } else {
+                    helpMode = MenuHelpMode.Help;
+                }
+                MySharedPref.setMenuHelpMode(helpMode);
+            }
                 break;
         }
         ULog.print(TAG, "menu item clicked " + id);

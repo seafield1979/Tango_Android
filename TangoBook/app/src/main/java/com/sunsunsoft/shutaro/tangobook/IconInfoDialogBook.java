@@ -157,13 +157,12 @@ public class IconInfoDialogBook extends IconInfoDialog {
         int ngCount = RealmManager.getItemPosDao().countCardInBook(bookId,
                 TangoItemPosDao.BookCountType.NG);
 
-        // title
+        // mTitle
         String title = mContext.getString(R.string.card_count) + " : " + count + "   " + mContext.getString(R.string.count_not_learned) + " : " + ngCount;
         textCount = UTextView.createInstance( title,
                 TEXT_SIZE_S, 0,
                 UAlignment.None, canvas.getWidth(), false, false,
                 MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
-        textCount.setMarginH(false);
         y += TEXT_SIZE_S + MARGIN_V_S;
 
         // 最終学習日時

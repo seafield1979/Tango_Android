@@ -30,7 +30,7 @@ public class UTextView extends UDrawable {
      */
     protected String text;
     protected UAlignment alignment;
-    protected boolean marginH;
+    protected Size mMargin = new Size(MARGIN_H, MARGIN_V);
     protected int textSize;
     protected int bgColor;
     protected int canvasW;
@@ -51,15 +51,17 @@ public class UTextView extends UDrawable {
         // サイズを更新
         Size size = getTextSize(canvasW);
         if (isDrawBG) {
-            setSize(size.width + MARGIN_H * 2, size.height + MARGIN_V * 2);
+            setSize(size.width + mMargin.width * 2, size.height + mMargin.height * 2);
         } else {
             setSize(size.width, size.height);
         }
         updateRect();
     }
 
-    public void setMarginH(boolean marginH) {
-        this.marginH = marginH;
+    public void setMargin(int width, int height) {
+        mMargin.width = width;
+        mMargin.height = height;
+        updateSize();
     }
 
     /**
@@ -76,7 +78,6 @@ public class UTextView extends UDrawable {
 
         this.text = text;
         this.alignment = alignment;
-        this.marginH = marginH;
         this.multiLine = multiLine;
         this.isDrawBG = isDrawBG;
         this.textSize = textSize;
@@ -134,7 +135,7 @@ public class UTextView extends UDrawable {
      * @return マージンを追加した Size
      */
     protected Size addBGPadding(Size size) {
-        return new Size(size.width + MARGIN_H * 2, size.height + MARGIN_V * 2);
+        return new Size(size.width + mMargin.width * 2, size.height + mMargin.height * 2);
     }
 
 
@@ -159,19 +160,19 @@ public class UTextView extends UDrawable {
             switch (alignment) {
                 case CenterX:
                     bgPos.x -= size.width / 2;
-                    _pos.y += MARGIN_V;
+                    _pos.y += mMargin.height;
                     break;
                 case CenterY:
                     bgPos.y -= size.height / 2;
-                    if (marginH) _pos.x += MARGIN_H;
+                    _pos.x += mMargin.height;
                     break;
                 case Center:
                     bgPos.x -= size.width / 2;
                     bgPos.y -= size.height / 2;
                     break;
                 case None:
-                    if (marginH) _pos.x += MARGIN_H;
-                    _pos.y += MARGIN_V;
+                    _pos.x += mMargin.width;
+                    _pos.y += mMargin.height;
                     break;
             }
 
@@ -181,7 +182,8 @@ public class UTextView extends UDrawable {
                 }
             }
 
-            if (bgColor != 0) {
+            // Background
+            if (isDrawBG && bgColor != 0) {
                 drawBG(canvas, paint, bgPos);
             }
 

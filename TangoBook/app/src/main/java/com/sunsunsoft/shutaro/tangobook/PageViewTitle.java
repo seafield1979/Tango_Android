@@ -16,22 +16,24 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
      * Enums
      */
     enum ButtonId {
-        Edit(R.string.title_edit, UColor.White, Color.rgb(100, 200, 100)),
-        Study(R.string.title_study, Color.WHITE, Color.rgb(200,100,100)),
-        History(R.string.title_history, UColor.DarkYellow, Color.rgb(200,200,0)),
-        Settings(R.string.title_settings, UColor.DarkBlue, Color.rgb(153,204,255)),
-        Help(R.string.title_help, UColor.White, Color.rgb(255,178,102)),
-        Debug(R.string.title_debug, UColor.WHITE, Color.rgb(150,150,150)),
+        Edit(R.string.title_edit, UColor.White, Color.rgb(100, 200, 100), R.drawable.trash),
+        Study(R.string.title_study, Color.WHITE, Color.rgb(200,100,100), R.drawable.trash),
+        History(R.string.title_history, UColor.DarkYellow, Color.rgb(200,200,0), R.drawable.trash),
+        Settings(R.string.title_settings, UColor.DarkBlue, Color.rgb(153,204,255), R.drawable.trash),
+        Help(R.string.title_help, UColor.White, Color.rgb(255,178,102), R.drawable.trash),
+        Debug(R.string.title_debug, UColor.WHITE, Color.rgb(150,150,150), R.drawable.trash),
         ;
 
         private int textId;
         private int textColor;
         private int bgColor;
+        private int imageId;
 
-        ButtonId(int textId, int textColor, int bgColor) {
+        ButtonId(int textId, int textColor, int bgColor, int imageId) {
             this.textId = textId;
             this.textColor = textColor;
             this.bgColor = bgColor;
+            this.imageId = imageId;
         }
         String getTitle(Context context) {
             return context.getString(textId);
@@ -56,6 +58,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
 
     private static final int TITLE_TEXT_SIZE = 80;
     private static final int TEXT_SIZE = 50;
+    private static final int IMAGE_W = 100;
 
 
 
@@ -66,7 +69,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
     private UTextView mTitleText;
 
     // Buttons
-    private UButton mButtons[] = new UButton[ButtonId.values().length];
+    private UButtonText mButtons[] = new UButtonText[ButtonId.values().length];
 
 
     /**
@@ -135,9 +138,13 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
                     id.getTitle(mContext), x, y,
                     buttonW, buttonH,
                     TEXT_SIZE, id.textColor, id.bgColor);
+            mButtons[i].setImageId(id.imageId, new Size(IMAGE_W, IMAGE_W));
 
 
             UDrawManager.getInstance().addDrawable(mButtons[i]);
+            // 表示座標を少し調整
+            mButtons[i].setImageOffset(0, -50f);
+            mButtons[i].setTextOffset(0, 40f);
 
             x += buttonW + MARGIN_H;
         }

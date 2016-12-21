@@ -26,30 +26,34 @@ public class UMenuItem extends UDrawable {
     public static final int ITEM_H = 120;
     public static final int ANIME_FRAME = 10;
 
+
     private static final int CHILD_MARGIN_V = 30;
     private static final int CHILD_MARGIN_H = 30;
+    private static final int TEXT_SIZE = 30;
 
     /**
      * メンバ変数
      */
-    protected UMenuBar menuBar;
+    protected UMenuBar mMenuBar;
     protected UMenuItemCallbacks mCallbacks;
-    protected int itemId;
-    protected int nestCount;
-    protected int stateId;          // 現在の状態
-    protected int stateMax;         // 状態の最大値 addState で増える
+    protected UTextView mTextTitle;
+    protected int mItemId;
+    protected int mNestCount;
+    protected int mStateId;          // 現在の状態
+    protected int mStateMax;         // 状態の最大値 addState で増える
+    protected boolean mShowTitle;
 
     // 親アイテム
-    protected UMenuItem parentItem;
+    protected UMenuItem mParentItem;
     // 子アイテムリスト
-    protected LinkedList<UMenuItem> childItems;
+    protected LinkedList<UMenuItem> mChildItem;
 
     // 開いた状態、子アイテムを表示中かどうか
     protected boolean isOpened;
 
     // アイコン用画像
     protected LinkedList<Bitmap> icons = new LinkedList<>();
-    protected int animeColor;
+    protected int mAnimeColor;
 
     // 閉じている移動中かどうか
     protected boolean isClosing;
@@ -57,8 +61,8 @@ public class UMenuItem extends UDrawable {
     /**
      * Get/Set
      */
-    public LinkedList<UMenuItem> getChildItems() {
-        return childItems;
+    public LinkedList<UMenuItem> getmChildItem() {
+        return mChildItem;
     }
 
     public boolean isOpened() {
@@ -69,31 +73,48 @@ public class UMenuItem extends UDrawable {
         isOpened = opened;
     }
 
-    public int getNestCount() {
-        return nestCount;
+    public int getmNestCount() {
+        return mNestCount;
     }
 
-    public void setNestCount(int nestCount) {
-        this.nestCount = nestCount;
+    public void setmNestCount(int mNestCount) {
+        this.mNestCount = mNestCount;
     }
 
     public void setCallbacks(UMenuItemCallbacks callbacks){
         mCallbacks = callbacks;
     }
 
+    public void setTitle(String title) {
+        if (mTextTitle != null) {
+            mTextTitle.setText(title);
+        }
+    }
+
     public UMenuItem(UMenuBar menuBar, int id, Bitmap icon) {
-        super(DRAW_PRIORITY, 0,0,0,0);
-        this.menuBar = menuBar;
-        this.itemId = id;
-        this.stateId = 0;
-        this.stateMax = 1;
+        super(DRAW_PRIORITY, 0,0,ITEM_W,ITEM_H);
+        this.mMenuBar = menuBar;
+        this.mItemId = id;
+        this.mStateId = 0;
+        this.mStateMax = 1;
         if (icon != null) {
             this.icons.add(icon);
         }
     }
 
-    public void setParentItem(UMenuItem parentItem) {
-        this.parentItem = parentItem;
+    public void setmParentItem(UMenuItem mParentItem) {
+        this.mParentItem = mParentItem;
+    }
+
+    /**
+     * テキストを追加する
+     */
+    public void addTitle(String title, UAlignment alignment, float x, float y, int
+            color, int bgColor) {
+        mTextTitle = UTextView.createInstance(title, TEXT_SIZE, 0, alignment,
+                0, false, true, x, y, 0, color, bgColor);
+        mShowTitle = true;
+        mTextTitle.setMargin(10, 10);
     }
 
     /**
@@ -101,14 +122,14 @@ public class UMenuItem extends UDrawable {
      * @param child
      */
     public void addItem(UMenuItem child) {
-        if (childItems == null) {
-            childItems = new LinkedList<>();
+        if (mChildItem == null) {
+            mChildItem = new LinkedList<>();
         }
         // 親を設定する
-        parentItem = this;
-        child.setNestCount(this.nestCount + 1);
+        mParentItem = this;
+        child.setmNestCount(this.mNestCount + 1);
 
-        childItems.add(child);
+        mChildItem.add(child);
     }
 
     /**
@@ -117,22 +138,22 @@ public class UMenuItem extends UDrawable {
      */
     public void addState(Bitmap icon) {
         icons.add(icon);
-        stateMax++;
+        mStateMax++;
     }
 
     /**
      * 次の状態にすすむ
      */
     public int setNextState() {
-        if (stateMax >= 2) {
-            stateId = (stateId + 1) % stateMax;
+        if (mStateMax >= 2) {
+            mStateId = (mStateId + 1) % mStateMax;
         }
-        return stateId;
+        return mStateId;
     }
 
     private int getNextStateId() {
-        if (stateMax >= 2) {
-            return (stateId + 1) % stateMax;
+        if (mStateMax >= 2) {
+            return (mStateId + 1) % mStateMax;
         }
         return 0;
     }
@@ -162,20 +183,26 @@ public class UMenuItem extends UDrawable {
             // フラッシュする
             if (isAnimating) {
                 int alpha = getAnimeAlpha();
-                paint.setColor((alpha << 24) | animeColor);
+                paint.setColor((alpha << 24) | mAnimeColor);
             } else {
                 paint.setColor(0xff000000);
             }
 
             // 領域の幅に合わせて伸縮
             canvas.drawBitmap(icon, new Rect(0,0,icon.getWidth(), icon.getHeight()),
-                    new Rect((int)drawPos.x, (int)drawPos.y, (int)drawPos.x + ITEM_W,(int)drawPos.y + ITEM_H),
+                    new Rect((int)drawPos.x, (int)drawPos.y,
+                            (int)drawPos.x + ITEM_W,(int)drawPos.y + ITEM_H),
                     paint);
+            // タイトル
+            if (mTextTitle != null && MySharedPref.getMenuHelpMode() ==
+                    MenuHelpMode.Name) {
+                mTextTitle.draw(canvas, paint, drawPos);
+            }
         }
 
         // 子要素
-        if (childItems != null) {
-            for (UMenuItem item : childItems) {
+        if (mChildItem != null) {
+            for (UMenuItem item : mChildItem) {
                 if (!item.isShow) continue;
 
                 item.draw(canvas, paint, drawPos);
@@ -187,11 +214,11 @@ public class UMenuItem extends UDrawable {
      * アニメーション開始
      */
     public void startAnim() {
-        menuBar.setAnimating(true);
+        mMenuBar.setAnimating(true);
         isAnimating = true;
         animeFrame = 0;
         animeFrameMax = ANIME_FRAME;
-        animeColor = Color.argb(0,255,255,255);
+        mAnimeColor = Color.argb(0,255,255,255);
     }
 
     /**
@@ -232,7 +259,7 @@ public class UMenuItem extends UDrawable {
             if (vt.type != TouchType.Touch) return false;
 
             // 子要素を持っていたら Open/Close
-            if (childItems != null) {
+            if (mChildItem != null) {
                 if (isOpened) {
                     isOpened = false;
                     closeMenu();
@@ -246,7 +273,7 @@ public class UMenuItem extends UDrawable {
                 setNextState();
 
                 if (mCallbacks != null) {
-                    mCallbacks.menuItemClicked(itemId, stateId);
+                    mCallbacks.menuItemClicked(mItemId, mStateId);
                 }
             }
             // アニメーション
@@ -256,8 +283,8 @@ public class UMenuItem extends UDrawable {
         }
 
         // 子要素
-        if (isOpened() && childItems != null) {
-            for (UMenuItem child : childItems) {
+        if (isOpened() && mChildItem != null) {
+            for (UMenuItem child : mChildItem) {
                 // この座標系(親原点)に変換
                 if (child.checkTouch(vt, touchX - pos.x, touchY - pos.y)) {
                     return true;
@@ -271,21 +298,21 @@ public class UMenuItem extends UDrawable {
      * メニューをOpenしたときの処理
      */
     public void openMenu() {
-        if (childItems == null) return;
+        if (mChildItem == null) return;
 
         isOpened = true;
 
         int count = 1;
-        for (UMenuItem item : childItems) {
+        for (UMenuItem item : mChildItem) {
             item.setPos(0, 0);
             // 親の階層により開く方向が変わる
             item.isClosing = false;
             item.setShow(true);
 
-            if (nestCount == 0) {
+            if (mNestCount == 0) {
                 // 縦方向
                 item.startMoving(0, -count * (ITEM_H + CHILD_MARGIN_V), ANIME_FRAME);
-            } else if (nestCount == 1) {
+            } else if (mNestCount == 1) {
                 // 横方向
                 item.startMoving(count * (ITEM_W + CHILD_MARGIN_H), 0, ANIME_FRAME);
             }
@@ -297,11 +324,11 @@ public class UMenuItem extends UDrawable {
      * メニューをCloseしたときの処理
      */
     public void closeMenu() {
-        if (childItems == null) return;
+        if (mChildItem == null) return;
 
         isOpened = false;
 
-        for (UMenuItem item : childItems) {
+        for (UMenuItem item : mChildItem) {
             item.startMoving(0, 0, ANIME_FRAME);
             item.isClosing = true;
             if (item.isOpened) {
@@ -331,8 +358,8 @@ public class UMenuItem extends UDrawable {
         }
 
         // 子要素のdoAction
-        if (childItems != null) {
-            for (UMenuItem item : childItems) {
+        if (mChildItem != null) {
+            for (UMenuItem item : mChildItem) {
                 if (item.doAction()) {
                     allFinished = false;
                 }

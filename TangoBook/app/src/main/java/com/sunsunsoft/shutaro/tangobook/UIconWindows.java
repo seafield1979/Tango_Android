@@ -190,7 +190,7 @@ public class UIconWindows implements UWindowCallbacks {
                         " iconType:" + icon.getType() +
                         " iconId:" + icon.getTangoItem().getId() +
                         " itemPos:" + icon.getTangoItem().getPos() +
-                " title:" + icon.getTitle());
+                " mTitle:" + icon.getTitle());
                 pos++;
             }
         }

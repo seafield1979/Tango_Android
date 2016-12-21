@@ -60,7 +60,7 @@ public class TangoTagDao {
     public List<TangoTag> selectByItem(TangoItem item) {
         RealmResults<TangoTag> results = mRealm.where(TangoTag.class)
                 .equalTo("itemType", item.getItemType().ordinal())
-                .equalTo("itemId", item.getId())
+                .equalTo("mItemId", item.getId())
                 .findAll();
         return results;
     }
@@ -184,7 +184,7 @@ public class TangoTagDao {
     public boolean deleteByItem(TangoItem item) {
         RealmResults<TangoTag> results = mRealm.where(TangoTag.class)
                 .equalTo("itemType", item.getItemType().ordinal())
-                .equalTo("itemId", item.getId())
+                .equalTo("mItemId", item.getId())
                 .findAll();
 
         if (results == null || results.size() == 0) return false;

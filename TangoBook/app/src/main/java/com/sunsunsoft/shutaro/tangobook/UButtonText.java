@@ -1,9 +1,9 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.RectF;
 
 
@@ -11,6 +11,9 @@ import android.graphics.RectF;
  * テキストを表示するボタン
  */
 public class UButtonText extends UButton {
+    /**
+     * Enums
+     */
 
     /**
      * Consts
@@ -20,26 +23,44 @@ public class UButtonText extends UButton {
     /**
      * Member Variables
      */
-    private String text;
-    private int textColor;
+    private String mText;
+    private int mTextColor;
     private int mTextSize;
+    private Bitmap mImage;
+    private PointF mTextOffset = new PointF();
+    private PointF mImageOffset = new PointF();
+    private Size mImageSize;
 
     /**
      * Get/Set
      */
 
-    public String getText() {
-        return text;
+    public String getmText() {
+        return mText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setmText(String mText) {
+        this.mText = mText;
     }
 
-    public void setTextColor(int textColor) {
-        this.textColor = textColor;
+    public void setmTextColor(int mTextColor) {
+        this.mTextColor = mTextColor;
     }
 
+    public void setImageId(int imageId, Size imageSize) {
+        mImage = UResourceManager.getBitmapById(imageId);
+        mImageSize = imageSize;
+    }
+
+    public void setTextOffset(float x, float y) {
+        mTextOffset.x = x;
+        mTextOffset.y = y;
+    }
+
+    public void setImageOffset(float x, float y) {
+        mImageOffset.x = x;
+        mImageOffset.y = y;
+    }
 
     /**
      * Constructor
@@ -50,8 +71,8 @@ public class UButtonText extends UButton {
                        int textSize, int textColor, int color)
     {
         super(callbacks, type, id, priority, x, y, width, height, color);
-        this.text = text;
-        this.textColor = textColor;
+        this.mText = text;
+        this.mTextColor = textColor;
         mTextSize = textSize;
     }
 
@@ -111,11 +132,18 @@ public class UButtonText extends UButton {
                 new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + _height),
                 BUTTON_RADIUS, _color, 0, 0);
 
+        // 画像
+        if (mImage != null) {
+            UDraw.drawBitmap(canvas, paint, mImage,
+                    _pos.x + mImageOffset.x + (size.width - mImageSize.width) / 2,
+                    _pos.y + mImageOffset.y + (size.height - mImageSize.height) / 2,
+                                        mImageSize.width, mImageSize.height);
+        }
         // テキスト
-        if (text != null) {
-            UDraw.drawText(canvas, text, UAlignment.Center, mTextSize,
-                    _pos.x + size.width / 2,
-                    _pos.y + size.height / 2, textColor);
+        if (mText != null) {
+            UDraw.drawText(canvas, mText, UAlignment.Center, mTextSize,
+                    _pos.x + mTextOffset.x + size.width / 2,
+                    _pos.y + mTextOffset.y + size.height / 2, mTextColor);
         }
     }
 }

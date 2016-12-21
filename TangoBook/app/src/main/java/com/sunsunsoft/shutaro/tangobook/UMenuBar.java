@@ -89,7 +89,7 @@ abstract public class UMenuBar extends UWindow {
         Bitmap bmp = UResourceManager.getInstance().getBitmapById(bmpId);
         UMenuItem item = new UMenuItem(this, menuId, bmp);
         item.setCallbacks(mMenuItemCallbacks);
-        item.setParentItem(parent);
+        item.setmParentItem(parent);
         // 子要素は初期状態では非表示。オープン時に表示される
         item.setShow(false);
 

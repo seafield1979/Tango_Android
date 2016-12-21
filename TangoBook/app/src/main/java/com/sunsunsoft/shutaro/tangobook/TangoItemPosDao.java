@@ -524,7 +524,7 @@ public class TangoItemPosDao {
             } else {
                 query.or();
             }
-            query.equalTo("itemId", id);
+            query.equalTo("mItemId", id);
         }
 
         RealmResults<TangoItemPos> results = query.findAll();
@@ -541,7 +541,7 @@ public class TangoItemPosDao {
     public boolean deleteItem(TangoItem item) {
         TangoItemPos result = mRealm.where(TangoItemPos.class)
                 .equalTo("itemType", item.getItemType().ordinal())
-                .equalTo("itemId", item.getId())
+                .equalTo("mItemId", item.getId())
                 .findFirst();
         if (result == null) return false;
 
@@ -604,7 +604,7 @@ public class TangoItemPosDao {
         TangoItemPos itemPos = mRealm.where(TangoItemPos.class)
                 .equalTo("parentType", TangoParentType.Trash.ordinal())
                 .equalTo("itemType", item.getItemType().ordinal())
-                .equalTo("itemId", item.getId())
+                .equalTo("mItemId", item.getId())
                 .findFirst();
         if (itemPos == null) return false;
 
@@ -689,7 +689,7 @@ public class TangoItemPosDao {
             }
             query.equalTo("parentType", item.getParentType())
                     .equalTo("itemType", item.getItemType())
-                    .equalTo("itemId", item.getItemId());
+                    .equalTo("mItemId", item.getItemId());
         }
         RealmResults<TangoItemPos> results = query.findAll();
         if (results == null) return;
@@ -824,7 +824,7 @@ public class TangoItemPosDao {
 
             TangoItemPos result = mRealm.where(TangoItemPos.class)
                     .equalTo("itemType", itemType)
-                    .equalTo("itemId", itemId)
+                    .equalTo("mItemId", itemId)
                     .findFirst();
             if (result == null) continue;
 
@@ -851,11 +851,11 @@ public class TangoItemPosDao {
         // ２つのアイテムに紐付けされたItemPosのアイテムの部分を書き換える
         TangoItemPos itemPos1 = mRealm.where(TangoItemPos.class)
                 .equalTo("itemType", itemType1)
-                .equalTo("itemId", itemId1)
+                .equalTo("mItemId", itemId1)
                 .findFirst();
         TangoItemPos itemPos2 = mRealm.where(TangoItemPos.class)
                 .equalTo("itemType", itemType2)
-                .equalTo("itemId", itemId2)
+                .equalTo("mItemId", itemId2)
                 .findFirst();
 
         if (itemPos1 == null || itemPos2 == null) {
@@ -959,7 +959,7 @@ public class TangoItemPosDao {
     public boolean moveItem(TangoItem item, int parentType, int parentId) {
         TangoItemPos result = mRealm.where(TangoItemPos.class)
                 .equalTo("itemType", item.getItemType().ordinal())
-                .equalTo("itemId", item.getId())
+                .equalTo("mItemId", item.getId())
                 .findFirst();
         if (result == null) return false;
 
@@ -991,7 +991,7 @@ public class TangoItemPosDao {
                 query.or();
             }
             query.equalTo("itemType", item.getItemType().ordinal())
-                    .equalTo("itemId", item.getId());
+                    .equalTo("mItemId", item.getId());
         }
 
         RealmResults<TangoItemPos> results = query.findAll();

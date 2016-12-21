@@ -120,7 +120,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
         float y = TOP_Y;
 
         // Backup
-        // title
+        // mTitle
         mBackupTitle = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.backup_path_title),
                 TEXT_SIZE_S, DRAW_PRIORITY,

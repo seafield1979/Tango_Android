@@ -174,13 +174,8 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         y += ICON_W + MARGIN_V + 50;
 
         // Number of items in trash
-        textCountTitle = UTextView.createInstance( mParentView.getContext().getString(R.string
-                        .item_count), TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
-        textCountTitle.setMarginH(false);
-
-        textNumber = UTextView.createInstance( "" + count, TEXT_SIZE, 0,
+        textNumber = UTextView.createInstance( mParentView.getContext().getString(R.string
+                        .item_count) + " : " + count, TEXT_SIZE, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
                 MARGIN_H * 2 + textCountTitle.size.width, y, width - (MARGIN_H * 3 + textCountTitle
                         .size.width),

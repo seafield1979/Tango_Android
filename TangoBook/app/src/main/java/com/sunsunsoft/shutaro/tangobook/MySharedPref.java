@@ -11,6 +11,20 @@ import java.util.Map;
  * Shared Preferencesのラッパークラス
  * 設定等の情報を保存する
  */
+// メニューのヘルプ表示
+enum MenuHelpMode {
+    None,       // 非表示
+    Name,       // メニュー名を表示
+    Help        // メニューヘルプを表示
+    ;
+
+    public static MenuHelpMode toEnum(int value) {
+        if (value < values().length) {
+            return values()[value];
+        }
+        return None;
+    }
+}
 
 public class MySharedPref {
     /**
@@ -32,6 +46,10 @@ public class MySharedPref {
     // Realmバックアップ日時
     public static final String RealmBackupDateKey = "RealmBackupDate";
 
+    // 編集ページ
+    // メニューヘルプ(0:非表示 / 1:メニュー名を表示 / 2:メニューヘルプを表示)
+    public static final String MenuHelpModeKey = "MenuHelpMode";
+
     /**
      * Static varialbes
      */
@@ -42,6 +60,25 @@ public class MySharedPref {
      */
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor mEditor;
+
+    // 設定値参照用
+    private MenuHelpMode mMenuHelpMode;
+
+    /**
+     * Get/Set
+     */
+    public static MenuHelpMode getMenuHelpMode() {
+        MySharedPref instance = getInstance();
+        return instance.mMenuHelpMode;
+    }
+    public static void setMenuHelpMode(MenuHelpMode mode) {
+        MySharedPref instance = getInstance();
+
+        if (instance.mMenuHelpMode != mode) {
+            instance.mMenuHelpMode = mode;
+            MySharedPref.getInstance().writeInt(MySharedPref.MenuHelpModeKey, mode.ordinal());
+        }
+    }
 
     /**
      * Constructor
@@ -60,6 +97,8 @@ public class MySharedPref {
     public static void init(Context context) {
         if (singleton == null) {
             singleton = new MySharedPref(context);
+
+            singleton.mMenuHelpMode = MenuHelpMode.toEnum(readInt(MenuHelpModeKey));
         }
     }
     public static MySharedPref getInstance() {

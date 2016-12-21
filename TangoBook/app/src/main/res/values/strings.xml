@@ -96,4 +96,30 @@
 
     <string name="preset_title2">Addボタンをタップしてプリセットを追加します</string>
 
+    <string name="add_item">アイテム追加</string>
+    <string name="add_card">単語カード</string>
+    <string name="add_book">単語帳</string>
+    <string name="add_dummy_card">ダミー単語カード</string>
+    <string name="add_dummy_book">ダミー単語帳</string>
+    <string name="add_preset">プリセット単語帳</string>
+    <string name="sort">ソート</string>
+    <string name="sort_word_asc">英語(昇順)</string>
+    <string name="sort_word_desc">英語(降順)</string>
+    <string name="sort_time_asc">作成日(昇順)</string>
+    <string name="sort_time_desc">作成日(降順)</string>
+    <string name="disp_list">項目表示方法</string>
+    <string name="list_type1">リスト</string>
+    <string name="list_type_grid">グリッド</string>
+    <string name="debug">デバッグ</string>
+    <string name="debug1">デバッグ1</string>
+    <string name="debug2">デバッグ2</string>
+    <string name="debug3">デバッグ3</string>
+    <string name="debug4">デバッグ4</string>
+    <string name="debug5">デバッグ5</string>
+    <string name="debug6">デバッグ6</string>
+    <string name="help">ヘルプ</string>
+    <string name="disp_menu_name">メニュー名を表示</string>
+    <string name="disp_menu_help">メニューの説明を表示</string>
+
+
 </resources>
