@@ -50,9 +50,9 @@ public class IconInfoDialogTrash extends IconInfoDialog {
      * Member Variables
      */
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
-    private UTextView textNumber;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
-    private UTextView textTitle, textCountTitle;
+    private UTextView textTitle;
+    private UTextView textNumber;
 
     /**
      * Get/Set
@@ -116,7 +116,6 @@ public class IconInfoDialogTrash extends IconInfoDialog {
                 bgColor, FRAME_WIDTH, FRAME_COLOR);
 
         textTitle.draw(canvas, paint, pos);
-        textCountTitle.draw(canvas, paint, pos);
         textNumber.draw(canvas, paint, pos);
 
         // Buttons
@@ -176,9 +175,8 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         // Number of items in trash
         textNumber = UTextView.createInstance( mParentView.getContext().getString(R.string
                         .item_count) + " : " + count, TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H * 2 + textCountTitle.size.width, y, width - (MARGIN_H * 3 + textCountTitle
-                        .size.width),
+                UAlignment.CenterX, canvas.getWidth(), false, true,
+                width / 2, y, width - MARGIN_H * 2,
                 TEXT_COLOR,
                 TEXT_BG_COLOR);
 

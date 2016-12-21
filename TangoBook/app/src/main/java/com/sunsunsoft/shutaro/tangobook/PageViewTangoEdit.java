@@ -312,12 +312,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 break;
             case SortByTimeDesc:
                 break;
-            case ListTypeTop:
-                break;
-            case ListType1:
-                break;
-            case ListType2:
-                break;
+//            case ListTypeTop:
+//                break;
+//            case ListType1:
+//                break;
+//            case ListType2:
+//                break;
             case Debug1:
                 // ログウィンドウの表示切り替え
                 mLogWin.toggle();
