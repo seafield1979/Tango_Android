@@ -137,11 +137,12 @@ abstract public class UMenuBar extends UWindow {
 
             if (item.checkTouch(vt, clickX, clickY)) {
                 done = true;
+                // クリック時に後ろのアイテムに反応するのを防ぐ
+                vt.setTouching(false);
+
                 if (item.isOpened()) {
                     // 他に開かれたメニューを閉じる
                     closeAllMenu(item);
-                } else {
-
                 }
                 break;
             }

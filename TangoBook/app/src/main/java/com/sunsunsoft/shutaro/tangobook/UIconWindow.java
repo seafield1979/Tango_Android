@@ -1055,9 +1055,14 @@ public class UIconWindow extends UWindow {
         if (super.touchEvent(vt, offset)) {
             return true;
         }
+        // 範囲外なら抜ける
+        if (!rect.contains((int)vt.touchX(-offset.x), (int)vt.touchY(-offset.y))) {
+            return false;
+        }
 
         boolean done = false;
 
+        // 配下のアイコンのタッチ処理
         List<UIcon> icons = getIcons();
         if (icons != null) {
             for (UIcon icon : icons) {

@@ -70,6 +70,9 @@ public class UScrollBar {
      * Get/Set
      */
 
+    public void setBgLength(int bgLength) {
+        this.bgLength = bgLength;
+    }
 
     public void setBgColor(int bgColor) {
         this.bgColor = bgColor;

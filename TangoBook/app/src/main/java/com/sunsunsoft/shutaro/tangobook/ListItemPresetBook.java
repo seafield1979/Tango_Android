@@ -62,7 +62,7 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
         mAddButton = new UButtonImage(this, ButtonIdAdd, 0,
                 size.width - 150, (size.height - STAR_ICON_W) / 2,
                 STAR_ICON_W, STAR_ICON_W, R.drawable.add, -1);
-        mAddButton.scaleRect(1.2f);
+        mAddButton.scaleRect(1.5f);
 
     }
 

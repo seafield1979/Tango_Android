@@ -457,7 +457,9 @@ class DrawList
             return false;
         }
 
-        for (UDrawable obj : list) {
+        // 手前に表示されたものから処理したいのでリストを逆順で処理する
+        for(ListIterator it = list.listIterator(list.size()); it.hasPrevious();) {
+            UDrawable obj = (UDrawable)it.previous();
             if (!obj.isShow()) continue;
             PointF offset = obj.getDrawOffset();
 

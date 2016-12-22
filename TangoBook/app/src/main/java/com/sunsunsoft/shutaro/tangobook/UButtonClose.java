@@ -41,6 +41,7 @@ public class UButtonClose extends UButton {
         this.id = id;
         this.color = color;
         this.radius = RADIUS;
+        scaleRect(1.3f);
     }
 
     /**

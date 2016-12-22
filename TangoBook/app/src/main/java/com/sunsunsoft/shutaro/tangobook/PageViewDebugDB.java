@@ -6,37 +6,36 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import java.util.List;
+
 /**
- * Created by shutaro on 2016/12/15.
- *
- * Debug page
+ * Created by shutaro on 2016/12/22.
  */
 
-public class PageViewDebug extends UPageView implements UListItemCallbacks{
+public class PageViewDebugDB extends UPageView implements UListItemCallbacks{
     /**
      * Enums
      */
     enum DebugMenu {
-        StudiedCards,
-        DrawableDialog,
-        ShowDrawable,
-        DebugDB,
-        Test5,
-        Test6
+        ShowTangoCard,
+        ShowTangoBook,
+        ShowItemPos,
+        GetNoParentItems,
+        RescureNoParentItems
         ;
 
         public static DebugMenu toEnum(int value) {
             if (value < DebugMenu.values().length) {
                 return DebugMenu.values()[value];
             }
-            return StudiedCards;
+            return ShowTangoCard;
         }
     }
 
     /**
      * Constants
      */
-    public static final String TAG = "PageViewDebug";
+    public static final String TAG = "PageViewDebugDB";
     private static final int MenuIdTop = 100;
 
     private static final int DRAW_PRIORITY = 100;
@@ -47,7 +46,7 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks{
     /**
      * Constructor
      */
-    public PageViewDebug(Context context, View parentView, String title) {
+    public PageViewDebugDB(Context context, View parentView, String title) {
         super(context, parentView, title);
     }
 
@@ -163,19 +162,29 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks{
         ULog.print(TAG, "item clicked:" + item.mIndex);
 
         switch(DebugMenu.toEnum(item.mIndex)) {
-            case StudiedCards:
-                RealmManager.getStudiedCardDao().selectAll();
+            case ShowTangoCard:
+                RealmManager.getCardDao().selectAll();
                 break;
-            case DrawableDialog:
-                showDrawableDialog();
+            case ShowTangoBook:
+                RealmManager.getBookDao().selectAll();
                 break;
-            case ShowDrawable:
-                UDrawManager.getInstance().showAllList(true, true);
+            case ShowItemPos:
+                RealmManager.getItemPosDao().selectAll();
                 break;
-            case DebugDB:
-                PageViewManager.getInstance().stackPage(PageView.DebugDB);
+            case GetNoParentItems: {
+                List<TangoItem> items = RealmManager.getCheckDao().selectNoParentItems();
+                for (TangoItem _item : items) {
+                    ULog.print(TAG, "itemType:" + _item.getItemType() + " itemId:"+ _item.getId()
+                            + " title:" + _item.getTitle());
+                }
+
+            }
                 break;
-            case Test5:
+            case RescureNoParentItems:
+                // 親のないアイテムをホームに移動する
+                List<TangoItem> items = RealmManager.getCheckDao().selectNoParentItems();
+                RealmManager.getItemPosDao().moveNoParentItems(items, TangoParentType.Home
+                        .ordinal(), 0);
                 break;
         }
     }

@@ -21,7 +21,8 @@ enum PageView {
     PresetBook,         // プリセット単語帳選択
     SearchCard,         // カード検索
     Help,               // ヘルプ
-    Debug               // Debug
+    Debug,               // Debug
+    DebugDB             // Debug DB(Realm)
     ;
 }
 
@@ -96,6 +97,9 @@ public class PageViewManager extends UPageViewManager{
         page = new PageViewDebug(mContext, mParentView, "Debug");
         pages[PageView.Debug.ordinal()] = page;
 
+        // Debug DB
+        page = new PageViewDebugDB(mContext, mParentView, "DebugDB");
+        pages[PageView.DebugDB.ordinal()] = page;
 
         // 最初に表示するページ
         stackPage(PageView.Title);

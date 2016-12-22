@@ -439,11 +439,11 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         switch (icon.getType()) {
             case Book:
             {
-                UIconWindow window = mIconWinManager.getSubWindow();
-                window.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
+                UIconWindow subWindow = mIconWinManager.getSubWindow();
+                subWindow.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
 
                 // SubWindowを画面外から移動させる
-                mIconWinManager.showWindow(window, true);
+                mIconWinManager.showWindow(subWindow, true);
                 mParentView.invalidate();
             }
             break;

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@android:color/holo_blue_dark"
+        android:background="#a0a0a0"
         >
 
     <TextView

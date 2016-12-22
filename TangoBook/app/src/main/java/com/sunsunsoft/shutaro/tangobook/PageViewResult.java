@@ -150,7 +150,7 @@ public class PageViewResult extends UPageView
         // ListView
         mListView = new ListViewResult(this, mOkCards, mNgCards, mStudyMode,
                 PRIORITY_LV, MARGIN_H, y,
-                width - MARGIN_H * 2, height - (int)y - MARGIN_V - 50, Color.WHITE);
+                width - MARGIN_H * 2, height - (int)y - MARGIN_V, Color.WHITE);
         mListView.addToDrawManager();
         mListView.setFrameColor(Color.BLACK);
     }

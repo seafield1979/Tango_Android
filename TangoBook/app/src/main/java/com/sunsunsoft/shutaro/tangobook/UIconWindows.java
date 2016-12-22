@@ -127,8 +127,8 @@ public class UIconWindows implements UWindowCallbacks {
         if (showWindows.size() == 0) return;
 
         // 各ウィンドウが同じサイズになるように並べる
-        int width = 0;
-        int height = 0;
+        int width;
+        int height;
         if (directionType == DirectionType.Landscape) {
             width = size.width / showWindows.size();
             height = size.height;

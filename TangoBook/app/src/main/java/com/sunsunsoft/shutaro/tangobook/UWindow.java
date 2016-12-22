@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
 /**
  * UWindow呼び出し元に通知するためのコールバック
@@ -426,6 +427,15 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
         boolean ret = super.autoMoving();
 
         clientSize = size;
+
+        if (mScrollBarH != null) {
+            mScrollBarH.setBgLength(clientSize.width);
+        }
+        if (mScrollBarV != null) {
+            mScrollBarV.setBgLength(clientSize.height);
+        }
+        updateWindow();
+        Log.d(TAG, "winSize:height:" + size.height + " clientSize:" + clientSize.height);
 
         return ret;
     }

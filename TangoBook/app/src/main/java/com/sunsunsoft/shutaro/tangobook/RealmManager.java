@@ -41,6 +41,7 @@ public class RealmManager {
     private static TangoBookHistoryDao bookHistoryDao;
     private static TangoStudiedCardDao studiedCardDao;
     private static TangoTagDao tagDao;
+    private static TangoItemsCheckDao itemsCheckDao;
     private static boolean initFlag;
 
     /**
@@ -72,6 +73,7 @@ public class RealmManager {
         cardHistoryDao = new TangoCardHistoryDao(realm);
         bookHistoryDao = new TangoBookHistoryDao(realm);
         studiedCardDao = new TangoStudiedCardDao(realm);
+        itemsCheckDao = new TangoItemsCheckDao(realm);
 
         tagDao = new TangoTagDao(realm);
 
@@ -102,6 +104,8 @@ public class RealmManager {
     public static TangoTagDao getTagDao() {
         return tagDao;
     }
+
+    public static TangoItemsCheckDao getCheckDao() { return itemsCheckDao; }
 
     public static void closeRealm() {
         realm.close();
