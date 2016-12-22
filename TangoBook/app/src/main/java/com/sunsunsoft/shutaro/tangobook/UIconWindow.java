@@ -1056,7 +1056,7 @@ public class UIconWindow extends UWindow {
             return true;
         }
         // 範囲外なら抜ける
-        if (!rect.contains((int)vt.touchX(-offset.x), (int)vt.touchY(-offset.y))) {
+        if (!rect.contains((int)vt.touchX(), (int)vt.touchY())) {
             return false;
         }
 

@@ -51,6 +51,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     public static final int CloseDialogId = 10000123;
 
     protected static final int MARGIN_H = 100;
+    protected static final int MARGIN_V = 15;
     protected static final int ANIMATION_FRAME = 10;
 
     protected static final int MESSAGE_TEXT_SIZE = 50;
@@ -266,6 +267,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                 x = size.width / 2;
                 break;
             case CenterY:
+            case None:
                 x = MARGIN_H;
                 break;
         }
@@ -347,14 +349,14 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                     size.width / 2, y,
                     size.width, color, 0);
             Size titleSize = mTitleView.getTextSize(getWidth());
-            y += titleSize.height + BUTTON_MARGIN_H;
+            y += titleSize.height + MARGIN_V;
         }
 
         // テキスト
         for (UTextView textView : mTextViews) {
             textView.pos.y = y;
             textView.updateRect();
-            y += textView.size.height + BUTTON_MARGIN_H;
+            y += textView.size.height + MARGIN_V;
         }
 
         // Drawables

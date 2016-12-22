@@ -29,6 +29,7 @@ public class PageViewSearchCard extends UPageView
      */
     // 検索結果を表示するリストView
     private UListView mListView;
+    private DialogCard mCardDialog;
 
     /**
      * Constructor
@@ -88,7 +89,7 @@ public class PageViewSearchCard extends UPageView
         int height = mParentView.getHeight();
         float y = MARGIN_V;
 
-        mListView = new UListView(null, this, 0, MARGIN_H, y, width - MARGIN_H * 2, height -
+        mListView = new UListView(null, this, 100, MARGIN_H, y, width - MARGIN_H * 2, height -
                 MARGIN_V * 2,
                 Color.LTGRAY);
         mListView.addToDrawManager();
@@ -172,7 +173,13 @@ public class PageViewSearchCard extends UPageView
      * @param item
      */
     public void ListItemClicked(UListItem item) {
+        if (!(item instanceof ListItemSearchedCard)) return;
 
+        ListItemSearchedCard _item = (ListItemSearchedCard)item;
+
+        mCardDialog = new DialogCard(_item.getCard(), true, mParentView.getWidth(), mParentView
+                .getHeight());
+        mCardDialog.addToDrawManager();
     }
 
     /**

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -144,7 +145,14 @@ public class TopFragment extends Fragment implements OnClickListener, OnTouchLis
     public void showEditLayout(boolean show) {
         if (show) {
             mEditText.setText("");
+            mEditText.requestFocus();
             editLayout.setVisibility(View.VISIBLE);
+
+            // ソフトウェアキーボードを表示する
+            InputMethodManager inputMethodManager
+                    = (InputMethodManager)getContext().getSystemService(getContext()
+                    .INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(mEditText, 0);
         } else {
             editLayout.setVisibility(View.GONE);
         }
