@@ -82,6 +82,12 @@ public class UListView extends UScrollWindow
         removeCore(item, index);
     }
 
+    public void clear() {
+        mItems.clear();
+        mBottomY = 0;
+        setContentSize(0,0, true);
+    }
+
     protected void removeCore(UListItem item, int index) {
         if (index == -1 || item == null) return;
 

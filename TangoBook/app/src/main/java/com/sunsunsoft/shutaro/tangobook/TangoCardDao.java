@@ -72,6 +72,20 @@ public class TangoCardDao {
     }
 
     /**
+     * WordAの先頭部分が検索文字列と一致しているものを取得する
+     * @param searchStr
+     * @return
+     */
+    public List<TangoCard> selectByWordA(String searchStr) {
+        if (searchStr == null || searchStr.length() == 0) return null;
+
+        RealmResults<TangoCard> results = mRealm.where(TangoCard.class)
+                        .contains("wordA", searchStr).
+                        findAll();
+        return results;
+    }
+
+    /**
      * 変更不可なRealmのオブジェクトを変更可能なリストに変換する
      * @param list
      * @return

@@ -16,12 +16,12 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
      * Enums
      */
     enum ButtonId {
-        Edit(R.string.title_edit, UColor.White, Color.rgb(100, 200, 100), R.drawable.trash),
-        Study(R.string.title_study, Color.WHITE, Color.rgb(200,100,100), R.drawable.trash),
-        History(R.string.title_history, UColor.DarkYellow, Color.rgb(200,200,0), R.drawable.trash),
-        Settings(R.string.title_settings, UColor.DarkBlue, Color.rgb(153,204,255), R.drawable.trash),
-        Help(R.string.title_help, UColor.White, Color.rgb(255,178,102), R.drawable.trash),
-        Debug(R.string.title_debug, UColor.WHITE, Color.rgb(150,150,150), R.drawable.trash),
+        Edit(R.string.title_edit, UColor.White, Color.rgb(100, 200, 100), R.drawable.edit),
+        Study(R.string.title_study, Color.WHITE, Color.rgb(200,100,100), R.drawable.study),
+        History(R.string.title_history, UColor.DarkYellow, Color.rgb(200,200,0), R.drawable.history),
+        Settings(R.string.title_settings, UColor.DarkBlue, Color.rgb(153,204,255), R.drawable.settings_1),
+        Help(R.string.title_help, UColor.White, Color.rgb(255,178,102), R.drawable.question),
+        Debug(R.string.title_debug, UColor.WHITE, Color.rgb(150,150,150), R.drawable.debug),
         ;
 
         private int textId;

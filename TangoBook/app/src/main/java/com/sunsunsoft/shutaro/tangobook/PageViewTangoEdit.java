@@ -338,20 +338,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 mLogWin.toggle();
                 mParentView.invalidate();
                 break;
-            case Debug2:
-                debugDialogs.showDialog(DebugDialogs.DialogType.SelectDao);
-                break;
-            case Debug3:
-                debugDialogs.showDialog(DebugDialogs.DialogType.DeleteDao);
-                break;
-            case Debug4:
-                debugDialogs.showDialog(DebugDialogs.DialogType.Icons);
-                break;
-            case Debug5:
-                break;
-            case Debug6:
-                UDrawManager.getInstance().showAllList(true, false);
-                break;
             case ShowMenuName:
             {
                 MenuHelpMode helpMode = MySharedPref.getMenuHelpMode();
@@ -372,6 +358,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 }
                 MySharedPref.setMenuHelpMode(helpMode);
             }
+                break;
+            case Setting:
+
+                break;
+            case SearchCard:
+                PageViewManager.getInstance().stackPage(PageView.SearchCard);
                 break;
         }
         ULog.print(TAG, "menu item clicked " + id);

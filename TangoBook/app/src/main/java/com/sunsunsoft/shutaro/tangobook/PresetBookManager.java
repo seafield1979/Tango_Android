@@ -45,9 +45,7 @@ public class PresetBookManager {
 
     // Singletonオブジェクトを作成する
     public static PresetBookManager createInstance(Context context) {
-        if (singleton == null ) {
-            singleton = new PresetBookManager(context);
-        }
+        singleton = new PresetBookManager(context);
         return singleton;
     }
     public static PresetBookManager getInstance() { return singleton; }

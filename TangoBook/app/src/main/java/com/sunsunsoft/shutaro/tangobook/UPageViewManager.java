@@ -163,7 +163,7 @@ abstract public class UPageViewManager {
             pages[page.ordinal()].onShow();
             setActionBarTitle(pages[page.ordinal()].getTitle());
 
-            if (pageIdStack.size() > 0) {
+            if (pageIdStack.size() <= 1) {
                 showActionBarBack(false);
             }
             return true;

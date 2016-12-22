@@ -38,9 +38,12 @@
     <string name="title_studying">単語帳学習</string>
     <string name="title_study_select">学習する</string>
     <string name="title_preset_book">プリセット単語帳</string>
+    <string name="title_search_card">カードを探す</string>
     <string name="title_history">学習の記録</string>
     <string name="title_settings">設定</string>
     <string name="title_help">ヘルプ</string>
+    <string name="search_card">カードを探す</string>
+    <string name="search_card_name">検索カード名</string>
     <string name="title_debug">Debug</string>
 
     <string name="open">開く</string>

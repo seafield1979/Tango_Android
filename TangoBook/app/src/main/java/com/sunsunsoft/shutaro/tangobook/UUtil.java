@@ -124,4 +124,23 @@ public class UUtil {
         }
         return df.format(date);
     }
+
+    /**
+     * 表示するためのテキストに変換（改行なし、最大文字数制限）
+     * @param text
+     * @return
+     */
+    public static String convString(String text, boolean cutNewLine, int maxLength) {
+        // 改行を除去
+        String _text = text;
+        if (cutNewLine) {
+            _text = text.replace("\n", " ");
+        }
+
+        // 最大文字数制限
+        if (maxLength > 0 && _text.length() > maxLength) {
+            return _text.substring(0, maxLength - 1);
+        }
+        return _text;
+    }
 }

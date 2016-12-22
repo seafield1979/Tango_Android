@@ -19,6 +19,7 @@ enum PageView {
     History,            // 履歴
     Settings,           // 設定
     PresetBook,         // プリセット単語帳選択
+    SearchCard,         // カード検索
     Help,               // ヘルプ
     Debug               // Debug
     ;
@@ -75,6 +76,9 @@ public class PageViewManager extends UPageViewManager{
         page = new PageViewPresetBook(mContext, mParentView, UResourceManager.getStringById(R.string.title_preset_book));
         pages[PageView.PresetBook.ordinal()] = page;
 
+        // Search Card
+        page = new PageViewSearchCard(mContext, mParentView, UResourceManager.getStringById(R.string.title_search_card));
+        pages[PageView.SearchCard.ordinal()] = page;
 
         // History
         page = new PageViewHistory(mContext, mParentView, UResourceManager.getStringById(R.string.title_history));

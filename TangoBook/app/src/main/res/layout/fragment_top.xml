@@ -5,8 +5,38 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@android:color/holo_blue_dark"
     >
+
+    <!-- 検索時にのみ表示される -->
+    <LinearLayout
+        android:id="@+id/edit_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="@android:color/holo_blue_dark"
+        >
+
+    <TextView
+        android:text="@string/search_card_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:id="@+id/textView4"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="10"
+            android:id="@+id/editText"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:background="@android:color/background_light"/>
+        <requestFocus/>
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/view_container"
         android:layout_width="match_parent"

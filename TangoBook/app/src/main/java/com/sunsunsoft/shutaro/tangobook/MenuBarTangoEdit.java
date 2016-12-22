@@ -41,15 +41,13 @@ public class MenuBarTangoEdit extends UMenuBar {
 
         DebugTop(MenuItemType.Top, R.drawable.debug, R.string.debug),
         Debug1(MenuItemType.Child, R.drawable.number_1, R.string.debug1),
-        Debug2(MenuItemType.Child, R.drawable.number_2, R.string.debug2),
-        Debug3(MenuItemType.Child, R.drawable.number_3, R.string.debug3),
-        Debug4(MenuItemType.Child, R.drawable.number_4, R.string.debug4),
-        Debug5(MenuItemType.Child, R.drawable.number_5, R.string.debug5),
-        Debug6(MenuItemType.Child, R.drawable.number_6, R.string.debug6),
 
         Help(MenuItemType.Top, R.drawable.question, R.string.help),
         ShowMenuName(MenuItemType.Child, R.drawable.number_1, R.string.disp_menu_name),
         ShowMenuHelp(MenuItemType.Child, R.drawable.number_2, R.string.disp_menu_help),
+
+        Setting(MenuItemType.Top, R.drawable.settings_1, R.string.title_settings),
+        SearchCard(MenuItemType.Top, R.drawable.loupe, R.string.search_card)
         ;
 
         private MenuItemType type;

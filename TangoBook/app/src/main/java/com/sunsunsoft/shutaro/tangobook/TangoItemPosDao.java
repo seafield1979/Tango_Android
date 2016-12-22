@@ -73,6 +73,14 @@ public class TangoItemPosDao {
         return results;
     }
 
+    public TangoItemPos selectCardParent(int cardId) {
+        TangoItemPos result = mRealm.where(TangoItemPos.class)
+                .equalTo("itemType", TangoItemType.Card.ordinal())
+                .equalTo("itemId", cardId)
+                .findFirst();
+        return result;
+    }
+
 
     /**
      * ホームのアイテムを取得
