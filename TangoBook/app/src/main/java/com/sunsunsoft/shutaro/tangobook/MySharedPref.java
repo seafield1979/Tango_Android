@@ -46,6 +46,9 @@ public class MySharedPref {
     // Realmバックアップ日時
     public static final String RealmBackupDateKey = "RealmBackupDate";
 
+    // 自動バックアップ
+    public static final String RealmAutoBackup = "RealmAutoBackup";
+
     // 編集ページ
     // メニューヘルプ(0:非表示 / 1:メニュー名を表示 / 2:メニューヘルプを表示)
     public static final String MenuHelpModeKey = "MenuHelpMode";

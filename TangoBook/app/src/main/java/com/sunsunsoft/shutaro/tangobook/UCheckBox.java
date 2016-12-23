@@ -52,6 +52,10 @@ public class UCheckBox extends UDrawable {
         return isChecked;
     }
 
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
     /**
      * Constructor
      */
@@ -108,7 +112,7 @@ public class UCheckBox extends UDrawable {
         // CheckBox部分をクリックしたらチェック状態が変わる
         if (vt.type == TouchType.Click) {
             if (new Rect((int)pos.x - COLLISION_MARGIN, (int)pos.y - COLLISION_MARGIN,
-                    (int)pos.x + mBoxWidth + COLLISION_MARGIN,
+                    (int)pos.x + size.width + COLLISION_MARGIN,
                     (int)pos.y + mBoxWidth + COLLISION_MARGIN).contains(
                     (int)vt.touchX(offset.x), (int)vt.touchY(offset.y)))
             {

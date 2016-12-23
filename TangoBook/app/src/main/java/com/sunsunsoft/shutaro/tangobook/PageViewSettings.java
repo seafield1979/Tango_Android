@@ -27,9 +27,14 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     private static final int BUTTON2_H = 200;
     private static final int TEXT_SIZE = 50;
 
+    // button ids
     private static final int ButtonIdBackup = 100;
+    private static final int ButtonIdLicense = 101;
+    private static final int ButtonIdContact = 102;
+    private static final int ButtonIdContactOK = 103;
 
     private static final int CHECK_BOX_W = 70;
+    private static final int TEXT_COLOR = Color.BLACK;
 
     /**
      * Member variables
@@ -110,10 +115,21 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
         mBackupButton.addToDrawManager();
         y += mBackupButton.getHeight() + MARGIN_V;
 
-        // checkBox
-        mCheckBox1 = new UCheckBox(null, DRAW_PRIORITY, x, y, mParentView.getWidth(),
-                CHECK_BOX_W, "hogehoge", TEXT_SIZE, Color.BLACK);
-        mCheckBox1.addToDrawManager();
+        // ライセンス
+        mLicenseButton = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
+                 UResourceManager.getStringById(R.string.license),
+                x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, Color.WHITE, UColor.DarkOrange);
+        mLicenseButton.addToDrawManager();
+        y += mLicenseButton.getHeight() + MARGIN_V;
+
+
+        // お問い合わせ（メール）
+        mContactButton = new UButtonText(this, UButtonType.Press, ButtonIdContact, DRAW_PRIORITY,
+                UResourceManager.getStringById(R.string.contact_us),
+                x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkBlue, UColor.LightSkyBlue);
+        mContactButton.addToDrawManager();
+        y += mContactButton.getHeight() + MARGIN_V;
+
     }
 
     /**
@@ -135,11 +151,35 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch(id) {
             case ButtonIdBackup: {
-                // バックアップボタン
                 // バックアップページに遷移
                 PageViewManager.getInstance().stackPage(PageView.BackupDB);
             }
             break;
+            case ButtonIdLicense:
+            {
+                // ライセンスページに遷移
+                PageViewManager.getInstance().stackPage(PageView.License);
+            }
+                break;
+            case ButtonIdContact:
+            {
+                // お問い合わせメールダイアログを表示
+                if (mDialog == null) {
+                    mDialog = UDialogWindow.createInstance(this, null,
+                            mParentView.getWidth(),
+                            mParentView.getHeight());
+                    mDialog.setTitle(UResourceManager.getStringById(R.string.contact_us));
+                    mDialog.addTextView(UResourceManager.getStringById(R.string.contact_message),
+                            UAlignment.CenterX, true, false, TEXT_SIZE, TEXT_COLOR, 0);
+                    mDialog.addButton(ButtonIdContactOK,
+                            UResourceManager.getStringById(R.string.send_mail), 0, 0);
+                    mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
+                    mDialog.addToDrawManager();
+                }
+            }
+                break;
+            case ButtonIdContactOK:
+                break;
         }
         return false;
     }

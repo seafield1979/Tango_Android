@@ -13,7 +13,8 @@ import android.view.View;
 
 import java.util.List;
 
-public class PageViewHistory extends UPageView implements UButtonCallbacks, UListItemCallbacks{
+public class PageViewHistory extends UPageView
+        implements UDialogCallbacks, UButtonCallbacks, UListItemCallbacks{
     /**
      * Constants
      */
@@ -21,20 +22,23 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
     private static final int DRAW_PRIORYTY_DIALOG = 50;
 
     private static final int TOP_Y = 50;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
 
     private static final int TEXT_SIZE = 50;
+
+    // button ids
     private static final int ButtonIdReturn = 100;
+    private static final int ButtonIdClear = 101;
+    private static final int ButtonIdClearOK = 102;
 
     /**
      * Member variables
      */
     private UTextView mTitleText;
     private ListViewStudyHistory mListView;
-    private UButtonText mReturnButton;
+    private UButtonText mClearButton;
+
     private UDialogWindow mDialog;      // OK/NGのカード一覧を表示するダイアログ
 
     /**
@@ -111,14 +115,13 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
 
         y += listViewH + MARGIN_H;
 
-        // Button
-        if (false) {
-            mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
-                    DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
-                    (width - BUTTON_W) / 2, y, BUTTON_W, BUTTON_H, 50, Color.WHITE, Color.rgb(100, 200,
-                    100));
-            mReturnButton.addToDrawManager();
-        }
+        // Clear button
+        mClearButton = new UButtonText(this, UButtonType.Press, ButtonIdClear,
+            DRAW_PRIORITY, UResourceManager.getStringById(R.string.clear),
+            width - BUTTON_W - MARGIN_H, 20,
+            BUTTON_W, BUTTON_H,
+            TEXT_SIZE, Color.WHITE, UColor.Salmon );
+        mClearButton.addToDrawManager();
     }
 
     /**
@@ -141,6 +144,34 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
         switch(id) {
             case ButtonIdReturn:
                 PageViewManager.getInstance().popPage();
+                break;
+            case ButtonIdClear:
+            {
+                // クリア確認ダイアログを表示する
+                // お問い合わせメールダイアログを表示
+                if (mDialog == null) {
+                    mDialog = UDialogWindow.createInstance(this, this,
+                            mParentView.getWidth(),
+                            mParentView.getHeight());
+                    mDialog.setTitle(UResourceManager.getStringById(R.string.confirm));
+                    mDialog.addTextView(UResourceManager.getStringById(R.string
+                            .confirm_clear_history),
+                            UAlignment.CenterX, true, false, TEXT_SIZE, TEXT_COLOR, 0);
+                    mDialog.addButton(ButtonIdClearOK,
+                            "OK",TEXT_COLOR,
+                            0);
+                    mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+                    mDialog.addToDrawManager();
+                }
+
+            }
+                break;
+            case ButtonIdClearOK:
+                RealmManager.getBookHistoryDao().deleteAll();
+                mListView.clear();
+                mDialog.startClosing();
+
+                mParentView.invalidate();
                 break;
         }
         return false;
@@ -167,8 +198,7 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
                 .getStudiedCardDao().selectByHistoryId(history.getId());
 
         // Dialog
-        mDialog = UDialogWindow.createInstance(null, width, mParentView
-                .getHeight());
+        mDialog = UDialogWindow.createInstance(this, this, width, mParentView.getHeight());
         mDialog.addToDrawManager();
         ListViewResult listView = new ListViewResult(null, cards, false,
                 DRAW_PRIORYTY_DIALOG, 0, 0,
@@ -181,5 +211,14 @@ public class PageViewHistory extends UPageView implements UButtonCallbacks, ULis
 
     public void ListItemButtonClicked(UListItem item, int buttonId) {
 
+    }
+
+    /**
+     * UDialogCallbacks
+     */
+    public void dialogClosed(UDialogWindow dialog) {
+        if (mDialog == dialog) {
+            mDialog = null;
+        }
     }
 }

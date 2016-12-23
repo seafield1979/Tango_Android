@@ -119,7 +119,7 @@ public class PageViewDebugDB extends UPageView implements UListItemCallbacks{
         if (mDialog != null) {
             mDialog.closeDialog();
         }
-        mDialog = UDialogWindow.createInstance(null, mParentView.getWidth(), mParentView
+        mDialog = UDialogWindow.createInstance(null, null, mParentView.getWidth(), mParentView
                 .getHeight());
         mDialog.addToDrawManager();
 

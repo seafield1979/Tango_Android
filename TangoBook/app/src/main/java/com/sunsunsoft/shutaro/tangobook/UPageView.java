@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
@@ -16,6 +17,10 @@ abstract public class UPageView {
      * Consts
      */
     public static final String TAG = "UPagaView";
+
+    protected static final int TEXT_COLOR = Color.BLACK;
+    protected static final int MARGIN_H = 50;
+    protected static final int MARGIN_V = 50;
 
     /**
      * Member Variables

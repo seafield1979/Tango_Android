@@ -5,6 +5,8 @@
 
     <string name="return1">戻る</string>
     <string name="close">閉じる</string>
+    <string name="clear">クリア</string>
+    <string name="confirm">確認</string>
     <string name="date_format">yyyy/MM/dd</string>
     <string name="date_format2">yyyy年MM月dd日</string>
     <string name="datetime_format">yyyy/MM/dd HH:mm</string>
@@ -62,7 +64,7 @@
     <string name="last">最終学習日時</string>
     <string name="start">開始</string>
     <string name="cancel">キャンセル</string>
-    <string name="history_book">単語帳の学習記録</string>
+    <string name="history_book">学習記録</string>
 
     <string name="study_type">出題方法</string>
     <string name="e_to_j">英 > 日</string>
@@ -79,6 +81,7 @@
     <string name="cards_remain">あと%d枚</string>
     <string name="confirm_exit">学習を終了しますか？</string>
     <string name="confirm_cleanup_trash">ゴミ箱を空にしますか？</string>
+    <string name="confirm_clear_history">学習記録をクリアしますか？</string>
 
     <string name="retry1">"すべて\nリトライ"</string>
     <string name="retry2">"NGのみ\nリトライ"</string>
@@ -98,6 +101,12 @@
     <string name="finish_restore">復元が完了しました</string>
     <string name="confirm_add_book">%sを追加しますか？</string>
     <string name="confirm_add_book2">%sを追加しました</string>
+    <string name="auto_backup">起動時に自動でバックアップする</string>
+
+    <string name="license">ライセンス</string>
+    <string name="contact_us">お問い合わせ</string>
+    <string name="contact_message">ご要望、不具合の報告等は\nこちらからお願いします</string>
+    <string name="send_mail">メールを送る</string>
 
     <string name="preset_title2">Addボタンをタップしてプリセットを追加します</string>
 

@@ -91,7 +91,7 @@ public class ListItemStudiedBook extends UListItem{
 
         instance.mTextDate = String.format("学習日時: %s",
                 UUtil.convDateFormat(history.getStudiedDateTime(), ConvDateMode.DateTime));
-        instance.mTextName = UResourceManager.getStringById(R.string.book_name) + ": " + book
+        instance.mTextName = UResourceManager.getStringById(R.string.book) + ": " + book
                 .getName();
         instance.mTextInfo = String.format("OK:%d  NG:%d    OK率:%.3f", history.getOkNum(), history
                 .getNgNum(), history.getCorrectRatio());
@@ -118,11 +118,17 @@ public class ListItemStudiedBook extends UListItem{
             _pos.y += offset.y;
         }
 
-        // BG　タッチ中は色を変更
-        int _color = color;
-        if (isTouchable && isTouching) {
-            _color = pressedColor;
+        // BG (OK > NG なら 緑、そうでないなら 赤)
+        int _color, _textColor;
+        if (mBookHistory.getOkNum() > mBookHistory.getNgNum()) {
+            _color = UColor.LightGreen;
+            _textColor = UColor.BLACK;
+
+        } else {
+            _color = UColor.Salmon;
+            _textColor = UColor.White;
         }
+
         UDraw.drawRectFill(canvas, paint,
                 new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),
                 _color, FRAME_WIDTH, FRAME_COLOR);
@@ -131,16 +137,18 @@ public class ListItemStudiedBook extends UListItem{
         float y = _pos.y + MARGIN_V;
 
         // Book名
-        UDraw.drawTextOneLine(canvas, paint, mTextName, UAlignment.None, TEXT_SIZE, x, y, Color
-                .rgb(50,150,50));
+        UDraw.drawTextOneLine(canvas, paint, mTextName, UAlignment.None,
+                TEXT_SIZE, x, y, _textColor);
         y += TEXT_SIZE + MARGIN_V;
+
         // 学習日時
-        UDraw.drawTextOneLine(canvas, paint, mTextDate, UAlignment.None, TEXT_SIZE2 , x, y, Color
-                .BLACK);
+        UDraw.drawTextOneLine(canvas, paint, mTextDate, UAlignment.None,
+                TEXT_SIZE2 , x, y, _textColor);
         y += TEXT_SIZE + MARGIN_V;
+
         // OK/NG数 正解率
-        UDraw.drawTextOneLine(canvas, paint, mTextInfo, UAlignment.None, TEXT_SIZE2, x, y, UColor
-                .DarkGray);
+        UDraw.drawTextOneLine(canvas, paint, mTextInfo, UAlignment.None,
+                TEXT_SIZE2, x, y, _textColor);
     }
 
     /**

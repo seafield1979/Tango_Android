@@ -184,6 +184,11 @@ public class TangoCardDao {
             }
             query.equalTo("id", card.getCardId());
         }
+        if (isFirst) {
+            // idの条件を指定しないと全件取得してしまうので抜ける
+            return null;
+        }
+
         RealmResults<TangoCard> results = query.findAll();
 
         if (results != null && changeable) {

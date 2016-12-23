@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -19,6 +20,8 @@ public class UButtonText extends UButton {
      * Consts
      */
     public static final String TAG = "UButtonText";
+
+    protected static final int DEFAULT_TEXT_COLOR = Color.BLACK;
 
     /**
      * Member Variables
@@ -72,6 +75,9 @@ public class UButtonText extends UButton {
     {
         super(callbacks, type, id, priority, x, y, width, height, color);
         this.mText = text;
+        if (textColor == 0) {
+            textColor = DEFAULT_TEXT_COLOR;
+        }
         this.mTextColor = textColor;
         mTextSize = textSize;
     }

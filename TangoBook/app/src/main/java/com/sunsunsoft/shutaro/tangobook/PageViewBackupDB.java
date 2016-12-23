@@ -14,7 +14,8 @@ import java.util.Date;
  * データベースのバックアップ、復元ページ
  */
 
-public class PageViewBackupDB extends UPageView implements UButtonCallbacks{
+public class PageViewBackupDB extends UPageView
+        implements UButtonCallbacks, UCheckBoxCallbacks{
 
     /**
      * Constants
@@ -25,10 +26,11 @@ public class PageViewBackupDB extends UPageView implements UButtonCallbacks{
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 50;
     private static final int MARGIN_V_S = 20;
-    private static final int BUTTON_W = 300;
-    private static final int BUTTON_H = 120;
     private static final int BUTTON2_W = 350;
     private static final int BUTTON2_H = 200;
+
+    private static final int TEXT_COLOR = Color.BLACK;
+    private static final int BOX_WIDTH = 70;
 
     private static final int TITLE_TEXT_SIZE = 70;
     private static final int TITLE_TEXT_COLOR = Color.rgb(150,150,50);
@@ -56,7 +58,7 @@ public class PageViewBackupDB extends UPageView implements UButtonCallbacks{
 
     private UButtonText mBackupButton;
     private UButtonText mRestoreButton;
-    private UButtonText mReturnButton;
+    private UCheckBox mAutoBackupCheck;
 
     // Dialog
     private UDialogWindow mDialog;
@@ -164,6 +166,17 @@ public class PageViewBackupDB extends UPageView implements UButtonCallbacks{
                 UResourceManager.getStringById(R.string.restore),
                 x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, UColor.DarkYellow, UColor.LightYellow);
         mRestoreButton.addToDrawManager();
+        x = MARGIN_H;
+        y += mRestoreButton.getHeight() + MARGIN_V;
+
+        // 自動バックアップ CheckBox
+        mAutoBackupCheck = new UCheckBox(this, DRAW_PRIORITY, x, y,
+                mParentView.getWidth(), BOX_WIDTH, UResourceManager.getStringById(R.string
+                .auto_backup), TEXT_SIZE, TEXT_COLOR);
+        mAutoBackupCheck.addToDrawManager();
+        if (MySharedPref.readBoolean(MySharedPref.RealmAutoBackup)) {
+            mAutoBackupCheck.setChecked(true);
+        }
 
     }
 
@@ -191,7 +204,8 @@ public class PageViewBackupDB extends UPageView implements UButtonCallbacks{
                 if (mDialog != null) {
                     mDialog.closeWindow();
                 }
-                mDialog = UDialogWindow.createInstance(this, mParentView.getWidth(), mParentView
+                mDialog = UDialogWindow.createInstance(this, null, mParentView.getWidth(),
+                        mParentView
                         .getHeight());
                 mDialog.addToDrawManager();
                 mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_backup));
@@ -205,7 +219,7 @@ public class PageViewBackupDB extends UPageView implements UButtonCallbacks{
                 if (mDialog != null) {
                     mDialog.closeWindow();
                 }
-                mDialog = UDialogWindow.createInstance(this, mParentView.getWidth(), mParentView
+                mDialog = UDialogWindow.createInstance(this, null, mParentView.getWidth(), mParentView
                         .getHeight());
                 mDialog.addToDrawManager();
                 mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_restore));
@@ -240,5 +254,19 @@ public class PageViewBackupDB extends UPageView implements UButtonCallbacks{
                 break;
         }
         return false;
+    }
+
+
+    /**
+     * Callbacks
+     */
+    /**
+     * UCheckBoxCallbacks
+     */
+    /**
+     * チェックされた時のイベント
+     */
+    public void UCheckBoxChanged(boolean checked) {
+        MySharedPref.writeBoolean(MySharedPref.RealmAutoBackup, checked);
     }
 }

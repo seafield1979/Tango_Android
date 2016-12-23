@@ -126,6 +126,23 @@ public class TangoBookHistoryDao {
     /**
      * Delete
      */
+    /**
+     * 配下の学習カード履歴も含めてすべて削除
+     */
+    public void deleteAll() {
+        RealmResults<TangoBookHistory> results = mRealm.where(TangoBookHistory.class)
+                .findAll();
+
+        // 学習カード履歴削除
+        for (TangoBookHistory history : results) {
+            RealmManager.getStudiedCardDao().deleteByHistoryId(history.getId());
+        }
+
+        mRealm.beginTransaction();
+        results.deleteAllFromRealm();
+        mRealm.commitTransaction();
+    }
+
     public boolean deleteByBookId(int bookId) {
         RealmResults<TangoBookHistory> results = mRealm.where(TangoBookHistory.class)
                 .equalTo("bookId", bookId).findAll();
@@ -150,7 +167,7 @@ public class TangoBookHistoryDao {
         // 初期化
         int nextId = 1;
         // userIdの最大値を取得
-        Number maxId = mRealm.where(TangoCard.class).max("id");
+        Number maxId = mRealm.where(TangoBookHistory.class).max("id");
         // 1度もデータが作成されていない場合はNULLが返ってくるため、NULLチェックをする
         if(maxId != null) {
             nextId = maxId.intValue() + 1;

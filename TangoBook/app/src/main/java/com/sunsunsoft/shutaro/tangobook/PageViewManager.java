@@ -22,6 +22,7 @@ enum PageView {
     PresetBook,         // プリセット単語帳選択
     SearchCard,         // カード検索
     Help,               // ヘルプ
+    License,            // ライセンス表示
     Debug,               // Debug
     DebugDB             // Debug DB(Realm)
     ;
@@ -53,75 +54,66 @@ public class PageViewManager extends UPageViewManager{
      * 配下のページを追加する
      */
     public void initPage(PageView pageView) {
-        UPageView page;
+        UPageView page = null;
 
         switch(pageView) {
             case Title:              // タイトル画面
-                // Title
-                page = new PageViewTitle(mContext, mParentView, UResourceManager.getStringById(R.string.app_title));
-                pages[PageView.Title.ordinal()] = page;
+                page = new PageViewTitle(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.app_title));
                 break;
             case Edit:               // 単語帳を編集
-                // Edit
-                page = new PageViewTangoEdit(mContext, mParentView, UResourceManager.getStringById(R.string.title_edit));
-                pages[PageView.Edit.ordinal()] = page;
+                page = new PageViewTangoEdit(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_edit));
                 break;
             case StudySelect:        // 学習する単語帳を選択する
-                // StudySelect
-                page = new PageViewStudySelect2(mContext, mParentView, UResourceManager.getStringById
-                        (R.string.title_study_select));
-                pages[PageView.StudySelect.ordinal()] = page;
+                page = new PageViewStudySelect2(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_study_select));
                 break;
             case Study:              // 単語帳学習
-                // Study
-                page = new PageViewStudy(mContext, mParentView, UResourceManager.getStringById(R.string.title_studying));
-                pages[PageView.Study.ordinal()] = page;
+                page = new PageViewStudy(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_studying));
                 break;
             case StudyResult:        // 単語帳結果
-                // TangoResult
-                page = new PageViewResult(mContext, mParentView, UResourceManager.getStringById(R.string.title_result));
-                pages[PageView.StudyResult.ordinal()] = page;
+                page = new PageViewResult(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_result));
                 break;
             case History:            // 履歴
-                // History
-                page = new PageViewHistory(mContext, mParentView, UResourceManager.getStringById(R.string.title_history));
-                pages[PageView.History.ordinal()] = page;
+                page = new PageViewHistory(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_history));
                 break;
             case Settings:           // 設定
-                // Settings
-                page = new PageViewSettings(mContext, mParentView, UResourceManager.getStringById(R.string.title_settings));
-                pages[PageView.Settings.ordinal()] = page;
+                page = new PageViewSettings(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_settings));
                 break;
             case BackupDB:           // バックアップ
-                // Backup DB
-                page = new PageViewBackupDB(mContext, mParentView, UResourceManager.getStringById(R.string.title_backup));
-                pages[PageView.BackupDB.ordinal()] = page;
+                page = new PageViewBackupDB(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_backup));
                 break;
             case PresetBook:         // プリセット単語帳選択
-                // Preset Book
-                page = new PageViewPresetBook(mContext, mParentView, UResourceManager.getStringById(R.string.title_preset_book));
-                pages[PageView.PresetBook.ordinal()] = page;
+                page = new PageViewPresetBook(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_preset_book));
                 break;
             case SearchCard:         // カード検索
-                // Search Card
-                page = new PageViewSearchCard(mContext, mParentView, UResourceManager.getStringById(R.string.title_search_card));
-                pages[PageView.SearchCard.ordinal()] = page;
+                page = new PageViewSearchCard(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_search_card));
                 break;
             case Help:               // ヘルプ
-                // Help
-                page = new PageViewHelp(mContext, mParentView, UResourceManager.getStringById(R.string.title_help));
-                pages[PageView.Help.ordinal()] = page;
+                page = new PageViewHelp(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_help));
+                break;
+            case License:            // ライセンス
+                page = new PageViewLicense(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.license));
                 break;
             case Debug:               // Debug
-                // Debug
                 page = new PageViewDebug(mContext, mParentView, "Debug");
-                pages[PageView.Debug.ordinal()] = page;
                 break;
             case DebugDB:             // Debug DB(Realm)
-                // Debug DB
                 page = new PageViewDebugDB(mContext, mParentView, "DebugDB");
-                pages[PageView.DebugDB.ordinal()] = page;
                 break;
+        }
+        if (page != null) {
+            pages[pageView.ordinal()] = page;
         }
     }
 
