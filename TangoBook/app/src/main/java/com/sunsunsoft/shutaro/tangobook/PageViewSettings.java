@@ -113,19 +113,28 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                 UResourceManager.getStringById(R.string.backup_and_restore),
                 x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
                 .LightGreen);
-        mWindow.addDrawable(button1);
+        mWindow.addDrawable(button1, false);
 
         // ライセンス
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
                  UResourceManager.getStringById(R.string.license),
                 x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, Color.WHITE, UColor.DarkOrange);
-        mWindow.addDrawable(button1);
+        mWindow.addDrawable(button1, false);
 
         // お問い合わせ（メール）
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdContact, DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.contact_us),
                 x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkBlue, UColor.LightSkyBlue);
-        mWindow.addDrawable(button1);
+        mWindow.addDrawable(button1, true);
+
+
+//        for (int i=0; i<10; i++) {
+//            mWindow.addButton(this, 0, 300, 150, false, "hoge", Color.BLACK, Color.LTGRAY);
+//        }
+//        for (int i=0; i<10; i++) {
+//            mWindow.addTextView("hoge", UAlignment.None, false, true, false, 300, 150, 50,
+//                    Color.BLACK, Color.LTGRAY);
+//        }
     }
 
     /**

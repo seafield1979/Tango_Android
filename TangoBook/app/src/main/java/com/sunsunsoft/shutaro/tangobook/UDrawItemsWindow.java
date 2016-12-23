@@ -35,7 +35,8 @@ public class UDrawItemsWindow extends UScrollWindow {
     protected boolean isUpdate;
 
     // リストの最後のアイテムの下端の座標
-    protected float mBottomY = MARGIN_V;
+    protected float mOffsetX = MARGIN_H;
+    protected float mOffsetY = MARGIN_V;
 
 
     /**
@@ -63,21 +64,25 @@ public class UDrawItemsWindow extends UScrollWindow {
      * @param color
      */
     public UButton addButton(UButtonCallbacks buttonCallbacks, int id,
-                             int width, int height,
+                             int width, int height, boolean newLine,
                              String text, int textColor, int color)
     {
         if (width == 0) {
             width = size.width - MARGIN_H * 2;
         }
+
+        // 表示位置を更新
+        updateOffsetPre(newLine, width, height);
+
         UButtonText button = new UButtonText(buttonCallbacks, UButtonType.Press,
-                id, 0, text, MARGIN_V, mBottomY,
+                id, 0, text, mOffsetX, mOffsetY,
                 width, height,
                 BUTTON_TEXT_SIZE, textColor, color);
         mItems.add(button);
         isUpdate = true;
 
         // 表示位置を更新
-        mBottomY += button.size.height + MARGIN_V;
+        updateOffsetAfter(newLine, width, height);
         return button;
     }
 
@@ -85,11 +90,15 @@ public class UDrawItemsWindow extends UScrollWindow {
      * TextViewを追加
      */
     public UTextView addTextView(String text, UAlignment alignment,
-                                 boolean multiLine, boolean isDrawBG,
-                                 int textSize, int textColor,
-                                 int bgColor)
+                                 boolean multiLine, boolean isDrawBG, boolean newLine,
+                                 int width, int height,
+                                 int textSize, int textColor, int bgColor)
     {
         float x = 0;
+
+        // 表示位置を更新
+        updateOffsetPre(newLine, width, height);
+
         switch(alignment) {
             case CenterX:
             case Center:
@@ -97,41 +106,82 @@ public class UDrawItemsWindow extends UScrollWindow {
                 break;
             case CenterY:
             case None:
-                x = MARGIN_H;
+                x = mOffsetX;
                 break;
         }
         UTextView textView = UTextView.createInstance(text, textSize, 0,
                 alignment, size.width,
-                multiLine, isDrawBG, x, mBottomY, size.width - MARGIN_H * 2, textColor, bgColor);
+                multiLine, isDrawBG, x, mOffsetY, width, textColor, bgColor);
         mItems.add(textView);
         isUpdate = true;
 
-        mBottomY += textView.getHeight() + MARGIN_V;
+        // 表示位置を更新
+        updateOffsetAfter(newLine, width, height);
+
         return textView;
     }
 
     /**
      * Drawableを追加
      */
-    public void addDrawable(UDrawable obj) {
-        obj.pos.y = mBottomY;
+    public void addDrawable(UDrawable obj, boolean newLine) {
+        // 表示位置を更新
+        updateOffsetPre(newLine, obj.getWidth(), obj.getHeight());
+
+        obj.pos.y = mOffsetY;
         obj.updateRect();
         mItems.add(obj);
 
         isUpdate = true;
 
-        mBottomY += obj.getHeight() + MARGIN_V;
+        // 表示位置を更新
+        updateOffsetAfter(newLine, obj.getWidth(), obj.getHeight());
     }
 
+    /**
+     * 描画オブジェクトを追加後、最初の描画前に１回行う処理
+     * @param canvas
+     */
     private void updateLayout(Canvas canvas) {
-        contentSize.height = (int)mBottomY;
+        contentSize.height = (int) mOffsetY;
 
         updateWindow();
     }
 
     public void clear() {
         mItems.clear();
-        mBottomY = MARGIN_V;
+        mOffsetY = MARGIN_V;
+    }
+
+    /**
+     * 描画オブジェクトを配置した後のオフセット座標の更新
+     * @param newLine  必ず改行
+     * @param objW   描画オブジェクトの幅
+     * @param objH  描画オブジェクトの高さ
+     */
+    private void updateOffsetPre(boolean newLine, int objW, int objH) {
+        if (newLine) {
+            if (mOffsetX != MARGIN_H) {
+                mOffsetX = MARGIN_H;
+                mOffsetY += objH + MARGIN_V;
+            }
+        } else {
+            // 幅がいっぱいになったら新しいライン
+            if (mOffsetX + objW + MARGIN_H > size.width) {
+                mOffsetX = MARGIN_H;
+                mOffsetY += objH + MARGIN_V;
+            }
+        }
+    }
+    private void updateOffsetAfter(boolean newLine, int objW, int objH) {
+        // 表示位置を更新
+        if (newLine) {
+            // 強制的に新しいライン
+            mOffsetY += objH + MARGIN_V;
+            mOffsetX = MARGIN_H;
+        } else {
+            mOffsetX += objW + MARGIN_H;
+        }
     }
 
     /**
