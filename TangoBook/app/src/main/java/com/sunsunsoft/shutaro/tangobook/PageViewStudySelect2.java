@@ -127,6 +127,8 @@ public class PageViewStudySelect2 extends UPageView
                     Color.WHITE);
             mListView.add(listItem);
         }
+        // スクロールバー等のサイズを更新
+        mListView.updateWindow();
 
         y += listViewH + MARGIN_V_S;
 

@@ -56,7 +56,8 @@ abstract public class UPageViewManager {
     /**
      * 配下のページを追加する
      *
-    abstract public void initPages();
+     */
+    abstract public void initPage(PageView pageView);
 
     /**
      * 描画処理
@@ -102,6 +103,11 @@ abstract public class UPageViewManager {
      * @param pageId
      */
     public void changePage(PageView pageId) {
+        // ページが未初期化なら初期化
+        if (pages[pageId.ordinal()] == null) {
+            initPage(pageId);
+        }
+
         if (pageIdStack.size() > 0) {
             // 古いページの後処理(onHide)
             PageView page = pageIdStack.getLast();
@@ -119,11 +125,25 @@ abstract public class UPageViewManager {
     }
 
     /**
+     * ページを取得する
+     */
+    public UPageView getPageView(PageView pageId) {
+        if (pages[pageId.ordinal()] == null) {
+            initPage(pageId);
+        }
+        return pages[pageId.ordinal()];
+    }
+
+    /**
      * ページをスタックする
      * ソフトウェアキーの戻るボタンを押すと元のページに戻れる
      * @param pageId
      */
-    public void stackPage(PageView pageId) {
+    public UPageView stackPage(PageView pageId) {
+        // ページが未初期化なら初期化
+        if (pages[pageId.ordinal()] == null) {
+            initPage(pageId);
+        }
 
         // 古いページの後処理
         if (pageIdStack.size() > 0) {
@@ -143,7 +163,7 @@ abstract public class UPageViewManager {
         if (pageIdStack.size() >= 2) {
             showActionBarBack(true);
         }
-
+        return page;
     }
 
     /**

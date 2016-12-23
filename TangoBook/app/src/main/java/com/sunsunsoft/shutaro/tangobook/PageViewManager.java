@@ -18,6 +18,7 @@ enum PageView {
     StudyResult,        // 単語帳結果
     History,            // 履歴
     Settings,           // 設定
+    BackupDB,           // バックアップ
     PresetBook,         // プリセット単語帳選択
     SearchCard,         // カード検索
     Help,               // ヘルプ
@@ -44,65 +45,84 @@ public class PageViewManager extends UPageViewManager{
         mContext = context;
         mParentView = parentView;
 
-        initPages();
+        // 最初に表示するページ
+        stackPage(PageView.Title);
     }
 
     /**
      * 配下のページを追加する
      */
-    public void initPages() {
+    public void initPage(PageView pageView) {
         UPageView page;
-        // Title
-        page = new PageViewTitle(mContext, mParentView, UResourceManager.getStringById(R.string.app_title));
-        pages[PageView.Title.ordinal()] = page;
 
-        // Edit
-        page = new PageViewTangoEdit(mContext, mParentView, UResourceManager.getStringById(R.string.title_edit));
-        pages[PageView.Edit.ordinal()] = page;
-
-        // StudySelect
-        page = new PageViewStudySelect2(mContext, mParentView, UResourceManager.getStringById
-                (R.string.title_study_select));
-        pages[PageView.StudySelect.ordinal()] = page;
-
-        // Study
-        page = new PageViewStudy(mContext, mParentView, UResourceManager.getStringById(R.string.title_studying));
-        pages[PageView.Study.ordinal()] = page;
-
-        // TangoResult
-        page = new PageViewResult(mContext, mParentView, UResourceManager.getStringById(R.string.title_result));
-        pages[PageView.StudyResult.ordinal()] = page;
-
-        // Preset Book
-        page = new PageViewPresetBook(mContext, mParentView, UResourceManager.getStringById(R.string.title_preset_book));
-        pages[PageView.PresetBook.ordinal()] = page;
-
-        // Search Card
-        page = new PageViewSearchCard(mContext, mParentView, UResourceManager.getStringById(R.string.title_search_card));
-        pages[PageView.SearchCard.ordinal()] = page;
-
-        // History
-        page = new PageViewHistory(mContext, mParentView, UResourceManager.getStringById(R.string.title_history));
-        pages[PageView.History.ordinal()] = page;
-
-        // Settings
-        page = new PageViewSettings(mContext, mParentView, UResourceManager.getStringById(R.string.title_settings));
-        pages[PageView.Settings.ordinal()] = page;
-
-        // Help
-        page = new PageViewHelp(mContext, mParentView, UResourceManager.getStringById(R.string.title_help));
-        pages[PageView.Help.ordinal()] = page;
-
-        // Debug
-        page = new PageViewDebug(mContext, mParentView, "Debug");
-        pages[PageView.Debug.ordinal()] = page;
-
-        // Debug DB
-        page = new PageViewDebugDB(mContext, mParentView, "DebugDB");
-        pages[PageView.DebugDB.ordinal()] = page;
-
-        // 最初に表示するページ
-        stackPage(PageView.Title);
+        switch(pageView) {
+            case Title:              // タイトル画面
+                // Title
+                page = new PageViewTitle(mContext, mParentView, UResourceManager.getStringById(R.string.app_title));
+                pages[PageView.Title.ordinal()] = page;
+                break;
+            case Edit:               // 単語帳を編集
+                // Edit
+                page = new PageViewTangoEdit(mContext, mParentView, UResourceManager.getStringById(R.string.title_edit));
+                pages[PageView.Edit.ordinal()] = page;
+                break;
+            case StudySelect:        // 学習する単語帳を選択する
+                // StudySelect
+                page = new PageViewStudySelect2(mContext, mParentView, UResourceManager.getStringById
+                        (R.string.title_study_select));
+                pages[PageView.StudySelect.ordinal()] = page;
+                break;
+            case Study:              // 単語帳学習
+                // Study
+                page = new PageViewStudy(mContext, mParentView, UResourceManager.getStringById(R.string.title_studying));
+                pages[PageView.Study.ordinal()] = page;
+                break;
+            case StudyResult:        // 単語帳結果
+                // TangoResult
+                page = new PageViewResult(mContext, mParentView, UResourceManager.getStringById(R.string.title_result));
+                pages[PageView.StudyResult.ordinal()] = page;
+                break;
+            case History:            // 履歴
+                // History
+                page = new PageViewHistory(mContext, mParentView, UResourceManager.getStringById(R.string.title_history));
+                pages[PageView.History.ordinal()] = page;
+                break;
+            case Settings:           // 設定
+                // Settings
+                page = new PageViewSettings(mContext, mParentView, UResourceManager.getStringById(R.string.title_settings));
+                pages[PageView.Settings.ordinal()] = page;
+                break;
+            case BackupDB:           // バックアップ
+                // Backup DB
+                page = new PageViewBackupDB(mContext, mParentView, UResourceManager.getStringById(R.string.title_backup));
+                pages[PageView.BackupDB.ordinal()] = page;
+                break;
+            case PresetBook:         // プリセット単語帳選択
+                // Preset Book
+                page = new PageViewPresetBook(mContext, mParentView, UResourceManager.getStringById(R.string.title_preset_book));
+                pages[PageView.PresetBook.ordinal()] = page;
+                break;
+            case SearchCard:         // カード検索
+                // Search Card
+                page = new PageViewSearchCard(mContext, mParentView, UResourceManager.getStringById(R.string.title_search_card));
+                pages[PageView.SearchCard.ordinal()] = page;
+                break;
+            case Help:               // ヘルプ
+                // Help
+                page = new PageViewHelp(mContext, mParentView, UResourceManager.getStringById(R.string.title_help));
+                pages[PageView.Help.ordinal()] = page;
+                break;
+            case Debug:               // Debug
+                // Debug
+                page = new PageViewDebug(mContext, mParentView, "Debug");
+                pages[PageView.Debug.ordinal()] = page;
+                break;
+            case DebugDB:             // Debug DB(Realm)
+                // Debug DB
+                page = new PageViewDebugDB(mContext, mParentView, "DebugDB");
+                pages[PageView.DebugDB.ordinal()] = page;
+                break;
+        }
     }
 
 
@@ -113,7 +133,7 @@ public class PageViewManager extends UPageViewManager{
      * @param firstStudy trueならリトライでない学習
      */
     public void startStudyPage(TangoBook book, boolean firstStudy) {
-        PageViewStudy page = (PageViewStudy)pages[PageView.Study.ordinal()];
+        PageViewStudy page = (PageViewStudy)getPageView(PageView.Study);
         page.setBook(book);
         page.setFirstStudy(firstStudy);
         stackPage(PageView.Study);
@@ -125,9 +145,10 @@ public class PageViewManager extends UPageViewManager{
      * @param cards  リトライで学習するカード
      */
     public void startStudyPage(TangoBook book, List<TangoCard> cards, boolean stack) {
-        PageViewStudy page = (PageViewStudy)pages[PageView.Study.ordinal()];
+        PageViewStudy page = (PageViewStudy)getPageView(PageView.Study);
         page.setBook(book);
         page.setCards(cards);
+
         if (stack) {
             stackPage(PageView.Study);
         } else {
@@ -140,7 +161,7 @@ public class PageViewManager extends UPageViewManager{
      * 他のページと異なり引数を受け取る必要があるため関数化
      */
     public void startStudyResultPage(TangoBook book, List<TangoCard> okCards, List<TangoCard> ngCards) {
-        PageViewResult page = (PageViewResult)pages[PageView.StudyResult.ordinal()];
+        PageViewResult page = (PageViewResult)getPageView(PageView.StudyResult);
         page.setBook(book);
         page.setCardsLists(okCards, ngCards);
         changePage(PageView.StudyResult);

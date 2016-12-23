@@ -348,8 +348,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
                     canvas.getWidth(), true, true,
                     size.width / 2, y,
                     size.width, color, 0);
-            Size titleSize = mTitleView.getTextSize(getWidth());
-            y += titleSize.height + MARGIN_V;
+            y += mTitleView.getHeight() + MARGIN_V;
         }
 
         // テキスト

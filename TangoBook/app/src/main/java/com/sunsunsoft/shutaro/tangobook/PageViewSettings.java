@@ -36,32 +36,19 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     private static final int TEXT_SIZE = 50;
 
     private static final int ButtonIdBackup = 100;
-    private static final int ButtonIdRestore = 101;
-    private static final int ButtonIdReturn = 102;
-    private static final int ButtonIdBackupOK = 103;
-    private static final int ButtonIdRestoreOK = 104;
 
 
     /**
      * Member variables
      */
 
-    // バックアップタイトル
-    private UTextView mBackupTitle;
-
-    // バックアップパス
-    private UTextView mBackupPath;
-
-    // バックアップ日時
-    private UTextView mBackupDate;
-
     private UButtonText mBackupButton;
-    private UButtonText mRestoreButton;
-    private UButtonText mReturnButton;
+    private UButtonText mLicenseButton;
+    private UButtonText mContactButton;
+
 
     // Dialog
     private UDialogWindow mDialog;
-
 
     /**
      * Constructor
@@ -120,63 +107,14 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
         float y = TOP_Y;
 
         // Backup
-        // mTitle
-        mBackupTitle = UTextView.createInstance(
-                UResourceManager.getStringById(R.string.backup_path_title),
-                TEXT_SIZE_S, DRAW_PRIORITY,
-                UAlignment.None, width, false, false,
-                MARGIN_H, y, width, Color.BLACK, 0);
-        mBackupTitle.addToDrawManager();
-        y += mBackupTitle.size.height + MARGIN_V_S;
-
-        // backup file path
-        String backupPath = MySharedPref.readString(MySharedPref.RealmBackupPathKey);
-        if (backupPath.length() == 0) {
-            backupPath = UResourceManager.getStringById(R.string.no_backup);
-        }
-        mBackupPath = UTextView.createInstance(backupPath,
-                TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.None, width, true, true,
-                MARGIN_H, y, 0, UColor.DarkGreen, Color.LTGRAY);
-        mBackupPath.addToDrawManager();
-        y += mBackupPath.size.height + MARGIN_H;
-
-        // backup date time
-        String backupDate = UResourceManager.getStringById(R.string.backup_datetime) + " : " +
-                MySharedPref.readString(MySharedPref.RealmBackupDateKey);
-
-        mBackupDate = UTextView.createInstance( backupDate,
-                TEXT_SIZE_S, DRAW_PRIORITY,
-                UAlignment.None, width, false, false,
-                MARGIN_H, y, width, Color.BLACK, 0);
-        mBackupDate.addToDrawManager();
-        y += mBackupDate.size.height + MARGIN_V;
-
         // backup button
-        x = (width - BUTTON2_W * 2 - MARGIN_H) / 2;
+        x = MARGIN_H;
         mBackupButton = new UButtonText(this, UButtonType.Press, ButtonIdBackup, DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.backup),
-                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor.LightGreen);
+                UResourceManager.getStringById(R.string.backup_and_restore),
+                x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
+                .LightGreen);
         mBackupButton.addToDrawManager();
         x += BUTTON2_W + MARGIN_H;
-
-        // restore button
-        mRestoreButton = new UButtonText(this, UButtonType.Press, ButtonIdRestore, DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.restore),
-                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, UColor.DarkYellow, UColor.LightYellow);
-        mRestoreButton.addToDrawManager();
-
-        y += BUTTON_W + MARGIN_V;
-
-        // 戻るボタン
-        if (false) {
-            mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
-                    DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
-                    (width - BUTTON_W) / 2, height - BUTTON_H - MARGIN_H, BUTTON_W, BUTTON_H, 50,
-                    UColor.DarkRed, UColor.LightRed);
-            mReturnButton.addToDrawManager();
-        }
-
     }
 
     /**
@@ -197,59 +135,12 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch(id) {
-            case ButtonIdBackup:
-            {
+            case ButtonIdBackup: {
                 // バックアップボタン
-                if (mDialog != null) {
-                    mDialog.closeWindow();
-                }
-                mDialog = UDialogWindow.createInstance(this, mParentView.getWidth(), mParentView
-                        .getHeight());
-                mDialog.addToDrawManager();
-                mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_backup));
-                mDialog.addButton(ButtonIdBackupOK, "OK", Color.BLACK, Color.WHITE);
-                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+                // バックアップページに遷移
+                PageViewManager.getInstance().stackPage(PageView.BackupDB);
             }
-                break;
-            case ButtonIdRestore:
-            {
-                // 復元ボタン
-                if (mDialog != null) {
-                    mDialog.closeWindow();
-                }
-                mDialog = UDialogWindow.createInstance(this, mParentView.getWidth(), mParentView
-                        .getHeight());
-                mDialog.addToDrawManager();
-                mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_restore));
-                mDialog.addButton(ButtonIdRestoreOK, "OK", Color.BLACK, Color.WHITE);
-                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-            }
-                break;
-            case ButtonIdReturn:
-                PageViewManager.getInstance().popPage();
-                break;
-            case ButtonIdBackupOK: {
-                // バックアップ
-                String filePath = RealmManager.backup();
-                if (filePath != null) {
-                    String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
-
-                    mBackupPath.setText(filePath);
-                    mBackupDate.setText(UResourceManager.getStringById(R.string.backup_datetime) +
-                            " : " +
-                            dateTime);
-                    MySharedPref.writeString(MySharedPref.RealmBackupPathKey, filePath);
-                    MySharedPref.writeString(MySharedPref.RealmBackupDateKey, dateTime);
-                }
-                mDialog.startClosing();
-            }
-                break;
-            case ButtonIdRestoreOK:
-                // バックアップから復元
-                RealmManager.restore();
-
-                mDialog.startClosing();
-                break;
+            break;
         }
         return false;
     }

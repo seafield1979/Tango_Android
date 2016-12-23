@@ -60,7 +60,7 @@ public class IconBook extends IconContainer {
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        Bitmap _image = UResourceManager.getBitmapById(R.drawable.notebook);
+        Bitmap _image = UResourceManager.getBitmapById(R.drawable.box1);
         image = UUtil.convBitmapColor(_image, book.getColor());
 
         // データベースから配下のCardを読み込む

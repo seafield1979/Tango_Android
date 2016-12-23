@@ -41,6 +41,7 @@
     <string name="title_search_card">カードを探す</string>
     <string name="title_history">学習の記録</string>
     <string name="title_settings">設定</string>
+    <string name="title_backup">バックアップと復元</string>
     <string name="title_help">ヘルプ</string>
     <string name="search_card">カードを探す</string>
     <string name="search_card_name">検索カード名</string>
@@ -85,6 +86,7 @@
     <string name="title_result2">"%sの学習結果"</string>
 
     <string name="backup">バックアップ</string>
+    <string name="backup_and_restore">バックアップと復元</string>
     <string name="backup_path_title">バックアップファイルの場所</string>
     <string name="backup_datetime">バックアップ日時</string>
     <string name="restore">復元</string>
