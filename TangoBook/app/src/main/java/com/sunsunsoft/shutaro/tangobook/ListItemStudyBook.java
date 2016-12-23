@@ -100,7 +100,8 @@ public class ListItemStudyBook extends UListItem {
             _color = pressedColor;
         }
         UDraw.drawRectFill(canvas, paint,
-                new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),
+                new Rect((int) _pos.x, (int) _pos.y,
+                        (int) _pos.x + size.width, (int) _pos.y + size.height),
                 _color, FRAME_WIDTH, FRAME_COLOR);
 
         float x = _pos.x + MARGIN_H;

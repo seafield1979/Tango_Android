@@ -27,6 +27,7 @@ abstract public class UPageView {
      */
     protected Context mContext;
     protected View mParentView;
+    protected UScrollWindow mWindow;        // ページ全体を覆うWindow。ここに描画オブジェクトを追加する
     protected String mTitle;
 
     // UDrawManagerで描画を行うページ番号

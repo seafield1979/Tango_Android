@@ -128,6 +128,9 @@ public class ListItemStudiedBook extends UListItem{
             _color = UColor.Salmon;
             _textColor = UColor.White;
         }
+        if (isTouching) {
+            _color = UColor.addBrightness(_color, -0.2f);
+        }
 
         UDraw.drawRectFill(canvas, paint,
                 new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),

@@ -170,6 +170,17 @@ public class UListView extends UScrollWindow
         return isDraw;
     }
 
+    public boolean touchUpEvent(ViewTouch vt) {
+        boolean isDraw = false;
+        if (vt.isTouchUp()) {
+            for (UListItem item : mItems) {
+                item.touchUpEvent(vt);
+                isDraw = true;
+            }
+        }
+        return isDraw;
+    }
+
     /**
      * for Debug
      */

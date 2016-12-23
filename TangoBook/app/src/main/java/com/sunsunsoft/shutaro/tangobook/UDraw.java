@@ -276,6 +276,9 @@ public class UDraw {
                                        float x, float y, int color) {
         if (text == null) return null;
 
+        // アンチエイリアス
+        paint.setAntiAlias(true);
+
         // x,yにラインを表示 for Debug
         if (UDebug.drawTextBaseLine) {
             drawLine(canvas, paint, x - 50, y, x + 50, y, 3, Color.YELLOW);
@@ -335,6 +338,9 @@ public class UDraw {
         if (text == null) return null;
 
         TextPaint textPaint = new TextPaint();
+
+        // アンチエイリアス
+        textPaint.setAntiAlias(true);
 
         // x,yにラインを表示 for Debug
         if (UDebug.drawTextBaseLine) {

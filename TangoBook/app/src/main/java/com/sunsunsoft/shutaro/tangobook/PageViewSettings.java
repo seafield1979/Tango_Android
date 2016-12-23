@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.view.View;
 
 import java.util.Date;
@@ -39,10 +40,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     /**
      * Member variables
      */
-
-    private UButtonText mBackupButton;
-    private UButtonText mLicenseButton;
-    private UButtonText mContactButton;
+    private UDrawItemsWindow mWindow;
 
     private UCheckBox mCheckBox1;
 
@@ -102,34 +100,32 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x;
+        float x = MARGIN_H;
         float y = TOP_Y;
 
-        // Backup
+        mWindow = new UDrawItemsWindow(null, DRAW_PRIORITY, 0, 0,
+                width, height, Color.WHITE);
+        mWindow.addToDrawManager();
+
         // backup button
-        x = MARGIN_H;
-        mBackupButton = new UButtonText(this, UButtonType.Press, ButtonIdBackup, DRAW_PRIORITY,
+        UButtonText button1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup,
+                DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.backup_and_restore),
                 x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
                 .LightGreen);
-        mBackupButton.addToDrawManager();
-        y += mBackupButton.getHeight() + MARGIN_V;
+        mWindow.addDrawable(button1);
 
         // ライセンス
-        mLicenseButton = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
+        button1 = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
                  UResourceManager.getStringById(R.string.license),
                 x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, Color.WHITE, UColor.DarkOrange);
-        mLicenseButton.addToDrawManager();
-        y += mLicenseButton.getHeight() + MARGIN_V;
-
+        mWindow.addDrawable(button1);
 
         // お問い合わせ（メール）
-        mContactButton = new UButtonText(this, UButtonType.Press, ButtonIdContact, DRAW_PRIORITY,
+        button1 = new UButtonText(this, UButtonType.Press, ButtonIdContact, DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.contact_us),
                 x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkBlue, UColor.LightSkyBlue);
-        mContactButton.addToDrawManager();
-        y += mContactButton.getHeight() + MARGIN_V;
-
+        mWindow.addDrawable(button1);
     }
 
     /**

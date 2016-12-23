@@ -64,8 +64,8 @@ abstract public class UListItem extends UDrawable {
         this.isTouchable = isTouchable;
 
         if (isTouchable) {
-            // 押された時の色（少し明るくする)
-            pressedColor = UColor.addBrightness(color, 0.3f);
+            // 押された時の色（暗くする)
+            pressedColor = UColor.addBrightness(color, -0.2f);
         }
     }
 
@@ -96,7 +96,7 @@ abstract public class UListItem extends UDrawable {
                 }
                 break;
             case Click:
-                if (isTouchable && isTouching) {
+                if (isTouchable) {
                     if (rect.contains((int) (vt.touchX() - offset.x),
                             (int) (vt.touchY() - offset.y))) {
                         if (mListItemCallbacks != null) {
