@@ -6,15 +6,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-import java.util.Date;
-
 /**
- * Created by shutaro on 2016/12/05.
+ * Created by shutaro on 2016/12/23.
  *
- * 設定ページ
+ * ライセンス表示ページ
  */
 
-public class PageViewSettings extends UPageView implements UButtonCallbacks{
+public class PageViewLicense extends UPageView implements UButtonCallbacks{
 
     /**
      * Constants
@@ -24,22 +22,23 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     private static final int TOP_Y = 50;
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 50;
+    private static final int MARGIN_V_S = 20;
+    private static final int BUTTON_W = 300;
+    private static final int BUTTON_H = 120;
+    private static final int BUTTON2_W = 350;
     private static final int BUTTON2_H = 200;
+
+    private static final int TITLE_TEXT_SIZE = 70;
+    private static final int TITLE_TEXT_COLOR = Color.rgb(150,150,50);
+    private static final int TEXT_SIZE_S = 40;
     private static final int TEXT_SIZE = 50;
 
     private static final int ButtonIdBackup = 100;
 
-    private static final int CHECK_BOX_W = 70;
 
     /**
      * Member variables
      */
-
-    private UButtonText mBackupButton;
-    private UButtonText mLicenseButton;
-    private UButtonText mContactButton;
-
-    private UCheckBox mCheckBox1;
 
     // Dialog
     private UDialogWindow mDialog;
@@ -47,7 +46,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     /**
      * Constructor
      */
-    public PageViewSettings(Context context, View parentView, String title) {
+    public PageViewLicense(Context context, View parentView, String title) {
         super(context, parentView, title);
     }
 
@@ -96,24 +95,6 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
 
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
-
-        float x;
-        float y = TOP_Y;
-
-        // Backup
-        // backup button
-        x = MARGIN_H;
-        mBackupButton = new UButtonText(this, UButtonType.Press, ButtonIdBackup, DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.backup_and_restore),
-                x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
-                .LightGreen);
-        mBackupButton.addToDrawManager();
-        y += mBackupButton.getHeight() + MARGIN_V;
-
-        // checkBox
-        mCheckBox1 = new UCheckBox(null, DRAW_PRIORITY, x, y, mParentView.getWidth(),
-                CHECK_BOX_W, "hogehoge", TEXT_SIZE, Color.BLACK);
-        mCheckBox1.addToDrawManager();
     }
 
     /**

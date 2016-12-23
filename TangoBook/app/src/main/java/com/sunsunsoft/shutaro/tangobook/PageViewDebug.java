@@ -101,6 +101,7 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks{
     public void initDrawables() {
         UDrawManager.getInstance().init();
 
+        // ListView
         mListView = new UListView(null, this, DRAW_PRIORITY, MARGIN_H, MARGIN_V,
                 mParentView.getWidth() - MARGIN_H * 2, mParentView.getHeight() - MARGIN_V * 2,
                 Color.WHITE);
