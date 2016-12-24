@@ -10,8 +10,9 @@ import java.util.List;
 
 // アイコンの挿入位置
 enum AddPos {
-    Top,
-    Tail
+    SrcNext,    // コピー元の次
+    Top,        // リストの先頭
+    Tail        // リストの末尾
 }
 
 /**
@@ -129,18 +130,20 @@ public class UIconManager implements UIconCallbacks{
      */
     public UIcon copyIcon(UIcon copySrc, AddPos addPos) {
         UIcon icon = null;
+        boolean addItemPos = (addPos != null) ? true : false;
+
         switch (copySrc.getType()) {
             case Card: {
-                TangoCard card = (TangoCard)copySrc.getTangoItem();
-                RealmManager.getCardDao().addOne(card, TangoParentType.Home, 0);
+                TangoCard card = TangoCard.copyCard((TangoCard)copySrc.getTangoItem());
+                RealmManager.getCardDao().addOne(card, TangoParentType.Home, 0, addItemPos);
                 icon = new IconCard(card, mParentWindow, this);
             }
             break;
             case Book:
             {
-                TangoBook book = (TangoBook)copySrc.getTangoItem();
+                TangoBook book = TangoBook.copyBook((TangoBook)copySrc.getTangoItem());
 
-                RealmManager.getBookDao().addOne(book);
+                RealmManager.getBookDao().addOne(book, addItemPos);
                 icon = new IconBook(book, mParentWindow, this);
 
             }
@@ -150,24 +153,29 @@ public class UIconManager implements UIconCallbacks{
 
         // リストに追加
         if (addPos != null) {
-            if (addPos == AddPos.Top) {
-                icons.push(icon);
-            } else {
-                UIcon lastIcon = icons.getLast();
-
-                icons.add(icon);
-
-                // 出現位置は最後のアイコン
-                if (lastIcon != null) {
-                    icon.setPos(lastIcon.getPos());
+            switch (addPos) {
+                case SrcNext: {
+                    int pos = icons.indexOf(copySrc);
+                    if (pos != -1) {
+                        icons.add(pos + 1, icon);
+                        icon.setPos(copySrc.pos);
+                    }
                 }
-            }
-        }
-        else {
-            int pos = icons.indexOf(copySrc);
-            if (pos != -1) {
-                icons.add(pos + 1, icon);
-                icon.setPos(copySrc.pos);
+                    break;
+                case Top:
+                    icons.push(icon);
+                    break;
+                case Tail: {
+                    UIcon lastIcon = icons.getLast();
+
+                    icons.add(icon);
+
+                    // 出現位置は最後のアイコン
+                    if (lastIcon != null) {
+                        icon.setPos(lastIcon.getPos());
+                    }
+                }
+                    break;
             }
         }
 
@@ -186,14 +194,14 @@ public class UIconManager implements UIconCallbacks{
         switch (type) {
             case Card: {
                 TangoCard card = TangoCard.createDummyCard();
-                RealmManager.getCardDao().addOne(card, parentType, parentId);
+                RealmManager.getCardDao().addOne(card, parentType, parentId, true);
                 icon = new IconCard(card, mParentWindow, this);
             }
                 break;
             case Book:
             {
                 TangoBook book = TangoBook.createDummyBook();
-                RealmManager.getBookDao().addOne(book);
+                RealmManager.getBookDao().addOne(book, true);
                 icon = new IconBook(book, mParentWindow, this);
             }
                 break;

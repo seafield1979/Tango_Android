@@ -4,27 +4,21 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.view.View;
 
-import java.util.Date;
-
 /**
- * Created by shutaro on 2016/12/05.
+ * Created by shutaro on 2016/12/24.
  *
- * 設定ページ
+ * 単語帳編集ページの設定ページ
  */
 
-public class PageViewSettings extends UPageView implements UButtonCallbacks{
+public class PageViewSettingsEdit extends UPageView implements UButtonCallbacks{
 
     /**
      * Constants
      */
     private static final int DRAW_PRIORITY = 100;
 
-    private static final int TOP_Y = 50;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
     private static final int BUTTON2_H = 200;
     private static final int TEXT_SIZE = 50;
 
@@ -34,7 +28,6 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
     private static final int ButtonIdContact = 102;
     private static final int ButtonIdContactOK = 103;
 
-    private static final int CHECK_BOX_W = 70;
     private static final int TEXT_COLOR = Color.BLACK;
 
     /**
@@ -42,15 +35,13 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
      */
     private UDrawItemsWindow mWindow;
 
-    private UCheckBox mCheckBox1;
-
     // Dialog
     private UDialogWindow mDialog;
 
     /**
      * Constructor
      */
-    public PageViewSettings(Context context, View parentView, String title) {
+    public PageViewSettingsEdit(Context context, View parentView, String title) {
         super(context, parentView, title);
     }
 
@@ -100,9 +91,6 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
-        float y = TOP_Y;
-
         mWindow = new UDrawItemsWindow(null, DRAW_PRIORITY, 0, 0,
                 width, height, Color.WHITE);
         mWindow.addToDrawManager();
@@ -111,22 +99,9 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
         UButtonText button1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup,
                 DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.backup_and_restore),
-                x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
+                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
                 .LightGreen);
         mWindow.addDrawable(button1, false);
-
-        // ライセンス
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
-                 UResourceManager.getStringById(R.string.license),
-                x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, Color.WHITE, UColor.DarkOrange);
-        mWindow.addDrawable(button1, false);
-
-        // お問い合わせ（メール）
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdContact, DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.contact_us),
-                x, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkBlue, UColor.LightSkyBlue);
-        mWindow.addDrawable(button1, true);
-
 
 //        for (int i=0; i<10; i++) {
 //            mWindow.addButton(this, 0, 300, 150, false, "hoge", Color.BLACK, Color.LTGRAY);
@@ -165,7 +140,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                 // ライセンスページに遷移
                 PageViewManager.getInstance().stackPage(PageView.License);
             }
-                break;
+            break;
             case ButtonIdContact:
             {
                 // お問い合わせメールダイアログを表示
@@ -182,7 +157,7 @@ public class PageViewSettings extends UPageView implements UButtonCallbacks{
                     mDialog.addToDrawManager();
                 }
             }
-                break;
+            break;
             case ButtonIdContactOK:
                 break;
         }

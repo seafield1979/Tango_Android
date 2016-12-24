@@ -225,36 +225,49 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         UIconManager iconManager =  icon.parentWindow.getIconManager();
 
         // コピー先のカードアイコンを作成
-        UIcon newIcon = iconManager.copyIcon(icon, null);
+        UIcon newIcon = iconManager.copyIcon(icon, AddPos.SrcNext);
         if (newIcon == null) {
             return;
         }
 
-        // DB上のデータもコピーする
-        switch (icon.getType()) {
-            case Card: {
+        // 単語帳なら配下のカードをコピーする
+        if(icon.getType() == IconType.Book) {
+            IconBook srcBook = (IconBook)icon;
+            IconBook dstBook = (IconBook)newIcon;
+            List<UIcon> icons = srcBook.getIcons();
+            if (icons != null) {
+                for (UIcon _icon : icons) {
+                    if (_icon instanceof IconCard) {
+                        IconCard newCardIcon = (IconCard)iconManager.copyIcon(_icon, null);
+                        dstBook.mIconManager.addIcon(newCardIcon);
 
+                        // DBに位置情報を追加
+                        RealmManager.getItemPosDao().addOne(_icon.getTangoItem(), TangoParentType
+                                .Book, dstBook.getTangoItem().getId());
+                    }
+                }
             }
-            break;
-            case Book: {
-            }
-            break;
         }
+
         icon.parentWindow.sortIcons(true);
     }
 
     // card
     private IconCard addCardIcon() {
 
-        // Bookのサブウィンドウが開いていたらそちらに追加する
         UIconManager iconManager = null;
         UIconWindow window = null;
         IconCard cardIcon = null;
 
+        // Bookのサブウィンドウが開いていたらそちらに追加する
         window = mIconWinManager.getSubWindow();
         if (window.isShow() && window.getParentType() == TangoParentType.Book) {
+            // サブウィンドウに追加
             iconManager = window.getIconManager();
-            cardIcon = (IconCard)iconManager.addNewIcon(IconType.Card, TangoParentType.Book, window.getParentId(), AddPos.Tail);
+            cardIcon = (IconCard)iconManager.addNewIcon(IconType.Card, TangoParentType.Book,
+                    window.getParentId(), AddPos.Tail);
+            // 親の単語帳アイコンのアイコンリストにも追加
+
         } else {
             window = mIconWinManager.getMainWindow();
             iconManager = window.getIconManager();

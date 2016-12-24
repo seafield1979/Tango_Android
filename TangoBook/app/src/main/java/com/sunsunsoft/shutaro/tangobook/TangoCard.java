@@ -104,6 +104,32 @@ public class TangoCard extends RealmObject implements TangoItem{
         return card;
     }
 
+    // コピーを作成する
+    public static TangoCard copyCard(TangoCard card) {
+        TangoCard newCard = new TangoCard();
+        newCard.id = RealmManager.getCardDao().getNextId();
+        if (card.wordA != null) {
+            newCard.wordA = new String(card.wordA);
+        }
+        if (card.wordB != null) {
+            newCard.wordB = new String(card.wordB);
+        }
+        if (card.hintAB != null) {
+            newCard.hintAB = new String(card.hintAB);
+        }
+        if (card.hintAB != null) {
+            newCard.hintBA = new String(card.hintBA);
+        }
+        if (card.hintAB != null) {
+            newCard.comment = new String(card.comment);
+        }
+        newCard.createTime = new Date();
+        newCard.updateTime = new Date();
+
+        newCard.star = card.star;
+        return newCard;
+    }
+
     /**
      * TangoItem interface
      */

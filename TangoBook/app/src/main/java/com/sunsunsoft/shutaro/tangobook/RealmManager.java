@@ -162,6 +162,15 @@ public class RealmManager {
     }
 
     /**
+     * 全て削除
+     */
+    public static void clearAll() {
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
+    }
+
+    /**
      *
      * @return
      */

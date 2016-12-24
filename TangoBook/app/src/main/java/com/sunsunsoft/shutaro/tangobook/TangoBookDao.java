@@ -139,7 +139,7 @@ public class TangoBookDao {
      * 要素を追加 TangoBookオブジェクトをそのまま追加
      * @param book
      */
-    public void addOne(TangoBook book) {
+    public void addOne(TangoBook book, boolean addItemPos) {
         book.setId(getNextId());
         book.setUpdateTime(new Date());
         book.setCreateTime(new Date());
@@ -148,9 +148,11 @@ public class TangoBookDao {
         mRealm.copyToRealm(book);
         mRealm.commitTransaction();
 
-        // 位置情報を追加（単語帳はホームにしか作れないので作成場所にホームを指定）
-        TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
-        book.setItemPos(itemPos);
+        if (addItemPos) {
+            // 位置情報を追加（単語帳はホームにしか作れないので作成場所にホームを指定）
+            TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
+            book.setItemPos(itemPos);
+        }
     }
 
     /**

@@ -129,6 +129,30 @@ public class TangoBook extends RealmObject implements TangoItem {
     }
 
     /**
+     * コピーを作成する
+     * IDはコピー元とは別物ものを割りふる
+     * @param book
+     * @return
+     */
+    public static TangoBook copyBook(TangoBook book) {
+        TangoBook newBook = new TangoBook();
+        newBook.id = RealmManager.getBookDao().getNextId();
+        if (book.name != null) {
+            newBook.name = book.name;
+        }
+        if (book.comment != null) {
+            newBook.comment = book.comment;
+        }
+        newBook.color = book.color;
+
+        // メタデータ
+        newBook.createTime = new Date();
+        newBook.updateTime = new Date();
+
+        return newBook;
+    }
+
+    /**
      * TangoItem interface
      */
     public TangoItemType getItemType() {

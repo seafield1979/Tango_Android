@@ -730,6 +730,7 @@ public class TangoItemPosDao {
 
     /**
      * １アイテムを追加する
+     * 追加位置はコピー元のコンテナ(ホーム、単語帳）の中の末尾
      * @param item
      * @param parentType
      * @param parentId

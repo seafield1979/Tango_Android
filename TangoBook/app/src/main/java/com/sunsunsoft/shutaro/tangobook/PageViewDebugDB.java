@@ -21,7 +21,8 @@ public class PageViewDebugDB extends UPageView implements UListItemCallbacks{
         ShowTangoBook,
         ShowItemPos,
         GetNoParentItems,
-        RescureNoParentItems
+        RescureNoParentItems,
+        ClearAll        // 全てのDBを空にする
         ;
 
         public static DebugMenu toEnum(int value) {
@@ -185,6 +186,11 @@ public class PageViewDebugDB extends UPageView implements UListItemCallbacks{
                 List<TangoItem> items = RealmManager.getCheckDao().selectNoParentItems();
                 RealmManager.getItemPosDao().moveNoParentItems(items, TangoParentType.Home
                         .ordinal(), 0);
+                break;
+            case ClearAll:
+            {
+                RealmManager.clearAll();
+            }
                 break;
         }
     }

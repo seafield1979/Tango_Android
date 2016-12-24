@@ -88,7 +88,7 @@ public class PresetBookManager {
         TangoBook book = new TangoBook();
         book.setName(presetBook.mName);
         book.setComment(presetBook.mComment);
-        RealmManager.getBookDao().addOne(book);
+        RealmManager.getBookDao().addOne(book, true);
 
         // 中のカードを作成する
         for (PresetCard presetCard : presetBook.mCards) {
@@ -96,7 +96,7 @@ public class PresetBookManager {
             card.setWordA(presetCard.mWordA);
             card.setWordB(presetCard.mWordB);
             card.setComment(presetCard.mComment);
-            RealmManager.getCardDao().addOne(card, TangoParentType.Book, book.getId());
+            RealmManager.getCardDao().addOne(card, TangoParentType.Book, book.getId(), true);
         }
 
         return book;

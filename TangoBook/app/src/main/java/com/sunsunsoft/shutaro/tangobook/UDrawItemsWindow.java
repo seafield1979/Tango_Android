@@ -128,6 +128,7 @@ public class UDrawItemsWindow extends UScrollWindow {
         // 表示位置を更新
         updateOffsetPre(newLine, obj.getWidth(), obj.getHeight());
 
+        obj.pos.x = mOffsetX;
         obj.pos.y = mOffsetY;
         obj.updateRect();
         mItems.add(obj);
@@ -288,11 +289,4 @@ public class UDrawItemsWindow extends UScrollWindow {
         return isDraw;
     }
 
-    /**
-     * for Debug
-     */
-    public void addDummyItems(int count) {
-
-        updateWindow();
-    }
 }

@@ -82,7 +82,7 @@ public class PageViewManager extends UPageViewManager{
                         UResourceManager.getStringById(R.string.title_history));
                 break;
             case Settings:           // 設定
-                page = new PageViewSettings(mContext, mParentView,
+                page = new PageViewSettingsTop(mContext, mParentView,
                         UResourceManager.getStringById(R.string.title_settings));
                 break;
             case BackupDB:           // バックアップ
