@@ -160,6 +160,11 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             }
         }
 
+        // メニューが開いていたら閉じる
+        if (mMenuBar.onBackKeyDown()) {
+            return true;
+        }
+
         return false;
     }
 
@@ -234,17 +239,16 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         if(icon.getType() == IconType.Book) {
             IconBook srcBook = (IconBook)icon;
             IconBook dstBook = (IconBook)newIcon;
-            List<UIcon> icons = srcBook.getIcons();
-            if (icons != null) {
-                for (UIcon _icon : icons) {
-                    if (_icon instanceof IconCard) {
-                        IconCard newCardIcon = (IconCard)iconManager.copyIcon(_icon, null);
-                        dstBook.mIconManager.addIcon(newCardIcon);
+            List<TangoCard> cards = srcBook.getItems();
+            if (cards != null) {
+                for (TangoCard card : cards) {
+                    // DBに位置情報を追加
+                    // Card
+                    TangoCard newCard = RealmManager.getCardDao().copyOne(card);
+                    // ItemPos
+                    RealmManager.getItemPosDao().addOne(newCard, TangoParentType
+                            .Book, dstBook.getTangoItem().getId());
 
-                        // DBに位置情報を追加
-                        RealmManager.getItemPosDao().addOne(_icon.getTangoItem(), TangoParentType
-                                .Book, dstBook.getTangoItem().getId());
-                    }
                 }
             }
         }

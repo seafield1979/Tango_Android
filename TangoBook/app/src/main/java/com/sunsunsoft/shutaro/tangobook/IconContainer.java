@@ -18,14 +18,10 @@ abstract public class IconContainer extends UIcon {
      * Memver variable
      */
     protected UIconWindow subWindow;
-    protected UIconManager mIconManager;
 
     /**
      * Get/Set
      */
-    public List<UIcon> getIcons() {
-        return mIconManager.getIcons();
-    }
     public UIconWindow getSubWindow() {
         return subWindow;
     }
@@ -41,8 +37,5 @@ abstract public class IconContainer extends UIcon {
                  float y, int width, int height)
     {
         super(parentWindow, iconCallbacks, type, x, y, width, height);
-
-        // 内包するアイコン
-        mIconManager = UIconManager.createInstance(subWindow, iconCallbacks);
     }
 }

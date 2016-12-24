@@ -244,6 +244,19 @@ public class TangoCardDao {
     }
 
     /**
+     * カードをコピーする
+     */
+    public TangoCard copyOne(TangoCard card) {
+        TangoCard newCard = TangoCard.copyCard(card);
+
+        mRealm.beginTransaction();
+        mRealm.copyToRealm(newCard);
+        mRealm.commitTransaction();
+
+        return newCard;
+    }
+
+    /**
      * ダミーのデータを一件追加
      */
     public void addDummy() {
@@ -358,13 +371,6 @@ public class TangoCardDao {
         mRealm.commitTransaction();
 
         return newValue;
-    }
-
-    /**
-     *
-     */
-    public void copyOne(TangoCard card) {
-
     }
 
     /**

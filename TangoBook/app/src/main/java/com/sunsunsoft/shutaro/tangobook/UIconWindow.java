@@ -77,6 +77,7 @@ public class UIconWindow extends UWindow {
     protected static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 
     protected static final int MOVING_TIME = 10;
+    protected static final int SELECTED_ICON_BG_COLOR = Color.argb(80, 255, 100, 100);
 
     /**
      * Member veriables
@@ -361,7 +362,7 @@ public class UIconWindow extends UWindow {
         if (mIconManager.getSelectedIcon() != null) {
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(mIconManager.getSelectedIcon().getRectWithOffset
-                            (_offset, 5)), 10.0f, Color.argb(128, 255, 100, 100), 0, 0);
+                            (_offset, 5)), 10.0f, SELECTED_ICON_BG_COLOR, 0, 0);
         }
         for (UIcon icon : mIconManager.getIcons()) {
             if (icon == dragedIcon) continue;
@@ -1268,11 +1269,9 @@ public class UIconWindow extends UWindow {
 
         UIconWindow window1 = icon1.parentWindow;
         UIconWindow window2 = container.getSubWindow();
-        List<UIcon> icons1 = window1.getIcons();
-        List<UIcon> icons2 = container.getIcons();
+        List<UIcon> icons = window1.getIcons();
 
-        icons1.remove(icon1);
-        icons2.add(icon1);
+        icons.remove(icon1);
 
         if (window2.isShow()) {
             List<UIcon> win2Icons = window2.getIcons();
@@ -1294,7 +1293,7 @@ public class UIconWindow extends UWindow {
                 itemId);
 
         sortIcons(true);
-        if (icons1 != icons2) {
+        if (window1 != window2) {
             window2.sortIcons(true);
         }
     }
@@ -1352,20 +1351,15 @@ public class UIconWindow extends UWindow {
 
         UIconWindow window1 = dragIcon.parentWindow;
         UIconWindow window2 = _dropedIcon.getSubWindow();
-        List<UIcon> icons1 = window1.getIcons();
-        List<UIcon> icons2 = _dropedIcon.getIcons();
+        List<UIcon> icons = window1.getIcons();
 
-        icons1.removeAll(checkedIcons);
-        if (icons2 != null) {
-            icons2.addAll(checkedIcons);
+        icons.removeAll(checkedIcons);
 
-            window2.sortIcons(false);
-            for (UIcon icon : checkedIcons) {
-                icon.isChecking = false;
-                icon.setParentWindow(window2);
-            }
+        window2.sortIcons(false);
+        for (UIcon icon : checkedIcons) {
+            icon.isChecking = false;
+            icon.setParentWindow(window2);
         }
-
         // DB更新
         LinkedList<TangoItem> items = new LinkedList<>();
         for (UIcon icon : checkedIcons) {

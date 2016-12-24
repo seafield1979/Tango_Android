@@ -52,9 +52,9 @@ public class TangoItemPosDao {
             ULog.print(TAG, "TangoItem selectAll");
             for (TangoItemPos item : results) {
                 ULog.print("TangoItemPosDao", ""
-                        + " parentType:" + item.getParentType()
+                        + " parentType:" + TangoParentType.toEnum(item.getParentType())
                         + " parentId:" + item.getParentId()
-                        + " type:" + item.getItemType()
+                        + " type:" + TangoItemType.toEnum(item.getItemType())
                         + " id:" + item.getItemId()
                         + " pos:" + item.getPos()
                 );

@@ -35,10 +35,6 @@ public class MenuBarTangoEdit extends UMenuBar {
         SortByTimeAsc(MenuItemType.Child, R.drawable.sort_by_time_asc, R.string.sort_time_asc),
         SortByTimeDesc(MenuItemType.Child, R.drawable.sort_by_time_desc, R.string.sort_time_desc),
 
-//        ListTypeTop(MenuItemType.Top, R.drawable.list, R.string.disp_list),
-//        ListType1(MenuItemType.Child, R.drawable.list1, R.string.list_type1),
-//        ListType2(MenuItemType.Child, R.drawable.grid_icons, R.string.list_type_grid),
-
         DebugTop(MenuItemType.Top, R.drawable.debug, R.string.debug),
         Debug1(MenuItemType.Child, R.drawable.number_1, R.string.debug1),
 
@@ -130,5 +126,20 @@ public class MenuBarTangoEdit extends UMenuBar {
         }
         mDrawList = UDrawManager.getInstance().addDrawable(this);
         updateBGSize();
+    }
+
+    /**
+     * ソフトウェアキーボードの戻るボタンの処理
+     * @return
+     */
+    public boolean onBackKeyDown() {
+        // トップメニューが開いていたら閉じる
+        for (UMenuItem item : topItems) {
+            if (item.isOpened) {
+                item.closeMenu();
+                return true;
+            }
+        }
+        return false;
     }
 }

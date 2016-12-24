@@ -46,6 +46,11 @@ public class IconBook extends IconContainer {
         return TangoParentType.Book;
     }
 
+    public List<TangoCard> getItems() {
+        List<TangoCard> list = RealmManager.getItemPosDao().selectCardsByBookId(book.getId());
+        return list;
+    }
+
     /**
      * Constructor
      */
@@ -62,14 +67,6 @@ public class IconBook extends IconContainer {
 
         Bitmap _image = UResourceManager.getBitmapById(R.drawable.box1);
         image = UUtil.convBitmapColor(_image, book.getColor());
-
-        // データベースから配下のCardを読み込む
-        List<TangoCard> cards = RealmManager.getItemPosDao().selectCardsByBookId(book.getId());
-        if (cards != null) {
-            for (TangoItem item : cards) {
-                mIconManager.addIcon(item, AddPos.Tail);
-            }
-        }
     }
 
     /**
