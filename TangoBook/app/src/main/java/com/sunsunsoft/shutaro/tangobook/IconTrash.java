@@ -134,4 +134,6 @@ public class IconTrash extends IconContainer {
 
         return true;
     }
+
+    public void setNewFlag(boolean newFlag) {}
 }

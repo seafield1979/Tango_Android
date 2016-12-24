@@ -374,6 +374,20 @@ public class TangoCardDao {
     }
 
     /**
+     * NEWフラグを変更する
+     */
+    public void updateNewFlag(TangoCard card, boolean newFlag) {
+        TangoCard updateCard =
+                mRealm.where(TangoCard.class)
+                        .equalTo("id", card.getId())
+                        .findFirst();
+
+        mRealm.beginTransaction();
+        updateCard.setNewFlag(newFlag);
+        mRealm.commitTransaction();
+    }
+
+    /**
      * Delete:
      */
     /**

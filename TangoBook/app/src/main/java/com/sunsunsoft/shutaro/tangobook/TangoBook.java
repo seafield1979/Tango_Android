@@ -22,16 +22,40 @@ public class TangoBook extends RealmObject implements TangoItem {
     // メタデータ
     private Date createTime;    // 作成日時
     private Date updateTime;    // 更新日時
-    private Date studyTime;     // 最後に学習した日
+    private boolean newFlag;    // NEW
 
     @Ignore
     private TangoItemPos itemPos;   // どこにあるか？
-
 
     /**
      * Constructor
      */
     public TangoBook() {
+    }
+
+    public static TangoBook createBook() {
+        TangoBook book = new TangoBook();
+        book.newFlag = true;
+        book.createTime = new Date();
+        book.updateTime = new Date();
+
+        return book;
+    }
+
+    // テスト用のダミーカードを取得
+    public static TangoBook createDummyBook() {
+        Random rand = new Random();
+        int randVal = rand.nextInt(1000);
+
+        TangoBook book = new TangoBook();
+        book.name = "Name " + randVal;
+        book.comment = "Comment " + randVal;
+        book.color = UColor.getRandomColor();
+        book.newFlag = true;
+        book.createTime = new Date();
+        book.updateTime = new Date();
+
+        return book;
     }
 
     /**
@@ -87,19 +111,19 @@ public class TangoBook extends RealmObject implements TangoItem {
         this.updateTime = updateTime;
     }
 
-    public Date getStudyTime() {
-        return studyTime;
-    }
-
-    public void setStudyTime(Date studyTime) {
-        this.studyTime = studyTime;
-    }
-
     public TangoItemPos getItemPos() {
         return itemPos;
     }
     public void setItemPos(TangoItemPos itemPos) {
         this.itemPos = itemPos;
+    }
+
+    public boolean isNewFlag() {
+        return newFlag;
+    }
+
+    public void setNewFlag(boolean newFlag) {
+        this.newFlag = newFlag;
     }
 
     @Override
@@ -113,20 +137,6 @@ public class TangoBook extends RealmObject implements TangoItem {
         itemPos.setPos(pos);
     }
 
-    // テスト用のダミーカードを取得
-    public static TangoBook createDummyBook() {
-        Random rand = new Random();
-        int randVal = rand.nextInt(1000);
-
-        TangoBook book = new TangoBook();
-        book.name = "Name " + randVal;
-        book.comment = "Comment " + randVal;
-        book.color = UColor.getRandomColor();
-        book.createTime = new Date();
-        book.updateTime = new Date();
-
-        return book;
-    }
 
     /**
      * コピーを作成する

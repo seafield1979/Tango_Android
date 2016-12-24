@@ -65,18 +65,21 @@ public class RealmManager {
                 .migration(new TangoMigration())
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
-        realm = Realm.getDefaultInstance();
+        try {
+            realm = Realm.getDefaultInstance();
 
-        cardDao = new TangoCardDao(realm);
-        bookDao = new TangoBookDao(realm);
-        itemPosDao = new TangoItemPosDao(realm);
-        cardHistoryDao = new TangoCardHistoryDao(realm);
-        bookHistoryDao = new TangoBookHistoryDao(realm);
-        studiedCardDao = new TangoStudiedCardDao(realm);
-        itemsCheckDao = new TangoItemsCheckDao(realm);
+            cardDao = new TangoCardDao(realm);
+            bookDao = new TangoBookDao(realm);
+            itemPosDao = new TangoItemPosDao(realm);
+            cardHistoryDao = new TangoCardHistoryDao(realm);
+            bookHistoryDao = new TangoBookHistoryDao(realm);
+            studiedCardDao = new TangoStudiedCardDao(realm);
+            itemsCheckDao = new TangoItemsCheckDao(realm);
 
-        tagDao = new TangoTagDao(realm);
-
+            tagDao = new TangoTagDao(realm);
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
     }
 
     public static TangoCardDao getCardDao() {

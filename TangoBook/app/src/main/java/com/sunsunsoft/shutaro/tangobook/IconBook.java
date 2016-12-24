@@ -22,10 +22,6 @@ public class IconBook extends IconContainer {
     private static final int ICON_W = 120;
     private static final int ICON_H = 120;
 
-    // アイコンの上のテキストのPadding
-    private static final int TEXT_PAD_X = 10;
-    private static final int TEXT_PAD_Y = 10;
-
     private static final int TEXT_SIZE = 40;
     private static final int ICON_COLOR = Color.rgb(100,200,100);
 
@@ -106,6 +102,15 @@ public class IconBook extends IconContainer {
         // Text
         UDraw.drawTextOneLine(canvas, paint, title, UAlignment.CenterX, TEXT_SIZE,
                 drawPos.x + ICON_W / 2, drawPos.y + ICON_H + TEXT_MARGIN, Color.BLACK);
+
+        // New!
+        if (book.isNewFlag()) {
+            if (newTextView == null) {
+                createNewBadge(canvas);
+            }
+            newTextView.draw(canvas, paint,
+                    new PointF(drawPos.x + ICON_W / 2, drawPos.y + ICON_H - NEW_TEXT_SIZE));
+        }
     }
 
     /**
@@ -116,6 +121,17 @@ public class IconBook extends IconContainer {
                 DISP_TITLE_LEN;
         this.title = book.getName().substring(0, len);
     }
+
+    /**
+     * Newフラグ設定
+     */
+    public void setNewFlag(boolean newFlag) {
+        if (book.isNewFlag() != newFlag) {
+            book.setNewFlag(newFlag);
+            RealmManager.getBookDao().updateNewFlag(book, newFlag);
+        }
+    }
+
 
     /**
      * ドロップ可能かどうか

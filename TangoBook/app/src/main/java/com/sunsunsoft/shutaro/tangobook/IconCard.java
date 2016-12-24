@@ -101,7 +101,14 @@ public class IconCard extends UIcon{
         // Text
         UDraw.drawTextOneLine(canvas, paint, title, UAlignment.Center, TEXT_SIZE,
                 drawPos.x + ICON_W / 2, drawPos.y + ICON_H + TEXT_MARGIN, Color.BLACK);
-
+        // New!
+        if (card.isNewFlag()) {
+            if (newTextView == null) {
+                createNewBadge(canvas);
+            }
+            newTextView.draw(canvas, paint,
+                    new PointF(drawPos.x + ICON_W / 2, drawPos.y + ICON_H - NEW_TEXT_SIZE));
+        }
     }
 
     /**
@@ -155,5 +162,15 @@ public class IconCard extends UIcon{
         if (!canDrop(dstIcon, dropX, dropY)) return false;
 
         return true;
+    }
+
+    /**
+     * Newフラグ設定
+     */
+    public void setNewFlag(boolean newFlag) {
+        if (card.isNewFlag() != newFlag) {
+            card.setNewFlag(newFlag);
+            RealmManager.getCardDao().updateNewFlag(card, newFlag);
+        }
     }
 }

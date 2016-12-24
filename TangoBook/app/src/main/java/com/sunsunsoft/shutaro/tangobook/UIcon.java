@@ -30,7 +30,6 @@ abstract public class UIcon extends UDrawable {
      */
     private static final String TAG = "UIcon";
     private static final int DRAW_PRIORITY = 200;
-    public static final int DRAG_ICON_PRIORITY = 10;
 
     protected static final int TEXT_SIZE = 40;
     protected static final int TEXT_MARGIN = 10;
@@ -39,6 +38,16 @@ abstract public class UIcon extends UDrawable {
     protected static final int TOUCH_MARGIN = 30;
 
     public static final int DISP_TITLE_LEN = 8;
+
+    protected static final int NEW_TEXT_SIZE = 30;
+    protected static final int NEW_TEXT_MARGIN = 15;
+    protected static final int NEW_TEXT_COLOR = Color.argb(200, 255, 80, 80);
+
+    /**
+     * Class variables
+     */
+    // "New" バッジ用
+    protected static UTextView newTextView;
 
 
     /**
@@ -156,6 +165,21 @@ abstract public class UIcon extends UDrawable {
             callbacks.iconDroped(this);
         }
     }
+
+    /**
+     * Newバッジ作成
+     */
+    protected void createNewBadge(Canvas canvas) {
+        newTextView = UTextView.createInstance("New", NEW_TEXT_SIZE, 0, UAlignment.Center,
+                canvas.getWidth(), false, true, 0, 0, 100, Color.WHITE, NEW_TEXT_COLOR);
+        // 文字の周りのマージン
+        newTextView.setMargin(NEW_TEXT_MARGIN, NEW_TEXT_MARGIN);
+    }
+
+    /**
+     * Newフラグ設定
+     */
+    abstract void setNewFlag(boolean newFlag);
 
     /**
      * アイコンのタッチ処理

@@ -85,7 +85,7 @@ public class PresetBookManager {
      */
     public TangoBook addBookToDB(PresetBook presetBook) {
         // まずは単語帳を作成
-        TangoBook book = new TangoBook();
+        TangoBook book = TangoBook.createBook();
         book.setName(presetBook.mName);
         book.setComment(presetBook.mComment);
         RealmManager.getBookDao().addOne(book, true);

@@ -259,9 +259,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     // card
     private IconCard addCardIcon() {
 
-        UIconManager iconManager = null;
-        UIconWindow window = null;
-        IconCard cardIcon = null;
+        UIconManager iconManager;
+        UIconWindow window;
+        IconCard cardIcon;
 
         // Bookのサブウィンドウが開いていたらそちらに追加する
         window = mIconWinManager.getSubWindow();
@@ -393,6 +393,11 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     /**
      * UIconCallbacks
      */
+    /**
+     * IconWindow上のアイコンがクリックされた
+     * アイコンの種類に合わせたダイアログを表示する
+     * @param icon
+     */
     public void iconClicked(UIcon icon) {
         ULog.print(TAG, "iconClicked");
         if (mIconInfoDlg != null) {
@@ -412,10 +417,14 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 case Card:
                     mIconInfoDlg = IconInfoDialogCard.createInstance(mParentView, this, this, icon,
                             x, y);
+                    // newフラグをクリア
+                    icon.setNewFlag(false);
                     break;
                 case Book:
                     mIconInfoDlg = IconInfoDialogBook.createInstance(mParentView, this, this, icon,
                             x, y);
+                    // newフラグをクリア
+                    icon.setNewFlag(false);
                     break;
                 case Trash:
                     mIconInfoDlg = IconInfoDialogTrash.createInstance(mParentView, this, this, icon,

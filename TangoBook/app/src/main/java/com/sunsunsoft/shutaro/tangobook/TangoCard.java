@@ -25,11 +25,14 @@ public class TangoCard extends RealmObject implements TangoItem{
     private Date updateTime;    // 更新日時
 
     private boolean star;       // お気に入り
+    private boolean newFlag;    // NEW
 
     @Ignore
     private TangoItemPos itemPos;   // どこにあるか？
 
-    // GetSet
+    /**
+     * Get/Set
+     */
     // id
     public int getId() {
         return id;
@@ -78,6 +81,18 @@ public class TangoCard extends RealmObject implements TangoItem{
 
     public String getTitle(){ return wordA; }
 
+    public boolean isStar() {
+        return star;
+    }
+
+    public boolean isNewFlag() {
+        return newFlag;
+    }
+
+    public void setNewFlag(boolean newFlag) {
+        this.newFlag = newFlag;
+    }
+
     @Override
     public int getPos() {
         if (itemPos == null) return 0;
@@ -89,6 +104,19 @@ public class TangoCard extends RealmObject implements TangoItem{
         itemPos.setPos(pos);
     }
 
+
+    /**
+     * Constructor
+     */
+    public static TangoCard createCard() {
+        TangoCard card = new TangoCard();
+        card.newFlag = true;
+        card.createTime = new Date();
+        card.updateTime = new Date();
+
+        return card;
+    }
+
     // テスト用のダミーカードを取得
     public static TangoCard createDummyCard() {
         Random rand = new Random();
@@ -96,11 +124,12 @@ public class TangoCard extends RealmObject implements TangoItem{
 
         TangoCard card = new TangoCard();
         card.wordA = "A " + randVal;
-        card.wordB = "B " + randVal;
+        card.wordB = "あ " + randVal;
         card.hintAB = "HB " + randVal;
-        card.hintBA = "HA " + randVal;
+        card.hintBA = "ひんと " + randVal;
         card.comment = "C " + randVal;
         card.star = false;
+        card.newFlag = true;
         return card;
     }
 

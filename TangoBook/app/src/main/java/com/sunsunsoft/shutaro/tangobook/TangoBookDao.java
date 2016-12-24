@@ -141,8 +141,6 @@ public class TangoBookDao {
      */
     public void addOne(TangoBook book, boolean addItemPos) {
         book.setId(getNextId());
-        book.setUpdateTime(new Date());
-        book.setCreateTime(new Date());
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(book);
@@ -260,19 +258,6 @@ public class TangoBookDao {
         return true;
     }
 
-
-    /**
-     * 学習日付を更新する
-     */
-    private void updateStudyTime(Integer id) {
-        TangoBook newBook = mRealm.where(TangoBook.class).equalTo("id", id).findFirst();
-        if (newBook == null) return;
-
-        mRealm.beginTransaction();
-        newBook.setStudyTime(new Date());
-        mRealm.commitTransaction();
-    }
-
     /**
      * かぶらないプライマリIDを取得する
      * @return
@@ -284,5 +269,19 @@ public class TangoBookDao {
             nextId = maxUserId.intValue() + 1;
         }
         return nextId;
+    }
+
+    /**
+     * NEWフラグを変更する
+     */
+    public void updateNewFlag(TangoBook book, boolean newFlag) {
+        TangoBook updateBook =
+                mRealm.where(TangoBook.class)
+                        .equalTo("id", book.getId())
+                        .findFirst();
+
+        mRealm.beginTransaction();
+        updateBook.setNewFlag(newFlag);
+        mRealm.commitTransaction();
     }
 }
