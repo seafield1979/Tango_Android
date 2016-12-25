@@ -514,6 +514,9 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      */
     public boolean touchEvent2(ViewTouch vt, PointF offset) {
         // 配下にタッチイベントを送らないようにウィンドウ内がタッチされたらtureを返す
+        if (offset == null) {
+            offset = new PointF();
+        }
         if (rect.contains((int)vt.touchX(offset.x), (int)vt.touchY(offset.y))) {
             return true;
         }

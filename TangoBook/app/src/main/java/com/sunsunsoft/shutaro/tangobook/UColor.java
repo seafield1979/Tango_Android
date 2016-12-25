@@ -117,6 +117,27 @@ public class UColor extends Color {
     }
 
     /**
+     * 現在の色で輝度のみ変更する
+     * @param argb
+     * @param brightness 輝度 0:暗い ~ 255:明るい
+     * @return
+     */
+    public static int setBrightness(int argb, int brightness) {
+        ULog.print(TAG, String.format("RGB:%06x", argb));
+
+        int yuv = RGBtoYUV(argb);
+
+        ULog.print(TAG, String.format("YUV:%06x", yuv));
+
+        // 新しい色  元の色のアルファを維持する
+        int _argb = (argb & 0xff000000) | YUVtoRGB( (brightness << 16) | (yuv & 0x00ffff));
+
+        ULog.print(TAG, String.format("RGB2:%06x", _argb));
+
+        return _argb;
+    }
+
+    /**
      * RGBの輝度を上げる
      * @param argb
      * @param addY  輝度 100% = 1.0 / 50% = 0.5
@@ -134,6 +155,7 @@ public class UColor extends Color {
         if (Y2 > 255) Y2 = 255;
         else if (Y2 < 0) Y2 = 0;
 
+        // 新しい色  元の色のアルファを維持する
         int _argb = (argb & 0xff000000) | YUVtoRGB( (Y2 << 16) | (yuv & 0x00ffff));
 
         ULog.print(TAG, String.format("RGB2:%06x", _argb));

@@ -131,11 +131,11 @@ public class TangoCardHistory extends RealmObject {
     public String getCorrectFlagsAsString() {
         if (correctFlagNum == 0) return "---";
 
-        StringBuffer strBuf = new StringBuffer("old ");
+        StringBuffer strBuf = new StringBuffer("old: ");
         for (int i=0; i<correctFlagNum; i++) {
             strBuf.append((correctFlags[i] == 0) ? "×" : "○");
         }
-        strBuf.append(" new");
+        strBuf.append(" :new");
         return strBuf.toString();
     }
 }

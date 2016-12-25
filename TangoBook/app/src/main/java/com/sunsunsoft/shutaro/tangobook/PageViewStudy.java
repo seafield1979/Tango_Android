@@ -170,25 +170,25 @@ public class PageViewStudy extends UPageView
         // OK
         mOkView = new UImageView(DRAW_PRIORITY, R.drawable.box1,
                        screenW - BOX_W - MARGIN_H, screenH - BOX_H - MARGIN_V,
-                        BOX_W, BOX_H);
-        mOkView.setTitle("OK", 50, Color.BLACK);
+                        BOX_W, BOX_H, UColor.DarkGreen);
+        mOkView.setTitle("OK", 50, UColor.DarkGreen);
         mOkView.addToDrawManager();
 
         // NG
         mNgView = new UImageView(DRAW_PRIORITY, R.drawable.box1,
                 MARGIN_H, screenH - BOX_H - MARGIN_V,
-                BOX_W, BOX_H);
-        mNgView.setTitle("NG", 50, Color.BLACK);
+                BOX_W, BOX_H, UColor.DarkRed);
+        mNgView.setTitle("NG", 50, UColor.DarkRed);
         mNgView.addToDrawManager();
 
 
         // OK/NGボタンの座標をCardsStackに教えてやる
         PointF _pos = mOkView.getPos();
-        mCardsStack.setOkBoxPos(_pos.x - mCardsStack.pos.x - BOX_W / 2, _pos.y - mCardsStack.pos.y);
+        mCardsStack.setOkBoxPos(_pos.x - (mCardsStack.pos.x + mCardsStack.getWidth() / 2),
+                _pos.y - mCardsStack.pos.y);
         _pos = mNgView.getPos();
-        mCardsStack.setNgBoxPos(_pos.x - mCardsStack.pos.x, _pos.y -
-                mCardsStack.pos
-                .y);
+        mCardsStack.setNgBoxPos(_pos.x - (mCardsStack.pos.x + mCardsStack.getWidth() / 2),
+                _pos.y - mCardsStack.pos.y);
     }
 
     private String getCardsRemainText(int count) {

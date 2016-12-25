@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -59,6 +60,7 @@ abstract public class UIcon extends UDrawable {
     protected UIconWindow parentWindow;
     private UIconCallbacks callbacks;
     protected DrawList drawList;
+    protected Bitmap image;
 
     // アニメーション用
     public static final int ANIME_FRAME = 20;
@@ -382,6 +384,15 @@ abstract public class UIcon extends UDrawable {
         }
 
         return done;
+    }
+
+
+    /**
+     * 画像を更新する
+     * アイコンの色が変更された際に呼び出す
+     */
+    public void updateIconImage() {
+        image = UUtil.convBitmapColor(image, color);
     }
 
     /**

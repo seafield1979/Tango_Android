@@ -43,6 +43,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     protected static final int MOVE_IN_FRAME = 20;
 
     protected static final int TEXT_SIZE = 50;
+    protected static final int MARGIN_TEXT_H = 40;
     protected static final int MARGIN_TEXT_V = 20;
 
     protected static final int TEXT_COLOR = Color.BLACK;
@@ -63,6 +64,11 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     protected static final int SLIDE_LEN = 250;
 
     /**
+     * Static Varialbes
+     */
+    protected Bitmap arrowLImage, arrowRImage;
+
+    /**
      * Member Variables
      */
     protected PointF basePos = new PointF();
@@ -73,6 +79,8 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     protected boolean isTouching;
     protected float slideX;
     protected boolean showArrow;
+    protected boolean isMoveToBox;
+
     protected UButtonImage mArrowL, mArrowR;
 
     // ボックス移動要求（親への通知用)
@@ -123,22 +131,44 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
         mState = State.None;
         mCard = card;
 
-        // カードの高さを計算する
+        // カードのサイズを計算する
         // WordA,WordBの大きい方の高さに合わせる
         Size sizeA = UDraw.getTextSize(canvasW, wordA, TEXT_SIZE);
         Size sizeB = UDraw.getTextSize(canvasW, wordB, TEXT_SIZE);
+
+        // width
+        int width =  (sizeA.width > sizeB.width) ? sizeA.width : sizeB.width;
+        width += MARGIN_TEXT_H * 2;
+        if (width > canvasW - 300) {
+            width = canvasW - 300;
+        } else if (width < size.width) {
+            // 元のサイズより小さい場合は元のサイズを採用
+            width = size.width;
+        }
+        size.width = width;
+
+        // height
         int height = (sizeA.height > sizeB.height) ? sizeA.height : sizeB.height;
         height += MARGIN_TEXT_V * 2;
         if (height < MIN_HEIGHT) height = MIN_HEIGHT;
         size.height = height;
 
+        if (arrowLImage == null) {
+            arrowLImage = UUtil.convBitmapColor(
+                    UResourceManager.getBitmapById(R.drawable.arrow_l), UColor.DarkRed);
+        }
         mArrowL = UButtonImage.createButton(this, ButtonIdArrowL, 0,
-                -ARROW_MARGIN - ARROW_W, (size.height - ARROW_H) / 2,
-                ARROW_W, ARROW_H, R.drawable.arrow_l, -1);
+                - (size.width / 2 + ARROW_MARGIN + ARROW_W), (size.height - ARROW_H) / 2,
+                ARROW_W, ARROW_H, arrowLImage, null);
 
+        if (arrowRImage == null) {
+            arrowRImage = UUtil.convBitmapColor(
+                    UResourceManager.getBitmapById(R.drawable.arrow_r), UColor.DarkGreen);
+
+        }
         mArrowR = UButtonImage.createButton(this, ButtonIdArrowR, 0,
-                size.width + ARROW_MARGIN, (size.height - ARROW_H) / 2,
-                ARROW_W, ARROW_H, R.drawable.arrow_r, -1);
+                size.width / 2 + ARROW_MARGIN, (size.height - ARROW_H) / 2,
+                ARROW_W, ARROW_H, arrowRImage, null);
     }
 
     /**
@@ -156,9 +186,10 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
      */
     public void startMoveIntoBox(float dstX, float dstY)
     {
-        startMoving(MovingType.Deceleration, dstX, dstY, size.width / 4, size.height / 4,
+        startMoving(MovingType.Deceleration, dstX, dstY, size.width / 5, size.height / 5,
                 MOVE_IN_FRAME);
         mState = State.Moving;
+        isMoveToBox = true;
     }
 
     /**
@@ -236,19 +267,20 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
             color = UColor.mixRGBColor(BG_COLOR, OK_BG_COLOR, slideX / (float)SLIDE_LEN);
         }
         UDraw.drawRoundRectFill(canvas, paint,
-                new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + size.height),
+                new RectF(_pos.x - size.width / 2 , _pos.y,
+                        _pos.x + size.width / 2, _pos.y + size.height),
                 10, color, 5, FRAME_COLOR);
 
         // Text
-        if (!isMovingSize) {
+        if (!isMoveToBox) {
             // タッチ中は正解を表示
             String text = isTouching ? wordB : wordA;
             UDraw.drawText(canvas, text, UAlignment.Center, TEXT_SIZE,
-                    _pos.x + size.width / 2, _pos.y + size.height / 2, TEXT_COLOR);
+                    _pos.x, _pos.y + size.height / 2, TEXT_COLOR);
         }
 
         // 矢印
-        if (showArrow && !isTouching) {
+        if (showArrow && !isTouching && !isMoveToBox) {
             mArrowL.draw(canvas, paint, _pos);
             mArrowR.draw(canvas, paint, _pos);
         }
@@ -274,7 +306,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
             done = true;
         }
 
-        PointF offset = new PointF(parentPos.x + pos.x, parentPos.y + pos.y);
+        PointF offset = new PointF(parentPos.x + pos.x + size.width / 2, parentPos.y + pos.y);
         if ( mArrowL.touchEvent(vt, offset) ) {
             return true;
         }

@@ -27,8 +27,6 @@ public class IconTrash extends IconContainer {
      * Member Variables
      */
     protected TangoCard card;
-    protected Bitmap image;
-    protected Bitmap image2;
 
     /**
      * Get/Set
@@ -57,7 +55,7 @@ public class IconTrash extends IconContainer {
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        image = image2 = UResourceManager.getBitmapById(R.drawable.trash);
+        image = UResourceManager.getBitmapById(R.drawable.trash);
     }
 
     /**

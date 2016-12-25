@@ -46,10 +46,17 @@ public class UImageView extends UDrawable {
     /**
      * Constructor
      */
-    public UImageView(int priority, int imageId, float x, float y, int width, int height) {
+    public UImageView(int priority, int imageId, float x, float y, int width, int height,
+                      int color)
+    {
         super(priority, x, y, width, height);
 
-        this.images.add(UResourceManager.getInstance().getBitmapById(imageId));
+        Bitmap image = UResourceManager.getInstance().getBitmapById(imageId);
+        if (color != 0) {
+            image = UUtil.convBitmapColor(image, color);
+        }
+
+        this.images.add(image);
         mStateId = 0;
         mStateMax = 1;
     }

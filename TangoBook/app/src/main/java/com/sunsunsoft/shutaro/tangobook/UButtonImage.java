@@ -48,6 +48,17 @@ public class UButtonImage extends UButton {
         }
     }
 
+    public void setImage(Bitmap image) {
+        if (image != null) {
+            images.add(image);
+        }
+    }
+    public void setPressedImage(Bitmap image) {
+        if (image != null) {
+            pressedImage = image;
+        }
+    }
+
     /**
      * Constructor
      */
@@ -58,10 +69,12 @@ public class UButtonImage extends UButton {
                         int imageId, int pressedImageId )
     {
         super(callbacks, UButtonType.BGColor, id, priority, x, y, width, height, 0);
-        this.images.add(UResourceManager.getInstance().getBitmapById(imageId));
+
+        if (imageId != -1) {
+            this.images.add(UResourceManager.getInstance().getBitmapById(imageId));
+        }
+
         if ( pressedImageId == -1) {
-            this.pressedImage = null;
-        } else {
             this.pressedImage = UResourceManager.getInstance().getBitmapById(pressedImageId);
         }
         stateId = 0;
@@ -78,6 +91,21 @@ public class UButtonImage extends UButton {
         UButtonImage button = new UButtonImage(callbacks, id, priority,
                 x, y, width, height,
                 imageId, pressedImageId);
+        return button;
+    }
+
+    // 画像ボタン
+    public static UButtonImage createButton(UButtonCallbacks callbacks,
+                                            int id, int priority,
+                                            float x, float y,
+                                            int width, int height,
+                                            Bitmap image, Bitmap pressedImage)
+    {
+        UButtonImage button = new UButtonImage(callbacks, id, priority,
+                x, y, width, height,
+                -1, -1);
+        button.setImage(image);
+        button.setPressedImage(pressedImage);
         return button;
     }
 
@@ -161,7 +189,7 @@ public class UButtonImage extends UButton {
                 UDraw.drawRoundRectFill(canvas, paint,
                         new RectF(_rect.left - 10, _rect.top - 10,
                                 _rect.right + 10, _rect.bottom + 10),
-                        10, Color.argb(255,255,100,100), 0, 0);
+                        10, pressedColor, 0, 0);
             }
         }
 

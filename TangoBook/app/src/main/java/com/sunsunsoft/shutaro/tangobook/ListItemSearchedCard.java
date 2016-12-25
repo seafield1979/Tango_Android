@@ -59,10 +59,10 @@ public class ListItemSearchedCard extends UListItem {
         mCard = card;
 
         mWordA = UResourceManager.getStringById(R.string.word_a) + " : " +
-                UUtil.convString(card.getWordA(), true, MAX_TEXT_LEN) +
+                UUtil.convString(card.getWordA(), true, 0, MAX_TEXT_LEN) +
                 " (id:" + card.getId() + ")";
         mWordB = UResourceManager.getStringById(R.string.word_b) + " : " +
-                UUtil.convString(card.getWordB(), true, MAX_TEXT_LEN);
+                UUtil.convString(card.getWordB(), true, 0, MAX_TEXT_LEN);
 
         TangoItemPos itemPos = RealmManager.getItemPosDao().selectCardParent(card.getId());
         if (itemPos != null) {

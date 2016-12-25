@@ -36,10 +36,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
     private static final int TEXT_VIEW_H = 100;
     private static final int ICON_W = 120;
     private static final int ICON_MARGIN_H = 30;
-    private static final int MARGIN_V = 40;
-    private static final int MARGIN_H = 40;
     private static final int TEXT_SIZE = 50;
-    private static final int TITLE_WIDTH = 250;
 
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
@@ -52,7 +49,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
     private UTextView textTitle;
-    private UTextView textNumber;
+    private UTextView titleNumber, textNumber;
 
     /**
      * Get/Set
@@ -116,6 +113,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
                 bgColor, FRAME_WIDTH, FRAME_COLOR);
 
         textTitle.draw(canvas, paint, pos);
+        titleNumber.draw(canvas, paint, pos);
         textNumber.draw(canvas, paint, pos);
 
         // Buttons
@@ -129,7 +127,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
      * @param canvas
      */
     protected void updateLayout(Canvas canvas) {
-
+        int x = MARGIN_H;
         int y = TOP_ITEM_Y;
 
         List<ActionIcons> icons = ActionIcons.getTrashIcons();
@@ -142,15 +140,30 @@ public class IconInfoDialogTrash extends IconInfoDialog {
                 ICON_MARGIN_H * (icons.size() + 1);
         if (width < MIN_WIDTH) width = MIN_WIDTH;
 
-        // 種別
+        // 種別(ゴミ箱)
         textTitle = UTextView.createInstance( mParentView.getContext().getString(R.string.trash),
                 TEXT_SIZE, 0,
-                UAlignment.CenterX, canvas.getWidth(), false, false,
-                width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
-        y += TEXT_SIZE + 30;
+                UAlignment.None, canvas.getWidth(), false, false,
+                x, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+        y += TEXT_SIZE + MARGIN_V;
+
+        // Number of items in trash
+        titleNumber = UTextView.createInstance( UResourceManager
+                .getStringById(R.string.item_count), TEXT_SIZE, 0,
+                UAlignment.None, canvas.getWidth(), false, true,
+                x, y, width - MARGIN_H * 2,
+                TEXT_COLOR, UColor.LightGreen);
+        y += titleNumber.getHeight() + MARGIN_V_S;
+
+        textNumber = UTextView.createInstance( "" + count, TEXT_SIZE, 0,
+                UAlignment.None, canvas.getWidth(), false, false,
+                MARGIN_H, y, width - MARGIN_H * 2,
+                TEXT_COLOR, 0);
+
+        y += TEXT_VIEW_H + MARGIN_V;
 
         // Action buttons
-        int x = (width - ICON_W * 2 - MARGIN_H) / 2;
+        x = (width - ICON_W * 2 - MARGIN_H) / 2;
         for (ActionIcons icon : icons) {
             UButtonImage imageButton = UButtonImage.createButton( this,
                     icon.ordinal(), 0,
@@ -171,16 +184,6 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         }
 
         y += ICON_W + MARGIN_V + 50;
-
-        // Number of items in trash
-        textNumber = UTextView.createInstance( mParentView.getContext().getString(R.string
-                        .item_count) + " : " + count, TEXT_SIZE, 0,
-                UAlignment.CenterX, canvas.getWidth(), false, true,
-                width / 2, y, width - MARGIN_H * 2,
-                TEXT_COLOR,
-                TEXT_BG_COLOR);
-
-        y += TEXT_VIEW_H + MARGIN_V;
 
         setSize(width, y);
 
@@ -205,6 +208,10 @@ public class IconInfoDialogTrash extends IconInfoDialog {
             if (button.touchEvent(vt, offset)) {
                 return true;
             }
+        }
+
+        if (super.touchEvent2(vt, null)) {
+            return true;
         }
 
         return false;

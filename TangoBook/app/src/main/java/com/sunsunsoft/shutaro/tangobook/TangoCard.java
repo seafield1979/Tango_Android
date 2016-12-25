@@ -1,5 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Color;
+
 import java.util.Date;
 import java.util.Random;
 
@@ -24,6 +26,7 @@ public class TangoCard extends RealmObject implements TangoItem{
     private Date createTime;    // 作成日時
     private Date updateTime;    // 更新日時
 
+    private int color;          // カードの色
     private boolean star;       // お気に入り
     private boolean newFlag;    // NEW
 
@@ -71,6 +74,7 @@ public class TangoCard extends RealmObject implements TangoItem{
     public Date getUpdateTime() { return updateTime; }
     public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
 
+    // pos
     public TangoItemPos getItemPos() {
         return itemPos;
     }
@@ -79,8 +83,19 @@ public class TangoCard extends RealmObject implements TangoItem{
         this.itemPos = itemPos;
     }
 
+    // title
     public String getTitle(){ return wordA; }
 
+    // color
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    // Star
     public boolean isStar() {
         return star;
     }
@@ -89,6 +104,7 @@ public class TangoCard extends RealmObject implements TangoItem{
         return newFlag;
     }
 
+    // New flag
     public void setNewFlag(boolean newFlag) {
         this.newFlag = newFlag;
     }
@@ -111,6 +127,7 @@ public class TangoCard extends RealmObject implements TangoItem{
     public static TangoCard createCard() {
         TangoCard card = new TangoCard();
         card.newFlag = true;
+        card.color = Color.BLACK;
         card.createTime = new Date();
         card.updateTime = new Date();
 
@@ -128,6 +145,7 @@ public class TangoCard extends RealmObject implements TangoItem{
         card.hintAB = "HB " + randVal;
         card.hintBA = "ひんと " + randVal;
         card.comment = "C " + randVal;
+        card.color = Color.BLACK;
         card.star = false;
         card.newFlag = true;
         return card;
@@ -155,6 +173,7 @@ public class TangoCard extends RealmObject implements TangoItem{
         newCard.createTime = new Date();
         newCard.updateTime = new Date();
 
+        newCard.color = card.color;
         newCard.star = card.star;
         return newCard;
     }

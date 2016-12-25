@@ -8,6 +8,13 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * ダイアログに表示する項目
+ */
+class IconInfoItem {
+    public UTextView title;
+    public UTextView body;
+}
 
 /**
  * アイコン情報ダイアログのアクションアイコン
@@ -152,6 +159,9 @@ abstract public class IconInfoDialog extends UWindow{
     protected static final int FRAME_COLOR = Color.rgb(120,120,120);
     protected static final int TOP_ITEM_Y = 20;
 
+    protected static final int MARGIN_H = 50;
+    protected static final int MARGIN_V = 50;
+    protected static final int MARGIN_V_S = 20;
 
     /**
      * Member Variables
@@ -195,6 +205,7 @@ abstract public class IconInfoDialog extends UWindow{
         if (super.touchEvent(vt, offset)) {
             return true;
         }
+
         return false;
     }
     /**

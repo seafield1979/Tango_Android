@@ -24,7 +24,6 @@ public class IconCard extends UIcon{
      * Member Variables
      */
     protected TangoCard card;
-    protected Bitmap image;
 
     /**
      * Get/Set
@@ -53,10 +52,11 @@ public class IconCard extends UIcon{
 
         this.card = card;
         updateTitle();
-        setColor(ICON_COLOR);
+        setColor(card.getColor());
 
         // アイコン画像の読み込み
-        image = UResourceManager.getBitmapById(R.drawable.card2);
+        Bitmap _image = UResourceManager.getBitmapById(R.drawable.card2);
+        image = UUtil.convBitmapColor(_image, card.getColor());
     }
 
     /**
@@ -107,7 +107,7 @@ public class IconCard extends UIcon{
                 createNewBadge(canvas);
             }
             newTextView.draw(canvas, paint,
-                    new PointF(drawPos.x + ICON_W / 2, drawPos.y + ICON_H - NEW_TEXT_SIZE));
+                    new PointF(drawPos.x + ICON_W / 2, drawPos.y + ICON_W / 2));
         }
     }
 

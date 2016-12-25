@@ -401,8 +401,22 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     public void iconClicked(UIcon icon) {
         ULog.print(TAG, "iconClicked");
         if (mIconInfoDlg != null) {
-            mIconInfoDlg.closeWindow();
-            mIconInfoDlg = null;
+            if (icon == mIconInfoDlg.mIcon) {
+                if (icon.type == IconType.Book || icon.type == IconType.Trash)
+                {
+                    // すでにアイコンダイアログが表示されていたときに同じアイコンがクリックされたら開く
+                    IconInfoOpenIcon(icon);
+                    return;
+                } else if (icon.type == IconType.Card) {
+                    // カードなら編集
+                    IconInfoEditIcon(icon);
+                    return;
+                }
+            }
+            else {
+                mIconInfoDlg.closeWindow();
+                mIconInfoDlg = null;
+            }
         }
         PointF winPos = icon.parentWindow.getPos();
         float x = winPos.x + icon.getX();
@@ -534,7 +548,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         int mode = args.getInt(EditCardDialogFragment.KEY_MODE, EditCardDialogMode.Create.ordinal
                 ());
         if (mode == EditCardDialogMode.Create.ordinal()) {
-            // 新たにアイコンを追加する
+            // 新規作成
 
             IconCard iconCard = addCardIcon();
             if (iconCard == null) {
@@ -546,18 +560,27 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
             card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
             card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+            card.setColor(args.getInt(EditBookDialogFragment.KEY_COLOR, 0));
 
             iconCard.updateTitle();
 
             // DB更新
             RealmManager.getCardDao().updateOne(card);
         } else {
-            // 既存のアイコンを更新する
-
+            // 更新
             TangoCard card = (TangoCard)editingIcon.getTangoItem();
             card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
             card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
             card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+            int color = card.getColor();
+            card.setColor(args.getInt(EditCardDialogFragment.KEY_COLOR, 0));
+
+            // アイコンの画像を更新する
+            IconCard cardIcon = (IconCard)editingIcon;
+            if (color != card.getColor()) {
+                cardIcon.setColor(card.getColor());
+                cardIcon.updateIconImage();
+            }
 
             editingIcon.updateTitle();
             // DB更新

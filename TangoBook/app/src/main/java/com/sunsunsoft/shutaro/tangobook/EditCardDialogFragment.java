@@ -1,7 +1,9 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 
 import java.util.LinkedList;
 import java.util.Random;
+import android.view.View.OnClickListener;
 
 
 interface EditCardDialogCallbacks {
@@ -39,7 +42,10 @@ enum EditCardDialogMode {
  *
  * 全画面表示
  */
-public class EditCardDialogFragment extends DialogFragment {
+public class EditCardDialogFragment extends DialogFragment implements OnClickListener {
+    /**
+     * Enums
+     */
     /**
      * Constract
      */
@@ -48,6 +54,24 @@ public class EditCardDialogFragment extends DialogFragment {
     public static final String KEY_WORD_A = "key_word_a";
     public static final String KEY_WORD_B = "key_word_b";
     public static final String KEY_COMMENT = "key_comment";
+    public static final String KEY_COLOR = "key_color";
+
+
+    private int[] colorViewIds = {
+            R.id.current_color,
+            R.id.color_view_1,
+            R.id.color_view_2,
+            R.id.color_view_3,
+            R.id.color_view_4,
+            R.id.color_view_5,
+            R.id.color_view_6,
+            R.id.color_view_7,
+            R.id.color_view_8,
+            R.id.color_view_9,
+            R.id.color_view_10,
+            R.id.color_view_11
+
+    };
 
     /**
      * Member variables
@@ -57,10 +81,13 @@ public class EditCardDialogFragment extends DialogFragment {
     private EditText mEditWordA;
     private EditText mEditWordB;
     private EditText mEditComment;
+    // 選択された色を表示するView
+    private ColorView mColorView;
 
     private String mWordA;
     private String mWordB;
     private String mComment;
+    private int mColor;
 
     /**
      * Get/Set
@@ -94,6 +121,7 @@ public class EditCardDialogFragment extends DialogFragment {
             if (card.getComment() != null) {
                 args.putString(KEY_COMMENT, card.getComment());
             }
+            args.putInt(KEY_COLOR, card.getColor());
 
         } else {
             args.putInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
@@ -115,6 +143,12 @@ public class EditCardDialogFragment extends DialogFragment {
             mWordA = args.getString(KEY_WORD_A, "");
             mWordB = args.getString(KEY_WORD_B, "");
             mComment = args.getString(KEY_COMMENT, "");
+            mColor = args.getInt(KEY_COLOR, 0);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
+        } else {
+            setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar);
         }
     }
 
@@ -124,7 +158,8 @@ public class EditCardDialogFragment extends DialogFragment {
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        return inflater.inflate(R.layout.fragment_edit_card_dialog, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_card_dialog, container, false);
+        return view;
     }
 
     @Override
@@ -139,6 +174,9 @@ public class EditCardDialogFragment extends DialogFragment {
 
         mEditComment = (EditText)view.findViewById(R.id.editComment);
         mEditComment.setText(mComment);
+
+        mColorView = (ColorView)view.findViewById(R.id.current_color);
+        mColorView.setColor(mColor);
 
         // Listener
         (view.findViewById(R.id.buttonOK)).setOnClickListener(new View.OnClickListener() {
@@ -158,7 +196,18 @@ public class EditCardDialogFragment extends DialogFragment {
             }
         });
 
-        setStyle(STYLE_NORMAL, android.R.style.Theme);
+        for (int id : colorViewIds) {
+            view.findViewById(id).setOnClickListener(this);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v instanceof ColorView) {
+            ColorView colorView = (ColorView)v;
+            mColorView.setColor(colorView.getColor());
+            mColorView.invalidate();
+        }
     }
 
     /**
@@ -170,6 +219,7 @@ public class EditCardDialogFragment extends DialogFragment {
         args.putString(KEY_WORD_A, mEditWordA.getText().toString());
         args.putString(KEY_WORD_B, mEditWordB.getText().toString());
         args.putString(KEY_COMMENT, mEditComment.getText().toString());
+        args.putInt(KEY_COLOR, mColorView.getColor());
 
         if (dialogCallbacks != null) {
             dialogCallbacks.submitEditCard(args);

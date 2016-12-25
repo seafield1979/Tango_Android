@@ -21,6 +21,7 @@
     <string name="comment">コメント</string>
     <string name="book_name">単語帳の名前</string>
     <string name="book_color">単語帳の色</string>
+    <string name="card_color">カードの色</string>
     <string name="book_name2">単語帳名</string>
 
 
@@ -31,6 +32,8 @@
     <string name="book">単語帳</string>
     <string name="card_count">カード数</string>
     <string name="study_history">学習履歴</string>
+    <string name="all_count">ぜんぶ</string>
+    <string name="card_count_unit">枚</string>
 
     <string name="count_not_learned">未収得数</string>
     <string name="item_count">アイテム数</string>

@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.tangobook;
 
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -52,11 +53,18 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
 
     private int[] colorViewIds = {
             R.id.current_color,
-            R.id.color_red,
-            R.id.color_limegreen,
-            R.id.color_blue,
-            R.id.color_orange,
-            R.id.color_darkviolet
+            R.id.color_view_1,
+            R.id.color_view_2,
+            R.id.color_view_3,
+            R.id.color_view_4,
+            R.id.color_view_5,
+            R.id.color_view_6,
+            R.id.color_view_7,
+            R.id.color_view_8,
+            R.id.color_view_9,
+            R.id.color_view_10,
+            R.id.color_view_11
+
     };
 
     /**
@@ -125,6 +133,12 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
             mComment = args.getString(KEY_COMMENT, "");
             mColor = args.getInt(KEY_COLOR, 0);
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
+        } else {
+            setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar);
+        }
     }
 
     @Override
@@ -172,9 +186,6 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
         for (int id : colorViewIds) {
             view.findViewById(id).setOnClickListener(this);
         }
-
-
-        setStyle(STYLE_NORMAL, android.R.style.Theme);
     }
 
     @Override

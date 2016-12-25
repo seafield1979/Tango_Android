@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import java.util.Date;
@@ -271,6 +272,7 @@ public class TangoCardDao {
         card.setHintAB("hintAB:" + randVal);
         card.setHintBA("hintBA:" + randVal);
         card.setComment("comment:" + randVal);
+        card.setColor(Color.BLACK);
         card.setStar(false);
         byte[] history = new byte[3];
         for (int i=0; i<history.length; i++) {
@@ -319,6 +321,7 @@ public class TangoCardDao {
         newCard.setHintAB(card.getHintAB());
         newCard.setHintBA(card.getHintBA());
         newCard.setComment(card.getComment());
+        newCard.setColor(card.getColor());
         newCard.setUpdateTime(new Date());
 
         mRealm.commitTransaction();

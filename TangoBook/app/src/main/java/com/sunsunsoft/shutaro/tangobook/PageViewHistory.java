@@ -129,7 +129,12 @@ public class PageViewHistory extends UPageView
      * @return
      */
     public boolean onBackKeyDown() {
-
+        if (mDialog != null) {
+            if (!mDialog.isClosing()) {
+                mDialog.startClosing();
+            }
+            return true;
+        }
         return false;
     }
 

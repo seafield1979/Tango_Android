@@ -115,6 +115,10 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         }
     }
 
+    public boolean isClosing() {
+        return (animationType == AnimationType.Closing);
+    }
+
     /**
      * Constructor
      */

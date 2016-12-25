@@ -55,7 +55,7 @@ public class PageViewResult extends UPageView
     private UButtonText mButtonRetry2;      // NGのみリトライ
     private UButtonText mButtonExit;      // 戻るボタン
 
-    private UDialogWindow mDialog;
+    private DialogCard mCardDialog;
 
     /**
      * Get/Set
@@ -200,26 +200,10 @@ public class PageViewResult extends UPageView
 
         ListItemResult _item = (ListItemResult)item;
         if (_item.getType() != ListItemResult.ListItemResultType.Title) {
-            int _color;
-            if (_item.getType() == ListItemResult.ListItemResultType.OK) {
-                _color = Color.rgb(150, 250, 150);
-            } else {
-                _color = Color.rgb(250, 150, 150);
-            }
-            mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                    this, null, UDialogWindow.ButtonDir.Vertical,
-                    UDialogWindow.DialogPosType.Center, false,
-                    mParentView.getWidth(), mParentView.getHeight(),
-                    Color.BLACK, _color);
-            // 項目を追加
-            TangoCard card = _item.getCard();
-            mDialog.addTextView(card.getWordA(), UAlignment.CenterX, false, false, 50,
-                    Color.BLACK, Color.WHITE);
-            mDialog.addTextView(card.getWordB(), UAlignment.CenterX, false, false, 50,
-                    Color.BLACK, Color.WHITE);
-            mDialog.addTextView(card.getComment(), UAlignment.CenterX, false, false, 50,
-                    Color.BLACK, Color.WHITE);
-            mDialog.addCloseButton("Close");
+
+            mCardDialog = new DialogCard(_item.getCard(), true, mParentView.getWidth(), mParentView
+                    .getHeight());
+            mCardDialog.addToDrawManager();
         }
     }
 

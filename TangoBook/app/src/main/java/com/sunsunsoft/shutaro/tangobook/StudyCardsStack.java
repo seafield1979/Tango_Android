@@ -248,12 +248,13 @@ public class StudyCardsStack extends UDrawable {
      * @param offset 独自の座標系を持つオブジェクトをスクリーン座標系に変換するためのオフセット値
      */
     public void draw(Canvas canvas, Paint paint, PointF offset) {
+        PointF _offset = new PointF(pos.x + size.width / 2, pos.y);
         // 配下のカードを描画する
         for (StudyCard card : mCards) {
-            card.draw(canvas, paint, pos);
+            card.draw(canvas, paint, _offset);
         }
         for (StudyCard card : mToBoxCards) {
-            card.draw(canvas, paint, pos);
+            card.draw(canvas, paint, _offset);
         }
     }
 

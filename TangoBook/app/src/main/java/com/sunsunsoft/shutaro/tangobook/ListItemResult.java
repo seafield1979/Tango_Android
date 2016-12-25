@@ -46,10 +46,12 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
      */
     private ListItemResultType mType;
     private String mText;
+    private boolean isOK;
     private TangoCard mCard;
     private int mTextColor;
     private UButtonImage mStarButton;
     private boolean mStudyMode;      // 学習モード false:wordA -> B true:wordB -> A
+    private int mLearnedTextW;        // "覚えた"のテキストの幅
 
     /**
      * Get/Set
@@ -75,11 +77,13 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     }
 
     // ListItemResultType.Title のインスタンスを生成する
-    public static ListItemResult createTitle(String text, int width,
+    public static ListItemResult createTitle(boolean isOK, int width,
                                              int textColor,int bgColor)
     {
+        String text = isOK ? "OK" : "NG";
         ListItemResult instance = new ListItemResult(null, ListItemResultType.Title,
                 false, null, 0, width, textColor, bgColor);
+        instance.isOK = isOK;
         instance.mText = text;
         instance.size.height = TITLE_H;
         return instance;
@@ -103,7 +107,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                     STAR_ICON_W, STAR_ICON_W, R.drawable.favorites, -1);
             instance.mStarButton.addState(R.drawable.favorites2);
             instance.mStarButton.setState(card.getStar() ? 1 : 0);
-            instance.mStarButton.scaleRect(1.2f);
+            instance.mStarButton.scaleRect(1.3f, 1.0f);
         }
         return instance;
     }
@@ -143,21 +147,30 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
             _color = pressedColor;
         }
         UDraw.drawRectFill(canvas, paint,
-                    new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),
+                    new Rect((int) _pos.x, (int) _pos.y,
+                            (int) _pos.x + size.width, (int) _pos.y + size.height),
                     _color, FRAME_WIDTH, FRAME_COLOR);
 
         switch(mType) {
             case Title:
-            {
                 UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
                         _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
-            }
+                // 覚えた
+                if (isOK) {
+                    if (mLearnedTextW == 0) {
+                        mLearnedTextW = UDraw.getTextSize(canvas.getWidth(),
+                                UResourceManager.getStringById(R.string.learned), TEXT_SIZE).width;
+                    }
+                    UDraw.drawTextOneLine(canvas, paint,
+                            UResourceManager.getStringById(R.string.learned),
+                            UAlignment.Center, TEXT_SIZE,
+                            _pos.x + size.width - mLearnedTextW / 2 - 20, _pos.y + size.height / 2,
+                            mTextColor);
+                }
                 break;
             case OK:
-            {
                 UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
                         _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
-            }
                 break;
             case NG:
                 UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,

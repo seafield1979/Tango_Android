@@ -29,7 +29,6 @@ public class IconBook extends IconContainer {
      * Member variable
      */
     protected TangoBook book;
-    protected Bitmap image;
 
     /**
      * Get/Set
@@ -157,14 +156,6 @@ public class IconBook extends IconContainer {
             }
         }
         return false;
-    }
-
-    /**
-     * 画像を更新する
-     * アイコンの色が変更された際に呼び出す
-     */
-    public void updateIconImage() {
-        image = UUtil.convBitmapColor(image, color);
     }
 
     @Override

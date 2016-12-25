@@ -86,14 +86,16 @@ abstract public class UButton extends UDrawable {
         this.enabled = true;
         this.buttonCallback = callbacks;
         this.type = type;
-        if (color == 0) {
-            color = DEFAULT_BG_COLOR;
-        }
+//        if (color == 0) {
+//            color = DEFAULT_BG_COLOR;
+//        }
         this.color = color;
-        if (type == UButtonType.BGColor) {
-            this.pressedColor = UColor.addBrightness(color, 0.3f);
-        } else {
-            this.pressedColor = UColor.addBrightness(color, -0.2f);
+        if (color != 0) {
+            if (type == UButtonType.BGColor) {
+                this.pressedColor = UColor.addBrightness(color, 0.3f);
+            } else {
+                this.pressedColor = UColor.addBrightness(color, -0.2f);
+            }
         }
         disabledColor = DISABLED_COLOR;
         disabledColor2 = UColor.addBrightness(disabledColor, -0.2f);
@@ -165,6 +167,7 @@ abstract public class UButton extends UDrawable {
                 break;
             case Click:
             case LongClick:
+            case LongPress:
                 isPressed = false;
                 if (rect.contains((int)vt.touchX(-offset.x), (int)vt.touchY(-offset.y))) {
                     if (type == UButtonType.Press3) {

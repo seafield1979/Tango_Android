@@ -88,7 +88,7 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
         // OK
         if (okCards != null && okCards.size() > 0) {
             // Title
-            item = ListItemResult.createTitle("OK", size.width, TITLE_TEXT_COLOR, TITLE_OK_COLOR);
+            item = ListItemResult.createTitle(true, size.width, TITLE_TEXT_COLOR, TITLE_OK_COLOR);
             add(item);
             // Items
             for (TangoCard card : okCards) {
@@ -101,7 +101,7 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
         // NG
         if (ngCards != null && ngCards.size() > 0) {
             // Title
-            item = ListItemResult.createTitle("NG", size.width, TITLE_TEXT_COLOR, TITLE_NG_COLOR);
+            item = ListItemResult.createTitle(false, size.width, TITLE_TEXT_COLOR, TITLE_NG_COLOR);
             add(item);
             // Items
             for (TangoCard card : ngCards) {

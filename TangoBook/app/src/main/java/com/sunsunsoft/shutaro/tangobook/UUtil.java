@@ -130,11 +130,32 @@ public class UUtil {
      * @param text
      * @return
      */
-    public static String convString(String text, boolean cutNewLine, int maxLength) {
+    public static String convString(String text, boolean cutNewLine, int maxLines, int maxLength) {
+        if (text == null) return null;
+
         // 改行を除去
         String _text = text;
         if (cutNewLine) {
             _text = text.replace("\n", " ");
+        }
+
+        // 最大行数
+        if (maxLines > 0) {
+            // 行分解
+            String[] lines = _text.split("\n");
+            if (lines.length > maxLines) {
+                StringBuffer strBuf = new StringBuffer();
+                boolean isFirst = true;
+                for (String line : lines) {
+                    if (isFirst) {
+                        isFirst = false;
+                    } else {
+                        strBuf.append("\n");
+                    }
+                    strBuf.append(line);
+                }
+                _text = strBuf.toString();
+            }
         }
 
         // 最大文字数制限

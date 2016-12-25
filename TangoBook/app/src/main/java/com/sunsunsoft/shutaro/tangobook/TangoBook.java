@@ -1,5 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Color;
+
 import java.util.Date;
 import java.util.Random;
 
@@ -36,6 +38,7 @@ public class TangoBook extends RealmObject implements TangoItem {
     public static TangoBook createBook() {
         TangoBook book = new TangoBook();
         book.newFlag = true;
+        book.color = Color.BLACK;
         book.createTime = new Date();
         book.updateTime = new Date();
 

@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,19 +27,21 @@ public class IconInfoDialogCard extends IconInfoDialog {
         Favorite
     }
 
+    enum Items {
+        WordA,
+        WordB,
+        Comment,
+        History
+    }
+
     /**
      * Consts
      */
     private static final String TAG = "IconInfoDialogCard";
-    private static final int BG_COLOR = Color.LTGRAY;
     private static final int DLG_MARGIN = 100;
     private static final int ICON_W = 120;
     private static final int ICON_MARGIN_H = 30;
-    private static final int MARGIN_V = 40;
-    private static final int MARGIN_V_S = 30;
-    private static final int MARGIN_H = 40;
     private static final int TEXT_SIZE = 50;
-    private static final int TITLE_WIDTH = 100;
 
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
@@ -48,9 +51,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
      */
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private UTextView textTitle;
-    private UTextView textWordA;
-    private UTextView textWordB;
-    private UTextView textHistory;
+    private IconInfoItem[] mItems = new IconInfoItem[Items.values().length];
     private TangoCard mCard;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
 
@@ -72,6 +73,11 @@ public class IconInfoDialogCard extends IconInfoDialog {
         if (icon instanceof IconCard) {
             IconCard cardIcon = (IconCard)icon;
             mCard = (TangoCard)cardIcon.getTangoItem();
+
+            if (color == 0) color = Color.LTGRAY;
+
+            bgColor = UColor.setBrightness(color, 220);
+            frameColor = UColor.setBrightness(color, 140);
         }
     }
 
@@ -87,7 +93,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
     {
         IconInfoDialogCard instance = new IconInfoDialogCard( parentView,
                 iconInfoDialogCallbacks, windowCallbacks, icon,
-                x, y, BG_COLOR);
+                x, y, ((TangoCard)icon.getTangoItem()).getColor());
 
         // 初期化処理
         instance.addCloseIcon(CloseIconPos.RightTop);
@@ -116,12 +122,13 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         // BG
         UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
-                bgColor, FRAME_WIDTH, FRAME_COLOR);
+                bgColor, FRAME_WIDTH, frameColor);
 
         textTitle.draw(canvas, paint, pos);
-        textWordA.draw(canvas, paint, pos);
-        textWordB.draw(canvas, paint, pos);
-        textHistory.draw(canvas, paint, pos);
+        for (IconInfoItem item : mItems) {
+            item.title.draw(canvas, paint, pos);
+            item.body.draw(canvas, paint, pos);
+        }
 
         // Buttons
         for (UButtonImage button : imageButtons) {
@@ -142,41 +149,82 @@ public class IconInfoDialogCard extends IconInfoDialog {
         int width = ICON_W * icons.size() + ICON_MARGIN_H * (icons.size() + 1) + 100;
         int fontSize = UDraw.getFontSize(FontSize.M);
 
-        // カード
+        // タイトル(カード)
         textTitle = UTextView.createInstance( mContext.getString(R.string.card),
                 TEXT_SIZE, 0,
-                UAlignment.CenterX, canvas.getWidth(), false, false,
-                width / 2, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+                UAlignment.None, canvas.getWidth(), false, false,
+                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + MARGIN_V_S;
 
-        // WordA
-        String wordA = UResourceManager.getStringById(R.string.word_a) + " : " + mCard.getWordA();
-        textWordA = UTextView.createInstance( wordA, fontSize, 0,
-                UAlignment.None, canvas.getWidth(), true, false,
-                MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
-        y += textWordA.size.height + MARGIN_V;
+        String titleStr = null;
+        String bodyStr = null;
+        int bgColor = 0;
 
-        // WordB
-        String wordB = UResourceManager.getStringById(R.string.word_b) + " : " + mCard.getWordB();
-        textWordB = UTextView.createInstance( wordB, fontSize, 0,
-                UAlignment.None, canvas.getWidth(), true, false,
-                MARGIN_H, y, width - MARGIN_H, TEXT_COLOR, 0);
-        y += textWordB.size.height + MARGIN_V;
+        for (Items item : Items.values()) {
+            switch(item) {
+                case WordA:
+                    titleStr = mContext.getString(R.string.word_a);
+                    bodyStr = UUtil.convString(mCard.getWordA(), false, 2, 0);
+                    bgColor = UColor.LightGreen;
+                    break;
 
-        // History
-        TangoCardHistory history = RealmManager.getCardHistoryDao().selectByCard(mCard);
-        String historyStr;
-        if (history != null) {
-            historyStr = history.getCorrectFlagsAsString();
-        } else {
-            historyStr = "---";
+                case WordB:
+                    titleStr = mContext.getString(R.string.word_b);
+                    bodyStr = UUtil.convString(mCard.getWordB(), false, 2, 0);
+                    bgColor = UColor.LightRed;
+                    break;
+
+                case Comment:
+                    titleStr = mContext.getString(R.string.comment);
+                    bodyStr = UUtil.convString(mCard.getComment(), false, 2, 0);
+                    bgColor = UColor.LightBlue;
+                    break;
+
+                case History:   // 学習履歴
+                {
+                    TangoCardHistory history = RealmManager.getCardHistoryDao().selectByCard(mCard);
+                    String historyStr;
+                    if (history != null) {
+                        historyStr = history.getCorrectFlagsAsString();
+                    } else {
+                        historyStr = "---";
+                    }
+
+                    titleStr = mContext.getString(R.string.studied_date);
+                    bodyStr = historyStr;
+
+                    bgColor = UColor.LightCyan;
+                }
+                    break;
+            }
+            mItems[item.ordinal()] = new IconInfoItem();
+            // title
+            mItems[item.ordinal()].title = UTextView.createInstance( titleStr ,
+                    fontSize, 0,
+                    UAlignment.None, canvas.getWidth(), false, true,
+                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, bgColor);
+
+            y += mItems[item.ordinal()].title.getHeight() + 10;
+
+            // body
+            mItems[item.ordinal()].body = UTextView.createInstance( bodyStr,
+                    fontSize, 0,
+                    UAlignment.None, canvas.getWidth(), true, false,
+                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
+            y += mItems[item.ordinal()].body.getHeight() + MARGIN_V_S;
+
+            // 幅は最大サイズに合わせる
+            int _width = mItems[item.ordinal()].body.getWidth() + MARGIN_H * 2;
+            if (_width > width) {
+                width = _width;
+            }
         }
+        y += MARGIN_V;
 
-        textHistory = UTextView.createInstance( UResourceManager.getStringById(R.string.study_history) + " : " + historyStr, fontSize, 0,
-                UAlignment.None, canvas.getWidth(), false, false,
-                MARGIN_H, y, width - MARGIN_H, TEXT_COLOR, 0);
-        y += fontSize + MARGIN_V + 20;
-
+        // タイトルのwidthを揃える
+        for (IconInfoItem item : mItems) {
+            item.title.setWidth(width - MARGIN_H * 2);
+        }
 
         // アクションボタン
         int x = (width - (ICON_W * icons.size() + MARGIN_H * (icons.size() - 1))) / 2;
@@ -186,7 +234,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
                             x, y,
                             ICON_W, ICON_W, icon.getImageId(), -1);
 
-            // お気に入りだけは２つ画像を登録する
+            // お気に入りはON/OFF用の２つ画像を登録する
             if (icon == ActionIcons.Favorite) {
                 imageButton.addState(R.drawable.favorites2);
                 if (mCard.getStar()) {
@@ -227,6 +275,10 @@ public class IconInfoDialogCard extends IconInfoDialog {
             if (button.touchEvent(vt, offset)) {
                 return true;
             }
+        }
+
+        if (super.touchEvent2(vt, null)) {
+            return true;
         }
 
         return false;

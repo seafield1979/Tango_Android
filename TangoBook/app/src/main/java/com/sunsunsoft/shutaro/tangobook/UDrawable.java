@@ -129,14 +129,19 @@ abstract public class UDrawable {
         }
     }
 
-    public void scaleRect(float scale) {
-        float scaleW = size.width * (scale - 1.0f) / 2;
-        float scaleH = size.height * (scale - 1.0f) / 2;
+    /**
+     * Rectをスケールする。ボタン等のタッチ範囲を広げるのに使用する
+     * @param scaleH
+     * @param scaleV
+     */
+    public void scaleRect(float scaleH, float scaleV) {
+        float _scaleW = size.width * (scaleH - 1.0f) / 2;
+        float _scaleH = size.height * (scaleV - 1.0f) / 2;
 
-        rect.left = (int)(pos.x + -scaleW);
-        rect.top = (int)(pos.y + -scaleH);
-        rect.right = (int)(pos.x + size.width + scaleW);
-        rect.bottom = (int)(pos.y + size.height + scaleH);
+        rect.left = (int)(pos.x + -_scaleW);
+        rect.top = (int)(pos.y + -_scaleH);
+        rect.right = (int)(pos.x + size.width + _scaleW);
+        rect.bottom = (int)(pos.y + size.height + _scaleH);
     }
 
     public float getRight() {
