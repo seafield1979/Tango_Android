@@ -35,6 +35,21 @@
     <string name="all_count">ぜんぶ</string>
     <string name="card_count_unit">枚</string>
 
+    <!--options-->
+    <string name="study_mode_1">１つづつ 日->英</string>
+    <string name="study_mode_2">１つづつ 英->日</string>
+    <string name="study_mode_3">まとめて 日->英</string>
+    <string name="study_mode_4">まとめて 英->日</string>
+    <string name="study_mode_5">４択 英->日</string>
+    <string name="study_mode_6">４択 日->英</string>
+    <string name="study_mode_7">単語入力 英</string>
+
+    <string name="study_order_1">単語帳の並び順</string>
+    <string name="study_order_2">ランダム</string>
+
+    <string name="study_filter_1">すべて</string>
+    <string name="study_filter_2">覚えていないカード</string>
+
     <string name="count_not_learned">未収得数</string>
     <string name="item_count">アイテム数</string>
     <string name="title_edit">単語帳を作る</string>
@@ -69,15 +84,15 @@
     <string name="cancel">キャンセル</string>
     <string name="history_book">学習記録</string>
 
-    <string name="study_type">出題方法</string>
-    <string name="e_to_j">英 > 日</string>
-    <string name="j_to_e">日 > 英</string>
+    <string name="study_mode">出題方法</string>
 
-    <string name="order_type">出題順</string>
+    <string name="study_order">出題順</string>
+    <string name="study_order_exp">カードの出題順番を設定します</string>
     <string name="order_normal">通常</string>
     <string name="order_random">ランダム</string>
 
-    <string name="study_pattern">学習単語</string>
+    <string name="study_filter">絞り込み</string>
+    <string name="study_filter_exp">出題するカードの絞り込み方法を設定します</string>
     <string name="all">すべて</string>
     <string name="not_learned">未収得</string>
     <string name="finish">終了</string>

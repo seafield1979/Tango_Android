@@ -113,20 +113,20 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     /**
      *
      * @param card
-     * @param studyType 出題タイプ false:英語 -> 日本語 / true:日本語 -> 英語
+     * @param isEnglish 出題タイプ false:英語 -> 日本語 / true:日本語 -> 英語
      */
-    public StudyCard(TangoCard card, boolean studyType, int canvasW) {
+    public StudyCard(TangoCard card, boolean isEnglish, int canvasW) {
         super(0, 0, 0, WIDTH, 0);
-        if (studyType) {
-            wordA = card.getWordB();
-            wordB = card.getWordA();
-            hintA = card.getHintBA();
-            hintB = card.getHintAB();
-        } else {
+        if (isEnglish) {
             wordA = card.getWordA();
             wordB = card.getWordB();
             hintA = card.getHintAB();
             hintB = card.getHintBA();
+        } else {
+            wordA = card.getWordB();
+            wordB = card.getWordA();
+            hintA = card.getHintBA();
+            hintB = card.getHintAB();
         }
         mState = State.None;
         mCard = card;

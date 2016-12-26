@@ -203,12 +203,13 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     // 最小限の引数で作成
     public static UDialogWindow createInstance(UButtonCallbacks buttonCallbacks,
                                                UDialogCallbacks dialogCallbacks,
+                                               ButtonDir buttonDir,
                                                int screenW, int screenH)
     {
         return createInstance(DialogType.Mordal, buttonCallbacks,
                 dialogCallbacks,
-                ButtonDir.Horizontal, DialogPosType.Center,
-                true, screenW, screenH,
+                buttonDir, DialogPosType.Center,
+                false, screenW, screenH,
                 Color.BLACK, Color.LTGRAY);
     }
 

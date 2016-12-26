@@ -174,6 +174,14 @@ public class UTextView extends UDrawable {
                     _pos.x += mMargin.width;
                     _pos.y += mMargin.height;
                     break;
+                case Right:
+                    _pos.x -= size.width + mMargin.width;
+                    _pos.y += mMargin.height;
+                    break;
+                case Right_CenterY:
+                    _pos.x -= size.width + mMargin.width;
+                    bgPos.y -= size.height / 2;
+                    break;
             }
 
             if (!multiLine) {

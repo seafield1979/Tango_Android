@@ -204,7 +204,7 @@ public class PageViewBackupDB extends UPageView
                 if (mDialog != null) {
                     mDialog.closeWindow();
                 }
-                mDialog = UDialogWindow.createInstance(this, null, mParentView.getWidth(),
+                mDialog = UDialogWindow.createInstance(this, null, UDialogWindow.ButtonDir.Horizontal, mParentView.getWidth(),
                         mParentView
                         .getHeight());
                 mDialog.addToDrawManager();
@@ -219,7 +219,8 @@ public class PageViewBackupDB extends UPageView
                 if (mDialog != null) {
                     mDialog.closeWindow();
                 }
-                mDialog = UDialogWindow.createInstance(this, null, mParentView.getWidth(), mParentView
+                mDialog = UDialogWindow.createInstance(this, null, UDialogWindow.ButtonDir.Horizontal,
+                        mParentView.getWidth(), mParentView
                         .getHeight());
                 mDialog.addToDrawManager();
                 mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_restore));

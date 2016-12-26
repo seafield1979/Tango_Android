@@ -37,13 +37,13 @@ public class StudyCardsManager {
     private LinkedList<TangoCard> mOkCards = new LinkedList<>();
 
     // Options
-    private boolean mStudyType;
+    private StudyMode mStudyMode;
 
     /**
      * Get/Set
      */
-    public boolean getStudyType() {
-        return mStudyType;
+    public StudyMode getStudyMode() {
+        return mStudyMode;
     }
 
     public int getCardCount() {
@@ -68,7 +68,8 @@ public class StudyCardsManager {
     }
 
     public static StudyCardsManager createInstance(TangoBook book) {
-        boolean notLearned = MySharedPref.readBoolean(MySharedPref.StudyOption3Key);
+        boolean notLearned = StudyFilter.toEnum(MySharedPref.readInt(MySharedPref.StudyFilterKey)
+        ) == StudyFilter.NotLearned;
 
         List<TangoCard> _cards = RealmManager.getItemPosDao()
                 .selectCardsByBookIdWithOption(book.getId(), notLearned);
@@ -77,8 +78,9 @@ public class StudyCardsManager {
     }
 
     public StudyCardsManager(List<TangoCard> cards) {
-        boolean studyType = MySharedPref.readBoolean(MySharedPref.StudyOption1Key);
-        boolean orderRandom = MySharedPref.readBoolean(MySharedPref.StudyOption2Key);
+        mStudyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
+        StudyOrder studyOrder = StudyOrder.toEnum(MySharedPref.readInt(MySharedPref
+                .StudyOrderKey));
 
         if (cards != null) {
             for (TangoCard card : cards) {
@@ -86,12 +88,10 @@ public class StudyCardsManager {
             }
 
             // ランダムに並び替える
-            if (orderRandom) {
+            if (studyOrder == StudyOrder.Random) {
                 Collections.shuffle(mCards);
             }
         }
-
-        mStudyType = studyType;
     }
 
     /**

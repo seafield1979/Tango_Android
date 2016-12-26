@@ -42,11 +42,11 @@ public class UButtonText extends UButton {
         return mText;
     }
 
-    public void setmText(String mText) {
+    public void setText(String mText) {
         this.mText = mText;
     }
 
-    public void setmTextColor(int mTextColor) {
+    public void setTextColor(int mTextColor) {
         this.mTextColor = mTextColor;
     }
 

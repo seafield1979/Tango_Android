@@ -50,7 +50,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     private TangoCard mCard;
     private int mTextColor;
     private UButtonImage mStarButton;
-    private boolean mStudyMode;      // 学習モード false:wordA -> B true:wordB -> A
+    private StudyMode mStudyMode;      // 学習モード
     private int mLearnedTextW;        // "覚えた"のテキストの幅
 
     /**
@@ -91,13 +91,13 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
 
     // ListItemResultType.OKのインスタンスを生成する
     // @param star 覚えたアイコン(Star)を表示するかどうか
-    public static ListItemResult createOK(TangoCard card, boolean studyMode, boolean star,
+    public static ListItemResult createOK(TangoCard card, StudyMode studyMode, boolean star,
                                           int width, int textColor,int bgColor) {
         ListItemResult instance = new ListItemResult(null,
                 ListItemResultType.OK, true, card,
                 0, width, textColor, bgColor);
 
-        instance.mText = convString(studyMode ? card.getWordB() : card.getWordA());
+        instance.mText = convString(studyMode.isEnglish() ? card.getWordA() : card.getWordB());
         instance.size.height = CARD_H;
         instance.mStudyMode = studyMode;
         // Starボタンを追加(On/Offあり)
@@ -113,13 +113,13 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     }
 
     // ListItemResultType.NGのインスタンスを生成する
-    public static ListItemResult createNG(TangoCard card, boolean studyMode,
+    public static ListItemResult createNG(TangoCard card, StudyMode studyMode,
                                           int width, int textColor,int bgColor)
     {
         ListItemResult instance = new ListItemResult(null,
                 ListItemResultType.NG, true, card,
                 0, width, textColor, bgColor);
-        instance.mText = convString(studyMode ? card.getWordB() : card.getWordA());
+        instance.mText = convString(studyMode.isEnglish() ? card.getWordA() : card.getWordB());
         instance.mStudyMode = studyMode;
         instance.size.height = CARD_H;
         return instance;

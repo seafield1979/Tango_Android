@@ -17,7 +17,9 @@ enum UAlignment {
     None,
     CenterX,
     CenterY,
-    Center
+    Center,
+    Right,
+    Right_CenterY
 }
 
 enum FontSize {
@@ -302,6 +304,7 @@ public class UDraw {
         Paint.FontMetrics fontMetrics = paint.getFontMetrics();
 
         // テキストの左上端がx,yと一致するように補正
+        // テキストの左上端がx,yと一致するように補正
         switch (alignment) {
             case None:
                 y -= fontMetrics.ascent;
@@ -317,7 +320,15 @@ public class UDraw {
                 x -= width / 2;
                 y -= fontMetrics.ascent / 2 + textSize * 0.15;
                 break;
+            case Right:
+                x -= width;
+                break;
+            case Right_CenterY:
+                x -= width;
+                y -= fontMetrics.ascent / 2 + textSize * 0.15;
+                break;
         }
+
         canvas.drawText(_text, x, y, paint);
 
         return new Size(width, textSize);

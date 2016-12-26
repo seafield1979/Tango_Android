@@ -138,7 +138,8 @@ public class PageViewPresetBook extends UPageView
 
         int width = mParentView.getWidth();
         // Dialog
-        mDialog = UDialogWindow.createInstance(null, null, width, mParentView
+        mDialog = UDialogWindow.createInstance(null, null,
+                UDialogWindow.ButtonDir.Horizontal, width, mParentView
                 .getHeight());
         mDialog.addToDrawManager();
 

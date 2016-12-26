@@ -109,7 +109,8 @@ public class StudyCardsStack extends UDrawable {
     protected void setInitialCards(int canvasW) {
         while(mCardManager.getCardCount() > 0) {
             TangoCard tangoCard = mCardManager.popCard();
-            StudyCard studyCard = new StudyCard(tangoCard, mCardManager.getStudyType(), canvasW);
+            StudyCard studyCard = new StudyCard(tangoCard, mCardManager.getStudyMode().isEnglish(),
+                    canvasW);
             mCardsInBackYard.add(studyCard);
         }
     }

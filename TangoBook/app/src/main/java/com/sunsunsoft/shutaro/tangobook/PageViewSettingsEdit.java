@@ -146,6 +146,7 @@ public class PageViewSettingsEdit extends UPageView implements UButtonCallbacks{
                 // お問い合わせメールダイアログを表示
                 if (mDialog == null) {
                     mDialog = UDialogWindow.createInstance(this, null,
+                            UDialogWindow.ButtonDir.Horizontal,
                             mParentView.getWidth(),
                             mParentView.getHeight());
                     mDialog.setTitle(UResourceManager.getStringById(R.string.contact_us));

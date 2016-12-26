@@ -47,7 +47,7 @@ public class PageViewResult extends UPageView
     private ListViewResult mListView;
     private List<TangoCard> mOkCards;
     private List<TangoCard> mNgCards;
-    private boolean mStudyMode;             // 出題モード(false:英->日 / true:日->英)
+    private StudyMode mStudyMode;             // 出題モード(false:英->日 / true:日->英)
 
     private UTextView mTitleText;           // タイトル
     private UTextView mResultText;          // 結果
@@ -80,7 +80,7 @@ public class PageViewResult extends UPageView
      */
 
     public void onShow() {
-        mStudyMode = MySharedPref.readBoolean(MySharedPref.StudyOption1Key);
+        mStudyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
     }
 
     public void onHide() {

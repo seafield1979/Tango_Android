@@ -15,19 +15,16 @@ import java.util.Date;
  * Bookを学習する前に表示されるダイアログ
  */
 
-public class PreStudyWindow extends UWindow {
+public class PreStudyWindow extends UWindow implements UDialogCallbacks{
     /**
      * Enum
      */
     enum ButtonId {
         Start,
         Cancel,
-        Option1_1,
-        Option1_2,
-        Option2_1,
-        Option2_2,
-        Option3_1,
-        Option3_2
+        Option1,
+        Option2,
+        Option3
     }
 
     /**
@@ -42,25 +39,39 @@ public class PreStudyWindow extends UWindow {
     private static final int TEXT_SIZE = 50;
     private static final int TEXT_SIZE_2 = 35;
     private static final int TEXT_SIZE_3 = 70;
-    private static final int TITLE_WIDTH = 100;
+    private static final int TITLE_WIDTH = 150;
 
-    private static final int BUTTON_W = 400;
+    private static final int BUTTON_W = 600;
     private static final int BUTTON_H = 120;
+    private static final int BUTTON2_W = 400;
     private static final int BUTTON2_H = 200;
 
     private static final int BG_COLOR = Color.WHITE;
     private static final int FRAME_COLOR = Color.rgb(120,120,120);
     private static final int TEXT_COLOR = Color.BLACK;
-    private static final int TEXT_DATE_COLOR = UColor.DarkGray;
+    private static final int TEXT_DATE_COLOR = Color.rgb(80,80,80);
 
     // button Id
+    private static final int ButtonIdOption1 = 100;
+    private static final int ButtonIdOption2 = 200;
+    private static final int ButtonIdOption3 = 300;
+
+    // 出題モード
     private static final int ButtonIdOption1_1 = 101;
     private static final int ButtonIdOption1_2 = 102;
-    private static final int ButtonIdOption2_1 = 103;
-    private static final int ButtonIdOption2_2 = 104;
-    private static final int ButtonIdOption3_1 = 105;
-    private static final int ButtonIdOption3_2 = 106;
+    private static final int ButtonIdOption1_3 = 103;
+    private static final int ButtonIdOption1_4 = 104;
+    private static final int ButtonIdOption1_5 = 105;
+    private static final int ButtonIdOption1_6 = 106;
+    private static final int ButtonIdOption1_7 = 107;
 
+    // 並び順
+    private static final int ButtonIdOption2_1 = 201;
+    private static final int ButtonIdOption2_2 = 202;
+
+    // 絞り込み
+    private static final int ButtonIdOption3_1 = 301;
+    private static final int ButtonIdOption3_2 = 302;
 
     /**
      * Member Variables
@@ -68,16 +79,21 @@ public class PreStudyWindow extends UWindow {
     protected UButtonCallbacks mButtonCallbacks;
     protected View mParentView;
     private UTextView textTitle, textCount, textLastStudied;
-    private UTextView textOption1, textOption2, textOption3;
+    private UTextView textStudyMode, textStudyOrder, textStudyFilter;
 
     // options
-    protected boolean option1, option2, option3;
+    protected StudyMode mStudyMode;
+    protected StudyOrder mStudyOrder;
+    protected StudyFilter mStudyFilter;
 
     // buttons
-    private UButton[] buttons = new UButton[ButtonId.values().length];
+    private UButtonText[] buttons = new UButtonText[ButtonId.values().length];
 
     // ダイアログに情報を表示元のTangoBook
     protected TangoBook mBook;
+
+    // オプション選択ダイアログ
+    protected UDialogWindow mDialog;
 
     /**
      * Get/Set
@@ -90,18 +106,17 @@ public class PreStudyWindow extends UWindow {
                           View parentView)
     {
         // width, height はinit内で計算するのでここでは0を設定
-        super(windowCallbacks, DrawPriority.Dialog.p(), 0, 0, 0, 0, BG_COLOR);
+        super(windowCallbacks, DrawPriority.Dialog.p() + 1, 0, 0,
+                parentView.getWidth(), parentView.getHeight(), BG_COLOR);
 
         mButtonCallbacks = buttonCallbacks;
         mParentView = parentView;
         isShow = false;     // 初期状態は非表示
 
-        addCloseIcon(CloseIconPos.RightTop);
-
         // get options
-        option1 = MySharedPref.readBoolean(MySharedPref.StudyOption1Key);
-        option2 = MySharedPref.readBoolean(MySharedPref.StudyOption2Key);
-        option3 = MySharedPref.readBoolean(MySharedPref.StudyOption3Key);
+        mStudyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
+        mStudyOrder = StudyOrder.toEnum(MySharedPref.readInt(MySharedPref.StudyOrderKey));
+        mStudyFilter = StudyFilter.toEnum(MySharedPref.readInt(MySharedPref.StudyFilterKey));
     }
 
     /**
@@ -129,12 +144,14 @@ public class PreStudyWindow extends UWindow {
 
         boolean isRedraw = false;
 
+        // touch up
         for (UButton button : buttons) {
             if (button == null) continue;
             if (button.touchUpEvent(vt)) {
                 isRedraw = true;
             }
         }
+        // touch
         for (UButton button : buttons) {
             if (button == null) continue;
             if (button.touchEvent(vt, offset)) {
@@ -142,7 +159,7 @@ public class PreStudyWindow extends UWindow {
             }
         }
 
-        if (super.touchEvent2(vt, offset)) {
+        if (super.touchEvent2(vt, null)) {
             return true;
         }
 
@@ -174,9 +191,9 @@ public class PreStudyWindow extends UWindow {
         textTitle.draw(canvas, paint, pos);
         textCount.draw(canvas, paint, pos);
         textLastStudied.draw(canvas, paint, pos);
-        textOption1.draw(canvas, paint, pos);
-        textOption2.draw(canvas, paint, pos);
-        textOption3.draw(canvas, paint, pos);
+        textStudyMode.draw(canvas, paint, pos);
+        textStudyOrder.draw(canvas, paint, pos);
+        textStudyFilter.draw(canvas, paint, pos);
 
         // buttons
         for (UButton button : buttons) {
@@ -190,9 +207,9 @@ public class PreStudyWindow extends UWindow {
     protected void updateLayout() {
 
         int y = TOP_ITEM_Y;
-        int width = BUTTON_W * 2 + MARGIN_H * 3;
         int screenW = mParentView.getWidth();
         int screenH = mParentView.getHeight();
+        int width = screenW;
 
         // カード数
         int count = RealmManager.getItemPosDao().countInParentType(
@@ -225,19 +242,83 @@ public class PreStudyWindow extends UWindow {
         textLastStudied = UTextView.createInstance(
                 UResourceManager.getStringById(R.string
                 .last_studied_date) + ": " + UUtil.convDateFormat(date, ConvDateMode.DateTime),
-                TEXT_SIZE_2, 0,
+                TEXT_SIZE, 0,
                 UAlignment.CenterX, screenW, false, false,
                 width / 2, y, TITLE_WIDTH, TEXT_DATE_COLOR, 0);
-        y += textLastStudied.getHeight() + MARGIN_V;
+        y += textLastStudied.getHeight() + MARGIN_V * 2;
 
         /**
          * Buttons
          */
+        float titleX = (width - (TITLE_WIDTH + BUTTON_W)) / 2 + TITLE_WIDTH;
+        float buttonX = titleX + MARGIN_H;
+
+        // Option1 出題方法
+        // タイトル
+        textStudyMode = UTextView.createInstance(
+                UResourceManager.getStringById(R.string.study_mode),
+                TEXT_SIZE_2, 0,
+                UAlignment.Right_CenterY, screenW, false, false,
+                titleX, y + BUTTON_H / 2, TITLE_WIDTH, TEXT_COLOR, 0);
+
+        // Button
+        StudyMode studyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
+        buttons[ButtonId.Option1.ordinal()] = new UButtonText(this, UButtonType.BGColor,
+                ButtonIdOption1,
+                0, studyMode.getString(),
+                buttonX, y, BUTTON_W, BUTTON_H,
+                40, TEXT_COLOR, UColor.LightBlue);
+
+        y += BUTTON_H + MARGIN_V;
+
+        // Option2 順番
+        // タイトル
+        textStudyOrder = UTextView.createInstance(
+                UResourceManager.getStringById(R.string.study_order),
+                TEXT_SIZE_2, 0,
+                UAlignment.Right_CenterY, screenW, false, false,
+                titleX, y + BUTTON_H / 2, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
+
+        // Button
+        StudyOrder studyOrder = StudyOrder.toEnum(MySharedPref.readInt(MySharedPref.StudyOrderKey));
+        buttons[ButtonId.Option2.ordinal()] = new UButtonText(this, UButtonType.BGColor,
+                ButtonIdOption2,
+                0, studyOrder.getString(),
+                buttonX, y, BUTTON_W, BUTTON_H,
+                40, TEXT_COLOR, UColor.Gold);
+
+        y += BUTTON_H + MARGIN_V;
+
+
+        // Option3 学習単語
+        // タイトル
+        textStudyFilter = UTextView.createInstance(
+                UResourceManager.getStringById(R.string.study_filter),
+                TEXT_SIZE_2, 0,
+                UAlignment.Right_CenterY, screenW, false, false,
+                titleX, y + BUTTON_H / 2, TITLE_WIDTH, TEXT_COLOR, 0);
+
+        // Button
+        StudyFilter studyFilter = StudyFilter.toEnum(MySharedPref.readInt(MySharedPref
+                .StudyFilterKey));
+        buttons[ButtonId.Option3.ordinal()] = new UButtonText(this, UButtonType.BGColor,
+                ButtonIdOption3,
+                0, studyFilter.getString(),
+                buttonX, y, BUTTON_W, BUTTON_H,
+                40, Color.WHITE, UColor.Violet);
+
+        y += BUTTON_H + MARGIN_V;
+
+        // センタリング
+        pos.x = (screenW - size.width) / 2;
+        pos.y = (screenH - size.height) / 2;
+
         // 開始ボタン
         buttons[ButtonId.Start.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudySelect2.ButtonIdStartStudy,
-                0, UResourceManager.getStringById(R.string.start), MARGIN_H, y,
-                BUTTON_W, BUTTON2_H,
+                0, UResourceManager.getStringById(R.string.start),
+                width / 2 - BUTTON2_W - MARGIN_H / 2, size.height - BUTTON2_H - MARGIN_V,
+                BUTTON2_W, BUTTON2_H,
                 TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
         if (count == 0) {
             buttons[ButtonId.Start.ordinal()].setEnabled(false);
@@ -247,112 +328,82 @@ public class PreStudyWindow extends UWindow {
         buttons[ButtonId.Cancel.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudySelect2.ButtonIdCancel,
                 0, UResourceManager.getStringById(R.string.cancel),
-                MARGIN_H + BUTTON_W + MARGIN_H, y,
-                BUTTON_W, BUTTON2_H,
+                width / 2 + MARGIN_H / 2, size.height - BUTTON2_H - MARGIN_V,
+                BUTTON2_W, BUTTON2_H,
                 TEXT_SIZE, Color.WHITE, Color.rgb(200,100,100));
 
-        y += BUTTON2_H + MARGIN_V;
-
-        // Option1 出題方法
-        // タイトル
-        textOption1 = UTextView.createInstance(
-                UResourceManager.getStringById(R.string.study_type),
-                TEXT_SIZE_2, 0,
-                UAlignment.None, screenW, false, false,
-                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += textOption1.getHeight();
-
-        // 英語->日本語 Button
-        buttons[ButtonId.Option1_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
-                ButtonIdOption1_1,
-                0, UResourceManager.getStringById(R.string.e_to_j),
-                MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
-
-        // 日本語->英語 Button
-        buttons[ButtonId.Option1_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
-                ButtonIdOption1_2,
-                0, UResourceManager.getStringById(R.string.j_to_e),
-                MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
-
-        y += BUTTON_H + MARGIN_V;
-
-        // Option2 順番
-        // タイトル
-        textOption2 = UTextView.createInstance(
-                UResourceManager.getStringById(R.string.order_type),
-                TEXT_SIZE_2, 0,
-                UAlignment.None, screenW, false, false,
-                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
-        y += textOption2.getHeight();
-
-        // 順番通り
-        buttons[ButtonId.Option2_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
-                ButtonIdOption2_1,
-                0, UResourceManager.getStringById(R.string.order_normal),
-                MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, UColor.Gold);
-
-        // ランダム
-        buttons[ButtonId.Option2_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
-                ButtonIdOption2_2,
-                0, UResourceManager.getStringById(R.string.order_random),
-                MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, TEXT_COLOR, UColor.Gold);
-
-        y += BUTTON_H + MARGIN_V;
-
-
-        // Option3 学習単語
-        // タイトル
-        textOption3 = UTextView.createInstance(
-                UResourceManager.getStringById(R.string.study_pattern),
-                TEXT_SIZE_2, 0,
-                UAlignment.None, screenW, false, false,
-                MARGIN_H, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += textOption3.getHeight();
-
-        // すべて
-        buttons[ButtonId.Option3_1.ordinal()] = new UButtonText(this, UButtonType.Press3,
-                ButtonIdOption3_1,
-                0, UResourceManager.getStringById(R.string.all),
-                MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, Color.WHITE, UColor.Violet);
-
-        // 未収得
-        buttons[ButtonId.Option3_2.ordinal()] = new UButtonText(this, UButtonType.Press3,
-                ButtonIdOption3_2,
-                0, UResourceManager.getStringById(R.string.not_learned),
-                MARGIN_H + BUTTON_W + MARGIN_H, y, BUTTON_W, BUTTON_H,
-                TEXT_SIZE, Color.WHITE, UColor.Violet);
-
-        y += BUTTON_H + MARGIN_V;
-
-        size.width = width;
-        size.height = y;
-
-        // オプションボタンの初期状態
-        ButtonId id;
-        id = (option1) ? ButtonId.Option1_2 : ButtonId.Option1_1;
-        buttons[id.ordinal()].setPressedOn(true);
-
-        id = (option2) ? ButtonId.Option2_2 : ButtonId.Option2_1;
-        buttons[id.ordinal()].setPressedOn(true);
-
-        id = (option3) ? ButtonId.Option3_2 : ButtonId.Option3_1;
-        buttons[id.ordinal()].setPressedOn(true);
-
-        // センタリング
-        pos.x = (screenW - size.width) / 2;
-        pos.y = (screenH - size.height) / 2;
-
-        setSize(width, y);
-
-        // 戻るボタン
-        updateCloseIconPos();
-
         updateRect();
+    }
+
+    /**
+     * 出題モード選択ダイアログを表示する
+     */
+    private void showOption1Dialog() {
+        if (mDialog == null) {
+            mDialog = UDialogWindow.createInstance(this, this, UDialogWindow.ButtonDir.Vertical,
+                    mParentView.getWidth(), mParentView.getHeight());
+            mDialog.setTitle(UResourceManager.getStringById(R.string.study_mode));
+            mDialog.addButton(ButtonIdOption1_1, UResourceManager.getStringById(R.string
+                    .study_mode_1), TEXT_COLOR, UColor.LightBlue);
+            mDialog.addButton(ButtonIdOption1_2, UResourceManager.getStringById(R.string
+                    .study_mode_2), TEXT_COLOR, UColor.LightBlue);
+            mDialog.addButton(ButtonIdOption1_3, UResourceManager.getStringById(R.string
+                    .study_mode_3), TEXT_COLOR, UColor.LightBlue);
+            mDialog.addButton(ButtonIdOption1_4, UResourceManager.getStringById(R.string
+                    .study_mode_4), TEXT_COLOR, UColor.LightBlue);
+            mDialog.addButton(ButtonIdOption1_5, UResourceManager.getStringById(R.string
+                    .study_mode_5), TEXT_COLOR, UColor.LightBlue);
+            mDialog.addButton(ButtonIdOption1_6, UResourceManager.getStringById(R.string
+                    .study_mode_6), TEXT_COLOR, UColor.LightBlue);
+            mDialog.addButton(ButtonIdOption1_7, UResourceManager.getStringById(R.string
+                    .study_mode_7), TEXT_COLOR, UColor.LightBlue);
+
+            mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+            mDialog.addToDrawManager();
+        }
+    }
+
+    /**
+     * 並び順を選択するダイアログを表示
+     */
+    private void showOption2Dialog() {
+        if (mDialog == null) {
+            mDialog = UDialogWindow.createInstance(this, this, UDialogWindow.ButtonDir.Vertical,
+                    mParentView.getWidth(), mParentView.getHeight());
+            mDialog.setTitle(UResourceManager.getStringById(R.string.study_order));
+            mDialog.addTextView(UResourceManager.getStringById(R.string.study_order_exp),
+                    UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
+            mDialog.addButton(ButtonIdOption2_1, UResourceManager.getStringById(R.string
+                    .study_order_1), TEXT_COLOR, UColor.Gold);
+            mDialog.addButton(ButtonIdOption2_2, UResourceManager.getStringById(R.string
+                    .study_order_2), TEXT_COLOR, UColor.Gold);
+
+            mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+            mDialog.addToDrawManager();
+        }
+    }
+
+    /**
+     * 出題単語の絞り込み
+     */
+    private void showOption3Dialog() {
+        if (mDialog == null) {
+            mDialog = UDialogWindow.createInstance(this, this, UDialogWindow.ButtonDir.Vertical,
+                    mParentView.getWidth(), mParentView.getHeight());
+            mDialog.setTitle(UResourceManager.getStringById(R.string.study_filter));
+            mDialog.addTextView(UResourceManager.getStringById(R.string.study_order_exp),
+                    UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
+            mDialog.addButton(ButtonIdOption3_1, UResourceManager.getStringById(R.string
+                    .study_filter_1), TEXT_COLOR, UColor.LightPink);
+            mDialog.addButton(ButtonIdOption3_2, UResourceManager.getStringById(R.string
+                    .study_filter_2), TEXT_COLOR, UColor.LightPink);
+
+            mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+            mDialog.addToDrawManager();
+        }
     }
 
     /**
@@ -365,9 +416,9 @@ public class PreStudyWindow extends UWindow {
         switch (id) {
             case PageViewStudySelect2.ButtonIdStartStudy:
                 // オプションを保存
-                MySharedPref.writeBoolean(MySharedPref.StudyOption1Key, option1);
-                MySharedPref.writeBoolean(MySharedPref.StudyOption2Key, option2);
-                MySharedPref.writeBoolean(MySharedPref.StudyOption3Key, option3);
+                MySharedPref.writeInt(MySharedPref.StudyModeKey, mStudyMode.ordinal());
+                MySharedPref.writeInt(MySharedPref.StudyOrderKey, mStudyOrder.ordinal());
+                MySharedPref.writeInt(MySharedPref.StudyFilterKey, mStudyFilter.ordinal());
 
                 if (mButtonCallbacks != null) {
                     mButtonCallbacks.UButtonClicked(id, pressedOn);
@@ -378,30 +429,60 @@ public class PreStudyWindow extends UWindow {
                     mButtonCallbacks.UButtonClicked(id, pressedOn);
                 }
                 break;
+            case ButtonIdOption1:
+                showOption1Dialog();
+                break;
+            case ButtonIdOption2:
+                showOption2Dialog();
+                break;
+            case ButtonIdOption3:
+                showOption3Dialog();
+                break;
             case ButtonIdOption1_1:
-                buttons[ButtonId.Option1_2.ordinal()].setPressedOn(false);
-                option1 = false;
+                mDialog.startClosing();
+                setStudyMode(StudyMode.SlideOneJ2E);
                 break;
             case ButtonIdOption1_2:
-                buttons[ButtonId.Option1_1.ordinal()].setPressedOn(false);
-                option1 = true;
+                mDialog.startClosing();
+                setStudyMode(StudyMode.SlideOneE2J);
+                break;
+            case ButtonIdOption1_3:
+                mDialog.startClosing();
+                setStudyMode(StudyMode.SlideMultiJ2E);
+                break;
+            case ButtonIdOption1_4:
+                mDialog.startClosing();
+                setStudyMode(StudyMode.SlideMultiE2J);
+                break;
+            case ButtonIdOption1_5:
+                mDialog.startClosing();
+                setStudyMode(StudyMode.SelectJ2E);
+                break;
+            case ButtonIdOption1_6:
+                mDialog.startClosing();
+                setStudyMode(StudyMode.SelectE2J);
+                break;
+            case ButtonIdOption1_7:
+                mDialog.startClosing();
+                setStudyMode(StudyMode.InputE);
                 break;
             case ButtonIdOption2_1:
-                buttons[ButtonId.Option2_2.ordinal()].setPressedOn(false);
-                option2 = false;
+                mDialog.startClosing();
+                setStudyOrder(StudyOrder.Normal);
                 break;
             case ButtonIdOption2_2:
-                buttons[ButtonId.Option2_1.ordinal()].setPressedOn(false);
-                option2 = true;
+                mDialog.startClosing();
+                setStudyOrder(StudyOrder.Random);
                 break;
             case ButtonIdOption3_1:
-                buttons[ButtonId.Option3_2.ordinal()].setPressedOn(false);
-                option3 = false;
+                mDialog.startClosing();
+                setStudyFilter(StudyFilter.All);
                 break;
             case ButtonIdOption3_2:
-                buttons[ButtonId.Option3_1.ordinal()].setPressedOn(false);
-                option3 = true;
+                mDialog.startClosing();
+                setStudyFilter(StudyFilter.NotLearned);
                 break;
+
         }
         if (super.UButtonClicked(id, pressedOn)) {
             return true;
@@ -409,4 +490,59 @@ public class PreStudyWindow extends UWindow {
         return false;
     }
 
+    /**
+     * 学習モードを設定
+     */
+    private void setStudyMode(StudyMode mode) {
+        if (mStudyMode != mode) {
+            mStudyMode = mode;
+            MySharedPref.writeInt(MySharedPref.StudyModeKey, mode.ordinal());
+            buttons[ButtonId.Option1.ordinal()].setText(mode.getString());
+        }
+    }
+
+    /**
+     * 並び順を設定
+     * @param order
+     */
+    private void setStudyOrder(StudyOrder order) {
+        if (mStudyOrder != order) {
+            mStudyOrder = order;
+            MySharedPref.writeInt(MySharedPref.StudyOrderKey, order.ordinal());
+            buttons[ButtonId.Option2.ordinal()].setText(order.getString());
+        }
+    }
+
+    /**
+     * 絞り込みを設定
+     */
+    private void setStudyFilter(StudyFilter filter) {
+        if (mStudyFilter != filter) {
+            mStudyFilter = filter;
+            MySharedPref.writeInt(MySharedPref.StudyFilterKey, filter.ordinal());
+            buttons[ButtonId.Option3.ordinal()].setText(filter.getString());
+        }
+    }
+
+    /**
+     * ソフトウェアキーの戻るボタンを押したときの処理
+     * @return
+     */
+    public boolean onBackKeyDown() {
+        if (mDialog != null) {
+            mDialog.closeDialog();
+            mDialog = null;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * UDialogCallbacks
+     */
+    public void dialogClosed(UDialogWindow dialog) {
+        if (dialog == mDialog) {
+            mDialog = null;
+        }
+    }
 }

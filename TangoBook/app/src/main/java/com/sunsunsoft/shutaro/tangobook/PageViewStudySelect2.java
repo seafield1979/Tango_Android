@@ -154,9 +154,14 @@ public class PageViewStudySelect2 extends UPageView
      * @return
      */
     public boolean onBackKeyDown() {
-        if (mPreStudyWindow != null && mPreStudyWindow.isShow()) {
-            mPreStudyWindow.setShow(false);
-            return true;
+        if (mPreStudyWindow != null) {
+            if (mPreStudyWindow.onBackKeyDown()) {
+                return true;
+            }
+            else if (mPreStudyWindow.isShow()) {
+                mPreStudyWindow.setShow(false);
+                return true;
+            }
         }
 
         return false;

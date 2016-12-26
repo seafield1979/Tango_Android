@@ -26,6 +26,85 @@ enum MenuHelpMode {
     }
 }
 
+// 学習モード
+enum StudyMode {
+    SlideOneJ2E(false, R.string.study_mode_1),
+    SlideOneE2J(true, R.string.study_mode_2),
+    SlideMultiJ2E(false, R.string.study_mode_3),
+    SlideMultiE2J(true, R.string.study_mode_4),
+    SelectJ2E(false, R.string.study_mode_5),
+    SelectE2J(true, R.string.study_mode_6),
+    InputE(true, R.string.study_mode_7)
+    ;
+
+    // 英語の出題か？
+    private final boolean english;
+    private final int strId;
+
+    StudyMode(boolean isEnglish, int strId) {
+        english = isEnglish;
+        this.strId = strId;
+    }
+
+    public boolean isEnglish() {
+        return english;
+    }
+    public String getString() {
+        return UResourceManager.getStringById(strId);
+    }
+
+    public static StudyMode toEnum(int value) {
+        if (value < StudyMode.values().length) {
+            return StudyMode.values()[value];
+        }
+        return StudyMode.SlideOneJ2E;
+    }
+}
+
+// 並び順
+enum StudyOrder {
+    Normal(R.string.study_order_1),     // 通常（単語帳の並び順）
+    Random(R.string.study_order_2)      // ランダムに並び替え
+    ;
+
+    private final int strId;
+    StudyOrder(int strId) {
+        this.strId = strId;
+    }
+    public String getString() {
+        return UResourceManager.getStringById(strId);
+    }
+
+    public static StudyOrder toEnum(int value) {
+        if (value < StudyOrder.values().length) {
+            return StudyOrder.values()[value];
+        }
+        return StudyOrder.Normal;
+    }
+}
+
+// 出題絞り込み
+enum StudyFilter {
+    All(R.string.study_filter_1),                // すべて出題
+    NotLearned(R.string.study_filter_2),         // 未収得カードのみ
+    ;
+
+    private final int strId;
+    StudyFilter(int strId) {
+        this.strId = strId;
+    }
+    public String getString() {
+        return UResourceManager.getStringById(strId);
+    }
+
+    public static StudyFilter toEnum(int value) {
+        if (value < StudyFilter.values().length) {
+            return StudyFilter.values()[value];
+        }
+        return StudyFilter.All;
+    }
+}
+
 public class MySharedPref {
     /**
      * Constants
@@ -33,12 +112,15 @@ public class MySharedPref {
     public static final String TAG = "MySharedPref";
 
     // option key
-    // 出題方法 false:英語->日本語 true:日本語->英語
-    public static final String StudyOption1Key = "StudyOption1";
-    // 出題順 false:順番通り true:ランダム
-    public static final String StudyOption2Key = "StudyOption2";
-    // 出題単語 false:全部  true:未収得
-    public static final String StudyOption3Key = "StudyOption3";
+
+    // 出題方法
+    public static final String StudyModeKey = "StudyMode";
+
+    // 出題順
+    public static final String StudyOrderKey = "StudyOrder";
+
+    // 出題絞り込み
+    public static final String StudyFilterKey = "StudyFilter";
 
     // Realmバックアップ保存場所
     public static final String RealmBackupPathKey = "RealmBackupPath";

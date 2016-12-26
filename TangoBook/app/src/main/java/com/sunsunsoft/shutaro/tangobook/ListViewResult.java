@@ -42,7 +42,7 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
     // OKカードとNGカードが別で渡ってくるパターン(リザルトページ)
     // @param studyMode  学習モード false:英->日  true:日->英
     public ListViewResult( UListItemCallbacks listItemCallbacks,
-                          List<TangoCard> okCards, List<TangoCard> ngCards, boolean studyMode,
+                          List<TangoCard> okCards, List<TangoCard> ngCards, StudyMode studyMode,
                      int priority, float x, float y, int width, int
                              height, int color)
     {
@@ -55,7 +55,7 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
     // OKカードとNGカードが同じリストに入って渡ってくる
     // 履歴ページで表示する用途
     public ListViewResult( UListItemCallbacks listItemCallbacks,
-                           List<TangoStudiedCard> studiedCards, boolean studyMode,
+                           List<TangoStudiedCard> studiedCards, StudyMode studyMode,
                            int priority, float x, float y, int width, int
                                    height, int color)
     {
@@ -80,9 +80,9 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
      * アイテムを追加する
      * @param okCards
      * @param ngCards
-     * @param studyMode 学習モード false:英->日 true:日->英
+     * @param studyMode 学習モード
      */
-    private void initItems(List<TangoCard> okCards, List<TangoCard> ngCards, boolean studyMode,
+    private void initItems(List<TangoCard> okCards, List<TangoCard> ngCards, StudyMode studyMode,
                            boolean star) {
         ListItemResult item = null;
         // OK

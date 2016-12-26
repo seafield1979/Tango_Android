@@ -65,7 +65,7 @@ public class UButtons extends UDrawable {
                 BUTTON_MARGIN + (count / row) * (buttonH + BUTTON_MARGIN),
                 buttonW, buttonH,
                 mTextSize, Color.WHITE, color);
-        button.setmTextColor(textColor);
+        button.setTextColor(textColor);
         buttons.add(button);
 
         return true;
