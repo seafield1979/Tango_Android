@@ -165,7 +165,7 @@ public class PageViewHistory extends UPageView
                             UAlignment.CenterX, true, false, TEXT_SIZE, TEXT_COLOR, 0);
                     mDialog.addButton(ButtonIdClearOK,
                             "OK",TEXT_COLOR,
-                            0);
+                            Color.WHITE);
                     mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
                     mDialog.addToDrawManager();
                 }
@@ -209,7 +209,7 @@ public class PageViewHistory extends UPageView
         mDialog.addToDrawManager();
         ListViewResult listView = new ListViewResult(null, cards, StudyMode.SlideOneJ2E,
                 DRAW_PRIORYTY_DIALOG, 0, 0,
-                mDialog.size.width - MARGIN_H * 2, 700, Color.LTGRAY
+                mDialog.size.width - MARGIN_H * 2, 700, Color.WHITE
                 );
         mDialog.addDrawable(listView);
 

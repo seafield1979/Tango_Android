@@ -307,7 +307,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 ButtonIdOption3,
                 0, studyFilter.getString(),
                 buttonX, y, BUTTON_W, BUTTON_H,
-                40, Color.WHITE, UColor.LightPink);
+                40, TEXT_COLOR, UColor.LightPink);
         buttons[ButtonId.Option3.ordinal()].setPullDownIcon(true);
 
         y += BUTTON_H + MARGIN_V;
@@ -396,7 +396,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
             mDialog = UDialogWindow.createInstance(this, this, UDialogWindow.ButtonDir.Vertical,
                     mParentView.getWidth(), mParentView.getHeight());
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_filter));
-            mDialog.addTextView(UResourceManager.getStringById(R.string.study_order_exp),
+            mDialog.addTextView(UResourceManager.getStringById(R.string.study_filter_exp),
                     UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
             mDialog.addButton(ButtonIdOption3_1, UResourceManager.getStringById(R.string
                     .study_filter_1), TEXT_COLOR, UColor.LightPink);

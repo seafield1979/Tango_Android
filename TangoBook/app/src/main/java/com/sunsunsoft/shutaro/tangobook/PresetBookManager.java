@@ -1,7 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
-import android.view.View;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,10 +17,10 @@ public class PresetBookManager {
      */
     public static final String TAG = "PresetBookManager";
 
-    private static int[] presetXmls = {
-            R.raw.book1,
-            R.raw.book2,
-            R.raw.book3
+    private static int[] presetCsvs = {
+            R.raw.cbook1,
+            R.raw.cbook2,
+            R.raw.cbook3
     };
 
     /**
@@ -36,6 +35,8 @@ public class PresetBookManager {
     public List<PresetBook> getBooks() {
         return mBooks;
     }
+
+    public Context getContext() { return mContext; }
 
     /**
      * Constructor
@@ -62,16 +63,9 @@ public class PresetBookManager {
      * 一覧に表示するためのプリセット単語帳リストを作成する
      */
     public void makeBookList() {
-        // xmlからプリセット単語帳とカード情報を読み込んで mBooksに追加する
-        for (int xmlId : presetXmls) {
-            XmlTangoBook xmlBook = UXmlParser.realTangoBook(mContext, xmlId);
-            if (xmlBook == null) continue;
-            PresetBook book = new PresetBook(xmlBook.getName(), xmlBook.getComment());
-            for (XmlTangoCard xmlCard : xmlBook.getCards()) {
-                PresetCard card = new PresetCard(xmlCard.getWordA(), xmlCard.getWordB(), xmlCard
-                        .getComment());
-                book.addCard(card);
-            }
+        // csvからプリセット単語帳とカード情報を読み込んで mBooksに追加する
+        for (int csvId : presetCsvs) {
+            PresetBook book = CsvParser.getPresetBook(mContext, csvId, true);
             mBooks.add(book);
         }
         for (PresetBook book : mBooks) {
@@ -91,8 +85,8 @@ public class PresetBookManager {
         RealmManager.getBookDao().addOne(book, true);
 
         // 中のカードを作成する
-        for (PresetCard presetCard : presetBook.mCards) {
-            TangoCard card = new TangoCard();
+        for (PresetCard presetCard : presetBook.getCards()) {
+            TangoCard card = TangoCard.createCard();
             card.setWordA(presetCard.mWordA);
             card.setWordB(presetCard.mWordB);
             card.setComment(presetCard.mComment);
@@ -118,13 +112,28 @@ public class PresetBookManager {
 class PresetBook {
     public String mName;
     public String mComment;
+    private Context mContext;
+    private int mCsvId;
 
-    public LinkedList<PresetCard> mCards = new LinkedList<>();
+    private LinkedList<PresetCard> mCards;
+
+    /**
+     * Get/Set
+     */
+    public List<PresetCard> getCards() {
+        if (mCards == null) {
+            mCards = CsvParser.getPresetCards(PresetBookManager.getInstance().getContext(),
+                    mCsvId);
+        }
+        return mCards;
+    }
 
     /**
      * Constructor
      */
-    public PresetBook(String name, String comment) {
+    public PresetBook(Context context, int csvId, String name, String comment) {
+        mContext = context;
+        mCsvId = csvId;
         mName = name;
         mComment = comment;
     }
@@ -135,9 +144,6 @@ class PresetBook {
 
     public void log() {
         ULog.print(PresetBookManager.TAG, "bookName:" + mName + " comment:" + mComment);
-        for (PresetCard card : mCards) {
-            card.log();
-        }
     }
 
 }

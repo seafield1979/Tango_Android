@@ -154,10 +154,11 @@ public class PageViewPresetBook extends UPageView
         mDialog.addDrawable(listView);
 
         // Add items to ListView
-        for (PresetCard presetCard : book.mCards) {
+        for (PresetCard presetCard : book.getCards()) {
             ListItemCard itemCard = new ListItemCard(null, presetCard, listView.clientSize.width);
             listView.add(itemCard);
         }
+        listView.updateWindow();
 
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
     }
