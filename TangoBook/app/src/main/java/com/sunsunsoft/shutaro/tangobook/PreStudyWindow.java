@@ -268,6 +268,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 0, studyMode.getString(),
                 buttonX, y, BUTTON_W, BUTTON_H,
                 40, TEXT_COLOR, UColor.LightBlue);
+        buttons[ButtonId.Option1.ordinal()].setPullDownIcon(true);
 
         y += BUTTON_H + MARGIN_V;
 
@@ -286,6 +287,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 0, studyOrder.getString(),
                 buttonX, y, BUTTON_W, BUTTON_H,
                 40, TEXT_COLOR, UColor.Gold);
+        buttons[ButtonId.Option2.ordinal()].setPullDownIcon(true);
 
         y += BUTTON_H + MARGIN_V;
 
@@ -305,7 +307,8 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 ButtonIdOption3,
                 0, studyFilter.getString(),
                 buttonX, y, BUTTON_W, BUTTON_H,
-                40, Color.WHITE, UColor.Violet);
+                40, Color.WHITE, UColor.LightPink);
+        buttons[ButtonId.Option3.ordinal()].setPullDownIcon(true);
 
         y += BUTTON_H + MARGIN_V;
 

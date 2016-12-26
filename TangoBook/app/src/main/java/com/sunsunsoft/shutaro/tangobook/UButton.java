@@ -55,6 +55,7 @@ abstract public class UButton extends UDrawable {
     protected int disabledColor;        // enabled == false のときの色
     protected int disabledColor2;       // eanbled == false のときの濃い色
     protected boolean pressedOn;        // Press2タイプの時のOn状態
+    protected boolean pullDownIcon;     // プルダウンのアイコン▼を表示
 
     /**
      * Get/Set
@@ -73,6 +74,10 @@ abstract public class UButton extends UDrawable {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public void setPullDownIcon(boolean pullDown) {
+        pullDownIcon = pullDown;
     }
 
     /**

@@ -22,6 +22,7 @@ public class UButtonText extends UButton {
     public static final String TAG = "UButtonText";
 
     protected static final int DEFAULT_TEXT_COLOR = Color.BLACK;
+    protected static final int PULL_DOWN_COLOR = UColor.DarkGray;
 
     /**
      * Member Variables
@@ -150,6 +151,12 @@ public class UButtonText extends UButton {
             UDraw.drawText(canvas, mText, UAlignment.Center, mTextSize,
                     _pos.x + mTextOffset.x + size.width / 2,
                     _pos.y + mTextOffset.y + size.height / 2, mTextColor);
+        }
+        // プルダウン
+        if (pullDownIcon) {
+            UDraw.drawTriangleFill(canvas, paint,
+                    new PointF(_pos.x + size.width - 50 , _pos.y + size.height / 2),
+                    30, 180, PULL_DOWN_COLOR);
         }
     }
 }

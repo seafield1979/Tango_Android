@@ -177,7 +177,7 @@ public class UDraw {
      * @param color
      */
     public static void drawTriangle(Canvas canvas, Paint paint, PointF center, float radius, int width, int color) {
-        Path path = trianglePath(center, radius);
+        Path path = trianglePath(center, radius, 0);
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(color);
@@ -193,18 +193,20 @@ public class UDraw {
      * @param radius
      * @param color
      */
-    public static void drawTriangleFill(Canvas canvas, Paint paint, PointF center, float radius, int color) {
-        Path path = trianglePath(center, radius);
+    public static void drawTriangleFill(Canvas canvas, Paint paint, PointF center,
+                                        float radius, float rotate, int color) {
+        Path path = trianglePath(center, radius, rotate);
 
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color);
         canvas.drawPath(path, paint);
     }
 
-    private static Path trianglePath(PointF center, float radius) {
-// 中心から半径の位置にある３点で三角形を描画する
+    private static Path trianglePath(PointF center, float radius, float rotate) {
+        // 中心から半径の位置にある３点で三角形を描画する
         Point p1, p2, p3;
-        float baseAngle = 180;
+
+        float baseAngle = 180 + rotate;
         float angle = baseAngle + 90;
         p1 = new Point((int)(Math.cos(angle * RAD) * radius),
                 (int)(Math.sin(angle * RAD) * radius));
