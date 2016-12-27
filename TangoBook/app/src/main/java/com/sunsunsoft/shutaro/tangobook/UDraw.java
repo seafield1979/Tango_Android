@@ -405,6 +405,8 @@ public class UDraw {
      * @return
      */
     public static Size getTextSize(int canvasW, String text, int textSize) {
+        if (text == null) return new Size();
+
         TextPaint textPaint = new TextPaint();
         textPaint.setTextSize(textSize);
         StaticLayout textLayout = new StaticLayout(text, textPaint,
@@ -459,5 +461,11 @@ public class UDraw {
         canvas.drawBitmap(image, new Rect( 0, 0, image.getWidth(), image.getHeight()),
                 new Rect((int)x, (int)y, (int)x + width,(int)y + height), paint);
     }
-
+    public static void drawBitmap(Canvas canvas, Paint paint, Bitmap image,
+                                  Rect rect)
+    {
+        paint.setColor(0xffffffff);
+        canvas.drawBitmap(image, new Rect( 0, 0, image.getWidth(), image.getHeight()),
+                rect, paint);
+    }
 }

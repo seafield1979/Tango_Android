@@ -74,8 +74,10 @@ public class UButtonImage extends UButton {
             this.images.add(UResourceManager.getInstance().getBitmapById(imageId));
         }
 
-        if ( pressedImageId == -1) {
+        if ( pressedImageId != -1) {
             this.pressedImage = UResourceManager.getInstance().getBitmapById(pressedImageId);
+        } else {
+            pressedColor = UColor.LightPink;
         }
         stateId = 0;
         stateMax = 1;
@@ -194,9 +196,7 @@ public class UButtonImage extends UButton {
         }
 
         // 領域の幅に合わせて伸縮
-        canvas.drawBitmap(_image, new Rect(0,0,_image.getWidth(), _image.getHeight()),
-                _rect,
-                paint);
+        UDraw.drawBitmap(canvas, paint, _image, _rect);
 
         if (UDebug.drawRectLine) {
             this.drawRectLine(canvas, paint, offset, Color.YELLOW);

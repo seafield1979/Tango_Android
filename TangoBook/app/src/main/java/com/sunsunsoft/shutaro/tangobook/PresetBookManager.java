@@ -20,7 +20,8 @@ public class PresetBookManager {
     private static int[] presetCsvs = {
             R.raw.cbook1,
             R.raw.cbook2,
-            R.raw.cbook3
+            R.raw.cbook3,
+            R.raw.toeic1
     };
 
     /**

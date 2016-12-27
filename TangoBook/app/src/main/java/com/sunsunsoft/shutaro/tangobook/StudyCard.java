@@ -154,17 +154,14 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
         size.height = height;
 
         if (arrowLImage == null) {
-            arrowLImage = UUtil.convBitmapColor(
-                    UResourceManager.getBitmapById(R.drawable.arrow_l), UColor.DarkRed);
+            arrowLImage = UResourceManager.getBitmapWithColor(R.drawable.arrow_l, UColor.DarkRed);
         }
         mArrowL = UButtonImage.createButton(this, ButtonIdArrowL, 0,
                 - (size.width / 2 + ARROW_MARGIN + ARROW_W), (size.height - ARROW_H) / 2,
                 ARROW_W, ARROW_H, arrowLImage, null);
 
         if (arrowRImage == null) {
-            arrowRImage = UUtil.convBitmapColor(
-                    UResourceManager.getBitmapById(R.drawable.arrow_r), UColor.DarkGreen);
-
+            arrowRImage = UResourceManager.getBitmapWithColor(R.drawable.arrow_r, UColor.DarkGreen);
         }
         mArrowR = UButtonImage.createButton(this, ButtonIdArrowR, 0,
                 size.width / 2 + ARROW_MARGIN, (size.height - ARROW_H) / 2,

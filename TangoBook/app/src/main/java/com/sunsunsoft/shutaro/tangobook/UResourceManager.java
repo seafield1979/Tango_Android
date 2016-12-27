@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by shutaro on 2016/12/09.
@@ -14,13 +16,22 @@ import java.util.HashMap;
  * Bitmap画像やstrings以下の文字列等のリソースを管理する
  */
 public class UResourceManager {
-    private HashMap<Integer,Bitmap> mBitmaps = new HashMap<>();
+    /**
+     * Constants
+     */
+    public static final String TAG = "UResourceManager";
 
     /**
      * Member variables
      */
     private Context mContext;
     private View mView;
+
+    // 通常画像のキャッシュ
+    private static HashMap<Integer, Bitmap> imageCache = new HashMap<>();
+
+    // 色を変えた画像のキャッシュ
+    private static HashMap<ArrayList, Bitmap> colorImageCache = new HashMap<>();
 
     /**
      * Constructor
@@ -50,7 +61,8 @@ public class UResourceManager {
      */
     public static void clear() {
         UResourceManager instance = getInstance();
-        instance.mBitmaps.clear();
+        imageCache.clear();
+        colorImageCache.clear();
     }
 
     /**
@@ -71,17 +83,43 @@ public class UResourceManager {
     public static Bitmap getBitmapById(int bmpId) {
         UResourceManager instance = getInstance();
 
-        if (instance.mBitmaps.containsKey(bmpId)) {
-            // すでにロード済みならオブジェクトを返す
-            return instance.mBitmaps.get(bmpId);
-        } else {
-            // 未ロードならロードしてからオブジェクトを返す
-            Bitmap bmp = BitmapFactory.decodeResource(instance.mView.getResources(), bmpId);
-            if (bmp != null) {
-                instance.mBitmaps.put(bmpId, bmp);
-                return bmp;
-            }
+        // キャッシュがあるならそちらを取得
+        Bitmap bmp = imageCache.get(bmpId);
+        if (bmp != null) {
+            ULog.print(TAG, "cache hit!! bmpId:" + bmpId);
+            return bmp;
+        }
+
+
+        // 未ロードならロードしてからオブジェクトを返す
+        bmp = BitmapFactory.decodeResource(instance.mView.getResources(), bmpId);
+        if (bmp != null) {
+            imageCache.put(bmpId, bmp);
+            return bmp;
         }
         return null;
+    }
+
+    public static Bitmap getBitmapWithColor(int bmpId, int color) {
+        // キャッシュがあるならそちらを取得
+        ArrayList<Integer> key = new ArrayList<>();
+        key.add(bmpId);
+        key.add(color);
+        Bitmap bmp = colorImageCache.get(key);
+        if (bmp != null) {
+            // キャッシュを返す
+            ULog.print(TAG, "cache hit!! bmpId:" + bmpId + " color:" + UColor.toString(color));
+            return bmp;
+        }
+
+        // キャッシュがなかったのでBitmapを生成
+        bmp = getBitmapById(bmpId);
+        if (color != 0) {
+            bmp = UUtil.convBitmapColor(bmp, color);
+        }
+        // キャッシュに追加
+        colorImageCache.put(key, bmp);
+
+        return bmp;
     }
 }

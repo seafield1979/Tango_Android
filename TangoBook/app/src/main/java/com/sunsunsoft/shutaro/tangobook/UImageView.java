@@ -51,10 +51,8 @@ public class UImageView extends UDrawable {
     {
         super(priority, x, y, width, height);
 
-        Bitmap image = UResourceManager.getInstance().getBitmapById(imageId);
-        if (color != 0) {
-            image = UUtil.convBitmapColor(image, color);
-        }
+
+        Bitmap image = UResourceManager.getInstance().getBitmapWithColor(imageId, color);
 
         this.images.add(image);
         mStateId = 0;

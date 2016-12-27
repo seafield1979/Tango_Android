@@ -135,7 +135,12 @@ public class UTextView extends UDrawable {
      * @return マージンを追加した Size
      */
     protected Size addBGPadding(Size size) {
-        return new Size(size.width + mMargin.width * 2, size.height + mMargin.height * 2);
+        if (size == null) {
+            return new Size(0, 0);
+        }
+        size.width += mMargin.width * 2;
+        size.height += mMargin.height * 2;
+        return size;
     }
 
 

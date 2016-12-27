@@ -187,4 +187,18 @@ public class UColor extends Color {
 
         return (a << 24) | (r << 16) | (g << 8) | b;
     }
+
+    /**
+     * colorを文字列(0xaarrggbb)に変換する
+     * @param color
+     * @return
+     */
+    public static String toString(int color) {
+        int a = (color >> 24) & 0xff;
+        int r = (color >> 16) & 0xff;
+        int g = (color >> 8) & 0xff;
+        int b = color & 0xff;
+
+        return String.format("0x%02x%02x%02x%02x", a,r,g,b);
+    }
 }

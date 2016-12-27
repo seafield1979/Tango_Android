@@ -93,8 +93,12 @@ public class CsvParser {
                 }
                 else {
                     words = line.split(",");
-                    if (words.length >= 3) {
-                        PresetCard card = new PresetCard(words[0], words[1], words[2]);
+                    if (words.length >= 2) {
+                        String wordA = (words.length >= 1) ? words[0] : "";
+                        String wordB = (words.length >= 2) ? words[1] : "";
+                        String comment = (words.length >= 3) ? words[2] : "";
+
+                        PresetCard card = new PresetCard(wordA, wordB, comment);
                         cards.add(card);
                     }
                 }
