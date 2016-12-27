@@ -113,9 +113,12 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     /**
      *
      * @param card
+     * @param isMultiCard 一度に複数のカードを表示するかどうか
      * @param isEnglish 出題タイプ false:英語 -> 日本語 / true:日本語 -> 英語
      */
-    public StudyCard(TangoCard card, boolean isEnglish, int canvasW) {
+    public StudyCard(TangoCard card, boolean isMultiCard, boolean isEnglish,
+                     int canvasW, int maxHeight)
+    {
         super(0, 0, 0, WIDTH, 0);
         if (isEnglish) {
             wordA = card.getWordA();
@@ -132,26 +135,34 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
         mCard = card;
 
         // カードのサイズを計算する
-        // WordA,WordBの大きい方の高さに合わせる
-        Size sizeA = UDraw.getTextSize(canvasW, wordA, TEXT_SIZE);
-        Size sizeB = UDraw.getTextSize(canvasW, wordB, TEXT_SIZE);
+        int maxWidth = canvasW - (ARROW_W * 2 + ARROW_MARGIN * 4);
+        if (isMultiCard) {
+            // WordA,WordBの大きい方の高さに合わせる
+            Size sizeA = UDraw.getTextSize(canvasW, wordA, TEXT_SIZE);
+            Size sizeB = UDraw.getTextSize(canvasW, wordB, TEXT_SIZE);
 
-        // width
-        int width =  (sizeA.width > sizeB.width) ? sizeA.width : sizeB.width;
-        width += MARGIN_TEXT_H * 2;
-        if (width > canvasW - 300) {
-            width = canvasW - 300;
-        } else if (width < size.width) {
-            // 元のサイズより小さい場合は元のサイズを採用
-            width = size.width;
+            // width
+            int width =  (sizeA.width > sizeB.width) ? sizeA.width : sizeB.width;
+            width += MARGIN_TEXT_H * 2;
+            if (width > maxWidth) {
+                width = maxWidth;
+            } else if (width < size.width) {
+                // 元のサイズより小さい場合は元のサイズを採用
+                width = size.width;
+            }
+            size.width = width;
+
+            // height
+            int height = (sizeA.height > sizeB.height) ? sizeA.height : sizeB.height;
+            height += MARGIN_TEXT_V * 2;
+            if (height < MIN_HEIGHT) height = MIN_HEIGHT;
+            else if (height > maxHeight) height = maxHeight;
+            size.height = height;
+        } else {
+            size.width = maxWidth;
+            size.height = maxHeight;
         }
-        size.width = width;
 
-        // height
-        int height = (sizeA.height > sizeB.height) ? sizeA.height : sizeB.height;
-        height += MARGIN_TEXT_V * 2;
-        if (height < MIN_HEIGHT) height = MIN_HEIGHT;
-        size.height = height;
 
         if (arrowLImage == null) {
             arrowLImage = UResourceManager.getBitmapWithColor(R.drawable.arrow_l, UColor.DarkRed);

@@ -51,6 +51,7 @@ public class StudyCardsStack extends UDrawable {
      */
     protected StudyCardsManager mCardManager;
     protected CardsStackCallbacks cardsStackCallbacks;
+    protected StudyMode mStudyMode;
 
     // 表示前のCard
     protected LinkedList<StudyCard> mCardsInBackYard = new LinkedList<>();
@@ -75,6 +76,10 @@ public class StudyCardsStack extends UDrawable {
         this.mNgBoxPos.y = y;
     }
 
+    public void setStudyMode(StudyMode studyMode) {
+        mStudyMode = studyMode;
+    }
+
     /**
      * 残りのカード枚数を取得する
      * @return
@@ -96,8 +101,14 @@ public class StudyCardsStack extends UDrawable {
         this.cardsStackCallbacks = cardsStackCallbacks;
         size.height = maxHeight;
         mCardManager = cardManager;
+        mStudyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
 
-        setInitialCards(canvasW);
+        boolean isMultiCard = false;
+        if (mStudyMode == StudyMode.SlideMultiE2J || mStudyMode == StudyMode.SlideMultiJ2E) {
+            isMultiCard = true;
+        }
+
+        setInitialCards(canvasW, isMultiCard, maxHeight);
     }
 
     /**
@@ -106,11 +117,13 @@ public class StudyCardsStack extends UDrawable {
     /**
      * 初期表示分のカードを取得
      */
-    protected void setInitialCards(int canvasW) {
+    protected void setInitialCards(int canvasW, boolean isMultiCard, int maxHeight) {
+        boolean isEnglish = MySharedPref.getStudyMode().isEnglish();
+        
         while(mCardManager.getCardCount() > 0) {
             TangoCard tangoCard = mCardManager.popCard();
-            StudyCard studyCard = new StudyCard(tangoCard, mCardManager.getStudyMode().isEnglish(),
-                    canvasW);
+            StudyCard studyCard = new StudyCard(tangoCard, isMultiCard, isEnglish,
+                    canvasW, maxHeight);
             mCardsInBackYard.add(studyCard);
         }
     }

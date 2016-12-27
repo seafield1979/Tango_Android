@@ -18,8 +18,8 @@ public class UTextView extends UDrawable {
      * Constracts
      */
     // BGを描画する際の上下左右のマージン
-    protected static final int MARGIN_H = 50;
-    protected static final int MARGIN_V = 20;
+    protected static final int MARGIN_H = 30;
+    protected static final int MARGIN_V = 15;
 
     protected static final int DEFAULT_TEXT_SIZE = 50;
     protected static final int DEFAULT_COLOR = Color.BLACK;

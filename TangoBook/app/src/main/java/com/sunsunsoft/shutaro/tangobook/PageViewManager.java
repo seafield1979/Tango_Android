@@ -13,8 +13,10 @@ import java.util.List;
 enum PageView {
     Title,              // タイトル画面
     Edit,               // 単語帳を編集
-    StudySelect,        // 学習する単語帳を選択する
-    Study,              // 単語帳学習
+    StudyBookSelect,    // 学習する単語帳を選択する
+    StudySlide,         // 単語帳学習(カードスライド式)
+    StudySelect4,       // 単語帳学習(４択)
+    StudyInput,         // 単語帳学習(正解文字入力)
     StudyResult,        // 単語帳結果
     History,            // 履歴
     Settings,           // 設定
@@ -65,13 +67,21 @@ public class PageViewManager extends UPageViewManager{
                 page = new PageViewTangoEdit(mContext, mParentView,
                         UResourceManager.getStringById(R.string.title_edit));
                 break;
-            case StudySelect:        // 学習する単語帳を選択する
+            case StudyBookSelect:     // 学習する単語帳を選択する
                 page = new PageViewStudySelect2(mContext, mParentView,
                         UResourceManager.getStringById(R.string.title_study_select));
                 break;
-            case Study:              // 単語帳学習
-                page = new PageViewStudy(mContext, mParentView,
+            case StudySlide:          // 単語帳学習
+                page = new PageViewStudySlide(mContext, mParentView,
                         UResourceManager.getStringById(R.string.title_studying));
+                break;
+            case StudySelect4:
+//                page = new PageViewStudySlide(mContext, mParentView,
+//                        UResourceManager.getStringById(R.string.title_studying));
+                break;
+            case StudyInput:
+//                page = new PageViewStudySlide(mContext, mParentView,
+//                        UResourceManager.getStringById(R.string.title_studying));
                 break;
             case StudyResult:        // 単語帳結果
                 page = new PageViewResult(mContext, mParentView,
@@ -125,10 +135,26 @@ public class PageViewManager extends UPageViewManager{
      * @param firstStudy trueならリトライでない学習
      */
     public void startStudyPage(TangoBook book, boolean firstStudy) {
-        PageViewStudy page = (PageViewStudy)getPageView(PageView.Study);
-        page.setBook(book);
-        page.setFirstStudy(firstStudy);
-        stackPage(PageView.Study);
+
+        switch( MySharedPref.getStudyMode()) {
+            case SlideOneE2J:
+            case SlideOneJ2E:
+            case SlideMultiE2J:
+            case SlideMultiJ2E:
+            {
+                PageViewStudySlide page = (PageViewStudySlide)getPageView(PageView.StudySlide);
+                page.setBook(book);
+                page.setFirstStudy(firstStudy);
+                stackPage(PageView.StudySlide);
+            }
+                break;
+            case SelectE2J:
+            case SelectJ2E:
+                break;
+            case InputE:
+                break;
+        }
+
     }
 
     /**
@@ -137,14 +163,33 @@ public class PageViewManager extends UPageViewManager{
      * @param cards  リトライで学習するカード
      */
     public void startStudyPage(TangoBook book, List<TangoCard> cards, boolean stack) {
-        PageViewStudy page = (PageViewStudy)getPageView(PageView.Study);
-        page.setBook(book);
-        page.setCards(cards);
 
-        if (stack) {
-            stackPage(PageView.Study);
-        } else {
-            changePage(PageView.Study);
+        PageView pageView = null;
+        switch( MySharedPref.getStudyMode()) {
+            case SlideOneE2J:
+            case SlideOneJ2E:
+            case SlideMultiE2J:
+            case SlideMultiJ2E:
+                pageView = PageView.StudySlide;
+                break;
+            case SelectE2J:
+            case SelectJ2E:
+                break;
+            case InputE:
+                break;
+        }
+
+        if (pageView != null) {
+            PageViewStudySlide page = (PageViewStudySlide) getPageView(pageView);
+            page.setBook(book);
+            stackPage(pageView);
+            page.setCards(cards);
+
+            if (stack) {
+                stackPage(pageView);
+            } else {
+                changePage(pageView);
+            }
         }
     }
 

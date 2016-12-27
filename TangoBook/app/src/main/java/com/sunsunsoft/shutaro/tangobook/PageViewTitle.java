@@ -173,7 +173,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
                 PageViewManager.getInstance().stackPage(PageView.Edit);
                 break;
             case Study:
-                PageViewManager.getInstance().stackPage(PageView.StudySelect);
+                PageViewManager.getInstance().stackPage(PageView.StudyBookSelect);
                 break;
             case History:
                 PageViewManager.getInstance().stackPage(PageView.History);

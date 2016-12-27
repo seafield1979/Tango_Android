@@ -39,7 +39,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
     private static final int TEXT_SIZE = 50;
     private static final int TEXT_SIZE_2 = 35;
     private static final int TEXT_SIZE_3 = 70;
-    private static final int TITLE_WIDTH = 150;
+    private static final int TITLE_WIDTH = 0;
 
     private static final int BUTTON_W = 600;
     private static final int BUTTON_H = 120;
@@ -262,7 +262,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 titleX, y + BUTTON_H / 2, TITLE_WIDTH, TEXT_COLOR, 0);
 
         // Button
-        StudyMode studyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
+        StudyMode studyMode = MySharedPref.getStudyMode();
         buttons[ButtonId.Option1.ordinal()] = new UButtonText(this, UButtonType.BGColor,
                 ButtonIdOption1,
                 0, studyMode.getString(),

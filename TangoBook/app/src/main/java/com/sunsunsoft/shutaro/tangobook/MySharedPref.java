@@ -196,6 +196,10 @@ public class MySharedPref {
     /**
      * Methods
      */
+    public static StudyMode getStudyMode() {
+        return StudyMode.toEnum(readInt(StudyModeKey));
+    }
+
     /**
      * Write系
      */

@@ -14,7 +14,7 @@ import java.util.List;
  * カードが全てOK/NG処理されるまで上から単語カードが降ってくる
  */
 
-public class PageViewStudy extends UPageView
+public class PageViewStudySlide extends UPageView
         implements UButtonCallbacks, UDialogCallbacks, CardsStackCallbacks
 {
     /**
@@ -29,7 +29,7 @@ public class PageViewStudy extends UPageView
     /**
      * Constants
      */
-    public static final String TAG = "PageViewStudy";
+    public static final String TAG = "PageViewStudySlide";
 
     private static final int TOP_AREA_H = 200;
     private static final int BOTTOM_AREA_H = 300;
@@ -90,7 +90,7 @@ public class PageViewStudy extends UPageView
     /**
      * Constructor
      */
-    public PageViewStudy(Context context, View parentView, String title) {
+    public PageViewStudySlide(Context context, View parentView, String title) {
         super(context, parentView, title);
 
     }

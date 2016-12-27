@@ -81,11 +81,12 @@
                 android:ems="10"
                 android:id="@+id/editComment"/>
 
+            <!-- Color -->
             <TextView
                 android:text="@string/card_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3"/>
+                />
 
             <com.sunsunsoft.shutaro.tangobook.ColorView
                 android:layout_width="match_parent"
@@ -96,21 +97,6 @@
                 bg_color="#ff0000"
                 />
 
-            <!-- Color -->
-            <TextView
-                android:text="@string/book_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView3"/>
-
-            <com.sunsunsoft.shutaro.tangobook.ColorView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/current_color"
-                bg_color="#ff0000"
-                />
 
             <ScrollView
                 android:layout_width="match_parent"

@@ -198,19 +198,20 @@ public class IconInfoDialogCard extends IconInfoDialog {
                     break;
             }
             mItems[item.ordinal()] = new IconInfoItem();
+
             // title
             mItems[item.ordinal()].title = UTextView.createInstance( titleStr ,
                     fontSize, 0,
-                    UAlignment.None, canvas.getWidth(), false, true,
-                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, bgColor);
+                    UAlignment.None, canvas.getWidth(), false, false,
+                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
 
             y += mItems[item.ordinal()].title.getHeight() + 10;
 
             // body
             mItems[item.ordinal()].body = UTextView.createInstance( bodyStr,
                     fontSize, 0,
-                    UAlignment.None, canvas.getWidth(), true, false,
-                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
+                    UAlignment.None, canvas.getWidth(), true, true,
+                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, bgColor);
             y += mItems[item.ordinal()].body.getHeight() + MARGIN_V_S;
 
             // 幅は最大サイズに合わせる
