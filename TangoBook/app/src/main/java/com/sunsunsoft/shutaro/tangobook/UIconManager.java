@@ -306,7 +306,7 @@ public class UIconManager implements UIconCallbacks{
     }
 
     /**
-     * アイテムを追加する
+     * UIconのリストからTangoItemのリストを作成する
      * @return
      */
     public List<TangoItem> getTangoItems() {
@@ -389,7 +389,9 @@ public class UIconManager implements UIconCallbacks{
             pos++;
         }
         // DBの位置情報を更新
-        RealmManager.getItemPosDao().updateAll(getTangoItems(), TangoParentType.Home, 0);
+        RealmManager.getItemPosDao().updateAll(getTangoItems(),
+                mParentWindow.getParentType(),
+                mParentWindow.getParentId());
     }
 
 
