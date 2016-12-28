@@ -99,10 +99,19 @@ abstract public class UPageViewManager {
     }
 
     /**
+     * ページ切り替え時に呼ばれる処理
+     */
+    public void pageChanged() {
+        UDrawManager.clearDebugPoint();
+    }
+
+    /**
      * 表示ページを切り替える
      * @param pageId
      */
     public void changePage(PageView pageId) {
+        pageChanged();
+
         // ページが未初期化なら初期化
         if (pages[pageId.ordinal()] == null) {
             initPage(pageId);
@@ -128,6 +137,8 @@ abstract public class UPageViewManager {
      * ページを取得する
      */
     public UPageView getPageView(PageView pageId) {
+        pageChanged();
+
         if (pages[pageId.ordinal()] == null) {
             initPage(pageId);
         }
@@ -140,6 +151,8 @@ abstract public class UPageViewManager {
      * @param pageId
      */
     public UPageView stackPage(PageView pageId) {
+        pageChanged();
+
         // ページが未初期化なら初期化
         if (pages[pageId.ordinal()] == null) {
             initPage(pageId);

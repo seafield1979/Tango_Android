@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.TreeMap;
@@ -32,6 +33,22 @@ enum DrawPriority {
 }
 
 /**
+ * デバッグ座標の１点の情報
+ */
+class DebugPoint {
+    public float x, y;
+    public int color;
+    public boolean drawText;
+
+    public DebugPoint(float x, float y, int color, boolean drawText) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.drawText = drawText;
+    }
+}
+
+/**
  * 描画オブジェクトを管理するクラス
  * 描画するオブジェクトを登録すると一括で描画を行ってくれる
  * ※シングルトンなので getInstance() でインスタンスを取得する
@@ -51,6 +68,9 @@ public class UDrawManager {
     private static UDrawManager singleton = new UDrawManager();
     public static UDrawManager getInstance() { return singleton; }
 
+    // デバッグ用のポイント描画
+    private static LinkedList<DebugPoint> debugPoints = new LinkedList<>();
+    private static HashMap<Integer, DebugPoint> debugPoints2 = new HashMap<>();
 
     /**
      * Member variable
@@ -258,6 +278,9 @@ public class UDrawManager {
         }
 
         ULog.showCount(TAG);
+
+        drawDebugPoint(canvas, paint);
+
         return redraw;
     }
 
@@ -300,11 +323,43 @@ public class UDrawManager {
             list.showAll(ascending, isShowOnly);
         }
     }
+
+    /**
+     * デバッグ用の点を描画する
+     */
+    /**
+     * 点の追加
+     */
+    // List
+    public static void addDebugPoint(float x, float y, int color, boolean drawText) {
+        debugPoints.add(new DebugPoint(x, y, color, drawText));
+    }
+
+    // Map
+    public static void setDebugPoint(int id, float x, float y, int color, boolean drawText) {
+        debugPoints2.put(id, new DebugPoint(x,y,color,drawText));
+    }
+
+    /**
+     * 全てクリア
+     */
+    public static void clearDebugPoint() {
+        debugPoints.clear();
+        debugPoints2.clear();
+    }
+
+    private void drawDebugPoint(Canvas canvas, Paint paint) {
+        for (DebugPoint dp : debugPoints) {
+            UDraw.drawLine(canvas, paint, dp.x - 50, dp.y, dp.x + 50, dp.y, 3, dp.color);
+            UDraw.drawLine(canvas, paint, dp.x, dp.y - 50, dp.x, dp.y + 50, 3, dp.color);
+        }
+
+        for (DebugPoint dp : debugPoints2.values()) {
+            UDraw.drawLine(canvas, paint, dp.x - 50, dp.y, dp.x + 50, dp.y, 3, dp.color);
+            UDraw.drawLine(canvas, paint, dp.x, dp.y - 50, dp.x, dp.y + 50, 3, dp.color);
+        }
+    }
 }
-
-
-
-
 
 
 

@@ -169,6 +169,28 @@ public class UDraw {
     }
 
     /**
+     * Cross(×)を描画
+     * @param canvas
+     * @param paint
+     * @param center
+     * @param radius
+     * @param width
+     * @param color
+     */
+    public static void drawCross(Canvas canvas, Paint paint, PointF center, float radius,
+                                 int width, int color)
+    {
+        paint.setColor(color);
+        paint.setStrokeWidth(width);
+        float x = (float)Math.cos(45 * RAD) * radius * 0.8f;
+        float y = (float)Math.sin(45 * RAD) * radius * 0.8f;
+        canvas.drawLine(center.x - x, center.y - y,
+                center.x + x, center.y + y, paint);
+        canvas.drawLine(center.x - x, center.y + y,
+                center.x + x, center.y - y, paint);
+    }
+
+    /**
      * 三角形描画(線)
      * @param canvas
      * @param paint

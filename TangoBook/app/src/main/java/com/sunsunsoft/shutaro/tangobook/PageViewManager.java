@@ -68,7 +68,7 @@ public class PageViewManager extends UPageViewManager{
                         UResourceManager.getStringById(R.string.title_edit));
                 break;
             case StudyBookSelect:     // 学習する単語帳を選択する
-                page = new PageViewStudySelect2(mContext, mParentView,
+                page = new PageViewStudyBookSelect(mContext, mParentView,
                         UResourceManager.getStringById(R.string.title_study_select));
                 break;
             case StudySlide:          // 単語帳学習
@@ -76,8 +76,8 @@ public class PageViewManager extends UPageViewManager{
                         UResourceManager.getStringById(R.string.title_studying));
                 break;
             case StudySelect4:
-//                page = new PageViewStudySlide(mContext, mParentView,
-//                        UResourceManager.getStringById(R.string.title_studying));
+                page = new PageViewStudySelect4(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_studying));
                 break;
             case StudyInput:
 //                page = new PageViewStudySlide(mContext, mParentView,
@@ -150,6 +150,13 @@ public class PageViewManager extends UPageViewManager{
                 break;
             case SelectE2J:
             case SelectJ2E:
+            {
+                PageViewStudySelect4 page = (PageViewStudySelect4)getPageView(PageView
+                        .StudySelect4);
+                page.setBook(book);
+                page.setFirstStudy(firstStudy);
+                stackPage(PageView.StudySelect4);
+            }
                 break;
             case InputE:
                 break;
@@ -169,27 +176,38 @@ public class PageViewManager extends UPageViewManager{
             case SlideOneE2J:
             case SlideOneJ2E:
             case SlideMultiE2J:
-            case SlideMultiJ2E:
+            case SlideMultiJ2E: {
                 pageView = PageView.StudySlide;
+                PageViewStudySlide page = (PageViewStudySlide) getPageView(pageView);
+                page.setBook(book);
+                page.setCards(cards);
+
+                if (stack) {
+                    stackPage(pageView);
+                } else {
+                    changePage(pageView);
+                }
+            }
                 break;
             case SelectE2J:
             case SelectJ2E:
+                pageView = PageView.StudySelect4;
+                PageViewStudySelect4 page = (PageViewStudySelect4) getPageView(pageView);
+                page.setBook(book);
+                page.setCards(cards);
+
+                if (stack) {
+                    stackPage(pageView);
+                } else {
+                    changePage(pageView);
+                }
                 break;
             case InputE:
                 break;
         }
 
         if (pageView != null) {
-            PageViewStudySlide page = (PageViewStudySlide) getPageView(pageView);
-            page.setBook(book);
-            stackPage(pageView);
-            page.setCards(cards);
 
-            if (stack) {
-                stackPage(pageView);
-            } else {
-                changePage(pageView);
-            }
         }
     }
 

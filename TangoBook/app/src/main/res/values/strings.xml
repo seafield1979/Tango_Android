@@ -40,8 +40,8 @@
     <string name="study_mode_2">１つづつ 英->日</string>
     <string name="study_mode_3">まとめて 日->英</string>
     <string name="study_mode_4">まとめて 英->日</string>
-    <string name="study_mode_5">４択 英->日</string>
-    <string name="study_mode_6">４択 日->英</string>
+    <string name="study_mode_5">４択 日->英</string>
+    <string name="study_mode_6">４択 英->日</string>
     <string name="study_mode_7">単語入力 英</string>
 
     <string name="study_order_1">単語帳の並び順</string>
@@ -54,7 +54,7 @@
     <string name="item_count">アイテム数</string>
     <string name="title_edit">単語帳を作る</string>
     <string name="title_study">学習する</string>
-    <string name="title_study2">学習する単語帳を選択</string>
+    <string name="title_study2">学習する単語帳を選択してください</string>
     <string name="title_studying">単語帳学習</string>
     <string name="title_study_select">学習する</string>
     <string name="title_preset_book">プリセット単語帳</string>

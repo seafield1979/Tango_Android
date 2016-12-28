@@ -41,33 +41,6 @@
                 android:ems="10"
                 android:id="@+id/editWordB"/>
 
-            <!--<TextView-->
-                <!--android:text="@string/hint_ab"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/textView3"/>-->
-
-            <!--<EditText-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="textMultiLine|textPersonName"-->
-                <!--android:text=""-->
-                <!--android:ems="10"-->
-                <!--android:id="@+id/editHintAB"/>-->
-
-            <!--<TextView-->
-                <!--android:text="@string/hint_ba"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/textView4"/>-->
-            <!--<EditText-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="textMultiLine|textPersonName"-->
-                <!--android:text=""-->
-                <!--android:ems="10"-->
-                <!--android:id="@+id/editHintBA"/>-->
-
             <TextView
                 android:text="@string/comment"
                 android:layout_width="match_parent"
@@ -98,9 +71,9 @@
                 />
 
 
-            <ScrollView
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -177,7 +150,7 @@
                         bg_color="#9400D3"
                         />
                 </LinearLayout>
-            </ScrollView>
+            </HorizontalScrollView>
         </LinearLayout>
     </ScrollView>
 

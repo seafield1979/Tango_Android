@@ -119,7 +119,7 @@ public class StudyCardsStack extends UDrawable {
      */
     protected void setInitialCards(int canvasW, boolean isMultiCard, int maxHeight) {
         boolean isEnglish = MySharedPref.getStudyMode().isEnglish();
-        
+
         while(mCardManager.getCardCount() > 0) {
             TangoCard tangoCard = mCardManager.popCard();
             StudyCard studyCard = new StudyCard(tangoCard, isMultiCard, isEnglish,

@@ -14,7 +14,7 @@ import java.util.List;
  * 学習する単語帳を選択するページ(リストビュー版)
  */
 
-public class PageViewStudySelect2 extends UPageView
+public class PageViewStudyBookSelect extends UPageView
         implements UButtonCallbacks, UListItemCallbacks, UWindowCallbacks{
     /**
      * Constants
@@ -49,7 +49,7 @@ public class PageViewStudySelect2 extends UPageView
     /**
      * Constructor
      */
-    public PageViewStudySelect2(Context context, View parentView, String title) {
+    public PageViewStudyBookSelect(Context context, View parentView, String title) {
         super(context, parentView, title);
     }
 

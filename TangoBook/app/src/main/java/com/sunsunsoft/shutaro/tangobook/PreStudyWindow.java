@@ -318,7 +318,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
 
         // 開始ボタン
         buttons[ButtonId.Start.ordinal()] = new UButtonText(this, UButtonType.Press,
-                PageViewStudySelect2.ButtonIdStartStudy,
+                PageViewStudyBookSelect.ButtonIdStartStudy,
                 0, UResourceManager.getStringById(R.string.start),
                 width / 2 - BUTTON2_W - MARGIN_H / 2, size.height - BUTTON2_H - MARGIN_V,
                 BUTTON2_W, BUTTON2_H,
@@ -329,7 +329,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
 
         // キャンセルボタン
         buttons[ButtonId.Cancel.ordinal()] = new UButtonText(this, UButtonType.Press,
-                PageViewStudySelect2.ButtonIdCancel,
+                PageViewStudyBookSelect.ButtonIdCancel,
                 0, UResourceManager.getStringById(R.string.cancel),
                 width / 2 + MARGIN_H / 2, size.height - BUTTON2_H - MARGIN_V,
                 BUTTON2_W, BUTTON2_H,
@@ -417,7 +417,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch (id) {
-            case PageViewStudySelect2.ButtonIdStartStudy:
+            case PageViewStudyBookSelect.ButtonIdStartStudy:
                 // オプションを保存
                 MySharedPref.writeInt(MySharedPref.StudyModeKey, mStudyMode.ordinal());
                 MySharedPref.writeInt(MySharedPref.StudyOrderKey, mStudyOrder.ordinal());
@@ -427,7 +427,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                     mButtonCallbacks.UButtonClicked(id, pressedOn);
                 }
                 break;
-            case PageViewStudySelect2.ButtonIdCancel:
+            case PageViewStudyBookSelect.ButtonIdCancel:
                 if (mButtonCallbacks != null) {
                     mButtonCallbacks.UButtonClicked(id, pressedOn);
                 }

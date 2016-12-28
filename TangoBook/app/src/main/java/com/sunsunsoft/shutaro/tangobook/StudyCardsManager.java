@@ -42,6 +42,7 @@ public class StudyCardsManager {
     /**
      * Get/Set
      */
+    public List<TangoCard> getCards() { return mCards; }
     public StudyMode getStudyMode() {
         return mStudyMode;
     }
@@ -58,6 +59,9 @@ public class StudyCardsManager {
     public LinkedList<TangoCard> getOkCards() {
         return mOkCards;
     }
+
+    public void addOkCard(TangoCard card) { mOkCards.add(card);}
+    public void addNgCard(TangoCard card) { mNgCards.add(card);}
 
     /**
      * Constructor

@@ -3,6 +3,7 @@ package com.sunsunsoft.shutaro.tangobook;
 import android.graphics.Color;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -84,6 +85,24 @@ public class TangoCardDao {
                         .contains("wordA", searchStr).
                         findAll();
         return results;
+    }
+
+    /**
+     * アイテムをランダムで取得する
+     * @param num 取得件数
+     * @return
+     */
+    public List<TangoCard> selectAtRandom(int num) {
+        RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
+
+        if (results == null || results.size() == 0) return null;
+
+        Random rand = new Random();
+        ArrayList<TangoCard> cards = new ArrayList<>();
+        for (int i=0; i<num; i++) {
+            cards.add(results.get(rand.nextInt(results.size())));
+        }
+        return cards;
     }
 
     /**
