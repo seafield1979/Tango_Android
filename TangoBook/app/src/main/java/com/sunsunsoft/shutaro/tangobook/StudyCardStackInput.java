@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.LinkedList;
  * 正解を１文字づつ選択するモード（正解は英語のみ対応）
  */
 
-public class StudyCardStack3 extends UDrawable {
+public class StudyCardStackInput extends UDrawable {
     /**
      * Enums
      */
@@ -26,7 +27,7 @@ public class StudyCardStack3 extends UDrawable {
     /**
      * Consts
      */
-    public static final String TAG = "StudyCardStack2";
+    public static final String TAG = "StudyCardStackSelect";
 
     // layout
     public static final int MARGIN_V = 30;
@@ -43,7 +44,7 @@ public class StudyCardStack3 extends UDrawable {
     protected CardsStackCallbacks cardsStackCallbacks;
     protected int mCanvasW;
     protected StudyMode mStudyMode;
-    protected StudyCard3 mStudyCard;
+    protected StudyCardInput mStudyCard;
     protected State mState = State.Main;
 
     // 学習中するカードリスト。出題ごとに１つづつ減っていく
@@ -64,10 +65,10 @@ public class StudyCardStack3 extends UDrawable {
     /**
      * Constructor
      */
-    public StudyCardStack3(StudyCardsManager cardManager,
-                           CardsStackCallbacks cardsStackCallbacks,
-                           float x, float y, int canvasW,
-                           int width, int height)
+    public StudyCardStackInput(StudyCardsManager cardManager,
+                               CardsStackCallbacks cardsStackCallbacks,
+                               float x, float y, int canvasW,
+                               int width, int height)
     {
         super(90, x, y, width, height );
 
@@ -79,6 +80,9 @@ public class StudyCardStack3 extends UDrawable {
         // カードマネージャーのカードリストをコピー
         for (TangoCard card : mCardManager.getCards()) {
             mCards.add(card);
+        }
+        if (MySharedPref.getStudyOrder() == StudyOrder.Random) {
+            Collections.shuffle(mCards);
         }
 
         setStudyCard();
@@ -93,8 +97,24 @@ public class StudyCardStack3 extends UDrawable {
      * 出題するカードを準備する
      */
     protected void setStudyCard() {
-        TangoCard card = mCards.pop();
-        mStudyCard = new StudyCard3(card, mCanvasW, size.height - MARGIN_V);
+        if (mCards.size() > 0) {
+            TangoCard card = mCards.pop();
+            mStudyCard = new StudyCardInput(card, mCanvasW, size.height - MARGIN_V);
+        } else {
+            // 終了
+            mState = State.End;
+            if (cardsStackCallbacks != null) {
+                cardsStackCallbacks.CardsStackFinished();
+            }
+        }
+    }
+
+    /**
+     * 出題中のカードをスキップする
+     */
+    protected void skipCard() {
+        mCardManager.addNgCard(mStudyCard.mCard);
+        setStudyCard();
     }
 
     /**
@@ -105,7 +125,7 @@ public class StudyCardStack3 extends UDrawable {
 
         switch(mState) {
             case Main:
-                if (mStudyCard.getRequest() == StudyCard3.RequestToParent.End) {
+                if (mStudyCard.getRequest() == StudyCardInput.RequestToParent.End) {
                     if (mStudyCard.isMistaken()) {
                         mCardManager.addNgCard(mStudyCard.mCard);
                     } else {

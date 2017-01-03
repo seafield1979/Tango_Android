@@ -86,8 +86,8 @@
     <string name="start">開始</string>
     <string name="cancel">キャンセル</string>
     <string name="history_book">学習記録</string>
-
     <string name="study_mode">出題方法</string>
+    <string name="skip">スキップ</string>
 
     <string name="study_order">出題順</string>
     <string name="study_order_exp">カードの出題順番を設定します</string>

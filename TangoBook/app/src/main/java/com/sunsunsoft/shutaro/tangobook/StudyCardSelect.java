@@ -14,7 +14,7 @@ import android.graphics.RectF;
  * 出題中の４枚のカードのうちの１つ
  */
 
-public class StudyCard2 extends UDrawable{
+public class StudyCardSelect extends UDrawable{
     /**
      * Enums
      */
@@ -100,7 +100,7 @@ public class StudyCard2 extends UDrawable{
      * @param isCorrect 正解のカードかどうか(true:正解のカード / false:不正解のカード)
      * @param isEnglish 出題タイプ false:英語 -> 日本語 / true:日本語 -> 英語
      */
-    public StudyCard2(TangoCard card, boolean isCorrect, boolean isEnglish, int canvasW, int height)
+    public StudyCardSelect(TangoCard card, boolean isCorrect, boolean isEnglish, int canvasW, int height)
     {
         super(0, 0, 0, canvasW - 200, height);
         this.isCorrect = isCorrect;

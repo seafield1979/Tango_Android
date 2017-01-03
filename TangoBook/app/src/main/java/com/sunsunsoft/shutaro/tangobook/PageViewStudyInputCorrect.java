@@ -37,8 +37,7 @@ public class PageViewStudyInputCorrect extends UPageView
 
     // button ids
     private static final int ButtonIdExit = 100;
-    private static final int ButtonIdOk = 101;
-    private static final int ButtonIdNg = 102;
+    private static final int ButtonIdSkip = 101;
 
     private static final int ButtonIdExitOk = 200;
 
@@ -49,10 +48,11 @@ public class PageViewStudyInputCorrect extends UPageView
     private boolean mFirstStudy;       // 単語帳を選択して最初の学習のみtrue。リトライ時はfalse
 
     private StudyCardsManager mCardsManager;
-    private StudyCardStack3 mCardsStack;
+    private StudyCardStackInput mCardsStack;
 
     private UTextView mTextCardCount;
     private UButtonText mExitButton;
+    private UButtonText mSkipButton;
 
     // 学習する単語帳 or カードリスト
     private TangoBook mBook;
@@ -134,9 +134,9 @@ public class PageViewStudyInputCorrect extends UPageView
         int screenH = mParentView.getHeight();
 
         // カードスタック
-        mCardsStack = new StudyCardStack3(mCardsManager, this,
-                100, TOP_AREA_H,
-                screenW, mParentView.getWidth() - 200,
+        mCardsStack = new StudyCardStackInput(mCardsManager, this,
+                MARGIN_H, TOP_AREA_H,
+                screenW, mParentView.getWidth() - MARGIN_H * 2,
                 mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
         );
         mCardsStack.addToDrawManager();
@@ -157,6 +157,15 @@ public class PageViewStudyInputCorrect extends UPageView
                 BUTTON_W, BUTTON_H,
                 TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
         mExitButton.addToDrawManager();
+
+        // 現在のカードをスキップボタン
+        mSkipButton = new UButtonText(this, UButtonType.Press,
+                ButtonIdSkip,
+                DRAW_PRIORITY, mContext.getString(R.string.skip),
+                screenW - BUTTON_W - MARGIN_H, screenH - 150,
+                BUTTON_W, BUTTON_H,
+                TEXT_SIZE, Color.BLACK, UColor.LightPink);
+        mSkipButton.addToDrawManager();
     }
 
     private String getCardsRemainText(int count) {
@@ -197,9 +206,9 @@ public class PageViewStudyInputCorrect extends UPageView
                     mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
                 }
                 break;
-            case ButtonIdOk:
-                break;
-            case ButtonIdNg:
+            case ButtonIdSkip:
+                // 次の問題へ
+                mCardsStack.skipCard();
                 break;
             case ButtonIdExitOk:
                 // 終了

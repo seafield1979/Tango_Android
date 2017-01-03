@@ -7,7 +7,9 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by shutaro on 2016/12/28.
@@ -19,17 +21,8 @@ import java.util.Collections;
 /**
  * ランダムで表示される文字列の１文字分の情報
  */
-class QuestionChar {
-    public PointF pos;
-    public String text;
 
-    public QuestionChar(PointF pos, String text) {
-        this.pos = pos;
-        this.text = text;
-    }
-}
-
-public class StudyCard3 extends UDrawable implements UButtonCallbacks{
+public class StudyCardInput extends UDrawable implements UButtonCallbacks{
     /**
      * Enums
      */
@@ -51,10 +44,10 @@ public class StudyCard3 extends UDrawable implements UButtonCallbacks{
      */
     protected static final int MARGIN_H = 50;
     protected static final int MARGIN_V = 50;
-    protected static final int QBUTTON_W = 140;
-    protected static final int QBUTTON_H = 140;
+    protected static final int QBUTTON_W = 120;
+    protected static final int QBUTTON_H = 120;
     protected static final int TEXT_SIZE = 50;
-    protected static final int TEXT_SIZE_L = 100;
+    protected static final int TEXT_SIZE_L = 70;
     protected static final int TEXT_COLOR = Color.BLACK;
     protected static final int FRAME_COLOR = Color.rgb(150,150,150);
 
@@ -128,9 +121,9 @@ public class StudyCard3 extends UDrawable implements UButtonCallbacks{
      *
      * @param card
      */
-    public StudyCard3(TangoCard card, int canvasW, int height)
+    public StudyCardInput(TangoCard card, int canvasW, int height)
     {
-        super(0, 0, 0, canvasW - 200, height);
+        super(0, 0, 0, canvasW - MARGIN_H * 2, height);
 
         mState = State.None;
         mCard = card;
@@ -138,23 +131,37 @@ public class StudyCard3 extends UDrawable implements UButtonCallbacks{
         String[] strArray = card.getWordA().split("");
 
         // strArrayの先頭に余分な空文字が入っているので除去
+        // 空白も除去
         for (int i=1; i<strArray.length; i++) {
             mCorrectWords.add(strArray[i]);
         }
-
 
         basePos = new PointF(size.width / 2, size.height / 2);
         inputPos = 0;
 
         // ランダムな正解入力用の文字列を作成する
         // 元の単語のアルファベットを１文字つづ分割してランダムに並べる
-        for (int i=1; i<strArray.length; i++) {
-            UButtonText button = new UButtonText(this, UButtonType.BGColor, i, 0, strArray[i],
-                    0, 0, QBUTTON_W, QBUTTON_H, TEXT_SIZE_L, TEXT_COLOR, BUTTON_COLOR);
+        ArrayList<String> questions = new ArrayList<>();
 
-            mQuestionButtons.add(button);
+        for (int i=1; i<strArray.length; i++) {
+            if (!strArray[i].equals(" ") && !strArray[i].equals("\n")) {
+                questions.add(strArray[i]);
+            }
         }
-        Collections.shuffle(mQuestionButtons);
+        String[] _questions = questions.toArray(new String[0]);
+        Arrays.sort(_questions, new Comparator<String>() {
+            public int compare(String str1, String str2) {
+                return str1.compareTo(str2);
+            }
+        });
+
+        int i=0;
+        for (String str : _questions) {
+            UButtonText button = new UButtonText(this, UButtonType.BGColor, i, 0, str,
+                    0, 0, QBUTTON_W, QBUTTON_H, TEXT_SIZE_L, TEXT_COLOR, BUTTON_COLOR);
+            mQuestionButtons.add(button);
+            i++;
+        }
 
         // 出現アニメーション
         startAppearance(ANIME_FRAME);
@@ -268,63 +275,71 @@ public class StudyCard3 extends UDrawable implements UButtonCallbacks{
         }
 
         // Text
-        // タッチ中は正解を表示
         if (mState == State.None || mState == State.ShowAnswer) {
             float x, y = _pos.y + MARGIN_V;
             // 出題単語(日本語)
-            UDraw.drawText(canvas, mCard.getWordB(), UAlignment.CenterX, TEXT_SIZE,
+            Size _size = UDraw.drawText(canvas, mCard.getWordB(), UAlignment.CenterX, TEXT_SIZE,
                     _pos2.x, y, TEXT_COLOR);
-            y += TEXT_SIZE + MARGIN_V * 2;
+            y += _size.height + MARGIN_V;
 
-            // 入力済みの正解
-            drawInputTexts(canvas, _pos.x, y);
-
-            x = 50;
-            y += ONE_TEXT_HEIGHT + TEXT_MARGIN_V;
+            // 正解文字列
+            y = drawInputTexts(canvas, paint, _pos.x, y);
 
             // 正解入力用のランダム文字列
-            drawQuestionTexts(canvas, paint, _pos, _pos.x, y);
+            drawQuestionTexts(canvas, paint, _pos, y);
         }
     }
 
     /**
-     * 入力済み、未入力の文字列を１文字づつ表示する
+     * 正解文字列を１文字づつ表示する
      *
      * @param x   描画先頭座標x
      * @param y   描画先頭座標y
      */
-    private float drawInputTexts(Canvas canvas, float x, float y) {
+    private float drawInputTexts(Canvas canvas, Paint paint, float x, float y) {
 
         float _x;
         int width;
         // 一行に表示できる文字数
-        int lineTexts = (size.width - MARGIN_H * 2) / (ONE_TEXT_WIDTH + TEXT_MARGIN_H);
+        int lineTexts = (size.width - MARGIN_H * 2) / ONE_TEXT_WIDTH;
         int lineTextCnt = 0;
 
         if (lineTexts < mCorrectWords.size()) {
             // １行に収まりきらない場合
             width = size.width - MARGIN_H * 2;
         } else {
-            width = mCorrectWords.size() * (ONE_TEXT_WIDTH + TEXT_MARGIN_H);
+            width = mCorrectWords.size() * ONE_TEXT_WIDTH;
         }
 
-        _x = (size.width - width) / 2 + x + TEXT_SIZE;
+        _x = (size.width - width) / 2 + x;
         float topX = _x;
+        String text;
+
         for (int i = 0; i < mCorrectWords.size(); i++) {
-            String text;
-            if (i < inputPos ) {
-                text = mCorrectWords.get(i);
-            } else {
+            text = mCorrectWords.get(i);
+            if (text.equals(" ")) {
+
+            } else if(text.equals("\n")) {
+                // 改行
+                _x = topX;
+                y += ONE_TEXT_HEIGHT;
+                lineTextCnt = 0;
+                continue;
+            } else if (i >= inputPos ) {
+                // 未入力文字
                 text = "_";
             }
-            UDraw.drawText(canvas, text, UAlignment.CenterX, TEXT_SIZE,
-                    _x, y, TEXT_COLOR);
 
-            _x += ONE_TEXT_WIDTH + TEXT_MARGIN_H;
+            int bgColor = (i == inputPos) ? UColor.LightGreen : 0;
+
+            UDraw.drawTextOneLine(canvas, paint, text, UAlignment.None, TEXT_SIZE,
+                    _x, y, TEXT_COLOR, bgColor, 20);
+
+            _x += ONE_TEXT_WIDTH;
             lineTextCnt++;
             if (lineTextCnt > lineTexts) {
                 _x = topX;
-                y += ONE_TEXT_HEIGHT + TEXT_MARGIN_V;
+                y += ONE_TEXT_HEIGHT;
                 lineTextCnt = 0;
             }
         }
@@ -336,25 +351,27 @@ public class StudyCard3 extends UDrawable implements UButtonCallbacks{
      * @param canvas
      * @param paint
      * @param offset
-     * @param x
      * @param y
      * @return
      */
-    private float drawQuestionTexts(Canvas canvas, Paint paint, PointF offset, float x, float y) {
-        int width;
-        // 一行に表示できる文字数
-        int lineTexts = (size.width - MARGIN_H * 2) / (ONE_TEXT_WIDTH + TEXT_MARGIN_H);
-        int lineTextCnt = 0;
+    private float drawQuestionTexts(Canvas canvas, Paint paint, PointF offset, float y) {
 
-        float topX = x;
+        int lineButtons = (size.width - TEXT_MARGIN_H2) / (QBUTTON_W + TEXT_MARGIN_H2);
+        int width;
+        if (lineButtons > mWord.length()) {
+            lineButtons = mWord.length();
+        }
+        width = lineButtons * (QBUTTON_W + TEXT_MARGIN_H2) - TEXT_MARGIN_H2;
+        float topX = (size.width - width) / 2;
+        float x = topX;
 
         for (UButtonText button : mQuestionButtons) {
             button.setPos(x, y);
             button.draw(canvas, paint, offset);
-            x += button.getWidth() + TEXT_MARGIN_H2;
+            x += QBUTTON_H + TEXT_MARGIN_H2;
 
             // 改行判定
-            if (x + button.getWidth() + TEXT_MARGIN_H2 > size.width - MARGIN_H) {
+            if (x + button.getWidth() + TEXT_MARGIN_H2 > size.width) {
                 x = topX;
                 y += button.getHeight() + TEXT_MARGIN_V;
             }
@@ -421,6 +438,17 @@ public class StudyCard3 extends UDrawable implements UButtonCallbacks{
             // すでに正解用として使用したので使えなくする
             button.setEnabled(false);
             inputPos++;
+            // スペースや改行をスキップする
+            for(int i = inputPos; i < mCorrectWords.size(); i++) {
+                if (mCorrectWords.get(i).equals(" ") ||
+                        mCorrectWords.get(i).equals("\n"))
+                {
+                    inputPos++;
+                } else {
+                    break;
+                }
+            }
+
             if (inputPos >= mWord.length()) {
                 // 終了
                 startDisappearange(ANIME_FRAME);

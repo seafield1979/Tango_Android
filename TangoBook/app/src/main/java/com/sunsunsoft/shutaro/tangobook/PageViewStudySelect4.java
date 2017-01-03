@@ -2,7 +2,6 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.view.View;
 
 import java.util.List;
@@ -53,7 +52,7 @@ public class PageViewStudySelect4 extends UPageView
     private boolean mFirstStudy;       // 単語帳を選択して最初の学習のみtrue。リトライ時はfalse
 
     private StudyCardsManager mCardsManager;
-    private StudyCardStack2 mCardsStack;
+    private StudyCardStackSelect mCardsStack;
 
     private UTextView mTextCardCount;
     private UButtonText mExitButton;
@@ -138,7 +137,7 @@ public class PageViewStudySelect4 extends UPageView
         int screenH = mParentView.getHeight();
 
         // カードスタック
-        mCardsStack = new StudyCardStack2(mCardsManager, this,
+        mCardsStack = new StudyCardStackSelect(mCardsManager, this,
                 100, TOP_AREA_H,
                 screenW, mParentView.getWidth() - 200,
                 mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)

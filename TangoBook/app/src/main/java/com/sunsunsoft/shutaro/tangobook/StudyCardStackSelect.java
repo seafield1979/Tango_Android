@@ -15,7 +15,7 @@ import java.util.Random;
  * 4択学習用のカードスタック
  */
 
-public class StudyCardStack2 extends UDrawable {
+public class StudyCardStackSelect extends UDrawable {
     /**
      * Enums
      */
@@ -30,7 +30,7 @@ public class StudyCardStack2 extends UDrawable {
     /**
      * Consts
      */
-    public static final String TAG = "StudyCardStack2";
+    public static final String TAG = "StudyCardStackSelect";
 
     // layout
     public static final int MARGIN_V = 30;
@@ -51,7 +51,7 @@ public class StudyCardStack2 extends UDrawable {
     protected int mCanvasW;
     protected StudyMode mStudyMode;
 
-    protected StudyCard2[] mStudyCards = new StudyCard2[STUDY_CARD_NUM];
+    protected StudyCardSelect[] mStudyCards = new StudyCardSelect[STUDY_CARD_NUM];
     protected State mState = State.Main;
 
     protected UTextView mQuestionView;
@@ -74,10 +74,10 @@ public class StudyCardStack2 extends UDrawable {
     /**
      * Constructor
      */
-    public StudyCardStack2(StudyCardsManager cardManager,
-                           CardsStackCallbacks cardsStackCallbacks,
-                           float x, float y, int canvasW,
-                           int width, int height)
+    public StudyCardStackSelect(StudyCardsManager cardManager,
+                                CardsStackCallbacks cardsStackCallbacks,
+                                float x, float y, int canvasW,
+                                int width, int height)
     {
         super(90, x, y, width, height );
 
@@ -123,7 +123,7 @@ public class StudyCardStack2 extends UDrawable {
         // 不正解用のカードを取得
         ngCards = RealmManager.getCardDao().selectAtRandom(STUDY_CARD_NUM - 1);
 
-        StudyCard2 card;
+        StudyCardSelect card;
         int height = (size.height - MARGIN_V - mQuestionView.getHeight()) / STUDY_CARD_NUM;
 
         // 出題カードの配置
@@ -133,9 +133,9 @@ public class StudyCardStack2 extends UDrawable {
         int ngIndex = 0;
         for (int i=0; i<STUDY_CARD_NUM; i++) {
             if (i == correctIndex) {
-                card = new StudyCard2(okCard, true, !isEnglish, mCanvasW, height - CARD_MARGIN_V);
+                card = new StudyCardSelect(okCard, true, !isEnglish, mCanvasW, height - CARD_MARGIN_V);
             } else {
-                card = new StudyCard2(ngCards.get(ngIndex), false, !isEnglish, mCanvasW,
+                card = new StudyCardSelect(ngCards.get(ngIndex), false, !isEnglish, mCanvasW,
                         height -
                         CARD_MARGIN_V);
                 ngIndex++;
@@ -158,13 +158,13 @@ public class StudyCardStack2 extends UDrawable {
         switch(mState) {
             case Main:
                 // カードがタッチされたら正解判定を行う
-                for (StudyCard2 card : mStudyCards) {
-                    if (card.getRequest() == StudyCard2.RequestToParent.Touch) {
+                for (StudyCardSelect card : mStudyCards) {
+                    if (card.getRequest() == StudyCardSelect.RequestToParent.Touch) {
                         mState = State.ShowCorrect;
 
                         // 全てのカードを正解表示状態にする
-                        for (StudyCard2 _card : mStudyCards) {
-                            card.setRequest(StudyCard2.RequestToParent.None);
+                        for (StudyCardSelect _card : mStudyCards) {
+                            card.setRequest(StudyCardSelect.RequestToParent.None);
                             _card.setShowCorrect(_card.isCorrect);
                         }
                         card.setShowCorrect(true);
@@ -181,14 +181,14 @@ public class StudyCardStack2 extends UDrawable {
             case ShowCorrect:
                 // タッチされたらカードが消えるアニメーション開始
                 boolean isTouched = false;
-                for (StudyCard2 card : mStudyCards) {
-                    if (card.getRequest() == StudyCard2.RequestToParent.Touch) {
+                for (StudyCardSelect card : mStudyCards) {
+                    if (card.getRequest() == StudyCardSelect.RequestToParent.Touch) {
                         isTouched = true;
                     }
                 }
                 if (isTouched) {
                     mState = State.ShowCorrectEnd;
-                    for (StudyCard2 card : mStudyCards) {
+                    for (StudyCardSelect card : mStudyCards) {
                         card.startDisappearange(MOVING_FRAME);
                     }
                 }
@@ -196,8 +196,8 @@ public class StudyCardStack2 extends UDrawable {
             case ShowCorrectEnd:
                 // 全てのカードが非表示になるまで待つ
                 boolean isAllFinished = true;
-                for (StudyCard2 card : mStudyCards) {
-                    if (card.getRequest() != StudyCard2.RequestToParent.End) {
+                for (StudyCardSelect card : mStudyCards) {
+                    if (card.getRequest() != StudyCardSelect.RequestToParent.End) {
                         isAllFinished = false;
                     }
                 }
@@ -221,7 +221,7 @@ public class StudyCardStack2 extends UDrawable {
 
         // カードの移動等の処理
         boolean isAllFinished = true;
-        for (StudyCard2 card : mStudyCards) {
+        for (StudyCardSelect card : mStudyCards) {
             if (card.doAction()) {
                 isAllFinished = false;
             }
@@ -241,7 +241,7 @@ public class StudyCardStack2 extends UDrawable {
         // 問題
         mQuestionView.draw(canvas, paint, pos);
         // 配下のカードを描画する
-        for (StudyCard2 card : mStudyCards) {
+        for (StudyCardSelect card : mStudyCards) {
             card.draw(canvas, paint, pos);
         }
     }
@@ -252,7 +252,7 @@ public class StudyCardStack2 extends UDrawable {
      * @return true:処理中
      */
     public boolean touchEvent(ViewTouch vt, PointF offset) {
-        for (StudyCard2 card : mStudyCards) {
+        for (StudyCardSelect card : mStudyCards) {
             if (card.touchEvent(vt, pos)) {
                 return true;
             }
