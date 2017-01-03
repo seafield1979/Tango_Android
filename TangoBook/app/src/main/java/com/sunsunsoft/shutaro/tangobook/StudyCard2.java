@@ -35,7 +35,6 @@ public class StudyCard2 extends UDrawable{
     /**
      * Consts
      */
-    public static final int WIDTH = 500;
     protected static final int TEXT_SIZE = 50;
     protected static final int TEXT_COLOR = Color.BLACK;
     protected static final int FRAME_COLOR = Color.rgb(150,150,150);
@@ -103,7 +102,7 @@ public class StudyCard2 extends UDrawable{
      */
     public StudyCard2(TangoCard card, boolean isCorrect, boolean isEnglish, int canvasW, int height)
     {
-        super(0, 0, 0, WIDTH, 0);
+        super(0, 0, 0, canvasW - 200, height);
         this.isCorrect = isCorrect;
 
         if (isEnglish) {
@@ -115,10 +114,6 @@ public class StudyCard2 extends UDrawable{
         }
         mState = State.None;
         mCard = card;
-
-        // カードのサイズを計算する
-        size.width = canvasW - 200;
-        size.height = height;
 
         basePos = new PointF(size.width / 2, size.height / 2);
     }

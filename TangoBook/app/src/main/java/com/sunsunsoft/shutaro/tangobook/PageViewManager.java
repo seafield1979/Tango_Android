@@ -16,7 +16,7 @@ enum PageView {
     StudyBookSelect,    // 学習する単語帳を選択する
     StudySlide,         // 単語帳学習(カードスライド式)
     StudySelect4,       // 単語帳学習(４択)
-    StudyInput,         // 単語帳学習(正解文字入力)
+    StudyInputCorrect,  // 単語帳学習(正解文字入力)
     StudyResult,        // 単語帳結果
     History,            // 履歴
     Settings,           // 設定
@@ -73,15 +73,15 @@ public class PageViewManager extends UPageViewManager{
                 break;
             case StudySlide:          // 単語帳学習
                 page = new PageViewStudySlide(mContext, mParentView,
-                        UResourceManager.getStringById(R.string.title_studying));
+                        UResourceManager.getStringById(R.string.title_studying_slide));
                 break;
             case StudySelect4:
                 page = new PageViewStudySelect4(mContext, mParentView,
-                        UResourceManager.getStringById(R.string.title_studying));
+                        UResourceManager.getStringById(R.string.title_studying_select));
                 break;
-            case StudyInput:
-//                page = new PageViewStudySlide(mContext, mParentView,
-//                        UResourceManager.getStringById(R.string.title_studying));
+            case StudyInputCorrect:
+                page = new PageViewStudyInputCorrect(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_studying_input_correct));
                 break;
             case StudyResult:        // 単語帳結果
                 page = new PageViewResult(mContext, mParentView,
@@ -159,6 +159,13 @@ public class PageViewManager extends UPageViewManager{
             }
                 break;
             case InputE:
+            {
+                PageViewStudyInputCorrect page = (PageViewStudyInputCorrect)getPageView(PageView
+                        .StudyInputCorrect);
+                page.setBook(book);
+                page.setFirstStudy(firstStudy);
+                stackPage(PageView.StudyInputCorrect);
+            }
                 break;
         }
 
@@ -190,7 +197,7 @@ public class PageViewManager extends UPageViewManager{
             }
                 break;
             case SelectE2J:
-            case SelectJ2E:
+            case SelectJ2E: {
                 pageView = PageView.StudySelect4;
                 PageViewStudySelect4 page = (PageViewStudySelect4) getPageView(pageView);
                 page.setBook(book);
@@ -201,8 +208,20 @@ public class PageViewManager extends UPageViewManager{
                 } else {
                     changePage(pageView);
                 }
+            }
                 break;
-            case InputE:
+            case InputE: {
+                pageView = PageView.StudyInputCorrect;
+                PageViewStudyInputCorrect page = (PageViewStudyInputCorrect) getPageView(pageView);
+                page.setBook(book);
+                page.setCards(cards);
+
+                if (stack) {
+                    stackPage(pageView);
+                } else {
+                    changePage(pageView);
+                }
+            }
                 break;
         }
 

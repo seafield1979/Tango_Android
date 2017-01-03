@@ -91,9 +91,6 @@ abstract public class UButton extends UDrawable {
         this.enabled = true;
         this.buttonCallback = callbacks;
         this.type = type;
-//        if (color == 0) {
-//            color = DEFAULT_BG_COLOR;
-//        }
         this.color = color;
         if (color != 0) {
             if (type == UButtonType.BGColor) {
@@ -104,6 +101,13 @@ abstract public class UButton extends UDrawable {
         }
         disabledColor = DISABLED_COLOR;
         disabledColor2 = UColor.addBrightness(disabledColor, -0.2f);
+    }
+
+    /**
+     * Get/Set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

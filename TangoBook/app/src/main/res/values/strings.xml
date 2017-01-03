@@ -56,6 +56,9 @@
     <string name="title_study">学習する</string>
     <string name="title_study2">学習する単語帳を選択してください</string>
     <string name="title_studying">単語帳学習</string>
+    <string name="title_studying_slide">単語帳学習 スライド</string>
+    <string name="title_studying_select">単語帳学習 ４択</string>
+    <string name="title_studying_input_correct">単語帳学習 正解入力</string>
     <string name="title_study_select">学習する</string>
     <string name="title_preset_book">プリセット単語帳</string>
     <string name="title_search_card">カードを探す</string>
