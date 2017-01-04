@@ -153,7 +153,7 @@ public class PageViewStudyInputCorrect extends UPageView
         mExitButton = new UButtonText(this, UButtonType.Press,
                 ButtonIdExit,
                 DRAW_PRIORITY, mContext.getString(R.string.finish),
-                (screenW - BUTTON_W) / 2, screenH - 150,
+                screenW / 2 - BUTTON_W - MARGIN_H / 2, screenH - 150,
                 BUTTON_W, BUTTON_H,
                 TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
         mExitButton.addToDrawManager();
@@ -162,7 +162,7 @@ public class PageViewStudyInputCorrect extends UPageView
         mSkipButton = new UButtonText(this, UButtonType.Press,
                 ButtonIdSkip,
                 DRAW_PRIORITY, mContext.getString(R.string.skip),
-                screenW - BUTTON_W - MARGIN_H, screenH - 150,
+                screenW / 2 + MARGIN_H / 2, screenH - 150,
                 BUTTON_W, BUTTON_H,
                 TEXT_SIZE, Color.BLACK, UColor.LightPink);
         mSkipButton.addToDrawManager();

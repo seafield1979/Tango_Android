@@ -27,19 +27,11 @@ public class ListItemStudiedBook extends UListItem{
      */
     public static final String TAG = "ListItemStudiedBook";
 
-    private static final int ButtonIdStar = 100100;
-    private static final int TITLE_H = 80;
     private static final int TEXT_SIZE = 50;
     private static final int TEXT_SIZE2 = 44;
-    private static final int TEXT_COLOR = Color.WHITE;
-
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 15;
     private static final int ITEM_HISTORY_H = TEXT_SIZE * 3 + MARGIN_V * 4;
-
-
-    private static final int STAR_ICON_W = 100;
-
     private static final int FRAME_WIDTH = 4;
     private static final int FRAME_COLOR = Color.BLACK;
 
@@ -125,7 +117,7 @@ public class ListItemStudiedBook extends UListItem{
             _textColor = UColor.BLACK;
 
         } else {
-            _color = UColor.Salmon;
+            _color = UColor.LightRed;
             _textColor = UColor.White;
         }
         if (isTouching) {

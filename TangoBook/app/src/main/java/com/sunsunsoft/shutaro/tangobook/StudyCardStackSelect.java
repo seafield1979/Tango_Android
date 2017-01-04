@@ -121,7 +121,7 @@ public class StudyCardStackSelect extends UDrawable {
         mQuestionView.setText(questionStr);
 
         // 不正解用のカードを取得
-        ngCards = RealmManager.getCardDao().selectAtRandom(STUDY_CARD_NUM - 1);
+        ngCards = RealmManager.getCardDao().selectAtRandom(STUDY_CARD_NUM - 1, okCard.getId());
 
         StudyCardSelect card;
         int height = (size.height - MARGIN_V - mQuestionView.getHeight()) / STUDY_CARD_NUM;

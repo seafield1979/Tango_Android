@@ -45,7 +45,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
      * Member variables
      */
     private ListItemResultType mType;
-    private String mText;
+    private String mText, mText2;
     private boolean isOK;
     private TangoCard mCard;
     private int mTextColor;
@@ -98,6 +98,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                 0, width, textColor, bgColor);
 
         instance.mText = convString(studyMode.isEnglish() ? card.getWordA() : card.getWordB());
+        instance.mText2 = convString(studyMode.isEnglish() ? card.getWordB() : card.getWordA());
         instance.size.height = CARD_H;
         instance.mStudyMode = studyMode;
         // Starボタンを追加(On/Offあり)
@@ -120,6 +121,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                 ListItemResultType.NG, true, card,
                 0, width, textColor, bgColor);
         instance.mText = convString(studyMode.isEnglish() ? card.getWordA() : card.getWordB());
+        instance.mText2 = convString(studyMode.isEnglish() ? card.getWordB() : card.getWordA());
         instance.mStudyMode = studyMode;
         instance.size.height = CARD_H;
         return instance;
@@ -168,13 +170,17 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                             mTextColor);
                 }
                 break;
-            case OK:
-                UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
+            case OK: {
+                String text = isTouching ? mText2 : mText;
+                UDraw.drawTextOneLine(canvas, paint, text, UAlignment.Center, TEXT_SIZE,
                         _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
+            }
                 break;
-            case NG:
-                UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
+            case NG: {
+                String text = isTouching ? mText2 : mText;
+                UDraw.drawTextOneLine(canvas, paint, text, UAlignment.Center, TEXT_SIZE,
                         _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
+            }
                 break;
         }
 
@@ -196,10 +202,21 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                 return true;
             }
         }
-        if (super.touchEvent(vt, offset)) {
-            return true;
+
+        boolean isDraw = false;
+        switch(vt.type) {
+            case Touch:
+                if (isTouchable) {
+                    if (rect.contains((int) (vt.touchX() - offset.x),
+                            (int) (vt.touchY() - offset.y))) {
+                        isTouching = true;
+                        isDraw = true;
+                    }
+                }
+                break;
         }
-        return false;
+
+        return isDraw;
     }
 
     /**

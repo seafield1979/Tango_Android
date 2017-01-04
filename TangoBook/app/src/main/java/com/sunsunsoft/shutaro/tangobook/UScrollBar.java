@@ -37,7 +37,7 @@ public class UScrollBar {
     public static final String TAG = "UScrollBar";
 
     // colors
-    private static final int SHOW2_BG_COLOR = Color.argb(160, 255,128,0);
+    private static final int BAR_COLOR = Color.argb(160, 128,128,128);
     private static final int SHOW_BAR_COLOR = Color.argb(255, 255,128,0);
     private static final int SHOW_BG_COLOR = Color.argb(128,255,255,255);
 
@@ -149,7 +149,7 @@ public class UScrollBar {
 
         if (showType == ScrollBarShowType.Show2) {
             bgColor = 0;
-            barColor = SHOW2_BG_COLOR;
+            barColor = BAR_COLOR;
         } else {
             bgColor = SHOW_BAR_COLOR;
             barColor = SHOW_BG_COLOR;

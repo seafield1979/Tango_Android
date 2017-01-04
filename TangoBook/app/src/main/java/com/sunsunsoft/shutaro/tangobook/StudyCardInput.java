@@ -42,6 +42,8 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
     /**
      * Consts
      */
+    public static final int ANIME_FRAME = 10;
+
     protected static final int MARGIN_H = 50;
     protected static final int MARGIN_V = 50;
     protected static final int QBUTTON_W = 120;
@@ -190,6 +192,19 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
     }
 
     /**
+     * 正解を表示する
+     * 強制的に表示したのでNG判定
+     */
+    public void showCorrect() {
+        mState = State.ShowAnswer;
+        isMistaken = true;
+        inputPos = mWord.length();
+        for (UButtonText button : mQuestionButtons) {
+            button.setEnabled(false);
+        }
+    }
+
+    /**
      * 自動で実行される何かしらの処理
      * @return
      */
@@ -264,15 +279,6 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
 
         // 正解中はマルバツを表示
         PointF _pos2 = new PointF(_pos.x + size.width / 2, _pos.y + size.height / 2);
-        if (mState == State.ShowAnswer) {
-            if (isMistaken) {
-                UDraw.drawCross(canvas, paint, new PointF(_pos2.x, _pos2.y),
-                        70, 20, UColor.Red);
-            } else {
-                UDraw.drawCircle(canvas, paint, new PointF(_pos2.x, _pos2.y),
-                        70, 20, UColor.Green);
-            }
-        }
 
         // Text
         if (mState == State.None || mState == State.ShowAnswer) {
@@ -287,6 +293,16 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
 
             // 正解入力用のランダム文字列
             drawQuestionTexts(canvas, paint, _pos, y);
+        }
+
+        if (mState == State.ShowAnswer) {
+            if (isMistaken) {
+                UDraw.drawCross(canvas, paint, new PointF(_pos2.x, _pos2.y),
+                        70, 20, UColor.Red);
+            } else {
+                UDraw.drawCircle(canvas, paint, new PointF(_pos2.x, _pos2.y),
+                        70, 20, UColor.Green);
+            }
         }
     }
 
@@ -412,6 +428,10 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
             case Touch:        // タッチ開始
                 break;
             case Click: {
+                if (mState == State.ShowAnswer) {
+                    startDisappearange(ANIME_FRAME);
+                    done = true;
+                }
             }
             break;
         }
@@ -451,7 +471,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
 
             if (inputPos >= mWord.length()) {
                 // 終了
-                startDisappearange(ANIME_FRAME);
+                mState = State.ShowAnswer;
             }
             // 色を元に戻す
             for (UButtonText _button : mQuestionButtons) {

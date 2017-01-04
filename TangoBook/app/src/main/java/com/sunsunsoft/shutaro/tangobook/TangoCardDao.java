@@ -90,9 +90,10 @@ public class TangoCardDao {
     /**
      * アイテムをランダムで取得する
      * @param num 取得件数
+     * @param exceptId 除外するID
      * @return
      */
-    public List<TangoCard> selectAtRandom(int num) {
+    public List<TangoCard> selectAtRandom(int num, int exceptId) {
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
 
         if (results == null || results.size() == 0) return null;
@@ -100,7 +101,16 @@ public class TangoCardDao {
         Random rand = new Random();
         ArrayList<TangoCard> cards = new ArrayList<>();
         for (int i=0; i<num; i++) {
-            cards.add(results.get(rand.nextInt(results.size())));
+            TangoCard card;
+            while (true) {
+                // ランダムのIDが除外IDとおなじならサイドランダム値を取得する
+                int randIndex = rand.nextInt(results.size());
+                card = results.get(randIndex);
+                if (card.getId() != exceptId) {
+                    break;
+                }
+            }
+            cards.add(card);
         }
         return cards;
     }

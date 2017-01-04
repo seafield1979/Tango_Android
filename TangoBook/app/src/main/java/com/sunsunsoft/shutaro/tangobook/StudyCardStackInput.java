@@ -113,8 +113,11 @@ public class StudyCardStackInput extends UDrawable {
      * 出題中のカードをスキップする
      */
     protected void skipCard() {
-        mCardManager.addNgCard(mStudyCard.mCard);
-        setStudyCard();
+        if (mStudyCard.mState == StudyCardInput.State.None) {
+            mStudyCard.showCorrect();
+        } else {
+            setStudyCard();
+        }
     }
 
     /**
