@@ -91,6 +91,7 @@ public class PresetBookManager {
             card.setWordA(presetCard.mWordA);
             card.setWordB(presetCard.mWordB);
             card.setComment(presetCard.mComment);
+            card.setNewFlag(false);
             RealmManager.getCardDao().addOne(card, TangoParentType.Book, book.getId(), true);
         }
 
