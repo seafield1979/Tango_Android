@@ -126,7 +126,7 @@
 
     <string name="license">ライセンス</string>
     <string name="contact_us">お問い合わせ</string>
-    <string name="contact_message">ご要望、不具合の報告等は\nこちらからお願いします</string>
+    <string name="contact_message">ご要望、不具合の報告等は\nこちらからお願いします\n</string>
     <string name="send_mail">メールを送る</string>
 
     <string name="preset_title2">Addボタンをタップしてプリセットを追加します</string>

@@ -167,7 +167,10 @@ public class PageViewSettingsTop extends UPageView
             case ButtonIdLicense:
             {
                 // ライセンスページに遷移
-                PageViewManager.getInstance().stackPage(PageView.License);
+                // Main2Activity アクティビティを呼び出す
+                Intent intent = new Intent(mContext, LicensePageActivity.class);
+
+                mContext.startActivity(intent);
             }
                 break;
             case ButtonIdContact:
