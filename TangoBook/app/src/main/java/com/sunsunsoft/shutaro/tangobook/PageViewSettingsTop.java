@@ -1,10 +1,12 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.net.Uri;
 import android.view.View;
 
 import java.util.Date;
@@ -15,7 +17,8 @@ import java.util.Date;
  * 設定ページ
  */
 
-public class PageViewSettingsTop extends UPageView implements UButtonCallbacks{
+public class PageViewSettingsTop extends UPageView
+        implements UButtonCallbacks, UDialogCallbacks {
 
     /**
      * Constants
@@ -118,15 +121,24 @@ public class PageViewSettingsTop extends UPageView implements UButtonCallbacks{
                 0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkBlue, UColor
                 .LightSkyBlue);
         mWindow.addDrawable(button1, true);
+    }
 
+    /**
+     * Call mailer
+     * メーラーを立ち上げる
+     */
+    private void callMailer(){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SENDTO);
 
-//        for (int i=0; i<10; i++) {
-//            mWindow.addButton(this, 0, 300, 150, false, "hoge", Color.BLACK, Color.LTGRAY);
-//        }
-//        for (int i=0; i<10; i++) {
-//            mWindow.addTextView("hoge", UAlignment.None, false, true, false, 300, 150, 50,
-//                    Color.BLACK, Color.LTGRAY);
-//        }
+        intent.setType("text/plain");
+        intent.setData(Uri.parse("mailto:" + AppInfo.contactMailTo));
+        intent.putExtra(Intent.EXTRA_SUBJECT, UResourceManager.getStringById(R.string.contact_mail_title));
+        intent.putExtra(Intent.EXTRA_TEXT, UResourceManager.getStringById(R.string
+                .contact_mail_body));
+
+        mContext.startActivity(Intent.createChooser(intent, null));
+
     }
 
     /**
@@ -162,7 +174,7 @@ public class PageViewSettingsTop extends UPageView implements UButtonCallbacks{
             {
                 // お問い合わせメールダイアログを表示
                 if (mDialog == null) {
-                    mDialog = UDialogWindow.createInstance(this, null,
+                    mDialog = UDialogWindow.createInstance(this, this,
                             UDialogWindow.ButtonDir.Horizontal,
                             mParentView.getWidth(),
                             mParentView.getHeight());
@@ -170,15 +182,26 @@ public class PageViewSettingsTop extends UPageView implements UButtonCallbacks{
                     mDialog.addTextView(UResourceManager.getStringById(R.string.contact_message),
                             UAlignment.CenterX, true, false, TEXT_SIZE, TEXT_COLOR, 0);
                     mDialog.addButton(ButtonIdContactOK,
-                            UResourceManager.getStringById(R.string.send_mail), 0, 0);
+                            UResourceManager.getStringById(R.string.send_mail), 0, Color.WHITE);
                     mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
                     mDialog.addToDrawManager();
                 }
             }
                 break;
             case ButtonIdContactOK:
+                mDialog.closeDialog();
+                callMailer();
                 break;
         }
         return false;
+    }
+
+    /**
+     * UDialogCallbacks
+     */
+    public void dialogClosed(UDialogWindow dialog) {
+        if (mDialog == dialog) {
+            mDialog = null;
+        }
     }
 }

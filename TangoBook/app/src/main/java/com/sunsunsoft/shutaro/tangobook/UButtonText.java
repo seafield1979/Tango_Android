@@ -150,7 +150,7 @@ public class UButtonText extends UButton {
         if (mText != null) {
             UDraw.drawText(canvas, mText, UAlignment.Center, mTextSize,
                     _pos.x + mTextOffset.x + size.width / 2,
-                    _pos.y + mTextOffset.y + size.height / 2, mTextColor);
+                    _pos.y + mTextOffset.y + size.height / 2 - PRESS_Y / 2, mTextColor);
         }
         // プルダウン
         if (pullDownIcon) {
