@@ -80,6 +80,10 @@ abstract public class UButton extends UDrawable {
         pullDownIcon = pullDown;
     }
 
+    public boolean isPressButton() {
+        return (type != UButtonType.BGColor);
+    }
+
     /**
      * Constructor
      */

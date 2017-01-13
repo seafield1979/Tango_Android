@@ -49,7 +49,8 @@ public class IconInfoDialogTrash extends IconInfoDialog {
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
     private UTextView textTitle;
-    private UTextView titleNumber, textNumber;
+    private UTextView titleBoxNum, textBoxNum;
+    private UTextView titleCardNum, textCardNum;
 
     /**
      * Get/Set
@@ -113,8 +114,11 @@ public class IconInfoDialogTrash extends IconInfoDialog {
                 bgColor, FRAME_WIDTH, FRAME_COLOR);
 
         textTitle.draw(canvas, paint, pos);
-        titleNumber.draw(canvas, paint, pos);
-        textNumber.draw(canvas, paint, pos);
+        titleBoxNum.draw(canvas, paint, pos);
+        textBoxNum.draw(canvas, paint, pos);
+
+        titleCardNum.draw(canvas, paint, pos);
+        textCardNum.draw(canvas, paint, pos);
 
         // Buttons
         for (UButtonImage button : imageButtons) {
@@ -132,8 +136,11 @@ public class IconInfoDialogTrash extends IconInfoDialog {
 
         List<ActionIcons> icons = ActionIcons.getTrashIcons();
 
-        int count = RealmManager.getItemPosDao().countInParentType(
-                TangoParentType.Trash, 0
+        int boxCount = RealmManager.getItemPosDao().countInParentType(
+                TangoParentType.Trash, 0, TangoItemType.Book
+        );
+        int cardCount = RealmManager.getItemPosDao().countInParentType(
+                TangoParentType.Trash, 0, TangoItemType.Card
         );
 
         int width = ICON_W * icons.size() +
@@ -147,20 +154,39 @@ public class IconInfoDialogTrash extends IconInfoDialog {
                 x, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + MARGIN_V;
 
-        // Number of items in trash
-        titleNumber = UTextView.createInstance( UResourceManager
-                .getStringById(R.string.item_count), TEXT_SIZE, 0,
+        // Box count
+        titleBoxNum = UTextView.createInstance( UResourceManager
+                .getStringById(R.string.box_count), TEXT_SIZE, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
                 x, y, width - MARGIN_H * 2,
-                TEXT_COLOR, UColor.LightGreen);
-        y += titleNumber.getHeight() + MARGIN_V_S;
-
-        textNumber = UTextView.createInstance( "" + count, TEXT_SIZE, 0,
-                UAlignment.None, canvas.getWidth(), false, false,
-                MARGIN_H, y, width - MARGIN_H * 2,
                 TEXT_COLOR, 0);
+        x += titleBoxNum.getWidth() + MARGIN_H;
+
+        textBoxNum = UTextView.createInstance( "" + boxCount,
+                TEXT_SIZE, 0,
+                UAlignment.None, canvas.getWidth(), false, true,
+                x, y, 300,
+                TEXT_COLOR, Color.WHITE);
+
+        y += TEXT_VIEW_H + MARGIN_V_S;
+
+        // Card count
+        x = MARGIN_H;
+        titleCardNum = UTextView.createInstance( UResourceManager
+                        .getStringById(R.string.card_count), TEXT_SIZE, 0,
+                UAlignment.None, canvas.getWidth(), false, true,
+                x, y, width - MARGIN_H * 2,
+                TEXT_COLOR, 0);
+        x += titleCardNum.getWidth() + MARGIN_H;
+
+        textCardNum = UTextView.createInstance( "" + cardCount,
+                TEXT_SIZE, 0,
+                UAlignment.None, canvas.getWidth(), false, true,
+                x, y, 300,
+                TEXT_COLOR, Color.WHITE);
 
         y += TEXT_VIEW_H + MARGIN_V;
+
 
         // Action buttons
         x = (width - ICON_W * 2 - MARGIN_H) / 2;
@@ -179,7 +205,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
             x += ICON_W + ICON_MARGIN_H;
         }
         // ゴミ箱を空にするアイコンはアイテム数が０ならDisable
-        if (count == 0) {
+        if (cardCount + boxCount == 0) {
             imageButtons.get(ButtonIndex.EmptyTrash.ordinal()).setEnabled(false);
         }
 

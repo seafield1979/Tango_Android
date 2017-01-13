@@ -156,18 +156,16 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
         String titleStr = null;
         String bodyStr = null;
-        int bgColor = 0;
+        int bgColor = Color.WHITE;
         for (Items item : Items.values()) {
             switch(item) {
                 case Name:  // Book名
                     titleStr = mContext.getString(R.string.name);
                     bodyStr = mBook.getName();
-                    bgColor = UColor.LightGreen;
                     break;
                 case Comment:
                     titleStr = mContext.getString(R.string.comment);
                     bodyStr = mBook.getComment();
-                    bgColor = UColor.LightRed;
                     break;
                 case Count:  // カード枚数
                     int bookId = mIcon.getTangoItem().getId();
@@ -184,7 +182,6 @@ public class IconInfoDialogBook extends IconInfoDialog {
                             count + countUnit + "   " +
                             UResourceManager.getStringById(R.string.count_not_learned) +
                             " : " + ngCount + countUnit;
-                    bgColor = UColor.LightBlue;
                     break;
                 case Date:   // 最終学習日時
                     Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(mBook.getId());
@@ -193,8 +190,6 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
                     titleStr = mContext.getString(R.string.studied_date);
                     bodyStr = dateStr;
-
-                    bgColor = UColor.LightCyan;
                     break;
             }
             mItems[item.ordinal()] = new IconInfoItem();
@@ -219,6 +214,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
                 width = _width;
             }
         }
+        y += MARGIN_V;
 
         // タイトルのwidthを揃える
         for (IconInfoItem item : mItems) {

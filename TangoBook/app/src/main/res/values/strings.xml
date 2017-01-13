@@ -31,8 +31,10 @@
     <string name="card">カード</string>
     <string name="book">単語帳</string>
     <string name="card_count">カード数</string>
+    <string name="box_count">単語帳数</string>
     <string name="study_history">学習履歴</string>
     <string name="all_count">ぜんぶ</string>
+    <string name="box_count_unit">冊</string>
     <string name="card_count_unit">枚</string>
 
     <!--options-->
@@ -50,7 +52,7 @@
     <string name="study_filter_1">すべて</string>
     <string name="study_filter_2">覚えていないカード</string>
 
-    <string name="count_not_learned">未収得数</string>
+    <string name="count_not_learned">未収得</string>
     <string name="item_count">アイテム数</string>
     <string name="title_edit">単語帳を作る</string>
     <string name="title_study">学習する</string>
@@ -155,6 +157,9 @@
     <string name="help">ヘルプ</string>
     <string name="disp_menu_name">メニュー名を表示</string>
     <string name="disp_menu_help">メニューの説明を表示</string>
+
+    <!-- menu item help -->
+    <string name="help_add_item">カードや</string>
 
     <!-- mail to -->
     <string name="contact_mail_title">アプリに関するお問い合わせ【シンプル単語帳】</string>

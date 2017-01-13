@@ -1145,9 +1145,24 @@ public class TangoItemPosDao {
         if (parentId > 0) {
              query = query.equalTo("parentId", parentId);
         }
-        int count = (int)query.count();
+        return (int)query.count();
+    }
 
-        return count;
+    /**
+     * 指定のParentType, ParentId, ItemType の要素数を取得
+     * @param parentType
+     * @param parentId
+     * @param itemType
+     * @return
+     */
+    public int countInParentType(TangoParentType parentType, int parentId, TangoItemType itemType) {
+        RealmQuery query = mRealm.where(TangoItemPos.class)
+                .equalTo("itemType", itemType.ordinal())
+                .equalTo("parentType", parentType.ordinal());
+        if (parentId > 0) {
+            query = query.equalTo("parentId", parentId);
+        }
+        return (int)query.count();
     }
 
     /**

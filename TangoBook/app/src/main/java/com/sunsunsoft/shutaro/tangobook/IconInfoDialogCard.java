@@ -158,26 +158,23 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         String titleStr = null;
         String bodyStr = null;
-        int bgColor = 0;
+        int bgColor = UColor.WHITE;
 
         for (Items item : Items.values()) {
             switch(item) {
                 case WordA:
                     titleStr = mContext.getString(R.string.word_a);
                     bodyStr = UUtil.convString(mCard.getWordA(), false, 2, 0);
-                    bgColor = UColor.LightGreen;
                     break;
 
                 case WordB:
                     titleStr = mContext.getString(R.string.word_b);
                     bodyStr = UUtil.convString(mCard.getWordB(), false, 2, 0);
-                    bgColor = UColor.LightRed;
                     break;
 
                 case Comment:
                     titleStr = mContext.getString(R.string.comment);
                     bodyStr = UUtil.convString(mCard.getComment(), false, 2, 0);
-                    bgColor = UColor.LightBlue;
                     break;
 
                 case History:   // 学習履歴
@@ -192,8 +189,6 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
                     titleStr = mContext.getString(R.string.studied_date);
                     bodyStr = historyStr;
-
-                    bgColor = UColor.LightCyan;
                 }
                     break;
             }
