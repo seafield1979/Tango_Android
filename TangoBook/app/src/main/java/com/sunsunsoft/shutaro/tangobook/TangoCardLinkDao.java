@@ -33,7 +33,7 @@ public class TangoCardLinkDao {
 
 
     /**
-     * Select
+     * Choice4
      */
     public List<TangoCardLink> selectAll() {
         RealmResults<TangoCardLink> results = mRealm.where(TangoCardLink.class).findAll();

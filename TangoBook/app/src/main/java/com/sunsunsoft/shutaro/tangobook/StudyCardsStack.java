@@ -104,7 +104,7 @@ public class StudyCardsStack extends UDrawable {
         mStudyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
 
         boolean isMultiCard = false;
-        if (mStudyMode == StudyMode.SlideMultiE2J || mStudyMode == StudyMode.SlideMultiJ2E) {
+        if (mStudyMode == StudyMode.SlideMulti) {
             isMultiCard = true;
         }
 
@@ -118,7 +118,7 @@ public class StudyCardsStack extends UDrawable {
      * 初期表示分のカードを取得
      */
     protected void setInitialCards(int canvasW, boolean isMultiCard, int maxHeight) {
-        boolean isEnglish = MySharedPref.getStudyMode().isEnglish();
+        boolean isEnglish = (MySharedPref.getStudyType() == StudyType.EtoJ);
 
         while(mCardManager.getCardCount() > 0) {
             TangoCard tangoCard = mCardManager.popCard();

@@ -39,13 +39,13 @@
     <string name="card_count_unit">枚</string>
 
     <!--options-->
-    <string name="study_mode_1">１つづつ 日->英</string>
-    <string name="study_mode_2">１つづつ 英->日</string>
-    <string name="study_mode_3">まとめて 日->英</string>
-    <string name="study_mode_4">まとめて 英->日</string>
-    <string name="study_mode_5">４択 日->英</string>
-    <string name="study_mode_6">４択 英->日</string>
-    <string name="study_mode_7">単語入力 英</string>
+    <string name="study_mode_1">１つづつ</string>
+    <string name="study_mode_2">まとめて</string>
+    <string name="study_mode_3">４択</string>
+    <string name="study_mode_4">単語入力</string>
+
+    <string name="study_type_1">英語 -> 日本語</string>
+    <string name="study_type_2">日本語 -> 英語</string>
 
     <string name="study_order_1">単語帳の並び順</string>
     <string name="study_order_2">ランダム</string>
@@ -91,7 +91,8 @@
     <string name="ok">OK</string>
     <string name="cancel">キャンセル</string>
     <string name="history_book">学習記録</string>
-    <string name="study_mode">出題方法</string>
+    <string name="study_mode">出題モード</string>
+    <string name="study_type">出題方法</string>
     <string name="skip">スキップ</string>
 
     <string name="study_order">出題順</string>

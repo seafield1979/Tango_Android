@@ -207,7 +207,8 @@ public class PageViewHistory extends UPageView
         mDialog = UDialogWindow.createInstance(this, this,
                 UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
         mDialog.addToDrawManager();
-        ListViewResult listView = new ListViewResult(null, cards, StudyMode.SlideOneJ2E,
+        ListViewResult listView = new ListViewResult(null, cards, StudyMode.SlideOne,
+                StudyType.EtoJ,
                 DRAW_PRIORYTY_DIALOG, 0, 0,
                 mDialog.size.width - MARGIN_H * 2, 700, Color.WHITE
                 );

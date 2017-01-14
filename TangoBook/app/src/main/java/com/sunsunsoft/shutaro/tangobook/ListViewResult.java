@@ -42,20 +42,22 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
     // OKカードとNGカードが別で渡ってくるパターン(リザルトページ)
     // @param studyMode  学習モード false:英->日  true:日->英
     public ListViewResult( UListItemCallbacks listItemCallbacks,
-                          List<TangoCard> okCards, List<TangoCard> ngCards, StudyMode studyMode,
+                          List<TangoCard> okCards, List<TangoCard> ngCards,
+                           StudyMode studyMode, StudyType studyType,
                      int priority, float x, float y, int width, int
                              height, int color)
     {
         super(null, listItemCallbacks, priority, x, y, width, height, color);
 
-        initItems(okCards, ngCards, studyMode, true);
+        initItems(okCards, ngCards, studyMode, studyType, true);
 
     }
 
     // OKカードとNGカードが同じリストに入って渡ってくる
     // 履歴ページで表示する用途
     public ListViewResult( UListItemCallbacks listItemCallbacks,
-                           List<TangoStudiedCard> studiedCards, StudyMode studyMode,
+                           List<TangoStudiedCard> studiedCards,
+                           StudyMode studyMode, StudyType studyType,
                            int priority, float x, float y, int width, int
                                    height, int color)
     {
@@ -65,7 +67,7 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
                 false, false);
         List<TangoCard> okCards = RealmManager.getCardDao().selectByStudiedCards(studiedCards,
                 true, false);
-        initItems(okCards, ngCards, studyMode, true);
+        initItems(okCards, ngCards, studyMode, studyType, true);
     }
 
     /**
@@ -82,7 +84,8 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
      * @param ngCards
      * @param studyMode 学習モード
      */
-    private void initItems(List<TangoCard> okCards, List<TangoCard> ngCards, StudyMode studyMode,
+    private void initItems(List<TangoCard> okCards, List<TangoCard> ngCards,
+                           StudyMode studyMode, StudyType studyType,
                            boolean star) {
         ListItemResult item = null;
         // OK
@@ -92,7 +95,9 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
             add(item);
             // Items
             for (TangoCard card : okCards) {
-                item = ListItemResult.createOK(card, studyMode, star, size.width, ITEM_TEXT_COLOR,
+                item = ListItemResult.createOK(card, studyMode, (studyType == StudyType.EtoJ),
+                        star, size.width,
+                        ITEM_TEXT_COLOR,
                         ITEM_BG_COLOR);
                 add(item);
             }
@@ -105,7 +110,8 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
             add(item);
             // Items
             for (TangoCard card : ngCards) {
-                item = ListItemResult.createNG(card, studyMode, size.width, ITEM_TEXT_COLOR, ITEM_BG_COLOR);
+                item = ListItemResult.createNG(card, studyMode, (studyType == StudyType.EtoJ),
+                        size.width, ITEM_TEXT_COLOR, ITEM_BG_COLOR);
                 add(item);
             }
         }

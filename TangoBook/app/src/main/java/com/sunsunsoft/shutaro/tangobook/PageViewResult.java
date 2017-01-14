@@ -47,7 +47,8 @@ public class PageViewResult extends UPageView
     private ListViewResult mListView;
     private List<TangoCard> mOkCards;
     private List<TangoCard> mNgCards;
-    private StudyMode mStudyMode;             // 出題モード(false:英->日 / true:日->英)
+    private StudyMode mStudyMode;             // 出題モード
+    private StudyType mStudyType;           // 出題タイプ(英->日, 日->英)
 
     private UTextView mTitleText;           // タイトル
     private UTextView mResultText;          // 結果
@@ -81,6 +82,7 @@ public class PageViewResult extends UPageView
 
     public void onShow() {
         mStudyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
+        mStudyType = StudyType.toEnum(MySharedPref.readInt(MySharedPref.StudyTypeKey));
     }
 
     public void onHide() {
@@ -148,7 +150,7 @@ public class PageViewResult extends UPageView
         y += BUTTON_H + MARGIN_V;
 
         // ListView
-        mListView = new ListViewResult(this, mOkCards, mNgCards, mStudyMode,
+        mListView = new ListViewResult(this, mOkCards, mNgCards, mStudyMode, mStudyType,
                 PRIORITY_LV, MARGIN_H, y,
                 width - MARGIN_H * 2, height - (int)y - MARGIN_V, Color.WHITE);
         mListView.addToDrawManager();

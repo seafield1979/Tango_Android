@@ -33,7 +33,7 @@ public class TangoBookHistoryDao {
     }
 
     /**
-     * Select
+     * Choice4
      */
     /**
      * 全て選択

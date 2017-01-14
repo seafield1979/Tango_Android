@@ -300,6 +300,18 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         isUpdate = true;
         return button;
     }
+//
+//    public UButton addImageButton(int id, String text, int imageId, int textColor, int color) {
+//        UButtonText button = new UButtonText(buttonCallbacks, UButtonType.Press,
+//                id, 0, text, 0, 0,
+//                0, 200,
+//                50, textColor, color);
+//        mButtons.add(button);
+//        isUpdate = true;
+//
+//        return button;
+//    }
+
 
     /**
      * ダイアログを閉じるボタンを追加する

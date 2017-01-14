@@ -55,7 +55,7 @@ public class IconTrash extends IconContainer {
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        image = UResourceManager.getBitmapById(R.drawable.trash);
+        image = UResourceManager.getBitmapWithColor(R.drawable.trash, UColor.DarkBlue);
     }
 
     /**

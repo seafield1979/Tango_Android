@@ -28,27 +28,18 @@ enum MenuHelpMode {
 
 // 学習モード
 enum StudyMode {
-    SlideOneJ2E(false, R.string.study_mode_1),
-    SlideOneE2J(true, R.string.study_mode_2),
-    SlideMultiJ2E(false, R.string.study_mode_3),
-    SlideMultiE2J(true, R.string.study_mode_4),
-    SelectJ2E(false, R.string.study_mode_5),
-    SelectE2J(true, R.string.study_mode_6),
-    InputE(true, R.string.study_mode_7)
+    SlideOne(R.string.study_mode_1),
+    SlideMulti(R.string.study_mode_2),
+    Choice4(R.string.study_mode_3),
+    Input(R.string.study_mode_4),
     ;
 
-    // 英語の出題か？
-    private final boolean english;
     private final int strId;
 
-    StudyMode(boolean isEnglish, int strId) {
-        english = isEnglish;
+    StudyMode(int strId) {
         this.strId = strId;
     }
 
-    public boolean isEnglish() {
-        return english;
-    }
     public String getString() {
         return UResourceManager.getStringById(strId);
     }
@@ -57,7 +48,29 @@ enum StudyMode {
         if (value < StudyMode.values().length) {
             return StudyMode.values()[value];
         }
-        return StudyMode.SlideOneJ2E;
+        return StudyMode.SlideOne;
+    }
+}
+
+enum StudyType {
+    EtoJ(R.string.study_type_1),
+    JtoE(R.string.study_type_2)
+    ;
+    private final int strId;
+
+    StudyType(int strId) {
+        this.strId = strId;
+    }
+
+    public String getString() {
+        return UResourceManager.getStringById(strId);
+    }
+
+    public static StudyType toEnum(int value) {
+        if (value < StudyType.values().length) {
+            return StudyType.values()[value];
+        }
+        return StudyType.EtoJ;
     }
 }
 
@@ -115,6 +128,9 @@ public class MySharedPref {
 
     // 出題方法
     public static final String StudyModeKey = "StudyMode";
+
+    // 出題方法(英:日)
+    public static final String StudyTypeKey = "StudyType";
 
     // 出題順
     public static final String StudyOrderKey = "StudyOrder";
@@ -199,8 +215,14 @@ public class MySharedPref {
     public static StudyMode getStudyMode() {
         return StudyMode.toEnum(readInt(StudyModeKey));
     }
+    public static StudyType getStudyType() {
+        return StudyType.toEnum(readInt(StudyTypeKey));
+    }
     public static StudyOrder getStudyOrder() {
         return StudyOrder.toEnum(readInt(StudyOrderKey));
+    }
+    public static StudyFilter getStudyFilter() {
+        return StudyFilter.toEnum(readInt(StudyFilterKey));
     }
 
     /**

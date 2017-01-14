@@ -137,10 +137,8 @@ public class PageViewManager extends UPageViewManager{
     public void startStudyPage(TangoBook book, boolean firstStudy) {
 
         switch( MySharedPref.getStudyMode()) {
-            case SlideOneE2J:
-            case SlideOneJ2E:
-            case SlideMultiE2J:
-            case SlideMultiJ2E:
+            case SlideOne:
+            case SlideMulti:
             {
                 PageViewStudySlide page = (PageViewStudySlide)getPageView(PageView.StudySlide);
                 page.setBook(book);
@@ -148,8 +146,7 @@ public class PageViewManager extends UPageViewManager{
                 stackPage(PageView.StudySlide);
             }
                 break;
-            case SelectE2J:
-            case SelectJ2E:
+            case Choice4:
             {
                 PageViewStudySelect4 page = (PageViewStudySelect4)getPageView(PageView
                         .StudySelect4);
@@ -158,7 +155,7 @@ public class PageViewManager extends UPageViewManager{
                 stackPage(PageView.StudySelect4);
             }
                 break;
-            case InputE:
+            case Input:
             {
                 PageViewStudyInputCorrect page = (PageViewStudyInputCorrect)getPageView(PageView
                         .StudyInputCorrect);
@@ -180,10 +177,8 @@ public class PageViewManager extends UPageViewManager{
 
         PageView pageView = null;
         switch( MySharedPref.getStudyMode()) {
-            case SlideOneE2J:
-            case SlideOneJ2E:
-            case SlideMultiE2J:
-            case SlideMultiJ2E: {
+            case SlideOne:
+            case SlideMulti: {
                 pageView = PageView.StudySlide;
                 PageViewStudySlide page = (PageViewStudySlide) getPageView(pageView);
                 page.setBook(book);
@@ -196,8 +191,7 @@ public class PageViewManager extends UPageViewManager{
                 }
             }
                 break;
-            case SelectE2J:
-            case SelectJ2E: {
+            case Choice4: {
                 pageView = PageView.StudySelect4;
                 PageViewStudySelect4 page = (PageViewStudySelect4) getPageView(pageView);
                 page.setBook(book);
@@ -210,7 +204,7 @@ public class PageViewManager extends UPageViewManager{
                 }
             }
                 break;
-            case InputE: {
+            case Input: {
                 pageView = PageView.StudyInputCorrect;
                 PageViewStudyInputCorrect page = (PageViewStudyInputCorrect) getPageView(pageView);
                 page.setBook(book);

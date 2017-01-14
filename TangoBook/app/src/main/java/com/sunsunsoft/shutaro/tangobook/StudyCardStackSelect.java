@@ -50,6 +50,7 @@ public class StudyCardStackSelect extends UDrawable {
     protected CardsStackCallbacks cardsStackCallbacks;
     protected int mCanvasW;
     protected StudyMode mStudyMode;
+    protected StudyType mStudyType;
 
     protected StudyCardSelect[] mStudyCards = new StudyCardSelect[STUDY_CARD_NUM];
     protected State mState = State.Main;
@@ -85,6 +86,7 @@ public class StudyCardStackSelect extends UDrawable {
         mCardManager = cardManager;
         mCanvasW = canvasW;
         mStudyMode = MySharedPref.getStudyMode();
+        mStudyType = MySharedPref.getStudyType();
 
         // カードマネージャーのカードリストをコピー
         for (TangoCard card : mCardManager.getCards()) {
@@ -114,7 +116,7 @@ public class StudyCardStackSelect extends UDrawable {
         TangoCard okCard = mCards.pop();
         List<TangoCard> ngCards;
 
-        boolean isEnglish = MySharedPref.getStudyMode().isEnglish();
+        boolean isEnglish = (mStudyType == StudyType.EtoJ);
 
         // 問題
         String questionStr = isEnglish ? okCard.getWordA() : okCard.getWordB();

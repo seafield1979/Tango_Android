@@ -55,7 +55,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
         }
 
         // リストを返す
-        // Select
+        // Choice4
         static List<DialogButtons> selectValues() {
             LinkedList<DialogButtons> ids = new LinkedList<>();
             ids.add(SelectCard);
@@ -152,7 +152,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
             case SelectDao:
             {
                 // タイトル
-                mDialog.setTitle("Select Dao");
+                mDialog.setTitle("Choice4 Dao");
                 // ボタンを追加
                 for (DialogButtons id : DialogButtons.selectValues()) {
                     mDialog.addButton(id.getInt(), id.toString(), Color.WHITE, Color.rgb(150, 80,

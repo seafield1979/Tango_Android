@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
 
@@ -75,6 +76,7 @@ public class MenuBarTangoEdit extends UMenuBar {
      */
     private static final int TEXT_COLOR = Color.WHITE;
     private static final int TEXT_BG_COLOR = Color.argb(128,0,0,0);
+    private static final int ICON_COLOR = UColor.DarkBlue;
 
     /**
      * Constructor
@@ -108,22 +110,24 @@ public class MenuBarTangoEdit extends UMenuBar {
         // add menu items
         for (MenuItemId itemId : MenuItemId.values()) {
             if (itemId.forDebug) continue;
+
+            Bitmap image = UResourceManager.getBitmapWithColor(itemId.getImageId(), ICON_COLOR);
             switch(itemId.getType()) {
                 case Top:
-                    item = itemTop = addTopMenuItem(itemId.ordinal(), itemId.getImageId());
+                    item = itemTop = addTopMenuItem(itemId.ordinal(), image);
                     item.addTitle(UResourceManager.getStringById(itemId.getStringId()),
                             UAlignment.CenterX,
                             item.getWidth() / 2, item.getHeight() - 40, TEXT_COLOR, TEXT_BG_COLOR);
                     break;
                 case Child:
-                    item = addMenuItem(itemTop, itemId.ordinal(), itemId.getImageId());
+                    item = addMenuItem(itemTop, itemId.ordinal(), image);
                     // テキストは右側に表示する
                     item.addTitle(UResourceManager.getStringById(itemId.getStringId()),
                             UAlignment.CenterY,
                             item.getWidth() + 10, item.getHeight() / 2, TEXT_COLOR, TEXT_BG_COLOR);
                     break;
                 case State:
-                    item.addState(UResourceManager.getBitmapById(itemId.getImageId()));
+                    item.addState(image);
                     break;
             }
         }

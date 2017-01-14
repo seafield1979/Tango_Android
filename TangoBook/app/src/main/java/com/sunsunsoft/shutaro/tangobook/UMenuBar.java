@@ -62,11 +62,10 @@ abstract public class UMenuBar extends UWindow {
     /**
      * メニューのトップ項目を追加する
      * @param menuId
-     * @param bmpId
+     * @param image
      */
-    protected UMenuItem addTopMenuItem(int menuId, int bmpId) {
-        Bitmap bmp = UResourceManager.getInstance().getBitmapById(bmpId);
-        UMenuItem item = new UMenuItem(this, menuId, bmp);
+    protected UMenuItem addTopMenuItem(int menuId, Bitmap image) {
+        UMenuItem item = new UMenuItem(this, menuId, image);
         item.setCallbacks(mMenuItemCallbacks);
         item.setShow(true);
 
@@ -82,12 +81,11 @@ abstract public class UMenuBar extends UWindow {
      * 子メニューを追加する
      * @param parent
      * @param menuId
-     * @param bmpId
+     * @param image
      * @return
      */
-    protected UMenuItem addMenuItem(UMenuItem parent, int menuId, int bmpId) {
-        Bitmap bmp = UResourceManager.getInstance().getBitmapById(bmpId);
-        UMenuItem item = new UMenuItem(this, menuId, bmp);
+    protected UMenuItem addMenuItem(UMenuItem parent, int menuId, Bitmap image) {
+        UMenuItem item = new UMenuItem(this, menuId, image);
         item.setCallbacks(mMenuItemCallbacks);
         item.setmParentItem(parent);
         // 子要素は初期状態では非表示。オープン時に表示される

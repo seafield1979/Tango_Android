@@ -35,7 +35,7 @@ public class TangoCardHistoryDao {
 
 
     /**
-     * Select
+     * Choice4
      */
     public List<TangoCardHistory> selectAll() {
         RealmResults<TangoCardHistory> results = mRealm.where(TangoCardHistory.class).findAll();

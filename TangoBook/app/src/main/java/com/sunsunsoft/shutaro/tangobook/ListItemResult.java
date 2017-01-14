@@ -91,14 +91,15 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
 
     // ListItemResultType.OKのインスタンスを生成する
     // @param star 覚えたアイコン(Star)を表示するかどうか
-    public static ListItemResult createOK(TangoCard card, StudyMode studyMode, boolean star,
+    public static ListItemResult createOK(TangoCard card, StudyMode studyMode,
+                                          boolean isEnglish, boolean  star,
                                           int width, int textColor,int bgColor) {
         ListItemResult instance = new ListItemResult(null,
                 ListItemResultType.OK, true, card,
                 0, width, textColor, bgColor);
 
-        instance.mText = convString(studyMode.isEnglish() ? card.getWordA() : card.getWordB());
-        instance.mText2 = convString(studyMode.isEnglish() ? card.getWordB() : card.getWordA());
+        instance.mText = convString(isEnglish ? card.getWordA() : card.getWordB());
+        instance.mText2 = convString(isEnglish ? card.getWordB() : card.getWordA());
         instance.size.height = CARD_H;
         instance.mStudyMode = studyMode;
         // Starボタンを追加(On/Offあり)
@@ -114,14 +115,14 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     }
 
     // ListItemResultType.NGのインスタンスを生成する
-    public static ListItemResult createNG(TangoCard card, StudyMode studyMode,
+    public static ListItemResult createNG(TangoCard card, StudyMode studyMode, boolean isEnglish,
                                           int width, int textColor,int bgColor)
     {
         ListItemResult instance = new ListItemResult(null,
                 ListItemResultType.NG, true, card,
                 0, width, textColor, bgColor);
-        instance.mText = convString(studyMode.isEnglish() ? card.getWordA() : card.getWordB());
-        instance.mText2 = convString(studyMode.isEnglish() ? card.getWordB() : card.getWordA());
+        instance.mText = convString(isEnglish ? card.getWordA() : card.getWordB());
+        instance.mText2 = convString(isEnglish ? card.getWordB() : card.getWordA());
         instance.mStudyMode = studyMode;
         instance.size.height = CARD_H;
         return instance;
