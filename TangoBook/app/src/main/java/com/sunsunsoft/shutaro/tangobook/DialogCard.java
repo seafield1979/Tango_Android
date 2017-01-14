@@ -43,7 +43,7 @@ public class DialogCard extends UDialogWindow {
                     UDraw.getFontSize(FontSize.M), Color.BLACK, 0);
 
             addTextView(card.getWordA(), UAlignment.CenterX, true, true,
-                    UDraw.getFontSize(FontSize.M), Color.BLACK, UColor.LightBlue);
+                    UDraw.getFontSize(FontSize.M), Color.BLACK, Color.LTGRAY);
         }
 
         // WordB
@@ -52,7 +52,7 @@ public class DialogCard extends UDialogWindow {
                     UAlignment.CenterX, true, false,
                     UDraw.getFontSize(FontSize.M), Color.BLACK, 0);
             addTextView(card.getWordB(), UAlignment.CenterX, true, true,
-                    UDraw.getFontSize(FontSize.M), Color.BLACK, UColor.LightRed);
+                    UDraw.getFontSize(FontSize.M), Color.BLACK, Color.LTGRAY);
         }
 
         // Comment
@@ -61,7 +61,7 @@ public class DialogCard extends UDialogWindow {
                     UAlignment.CenterX, true, false,
                     UDraw.getFontSize(FontSize.M), Color.BLACK, 0);
             addTextView(card.getComment(), UAlignment.CenterX, true, true,
-                    UDraw.getFontSize(FontSize.M), Color.BLACK, UColor.LightGreen);
+                    UDraw.getFontSize(FontSize.M), Color.BLACK, Color.LTGRAY);
         }
         // 学習履歴
         TangoCardHistory history = RealmManager.getCardHistoryDao().selectByCard(mCard);
@@ -74,7 +74,7 @@ public class DialogCard extends UDialogWindow {
         addTextView(UResourceManager.getStringById(R.string.study_history) + " : " + historyStr,
                 UAlignment.CenterX,
                 true, true,
-                UDraw.getFontSize(FontSize.M), Color.BLACK, UColor.LightCyan);
+                UDraw.getFontSize(FontSize.M), Color.BLACK, Color.LTGRAY);
 
         // Cancel
         addCloseButton(UResourceManager.getStringById(R.string.close));

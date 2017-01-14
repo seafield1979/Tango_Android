@@ -134,6 +134,10 @@ public class UButtonImage extends UButton {
         images.add(UResourceManager.getInstance().getBitmapById(imageId));
         stateMax++;
     }
+    public void addState(Bitmap image) {
+        images.add(image);
+        stateMax++;
+    }
 
     /**
      * 次の状態にすすむ

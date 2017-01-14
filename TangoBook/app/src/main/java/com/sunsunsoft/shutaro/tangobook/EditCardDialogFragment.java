@@ -3,6 +3,7 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -125,6 +126,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
 
         } else {
             args.putInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
+            args.putInt(KEY_COLOR, Color.BLACK);
         }
         dialog.setArguments(args);
 
@@ -190,11 +192,11 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
                 cancel();
             }
         });
-        (view.findViewById(R.id.buttonRandom)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                setRandomValue();
-            }
-        });
+//        (view.findViewById(R.id.buttonRandom)).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                setRandomValue();
+//            }
+//        });
 
         for (int id : colorViewIds) {
             view.findViewById(id).setOnClickListener(this);

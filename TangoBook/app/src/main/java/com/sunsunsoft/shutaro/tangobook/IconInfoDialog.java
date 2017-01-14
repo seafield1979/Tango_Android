@@ -25,9 +25,10 @@ enum ActionIcons{
     MoveToTrash(103, R.drawable.trash, R.string.trash),
     Copy(104, R.drawable.copy, R.string.copy),
     Favorite(105, R.drawable.favorites, R.string.learned),
-    CleanUp(110, R.drawable.trash_empty, R.string.clean_up),
+    CleanUp(110, R.drawable.trash2, R.string.clean_up),
+    OpenTrash(111, R.drawable.trash3, R.string.open),
     Return(201, R.drawable.return1, R.string.return_to_home),
-    Delete(202, R.drawable.trash, R.string.delete),
+    Delete(202, R.drawable.trash2, R.string.delete),
     Study(301, R.drawable.play, R.string.study)
     ;
 
@@ -52,7 +53,7 @@ enum ActionIcons{
     // Trash
     public static List<ActionIcons> getTrashIcons() {
         LinkedList<ActionIcons> list = new LinkedList<>();
-        list.add(Open);
+        list.add(OpenTrash);
         list.add(CleanUp);
         return list;
     }

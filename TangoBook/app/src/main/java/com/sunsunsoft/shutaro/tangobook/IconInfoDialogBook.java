@@ -224,10 +224,11 @@ public class IconInfoDialogBook extends IconInfoDialog {
         // Action buttons
         int x = ICON_MARGIN_H;
         for (ActionIcons icon : icons) {
+            Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), frameColor);
             UButtonImage imageButton = UButtonImage.createButton( this,
                     icon.ordinal(), 0,
                     x, y,
-                    ICON_W, ICON_W, icon.getImageId(), -1);
+                    ICON_W, ICON_W, image, null);
             // アイコンの下に表示するテキストを設定
             imageButton.setTitle(icon.getTitle(mContext), 30, Color.BLACK);
 

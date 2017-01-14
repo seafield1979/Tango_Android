@@ -84,7 +84,7 @@ public class ListItemCard extends UListItem {
         float x = _pos.x + MARGIN_H;
         float y = _pos.y + MARGIN_V;
         // Icon image
-        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.card2), x,
+        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.card), x,
                 _pos.y + (ITEM_H - ICON_W) / 2,
                 ICON_W, ICON_W );
         x += ICON_W + MARGIN_H;

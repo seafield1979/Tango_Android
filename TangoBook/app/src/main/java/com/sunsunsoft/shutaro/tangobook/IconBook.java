@@ -60,7 +60,7 @@ public class IconBook extends IconContainer {
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
 
-        image = UResourceManager.getBitmapWithColor(R.drawable.box1, book.getColor());
+        image = UResourceManager.getBitmapWithColor(R.drawable.cards, book.getColor());
     }
 
     /**

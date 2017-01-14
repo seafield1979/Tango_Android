@@ -23,7 +23,8 @@
     <string name="book_color">単語帳の色</string>
     <string name="card_color">カードの色</string>
     <string name="book_name2">単語帳名</string>
-
+    <string name="where_card">場所</string>
+    <string name="in_box">の中</string>
 
     <string name="word_a_top">英</string>
     <string name="word_b_top">日</string>
@@ -79,6 +80,7 @@
     <string name="clean_up">空にする</string>
     <string name="copy">コピー</string>
     <string name="trash">ゴミ箱</string>
+    <string name="home">ホーム</string>
     <string name="favorite">お気に入り</string>
     <string name="learned">覚えた</string>
     <string name="return_to_home">元に戻す</string>
@@ -86,6 +88,7 @@
     <string name="last_studied_date">最終学習日時</string>
     <string name="last">最終学習日時</string>
     <string name="start">開始</string>
+    <string name="ok">OK</string>
     <string name="cancel">キャンセル</string>
     <string name="history_book">学習記録</string>
     <string name="study_mode">出題方法</string>
@@ -157,6 +160,9 @@
     <string name="help">ヘルプ</string>
     <string name="disp_menu_name">メニュー名を表示</string>
     <string name="disp_menu_help">メニューの説明を表示</string>
+
+    <!-- error message -->
+    <string name="not_exit_study_card">学習できるカードがありません</string>
 
     <!-- menu item help -->
     <string name="help_add_item">カードや</string>

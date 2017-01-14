@@ -55,7 +55,7 @@ public class IconCard extends UIcon{
         setColor(card.getColor());
 
         // アイコン画像の読み込み
-        image = UResourceManager.getBitmapWithColor(R.drawable.card2, card.getColor());
+        image = UResourceManager.getBitmapWithColor(R.drawable.card, card.getColor());
     }
 
     /**

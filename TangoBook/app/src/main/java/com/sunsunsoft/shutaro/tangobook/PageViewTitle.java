@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
 
@@ -16,22 +17,28 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
      * Enums
      */
     enum ButtonId {
-        Edit(R.string.title_edit, UColor.White, Color.rgb(100, 200, 100), R.drawable.edit),
-        Study(R.string.title_study, Color.WHITE, Color.rgb(200,100,100), R.drawable.study),
-        History(R.string.title_history, UColor.DarkYellow, Color.rgb(200,200,0), R.drawable.history),
-        Settings(R.string.title_settings, UColor.DarkBlue, Color.rgb(153,204,255), R.drawable.settings_1),
-        Help(R.string.title_help, UColor.White, Color.rgb(255,178,102), R.drawable.question),
-        Debug(R.string.title_debug, UColor.WHITE, Color.rgb(150,150,150), R.drawable.debug),
+        Edit(R.string.title_edit, UColor.DarkGreen, UColor.DarkGreen, Color.rgb(100, 200, 100), R
+                .drawable.edit),
+        Study(R.string.title_study, Color.WHITE, Color.WHITE, Color.rgb(200,100,100), R.drawable
+                .study),
+        History(R.string.title_history, UColor.DarkYellow, UColor.DarkYellow, Color.rgb(200,200,0), R.drawable
+                .history),
+        Settings(R.string.title_settings, UColor.DarkBlue, UColor.DarkBlue, Color.rgb(153,204,255), R.drawable
+                .settings_1),
+        Help(R.string.title_help, UColor.White, UColor.DarkOrange, Color.rgb(255,178,102), R.drawable.question),
+        Debug(R.string.title_debug, UColor.WHITE, UColor.DarkGray, Color.rgb(150,150,150), R.drawable.debug),
         ;
 
         private int textId;
         private int textColor;
+        private int lineColor;
         private int bgColor;
         private int imageId;
 
-        ButtonId(int textId, int textColor, int bgColor, int imageId) {
+        ButtonId(int textId, int textColor, int lineColor, int bgColor, int imageId) {
             this.textId = textId;
             this.textColor = textColor;
+            this.lineColor = lineColor;
             this.bgColor = bgColor;
             this.imageId = imageId;
         }
@@ -138,7 +145,8 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
                     id.getTitle(mContext), x, y,
                     buttonW, buttonH,
                     TEXT_SIZE, id.textColor, id.bgColor);
-            mButtons[i].setImageId(id.imageId, new Size(IMAGE_W, IMAGE_W));
+            Bitmap image = UResourceManager.getBitmapWithColor(id.imageId, id.lineColor);
+            mButtons[i].setImage(image, new Size(IMAGE_W, IMAGE_W));
 
 
             UDrawManager.getInstance().addDrawable(mButtons[i]);

@@ -65,7 +65,7 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
                 false, false);
         List<TangoCard> okCards = RealmManager.getCardDao().selectByStudiedCards(studiedCards,
                 true, false);
-        initItems(okCards, ngCards, studyMode, false);
+        initItems(okCards, ngCards, studyMode, true);
     }
 
     /**

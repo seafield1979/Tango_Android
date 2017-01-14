@@ -56,6 +56,11 @@ public class UButtonText extends UButton {
         mImageSize = imageSize;
     }
 
+    public void setImage(Bitmap image, Size imageSize) {
+        mImage = image;
+        mImageSize = imageSize;
+    }
+
     public void setTextOffset(float x, float y) {
         mTextOffset.x = x;
         mTextOffset.y = y;

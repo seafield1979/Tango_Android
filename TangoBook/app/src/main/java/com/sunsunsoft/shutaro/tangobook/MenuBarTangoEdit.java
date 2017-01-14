@@ -21,39 +21,41 @@ public class MenuBarTangoEdit extends UMenuBar {
 
     // メニューのID、画像ID、Topかどうかのフラグ
     enum MenuItemId {
-        AddTop(MenuItemType.Top, R.drawable.add, R.string.add_item),
-        AddCard(MenuItemType.Child, R.drawable.file_add, R.string.add_card),
-        AddBook(MenuItemType.Child, R.drawable.folder_add, R.string.add_book),
-        AddDummyCard(MenuItemType.Child, R.drawable.number_1, R.string.add_dummy_card),
-        AddDummyBook(MenuItemType.Child, R.drawable.number_2, R.string.add_dummy_book),
-        AddPresetBook(MenuItemType.Child, R.drawable.number_3, R.string.add_preset),
+        AddTop(MenuItemType.Top, R.drawable.add, R.string.add_item, false),
+        AddCard(MenuItemType.Child, R.drawable.card, R.string.add_card, false),
+        AddBook(MenuItemType.Child, R.drawable.cards, R.string.add_book, false),
+        AddDummyCard(MenuItemType.Child, R.drawable.number_1, R.string.add_dummy_card, true),
+        AddDummyBook(MenuItemType.Child, R.drawable.number_2, R.string.add_dummy_book, true),
+        AddPresetBook(MenuItemType.Child, R.drawable.number_3, R.string.add_preset, false),
 
-        SortTop(MenuItemType.Top, R.drawable.sort, R.string.sort),
-        SortByWordAsc(MenuItemType.Child, R.drawable.sort_by_alphabet2_asc, R.string.sort_word_asc),
+        SortTop(MenuItemType.Top, R.drawable.sort, R.string.sort, false),
+        SortByWordAsc(MenuItemType.Child, R.drawable.sort_by_alphabet2_asc, R.string.sort_word_asc, false),
         SortByWordDesc(MenuItemType.Child, R.drawable.sort_by_alphabet2_desc, R.string
-                .sort_word_desc),
-        SortByTimeAsc(MenuItemType.Child, R.drawable.sort_by_time_asc, R.string.sort_time_asc),
-        SortByTimeDesc(MenuItemType.Child, R.drawable.sort_by_time_desc, R.string.sort_time_desc),
+                .sort_word_desc, false),
+        SortByTimeAsc(MenuItemType.Child, R.drawable.sort_by_time_asc, R.string.sort_time_asc, false),
+        SortByTimeDesc(MenuItemType.Child, R.drawable.sort_by_time_desc, R.string.sort_time_desc, false),
 
-        DebugTop(MenuItemType.Top, R.drawable.debug, R.string.debug),
-        Debug1(MenuItemType.Child, R.drawable.number_1, R.string.debug1),
+        DebugTop(MenuItemType.Top, R.drawable.debug, R.string.debug, true),
+        Debug1(MenuItemType.Child, R.drawable.number_1, R.string.debug1, true),
 
-        Help(MenuItemType.Top, R.drawable.question, R.string.help),
-        ShowMenuName(MenuItemType.Child, R.drawable.number_1, R.string.disp_menu_name),
-        ShowMenuHelp(MenuItemType.Child, R.drawable.number_2, R.string.disp_menu_help),
+        Help(MenuItemType.Top, R.drawable.question, R.string.help, false),
+        ShowMenuName(MenuItemType.Child, R.drawable.number_1, R.string.disp_menu_name, false),
+        ShowMenuHelp(MenuItemType.Child, R.drawable.number_2, R.string.disp_menu_help, false),
 
-        Setting(MenuItemType.Top, R.drawable.settings_1, R.string.title_settings),
-        SearchCard(MenuItemType.Top, R.drawable.loupe, R.string.search_card)
+        Setting(MenuItemType.Top, R.drawable.settings_1, R.string.title_settings, false),
+        SearchCard(MenuItemType.Top, R.drawable.loupe, R.string.search_card, false)
         ;
 
         private MenuItemType type;
         private int imageId;
         private int stringId;
+        private boolean forDebug;       // デバッグ用のアイテム
 
-        MenuItemId(MenuItemType type, int imageId, int stringId) {
+        MenuItemId(MenuItemType type, int imageId, int stringId, boolean forDebug) {
             this.imageId = imageId;
             this.type = type;
             this.stringId = stringId;
+            this.forDebug = forDebug;
         }
 
         public int getImageId() {
@@ -105,6 +107,7 @@ public class MenuBarTangoEdit extends UMenuBar {
 
         // add menu items
         for (MenuItemId itemId : MenuItemId.values()) {
+            if (itemId.forDebug) continue;
             switch(itemId.getType()) {
                 case Top:
                     item = itemTop = addTopMenuItem(itemId.ordinal(), itemId.getImageId());

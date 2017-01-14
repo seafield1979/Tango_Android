@@ -40,6 +40,7 @@ public class ListItemSearchedCard extends UListItem {
     private TangoCard mCard;
     private String mWordA;
     private String mWordB;
+    private TangoItemPos mItemPos;
     private TangoBook mParentBook;
 
     /**
@@ -64,11 +65,10 @@ public class ListItemSearchedCard extends UListItem {
         mWordB = UResourceManager.getStringById(R.string.word_b) + " : " +
                 UUtil.convString(card.getWordB(), true, 0, MAX_TEXT_LEN);
 
-        TangoItemPos itemPos = RealmManager.getItemPosDao().selectCardParent(card.getId());
-        if (itemPos != null) {
-            mParentBook = RealmManager.getBookDao().selectById(itemPos.getParentId());
+        mItemPos = RealmManager.getItemPosDao().selectCardParent(card.getId());
+        if (mItemPos != null) {
+            mParentBook = RealmManager.getBookDao().selectById(mItemPos.getParentId());
         }
-
     }
 
     /**
@@ -108,13 +108,24 @@ public class ListItemSearchedCard extends UListItem {
         y += TEXT_SIZE + MARGIN_V;
 
         // parent book
+        String location = null;
         if (mParentBook != null) {
-            String bookName = UResourceManager.getStringById(R.string.book_name) +
-                    " : " + mParentBook.getName() +
+            location = UResourceManager.getStringById(R.string.where_card) +
+                    " : " + UResourceManager.getStringById(R.string.book) + " " +
+                    mParentBook.getName() +
                     " (id:" + mParentBook.getId() + ")";
-            UDraw.drawTextOneLine(canvas, paint, bookName, UAlignment.None, TEXT_SIZE2, x,
-                    y, TEXT_COLOR);
+
+        } else if (mItemPos != null)  {
+            // ホームかゴミ箱の中
+            location = UResourceManager.getStringById(R.string.where_card) +
+                    " : " +
+                    UResourceManager.getStringById(
+                    (mItemPos.getParentType() == TangoParentType.Home.ordinal()) ? R.string.home
+                            : R.string.trash);
+
         }
+        UDraw.drawTextOneLine(canvas, paint, location, UAlignment.None, TEXT_SIZE2, x,
+                y, TEXT_COLOR);
     }
 
     /**

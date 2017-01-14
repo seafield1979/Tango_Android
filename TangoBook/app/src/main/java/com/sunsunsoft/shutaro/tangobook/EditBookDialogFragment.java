@@ -177,11 +177,11 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
             }
         });
 
-        (view.findViewById(R.id.buttonRandom)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                setRandomValue();
-            }
-        });
+//        (view.findViewById(R.id.buttonRandom)).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                setRandomValue();
+//            }
+//        });
 
         for (int id : colorViewIds) {
             view.findViewById(id).setOnClickListener(this);

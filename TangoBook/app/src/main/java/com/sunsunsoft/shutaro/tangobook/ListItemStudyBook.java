@@ -107,7 +107,7 @@ public class ListItemStudyBook extends UListItem {
         float x = _pos.x + MARGIN_H;
         float y = _pos.y + MARGIN_V;
         // Icon image
-        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.box1), x,
+        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.cards), x,
                 _pos.y + (ITEM_H - ICON_W) / 2,
                 ICON_W, ICON_W );
         x += ICON_W + MARGIN_H;

@@ -225,14 +225,16 @@ public class IconInfoDialogCard extends IconInfoDialog {
         // アクションボタン
         int x = (width - (ICON_W * icons.size() + MARGIN_H * (icons.size() - 1))) / 2;
         for (ActionIcons icon : icons) {
+            Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), frameColor);
             UButtonImage imageButton = UButtonImage.createButton( this,
                             icon.ordinal(), 0,
                             x, y,
-                            ICON_W, ICON_W, icon.getImageId(), -1);
+                            ICON_W, ICON_W, image, null);
 
             // お気に入りはON/OFF用の２つ画像を登録する
             if (icon == ActionIcons.Favorite) {
-                imageButton.addState(R.drawable.favorites2);
+                imageButton.addState(UResourceManager.getBitmapWithColor(R.drawable.favorites2,
+                        frameColor));
                 if (mCard.getStar()) {
                     imageButton.setState(mCard.getStar() ? 1 : 0);
                 }

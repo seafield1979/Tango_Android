@@ -91,7 +91,8 @@ public class PageViewSearchCard extends UPageView
 
         mListView = new UListView(null, this, 100, MARGIN_H, y, width - MARGIN_H * 2, height -
                 MARGIN_V * 2,
-                Color.LTGRAY);
+                Color.WHITE);
+        mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
     }
 

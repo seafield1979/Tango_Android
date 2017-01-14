@@ -21,9 +21,7 @@ public class PageViewStudyBookSelect extends UPageView
      */
     private static final int DRAW_PRIORITY = 100;
 
-    private static final int TOP_Y = 50;
     private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
     private static final int MARGIN_V_S = 30;
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
@@ -143,10 +141,6 @@ public class PageViewStudyBookSelect extends UPageView
         // PreStudyWindow 学習開始前に設定を行うウィンドウ
         mPreStudyWindow = new PreStudyWindow(this, this, mParentView);
         mPreStudyWindow.addToDrawManager();
-    }
-
-    private void initListView() {
-
     }
 
     /**

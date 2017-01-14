@@ -191,10 +191,12 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         // Action buttons
         x = (width - ICON_W * 2 - MARGIN_H) / 2;
         for (ActionIcons icon : icons) {
+            Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), UColor
+                    .DarkOrange);
             UButtonImage imageButton = UButtonImage.createButton( this,
                     icon.ordinal(), 0,
                     x, y,
-                    ICON_W, ICON_W, icon.getImageId(), -1);
+                    ICON_W, ICON_W, image, null);
 
             // アイコンの下に表示するテキストを設定
             imageButton.setTitle(icon.getTitle(mParentView.getContext()), 30, Color.BLACK);
@@ -261,7 +263,7 @@ public class IconInfoDialogTrash extends IconInfoDialog {
 
         ULog.print(TAG, "UButtonCkick:" + id);
         switch(ActionIcons.toEnum(id)) {
-            case Open:
+            case OpenTrash:
                 mIconInfoCallbacks.IconInfoOpenIcon(mIcon);
                 break;
             case CleanUp:

@@ -81,6 +81,8 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
     private UTextView textTitle, textCount, textLastStudied;
     private UTextView textStudyMode, textStudyOrder, textStudyFilter;
 
+    private int mCardCount, mNgCount;
+
     // options
     protected StudyMode mStudyMode;
     protected StudyOrder mStudyOrder;
@@ -212,10 +214,10 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
         int width = screenW;
 
         // カード数
-        int count = RealmManager.getItemPosDao().countInParentType(
+        mCardCount = RealmManager.getItemPosDao().countInParentType(
                 TangoParentType.Book, mBook.getId()
         );
-        int ngCount = RealmManager.getItemPosDao().countCardInBook(mBook.getId(),
+        mNgCount = RealmManager.getItemPosDao().countCardInBook(mBook.getId(),
                 TangoItemPosDao.BookCountType.NG);
 
         // タイトル(単語帳の名前)
@@ -227,8 +229,8 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
         y += textTitle.getHeight() + MARGIN_V;
 
         // カード数
-        String cardCount = UResourceManager.getStringById(R.string.card_count) + ": " + count +
-                "  " + UResourceManager.getStringById(R.string.count_not_learned) + ": " + ngCount;
+        String cardCount = UResourceManager.getStringById(R.string.card_count) + ": " + mCardCount +
+                "  " + UResourceManager.getStringById(R.string.count_not_learned) + ": " + mNgCount;
 
         textCount = UTextView.createInstance(
                 cardCount,
@@ -323,7 +325,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 width / 2 - BUTTON2_W - MARGIN_H / 2, size.height - BUTTON2_H - MARGIN_V,
                 BUTTON2_W, BUTTON2_H,
                 TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
-        if (count == 0) {
+        if (mCardCount == 0) {
             buttons[ButtonId.Start.ordinal()].setEnabled(false);
         }
 
@@ -418,6 +420,18 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch (id) {
             case PageViewStudyBookSelect.ButtonIdStartStudy:
+                if (mCardCount == 0 || (mStudyFilter == StudyFilter.NotLearned && mNgCount == 0))
+                {
+                    // 未収得カード数が0なら終了
+                    mDialog = UDialogWindow.createInstance(
+                            null, this,
+                            UDialogWindow.ButtonDir.Vertical, mParentView.getWidth(), mParentView
+                                    .getHeight());
+                    mDialog.setTitle(UResourceManager.getStringById(R.string.not_exit_study_card));
+                    mDialog.addCloseButton(UResourceManager.getStringById(R.string.ok));
+                    mDialog.addToDrawManager();
+                    break;
+                }
                 // オプションを保存
                 MySharedPref.writeInt(MySharedPref.StudyModeKey, mStudyMode.ordinal());
                 MySharedPref.writeInt(MySharedPref.StudyOrderKey, mStudyOrder.ordinal());
