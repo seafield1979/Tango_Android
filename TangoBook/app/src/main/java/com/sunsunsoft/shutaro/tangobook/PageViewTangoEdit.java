@@ -435,8 +435,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                     icon.setNewFlag(false);
                     break;
                 case Book:
-                    mIconInfoDlg = IconInfoDialogBook.createInstance(mParentView, this, this, icon,
-                            x, y);
+//                    mIconInfoDlg = IconInfoDialogBook.createInstance(mParentView, this, this, icon,
+//                            x, y);
+                    IconInfoOpenIcon(icon);
                     // newフラグをクリア
                     icon.setNewFlag(false);
                     break;
@@ -701,8 +702,10 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      */
     public void IconInfoOpenIcon(UIcon icon) {
         openIcon(icon);
-        mIconInfoDlg.closeWindow();
-        mIconInfoDlg = null;
+        if (mIconInfoDlg != null) {
+            mIconInfoDlg.closeWindow();
+            mIconInfoDlg = null;
+        }
     }
 
     /**

@@ -75,6 +75,7 @@ public class UUtil {
 
     /**
      * 単色Bitmap画像の色を変更する
+     * 元の画像はグレースケール限定
      */
     public static Bitmap convBitmapColor(Bitmap bmp, int newColor) {
         // グレースケール変換
@@ -83,7 +84,8 @@ public class UUtil {
         int size   = height * width;
         int pix[]  = new int[size];
         int pos = 0;
-        int _newColor = newColor & 0xffffff;
+        //int _newColor = newColor & 0xffffff;
+        int[] colorConvTbl = new int[256];
 
         bmp.getPixels(pix, 0, width, 0, 0, width, height);
         for (int y = 0; y < height; y++) {
@@ -94,7 +96,11 @@ public class UUtil {
                 if ((pixel & 0xffffff) == 0xffffff) {
                     pix[pos] = pixel;
                 } else {
-                    pix[pos] = alpha | _newColor;
+                    if (pixel != 0 && colorConvTbl[pixel & 0xff] == 0) {
+                        colorConvTbl[pixel & 0xff] = UColor.colorWithY(newColor,
+                                UColor.RGBtoY(pixel));
+                    }
+                    pix[pos] = alpha | colorConvTbl[pixel & 0xff];
                 }
                 pos++;
             }

@@ -1083,6 +1083,15 @@ public class UIconWindow extends UWindow {
                         setState(WindowState.none);
                         done = true;
                     }
+                } else {
+                    // MainWindowの何もないところをクリックしたらSubWindowを閉じる
+                    if (!done && this.type == WindowType.Home) {
+                        if (windows.getSubWindow().isShow()) {
+                            if (windows.getSubWindow().windowCallbacks != null) {
+                                windows.getSubWindow().windowCallbacks.windowClose(windows.getSubWindow());
+                            }
+                        }
+                    }
                 }
                 break;
             case LongPress:

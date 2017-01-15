@@ -94,6 +94,30 @@ public class UColor extends Color {
         return Y << 16 | Cb << 8 | Cr;
     }
 
+    // 輝度(Y)を指定して色を変更する
+    public static int colorWithY(int rgb, int y) {
+        float R = (float)Color.red(rgb);
+        float G = (float)Color.green(rgb);
+        float B = (float)Color.blue(rgb);
+
+        int Cb = (int)(-0.148 * R - 0.291 * G + 0.439 * B + 128);
+        int Cr = (int)(0.439 * R - 0.368 * G - 0.071 * B + 128);
+
+        if (Cb > 255) Cb = 255;
+        if (Cr > 255) Cr = 255;
+
+        return YUVtoRGB(y << 16 | Cb << 8 | Cr);
+    }
+
+    public static int RGBtoY(int rgb) {
+        float R = (float)Color.red(rgb);
+        float G = (float)Color.green(rgb);
+        float B = (float)Color.blue(rgb);
+
+        return (int)(0.257 * R + 0.504 * G + 0.098 * B + 16);
+    }
+
+
     /**
      * YUV -> RGB
      */
