@@ -540,7 +540,8 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
     }
 
     /**
-     * 閉じるボタンの座標を変更
+     * 閉じるボタンの座標を更新
+     * ※Windowが移動したり、サイズが変わった時に呼び出される
      */
     protected void updateCloseIconPos() {
         if (closeIcon == null) return;

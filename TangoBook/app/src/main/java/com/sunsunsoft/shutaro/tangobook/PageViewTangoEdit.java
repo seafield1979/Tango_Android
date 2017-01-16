@@ -22,7 +22,7 @@ import java.util.List;
 public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         UIconCallbacks, UWindowCallbacks, UButtonCallbacks,
         EditCardDialogCallbacks, EditBookDialogCallbacks, IconInfoDialogCallbacks,
-        UDialogCallbacks
+        UDialogCallbacks, UIconWindowSubCallbacks
 {
 
     enum WindowType {
@@ -114,7 +114,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         mWindows[WindowType.Icon1.ordinal()] = mainWindow;
 
         // Sub
-        UIconWindow subWindow = UIconWindow.createInstance(this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
+        UIconWindowSub subWindow = UIconWindowSub.createInstance(this, this, this, false, winDir, size2.width, size2.height, Color.LTGRAY);
         subWindow.addToDrawManager();
         subWindow.isShow = false;
         mWindows[WindowType.Icon2.ordinal()] = subWindow;
@@ -289,6 +289,19 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         iconManager.addNewIcon(IconType.Book, TangoParentType.Home, 0, AddPos.Tail);
         mIconWinManager.getMainWindow().sortIcons(true);
 
+        mParentView.invalidate();
+    }
+
+    /**
+     * アイコンをゴミ箱に移動する
+     * @param icon
+     */
+    private void moveIconToTrash(UIcon icon) {
+        mIconWinManager.getMainWindow().moveIconIntoTrash(icon);
+        if (mIconInfoDlg != null) {
+            mIconInfoDlg.closeWindow();
+            mIconInfoDlg = null;
+        }
         mParentView.invalidate();
     }
 
@@ -480,8 +493,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         switch (icon.getType()) {
             case Book:
             {
-                UIconWindow subWindow = mIconWinManager.getSubWindow();
+                UIconWindowSub subWindow = mIconWinManager.getSubWindow();
                 subWindow.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
+                subWindow.setParentIcon((IconBook)icon);
 
                 // SubWindowを画面外から移動させる
                 mIconWinManager.showWindow(subWindow, true);
@@ -691,10 +705,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      * アイコンをゴミ箱に移動
      */
     public void IconInfoThrowIcon(UIcon icon) {
-        mIconWinManager.getMainWindow().moveIconIntoTrash(icon);
-        mIconInfoDlg.closeWindow();
-        mIconInfoDlg = null;
-        mParentView.invalidate();
+        if (icon != null) {
+            moveIconToTrash(icon);
+        }
     }
 
     /**
@@ -774,5 +787,31 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      */
     public void dialogClosed(UDialogWindow dialog) {
 
+    }
+
+
+    /**
+     * UIconWindowSubCallbacks
+     */
+    public void IconWindowSubEdit(UIcon icon) {
+        editingIcon = icon;
+        if (icon instanceof IconBook) {
+            editBookDialog((IconBook)editingIcon);
+        }
+    }
+
+    public void IconWindowSubCopy(UIcon icon) {
+        copyIcon(icon);
+    }
+
+    public void IconWindowSubDelete(UIcon icon) {
+        moveIconToTrash(icon);
+
+        UIconWindowSub subWindow = mIconWinManager.getSubWindow();
+        if (subWindow.isShow()) {
+            if (subWindow.windowCallbacks != null) {
+                subWindow.windowCallbacks.windowClose(subWindow);
+            }
+        }
     }
 }

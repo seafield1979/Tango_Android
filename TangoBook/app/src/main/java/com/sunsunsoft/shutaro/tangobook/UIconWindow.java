@@ -74,10 +74,12 @@ public class UIconWindow extends UWindow {
 
     public static final int ICON_W = 180;
     public static final int ICON_H = 150;
+    public static final int ACTION_ICON_W = 120;
     protected static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 
     protected static final int MOVING_TIME = 10;
     protected static final int SELECTED_ICON_BG_COLOR = Color.argb(80, 255, 100, 100);
+
 
     /**
      * Member veriables
@@ -1056,6 +1058,7 @@ public class UIconWindow extends UWindow {
         if (super.touchEvent(vt, offset)) {
             return true;
         }
+
         // 範囲外なら抜ける
         if (!rect.contains((int)vt.touchX(), (int)vt.touchY())) {
             return false;
@@ -1282,12 +1285,10 @@ public class UIconWindow extends UWindow {
 
         icons.remove(icon1);
 
-        if (window2.isShow()) {
+        if (icon2 == windows.getSubWindow().getParentIcon() && window2.isShow()) {
             List<UIcon> win2Icons = window2.getIcons();
             win2Icons.add(icon1);
-        }
 
-        if (window2 != null && window2.isShow()) {
             window2.sortIcons(false);
             icon1.setParentWindow(window2);
         }

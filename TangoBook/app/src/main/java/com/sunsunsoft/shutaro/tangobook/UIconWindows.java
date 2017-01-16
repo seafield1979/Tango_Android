@@ -25,7 +25,7 @@ public class UIconWindows implements UWindowCallbacks {
      */
     private LinkedList<UIconWindow> windows = new LinkedList<>();
     private UIconWindow mainWindow;
-    private UIconWindow subWindow;
+    private UIconWindowSub subWindow;
     private Size size;
     private DirectionType directionType;
 
@@ -38,7 +38,7 @@ public class UIconWindows implements UWindowCallbacks {
         return mainWindow;
     }
 
-    public UIconWindow getSubWindow() {
+    public UIconWindowSub getSubWindow() {
         return subWindow;
     }
 
@@ -58,7 +58,7 @@ public class UIconWindows implements UWindowCallbacks {
     private UIconWindows() {
     }
 
-    public static UIconWindows createInstance(UIconWindow mainWindow, UIconWindow subWindow,
+    public static UIconWindows createInstance(UIconWindow mainWindow, UIconWindowSub subWindow,
                                               int screenW, int screenH) {
         UIconWindows instance = new UIconWindows();
         instance.size = new Size(screenW, screenH);

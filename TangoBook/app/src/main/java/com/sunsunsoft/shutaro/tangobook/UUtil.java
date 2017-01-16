@@ -84,7 +84,6 @@ public class UUtil {
         int size   = height * width;
         int pix[]  = new int[size];
         int pos = 0;
-        //int _newColor = newColor & 0xffffff;
         int[] colorConvTbl = new int[256];
 
         bmp.getPixels(pix, 0, width, 0, 0, width, height);
