@@ -415,12 +415,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         ULog.print(TAG, "iconClicked");
         if (mIconInfoDlg != null) {
             if (icon == mIconInfoDlg.mIcon) {
-                if (icon.type == IconType.Book || icon.type == IconType.Trash)
-                {
-                    // すでにアイコンダイアログが表示されていたときに同じアイコンがクリックされたら開く
-                    IconInfoOpenIcon(icon);
-                    return;
-                } else if (icon.type == IconType.Card) {
+                if (icon.type == IconType.Card) {
                     // カードなら編集
                     IconInfoEditIcon(icon);
                     return;
@@ -448,15 +443,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                     icon.setNewFlag(false);
                     break;
                 case Book:
-//                    mIconInfoDlg = IconInfoDialogBook.createInstance(mParentView, this, this, icon,
-//                            x, y);
                     IconInfoOpenIcon(icon);
                     // newフラグをクリア
                     icon.setNewFlag(false);
                     break;
                 case Trash:
-                    mIconInfoDlg = IconInfoDialogTrash.createInstance(mParentView, this, this, icon,
-                            x, y);
+                    IconInfoOpenIcon(icon);
                     break;
             }
         }
@@ -495,7 +487,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             {
                 UIconWindowSub subWindow = mIconWinManager.getSubWindow();
                 subWindow.setIcons(TangoParentType.Book, icon.getTangoItem().getId());
-                subWindow.setParentIcon((IconBook)icon);
+                subWindow.setParentIcon(icon);
 
                 // SubWindowを画面外から移動させる
                 mIconWinManager.showWindow(subWindow, true);
@@ -506,6 +498,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             {
                 UIconWindow window = mIconWinManager.getSubWindow();
                 window.setIcons(TangoParentType.Trash, 0);
+                mIconWinManager.getSubWindow().setParentIcon(icon);
 
                 // SubWindowを画面外から移動させる
                 mIconWinManager.showWindow(window, true);
@@ -714,7 +707,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      * アイコンを開く
      */
     public void IconInfoOpenIcon(UIcon icon) {
-        openIcon(icon);
+        if (mIconWinManager.getSubWindow().isShow() == false ||
+                icon != mIconWinManager.getSubWindow().getParentIcon())
+        {
+            openIcon(icon);
+        }
+
         if (mIconInfoDlg != null) {
             mIconInfoDlg.closeWindow();
             mIconInfoDlg = null;
@@ -793,6 +791,10 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     /**
      * UIconWindowSubCallbacks
      */
+    public void IconWindowSubClose() {
+        mIconWinManager.hideWindow(mIconWinManager.getSubWindow(), true);
+    }
+
     public void IconWindowSubEdit(UIcon icon) {
         editingIcon = icon;
         if (icon instanceof IconBook) {

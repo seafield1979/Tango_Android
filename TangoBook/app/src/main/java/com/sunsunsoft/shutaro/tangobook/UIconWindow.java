@@ -74,7 +74,6 @@ public class UIconWindow extends UWindow {
 
     public static final int ICON_W = 180;
     public static final int ICON_H = 150;
-    public static final int ACTION_ICON_W = 120;
     protected static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 
     protected static final int MOVING_TIME = 10;
@@ -428,7 +427,7 @@ public class UIconWindow extends UWindow {
             for (UIcon icon : icons) {
                 int x = margin + (i % column) * (ICON_W + margin);
                 int y = margin + (i / column) * (ICON_H + margin);
-                int height = y + (ICON_H + margin);
+                int height = y + (ICON_H + margin) * 2;
                 if (height >= maxSize) {
                     maxSize = height;
                 }

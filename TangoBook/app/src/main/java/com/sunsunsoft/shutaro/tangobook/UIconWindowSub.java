@@ -1,9 +1,12 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  * Created by shutaro on 2017/01/16.
@@ -12,19 +15,56 @@ import android.graphics.Rect;
 
 // コールバック
 interface UIconWindowSubCallbacks {
+    void IconWindowSubClose();
     void IconWindowSubEdit(UIcon icon);
     void IconWindowSubCopy(UIcon icon);
     void IconWindowSubDelete(UIcon icon);
 }
 
 public class UIconWindowSub extends UIconWindow {
+    // button id
+    private static final int buttonIdClose = 299;
+    private static final int buttonIdEdit = 300;
+    private static final int buttonIdCopy = 301;
+    private static final int buttonIdDelete = 302;
+    private static final int buttonIdCleanup = 303;
+
     /**
      * Enum
      */
     enum ButtonId {
-        Edit,
-        Copy,
-        Delete
+        Close(R.drawable.close, R.string.close, buttonIdClose),
+        Edit(R.drawable.edit, R.string.edit, buttonIdEdit),
+        Copy(R.drawable.copy, R.string.copy, buttonIdCopy),
+        Delete(R.drawable.trash, R.string.trash, buttonIdDelete),
+        Cleanup(R.drawable.trash2, R.string.clean_up, buttonIdCleanup)
+        ;
+
+        private int imageId;
+        private int buttonId;
+        private String title;
+
+        private ButtonId(int imageId, int stringId, int buttonId) {
+            this.imageId = imageId;
+            this.buttonId = buttonId;
+            this.title = UResourceManager.getStringById(stringId);
+        }
+        public int getImageId() {
+            return imageId;
+        }
+        public int getButtonId() {
+            return buttonId;
+        }
+        public String getTitle() {
+            return title;
+        }
+
+        public static ButtonId[] bookIds() {
+            return new ButtonId[]{Close, Edit, Copy, Delete};
+        }
+        public static ButtonId[] trashIds() {
+            return new ButtonId[]{Close, Cleanup};
+        }
     }
 
     /**
@@ -32,21 +72,20 @@ public class UIconWindowSub extends UIconWindow {
      */
     private static final int MARGIN_H = 50;
     private static final int MARGIN_V = 20;
-
-    // button id
-    private static final int buttonIdEdit = 300;
-    private static final int buttonIdCopy = 301;
-    private static final int buttonIdDelete = 302;
+    private static final int MARGIN_V2 = 50;
+    private static final int ICON_TEXT_SIZE = 30;
+    private static final int ACTION_ICON_W = 100;
 
     /**
      * Member variables
      */
     // 親のアイコン
-    private IconBook mParentIcon;
+    private UIcon mParentIcon;
 
 
     // SubWindowの上に表示するアイコンボタン
-    private UButtonImage[] mButtons = new UButtonImage[ButtonId.values().length];
+    private UButtonImage[] mBookButtons = new UButtonImage[ButtonId.bookIds().length];
+    private UButtonImage[] mTrashButtons = new UButtonImage[ButtonId.trashIds().length];
 
     // コールバック用のインターフェース
     private UIconWindowSubCallbacks mIconWindowSubCallback;
@@ -54,13 +93,17 @@ public class UIconWindowSub extends UIconWindow {
     /**
      * Get/Set
      */
-    public void setParentIcon(IconBook icon) {
+    public void setParentIcon(UIcon icon) {
         mParentIcon = icon;
     }
     public UIcon getParentIcon() {
         return mParentIcon;
     }
 
+    private UButtonImage[] getButtons() {
+        return (getParentType() == TangoParentType.Book) ? mBookButtons : mTrashButtons;
+
+    }
 
     /**
      * Constructor
@@ -104,20 +147,35 @@ public class UIconWindowSub extends UIconWindow {
         // 閉じるボタンの位置を変更
 
         // アイコンボタンの初期化
+        Bitmap image;
         float x = MARGIN_H;
-        mButtons[ButtonId.Edit.ordinal()] = UButtonImage.createButton(this, buttonIdEdit, 0, x,
-                -ACTION_ICON_W - MARGIN_V,
-                ACTION_ICON_W, ACTION_ICON_W, R.drawable.edit, -1);
-        x += ACTION_ICON_W + MARGIN_H;
+        float y = -ACTION_ICON_W - MARGIN_V2;
 
-        mButtons[ButtonId.Copy.ordinal()] = UButtonImage.createButton(this, buttonIdCopy, 0, x,
-                -ACTION_ICON_W - MARGIN_V,
-                ACTION_ICON_W, ACTION_ICON_W, R.drawable.copy, -1);
-        x += ACTION_ICON_W + MARGIN_H;
+        // Bookを開いたときのアイコンを初期化
+        int i = 0;
+        for (ButtonId id : ButtonId.bookIds()) {
+            image = UResourceManager.getBitmapWithColor(id.getImageId(), UColor.DarkGreen);
+            mBookButtons[i] = UButtonImage.createButton(this, id.getButtonId(), 0, x, y,
+                    ACTION_ICON_W, ACTION_ICON_W, image, null);
+            mBookButtons[i].setTitle(id.getTitle(), ICON_TEXT_SIZE, Color.BLACK);
 
-        mButtons[ButtonId.Delete.ordinal()] = UButtonImage.createButton(this, buttonIdDelete, 0, x,
-                -ACTION_ICON_W - MARGIN_V,
-                ACTION_ICON_W, ACTION_ICON_W, R.drawable.trash, -1);
+            x += ACTION_ICON_W + MARGIN_H;
+            i++;
+        }
+
+        // ゴミ箱を開いたときのアイコンを初期化
+        x = MARGIN_H;
+        i = 0;
+        for (ButtonId id : ButtonId.trashIds()) {
+            image = UResourceManager.getBitmapWithColor(id.getImageId(), UColor.DarkGreen);
+            mTrashButtons[i] = UButtonImage.createButton(this, id.getButtonId(), 0, x, y,
+                    ACTION_ICON_W, ACTION_ICON_W, image, null);
+            mTrashButtons[i].setTitle(id.getTitle(), ICON_TEXT_SIZE, Color.BLACK);
+
+            x += ACTION_ICON_W + MARGIN_H;
+            i++;
+        }
+
 
     }
 
@@ -138,11 +196,12 @@ public class UIconWindowSub extends UIconWindow {
         }
 
         // アイコンのタッチ処理
-        for (UButtonImage button : mButtons) {
+        for (UButtonImage button : getButtons()) {
             if (button.touchEvent(vt, offset)) {
                 return true;
             }
         }
+
         return super.touchEvent(vt, offset);
     }
 
@@ -157,8 +216,19 @@ public class UIconWindowSub extends UIconWindow {
     {
         super.drawContent(canvas, paint, offset);
 
+        // アイコンの背景
+        UButtonImage[] buttons = getButtons();
+
+        float width = buttons.length * (ACTION_ICON_W + MARGIN_H) + MARGIN_H;
+        final float height = ACTION_ICON_W + MARGIN_V + MARGIN_V2;
+        float x = pos.x;
+        float y = pos.y - MARGIN_V2 - MARGIN_V - ACTION_ICON_W;
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(x, y, x + width, y +
+                height),
+                30, Color.LTGRAY, 0, 0);
+
         // アイコンの描画
-        for (UButtonImage button : mButtons) {
+        for (UButtonImage button : buttons) {
             button.draw(canvas, paint, pos);
         }
     }
@@ -168,6 +238,11 @@ public class UIconWindowSub extends UIconWindow {
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch (id) {
+            case buttonIdClose:
+                if (mIconWindowSubCallback != null) {
+                    mIconWindowSubCallback.IconWindowSubClose();
+                }
+                break;
             case buttonIdEdit:
                 if (mIconWindowSubCallback != null && mParentIcon != null ) {
                     mIconWindowSubCallback.IconWindowSubEdit(mParentIcon);

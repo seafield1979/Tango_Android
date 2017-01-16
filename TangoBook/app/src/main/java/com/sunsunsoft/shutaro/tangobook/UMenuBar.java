@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RectF;
 
 import java.util.LinkedList;
 
@@ -194,6 +195,11 @@ abstract public class UMenuBar extends UWindow {
      */
     public void drawContent(Canvas canvas, Paint paint, PointF offset ) {
         if (!isShow) return;
+
+        // 背景描画
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(pos.x, pos.y, pos.x + getWidth() + 30,
+                pos.y + getHeight()),
+                30, UColor.LightGreen, 0, 0);
 
         // トップのアイテムから描画
         for (UMenuItem item : topItems) {

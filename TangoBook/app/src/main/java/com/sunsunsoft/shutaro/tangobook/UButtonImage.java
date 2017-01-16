@@ -23,6 +23,8 @@ public class UButtonImage extends UButton {
      */
     public static final int TEXT_MARGIN = 10;
 
+    private static final int TEXT_SIZE = 30;
+
     /**
      * Member Variables
      */
@@ -35,6 +37,7 @@ public class UButtonImage extends UButton {
     protected int stateId;          // 現在の状態
     protected int stateMax;         // 状態の最大値 addState で増える
 
+    private UTextView mTextTitle;
 
     /**
      * Get/Set
@@ -137,6 +140,16 @@ public class UButtonImage extends UButton {
     public void addState(Bitmap image) {
         images.add(image);
         stateMax++;
+    }
+
+    /**
+     * テキストを追加する
+     */
+    public void addTitle(String title, UAlignment alignment, float x, float y, int
+            color, int bgColor) {
+        mTextTitle = UTextView.createInstance(title, TEXT_SIZE, 0, alignment,
+                0, false, true, x, y, 0, color, bgColor);
+        mTextTitle.setMargin(10, 10);
     }
 
     /**

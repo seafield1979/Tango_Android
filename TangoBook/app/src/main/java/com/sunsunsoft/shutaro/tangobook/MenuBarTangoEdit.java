@@ -27,7 +27,7 @@ public class MenuBarTangoEdit extends UMenuBar {
         AddBook(MenuItemType.Child, R.drawable.cards, R.string.add_book, false),
         AddDummyCard(MenuItemType.Child, R.drawable.number_1, R.string.add_dummy_card, true),
         AddDummyBook(MenuItemType.Child, R.drawable.number_2, R.string.add_dummy_book, true),
-        AddPresetBook(MenuItemType.Child, R.drawable.number_3, R.string.add_preset, false),
+        AddPresetBook(MenuItemType.Child, R.drawable.cards, R.string.add_preset, false),
 
         SortTop(MenuItemType.Top, R.drawable.sort, R.string.sort, false),
         SortByWordAsc(MenuItemType.Child, R.drawable.sort_by_alphabet2_asc, R.string.sort_word_asc, false),

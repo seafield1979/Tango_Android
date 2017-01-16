@@ -34,6 +34,7 @@
         android:id="@+id/editComment"/>
 
 
+    <!-- Color -->
     <TextView
         android:text="@string/book_color"
         android:layout_width="match_parent"
@@ -49,7 +50,8 @@
         bg_color="#ff0000"
         />
 
-    <ScrollView
+
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -128,8 +130,7 @@
                 bg_color="#9400D3"
                 />
         </LinearLayout>
-    </ScrollView>
-
+    </HorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -143,6 +144,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ok_button_state"
+            android:textColor="@android:color/background_light"
             android:id="@+id/buttonOK"/>
         <Button
             android:text="Cancel"
