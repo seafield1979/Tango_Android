@@ -37,11 +37,14 @@ public class PageViewBackupDB extends UPageView
     private static final int TEXT_SIZE_S = 40;
     private static final int TEXT_SIZE = 50;
 
+    // button Ids
     private static final int ButtonIdBackup = 100;
-    private static final int ButtonIdRestore = 101;
-    private static final int ButtonIdReturn = 102;
-    private static final int ButtonIdBackupOK = 103;
-    private static final int ButtonIdRestoreOK = 104;
+//    private static final int ButtonIdBackup2 = 101;
+    private static final int ButtonIdRestore = 102;
+    private static final int ButtonIdReturn = 103;
+    private static final int ButtonIdBackupOK = 104;
+//    private static final int ButtonIdBackupXmlOK = 105;
+    private static final int ButtonIdRestoreOK = 106;
 
     /**
      * Member variables
@@ -59,6 +62,7 @@ public class PageViewBackupDB extends UPageView
     private UButtonText mBackupButton;
     private UButtonText mRestoreButton;
     private UCheckBox mAutoBackupCheck;
+//    private UButtonText mBackupButton2;
 
     // Dialog
     private UDialogWindow mDialog;
@@ -177,6 +181,7 @@ public class PageViewBackupDB extends UPageView
         if (MySharedPref.readBoolean(MySharedPref.RealmAutoBackup)) {
             mAutoBackupCheck.setChecked(true);
         }
+        y += mAutoBackupCheck.getHeight() + MARGIN_V;
 
     }
 
@@ -212,7 +217,7 @@ public class PageViewBackupDB extends UPageView
                 mDialog.addButton(ButtonIdBackupOK, "OK", Color.BLACK, Color.WHITE);
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
             }
-            break;
+                break;
             case ButtonIdRestore:
             {
                 // 復元ボタン
@@ -231,26 +236,30 @@ public class PageViewBackupDB extends UPageView
             case ButtonIdReturn:
                 PageViewManager.getInstance().popPage();
                 break;
-            case ButtonIdBackupOK: {
-                // バックアップ
-                String filePath = RealmManager.backup();
-                if (filePath != null) {
-                    String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
-
-                    mBackupPath.setText(filePath);
-                    mBackupDate.setText(UResourceManager.getStringById(R.string.backup_datetime) +
-                            " : " +
-                            dateTime);
-                    MySharedPref.writeString(MySharedPref.RealmBackupPathKey, filePath);
-                    MySharedPref.writeString(MySharedPref.RealmBackupDateKey, dateTime);
-                }
+            case ButtonIdBackupOK:
+//                // バックアップ
+//                String filePath = RealmManager.backup();
+//                if (filePath != null) {
+//                    String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
+//
+//                    mBackupPath.setText(filePath);
+//                    mBackupDate.setText(UResourceManager.getStringById(R.string.backup_datetime) +
+//                            " : " +
+//                            dateTime);
+//                    MySharedPref.writeString(MySharedPref.RealmBackupPathKey, filePath);
+//                    MySharedPref.writeString(MySharedPref.RealmBackupDateKey, dateTime);
+//                }
+//                mDialog.startClosing();
+//            }
+//            break;
+                XmlManager.getInstance().saveXml("tango.xml");
                 mDialog.startClosing();
-            }
-            break;
+                break;
             case ButtonIdRestoreOK:
                 // バックアップから復元
-                RealmManager.restore();
-
+//                RealmManager.restore();
+//
+                XmlManager.getInstance().loadXml("tango.xml");
                 mDialog.startClosing();
                 break;
         }

@@ -116,6 +116,7 @@
     <string name="title_result2">"%sの学習結果"</string>
 
     <string name="backup">バックアップ</string>
+    <string name="backup_xml">バックアップ(xml)</string>
     <string name="backup_and_restore">バックアップと復元</string>
     <string name="backup_path_title">バックアップファイルの場所</string>
     <string name="backup_datetime">バックアップ日時</string>

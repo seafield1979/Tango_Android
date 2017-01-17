@@ -511,4 +511,26 @@ public class TangoCardDao {
         }
         return nextId;
     }
+
+
+    /**
+     * XMLファイルから読み込んだCardを追加する
+     */
+    public void addXmlCards(List<Card> cards) {
+
+        mRealm.beginTransaction();
+        for (Card _card : cards) {
+            TangoCard card = new TangoCard();
+            card.setId( _card.getId() );
+            card.setWordA( _card.getWordA() );
+            card.setWordB( _card.getWordB() );
+            card.setComment( _card.getComment());
+            card.setCreateTime( _card.getCreateTime());
+            card.setColor( _card.getColor());
+            card.setStar( _card.isStar());
+
+            mRealm.copyToRealm(card);
+        }
+        mRealm.commitTransaction();
+    }
 }

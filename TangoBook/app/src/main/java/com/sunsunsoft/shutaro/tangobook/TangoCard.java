@@ -20,15 +20,15 @@ public class TangoCard extends RealmObject implements TangoItem{
     @Required
     private String wordA;       // 単語帳の表
     private String wordB;       // 単語帳の裏
-    private String hintAB;    // 思い出すためのヒント A->B
-    private String hintBA;    // 思い出すためのヒント B->A
+    private String hintAB;      // 思い出すためのヒント A->B
+    private String hintBA;      // 思い出すためのヒント B->A
     private String comment;     // 説明や例文
     private Date createTime;    // 作成日時
     private Date updateTime;    // 更新日時
 
     private int color;          // カードの色
-    private boolean star;       // お気に入り
-    private boolean newFlag;    // NEW
+    private boolean star;       // 覚えたフラグ
+    private boolean newFlag;    // 新規作成フラグ
 
     @Ignore
     private TangoItemPos itemPos;   // どこにあるか？

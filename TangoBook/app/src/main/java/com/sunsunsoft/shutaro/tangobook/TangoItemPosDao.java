@@ -1195,4 +1195,22 @@ public class TangoItemPosDao {
         }
         return count;
     }
+
+    /**
+     * XMLファイルから読み込んだItemPosを追加する
+     * @param poses
+     */
+    public void addXmlPos(List<Pos> poses) {
+        mRealm.beginTransaction();
+        for (Pos _pos : poses) {
+            TangoItemPos pos = new TangoItemPos();
+            pos.setParentType( _pos.getParentType());
+            pos.setParentId( _pos.getParentId());
+            pos.setPos( _pos.getPos());
+            pos.setItemType( _pos.getItemType());
+            pos.setItemId( _pos.getItemId());
+            mRealm.copyToRealm(pos);
+        }
+        mRealm.commitTransaction();
+    }
 }

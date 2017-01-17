@@ -284,4 +284,22 @@ public class TangoBookDao {
         updateBook.setNewFlag(newFlag);
         mRealm.commitTransaction();
     }
+
+    /**
+     * XMLファイルから読み込んだBookを追加する
+     * @param books
+     */
+    public void addXmlBooks(List<Book> books) {
+        mRealm.beginTransaction();
+        for (Book _book : books) {
+            TangoBook book = new TangoBook();
+            book.setId( _book.getId());
+            book.setName( _book.getName());
+            book.setComment( _book.getComment());
+            book.setColor( _book.getColor());
+            book.setCreateTime( _book.getCreateTime());
+            mRealm.copyToRealm(book);
+        }
+        mRealm.commitTransaction();
+    }
 }

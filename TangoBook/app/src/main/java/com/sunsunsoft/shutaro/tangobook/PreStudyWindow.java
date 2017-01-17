@@ -38,8 +38,9 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
     private static final int MARGIN_V = 40;
     private static final int MARGIN_H = 40;
     private static final int TEXT_SIZE = 50;
-    private static final int TEXT_SIZE_2 = 35;
+    private static final int TEXT_SIZE_2 = 40;
     private static final int TEXT_SIZE_3 = 70;
+    private static final int BUTTON_TEXT_SIZE = 50;
     private static final int TITLE_WIDTH = 0;
 
     private static final int BUTTON_W = 600;
@@ -263,7 +264,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
         float titleX = (width - (TITLE_WIDTH + BUTTON_W)) / 2 + TITLE_WIDTH;
         float buttonX = titleX + MARGIN_H;
 
-        // Option1 出題方法
+        // 出題方法（出題モード)
         // タイトル
         textStudyMode = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.study_mode),
@@ -276,7 +277,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 ButtonIdOption1,
                 0, mStudyMode.getString(),
                 buttonX, y, BUTTON_W, BUTTON_H,
-                40, TEXT_COLOR, UColor.LightBlue);
+                BUTTON_TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
         buttons[ButtonId.Option1.ordinal()].setPullDownIcon(true);
 
         y += BUTTON_H + MARGIN_V;
@@ -293,7 +294,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 ButtonIdOption2,
                 0, mStudyType.getString(),
                 buttonX, y, BUTTON_W, BUTTON_H,
-                40, TEXT_COLOR, UColor.LightGreen);
+                BUTTON_TEXT_SIZE, TEXT_COLOR, UColor.LightGreen);
         buttons[ButtonId.Option2.ordinal()].setPullDownIcon(true);
 
         y += BUTTON_H + MARGIN_V;
@@ -312,7 +313,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 ButtonIdOption3,
                 0, studyOrder.getString(),
                 buttonX, y, BUTTON_W, BUTTON_H,
-                40, TEXT_COLOR, UColor.Gold);
+                BUTTON_TEXT_SIZE, TEXT_COLOR, UColor.Gold);
         buttons[ButtonId.Option3.ordinal()].setPullDownIcon(true);
 
         y += BUTTON_H + MARGIN_V;
@@ -333,7 +334,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                 ButtonIdOption4,
                 0, studyFilter.getString(),
                 buttonX, y, BUTTON_W, BUTTON_H,
-                40, TEXT_COLOR, UColor.LightPink);
+                BUTTON_TEXT_SIZE, TEXT_COLOR, UColor.LightPink);
         buttons[ButtonId.Option4.ordinal()].setPullDownIcon(true);
 
         y += BUTTON_H + MARGIN_V;
