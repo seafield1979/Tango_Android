@@ -139,13 +139,15 @@ public class MySharedPref {
     public static final String StudyFilterKey = "StudyFilter";
 
     // Realmバックアップ保存場所
-    public static final String RealmBackupPathKey = "RealmBackupPath";
+    public static final String BackupPathKey = "BackupPath";
+    public static final String AutoBackupPathKey = "AutoBackupPath";
 
     // Realmバックアップ日時
-    public static final String RealmBackupDateKey = "RealmBackupDate";
+    public static final String BackupDateKey = "BackupDate";
+    public static final String AutoBackupDateKey = "AutoBackupDate";
 
     // 自動バックアップ
-    public static final String RealmAutoBackup = "RealmAutoBackup";
+    public static final String AutoBackup = "AutoBackup";
 
     // 編集ページ
     // メニューヘルプ(0:非表示 / 1:メニュー名を表示 / 2:メニューヘルプを表示)

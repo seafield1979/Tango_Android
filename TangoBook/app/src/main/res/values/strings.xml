@@ -118,7 +118,9 @@
     <string name="backup">バックアップ</string>
     <string name="backup_xml">バックアップ(xml)</string>
     <string name="backup_and_restore">バックアップと復元</string>
-    <string name="backup_path_title">バックアップファイルの場所</string>
+    <string name="location">場所: </string>
+    <string name="backup_path_title1">手動バックアップファイル</string>
+    <string name="backup_path_title2">自動バックアップファイル</string>
     <string name="backup_datetime">バックアップ日時</string>
     <string name="restore">復元</string>
     <string name="confirm_backup">バックアップしますか？\nバックアップを行うと、以前の\n状態に戻せるようになります。\n

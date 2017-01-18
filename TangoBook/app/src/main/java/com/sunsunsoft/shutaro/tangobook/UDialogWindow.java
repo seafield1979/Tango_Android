@@ -50,7 +50,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
 
     public static final int CloseDialogId = 10000123;
 
-    protected static final int MARGIN_H = 100;
+    protected static final int MARGIN_H = 50;
     protected static final int MARGIN_V = 15;
     protected static final int ANIMATION_FRAME = 10;
 
@@ -300,18 +300,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         isUpdate = true;
         return button;
     }
-//
-//    public UButton addImageButton(int id, String text, int imageId, int textColor, int color) {
-//        UButtonText button = new UButtonText(buttonCallbacks, UButtonType.Press,
-//                id, 0, text, 0, 0,
-//                0, 200,
-//                50, textColor, color);
-//        mButtons.add(button);
-//        isUpdate = true;
-//
-//        return button;
-//    }
-
 
     /**
      * ダイアログを閉じるボタンを追加する

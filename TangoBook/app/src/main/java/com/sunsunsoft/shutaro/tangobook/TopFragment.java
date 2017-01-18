@@ -89,7 +89,8 @@ public class TopFragment extends Fragment implements OnClickListener, OnTouchLis
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top, null);
 
-        UResourceManager.createInstance(getContext(), view);
+        //UResourceManager.createInstance(getContext(), view);
+        UResourceManager.getInstance().setView(view);
 
         // 検索用のEdit
         editLayout = (LinearLayout)view.findViewById(R.id.edit_container);

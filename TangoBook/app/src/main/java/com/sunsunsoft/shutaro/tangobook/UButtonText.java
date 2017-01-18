@@ -21,6 +21,8 @@ public class UButtonText extends UButton {
      */
     public static final String TAG = "UButtonText";
 
+    private static final int MARGIN_V = 30;
+
     protected static final int DEFAULT_TEXT_COLOR = Color.BLACK;
     protected static final int PULL_DOWN_COLOR = UColor.DarkGray;
 
@@ -86,6 +88,11 @@ public class UButtonText extends UButton {
         }
         this.mTextColor = textColor;
         mTextSize = textSize;
+
+        if (height == 0) {
+            Size size = UDraw.getTextSize( width, text, textSize);
+            setSize(width, size.height + MARGIN_V * 2);
+        }
     }
 
     /**

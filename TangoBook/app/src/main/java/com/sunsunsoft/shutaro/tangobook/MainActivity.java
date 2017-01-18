@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.Window;
 
 import java.io.InputStream;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,14 +39,28 @@ public class MainActivity extends AppCompatActivity {
         // ULog
         ULog.init();
 
+        // SharedPreferencesの初期化
+        MySharedPref.init(this);
+
         // Realmの初期化
         RealmManager.initRealm(this, false);
 
         // Xmlマネージャ
         XmlManager.createInstance(this);
 
-        // SharedPreferencesの初期化
-        MySharedPref.init(this);
+        // UResourceManager
+        UResourceManager.createInstance(this);
+
+        // オートバックアップ
+        if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
+            String filePath = XmlManager.saveXml(XmlManager.AutoBackupFile);
+            if (filePath != null) {
+                MySharedPref.writeString(MySharedPref.AutoBackupPathKey, filePath);
+                String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
+                MySharedPref.writeString(MySharedPref.AutoBackupDateKey, dateTime);
+            }
+        }
+
 
         // PresetBookManager
         PresetBookManager.createInstance(this);

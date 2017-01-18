@@ -37,6 +37,12 @@ public class XmlManager {
      */
     public static final String TAG = "XmlManager";
 
+    // 手動バックアップファイル名
+    public static final String ManualBackupFile = "tango_m.xml";
+
+    // 自動バックアップファイル名
+    public static final String AutoBackupFile = "tango_a.xml";
+
     /**
      * Member variables
      */

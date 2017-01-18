@@ -40,20 +40,24 @@ public class UResourceManager {
     private static UResourceManager singleton;
 
     // Singletonオブジェクトを作成する
-    public static UResourceManager createInstance(Context context, View view) {
+    public static UResourceManager createInstance(Context context) {
         if (singleton == null ) {
-            singleton = new UResourceManager(context, view);
-        } else if (singleton.mView != view) {
-            // Viewが異なっていたら別のページに遷移したものとみなし再生成する
-            singleton = new UResourceManager(context, view);
+            singleton = new UResourceManager(context);
         }
+//        else if (singleton.mView != view) {
+//            // Viewが異なっていたら別のページに遷移したものとみなし再生成する
+//            singleton = new UResourceManager(context, view);
+//        }
         return singleton;
     }
     public static UResourceManager getInstance() { return singleton; }
 
-    private UResourceManager(Context context, View view) {
+    private UResourceManager(Context context) {
         mContext = context;
-        mView = view;
+    }
+
+    public void setView(View view) {
+        singleton.mView = view;
     }
 
     /**

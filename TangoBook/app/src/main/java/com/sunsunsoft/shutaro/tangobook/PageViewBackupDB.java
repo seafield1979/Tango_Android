@@ -18,15 +18,6 @@ public class PageViewBackupDB extends UPageView
         implements UButtonCallbacks, UCheckBoxCallbacks{
 
     /**
-     * Enums
-     */
-    enum EState {
-        None,
-        EndBackup,
-        EndRestore
-    }
-
-    /**
      * Constants
      */
     private static final int DRAW_PRIORITY = 100;
@@ -41,34 +32,29 @@ public class PageViewBackupDB extends UPageView
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int BOX_WIDTH = 70;
 
-    private static final int TITLE_TEXT_SIZE = 70;
-    private static final int TITLE_TEXT_COLOR = Color.rgb(150,150,50);
     private static final int TEXT_SIZE_S = 40;
     private static final int TEXT_SIZE = 50;
 
     // button Ids
     private static final int ButtonIdBackup = 100;
-    private static final int ButtonIdRestore = 101;
     private static final int ButtonIdReturn = 102;
     private static final int ButtonIdBackupOK = 103;
-    private static final int ButtonIdRestoreOK = 104;
+    private static final int ButtonIdRestore1OK = 104;
+    private static final int ButtonIdRestore2OK = 105;
+
+    private static final int ButtonIdBackup1 = 200;
+    private static final int ButtonIdBackup2 = 201;
 
     /**
      * Member variables
      */
-    private EState mState;
-
     // バックアップタイトル
-    private UTextView mBackupTitle;
+    private UTextView mBackupTitle, mAutoBackupTitle;
 
     // バックアップパス
-    private UTextView mBackupPath;
-
-    // バックアップ日時
-    private UTextView mBackupDate;
-
     private UButtonText mBackupButton;
-    private UButtonText mRestoreButton;
+    private UButtonText mRestoreButton1, mRestoreButton2;
+
     private UCheckBox mAutoBackupCheck;
 
     // Dialog
@@ -80,16 +66,11 @@ public class PageViewBackupDB extends UPageView
      */
     public PageViewBackupDB(Context context, View parentView, String title) {
         super(context, parentView, title);
-        mState = EState.None;
     }
 
     /**
      * Methods
      */
-    private void setState(EState state) {
-        mState = state;
-    }
-
     protected void onShow() {
 
     }
@@ -130,69 +111,88 @@ public class PageViewBackupDB extends UPageView
         UDrawManager.getInstance().init();
 
         int width = mParentView.getWidth();
-        int height = mParentView.getHeight();
 
-        float x;
         float y = TOP_Y;
 
-        // Backup
+        // backup button
+        mBackupButton = new UButtonText(this, UButtonType.Press, ButtonIdBackup, DRAW_PRIORITY,
+                UResourceManager.getStringById(R.string.backup),
+                MARGIN_H, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
+                .LightGreen);
+        mBackupButton.addToDrawManager();
+        y += mBackupButton.size.height + MARGIN_V;
+
+
+        // 自動バックアップ CheckBox
+        mAutoBackupCheck = new UCheckBox(this, DRAW_PRIORITY, MARGIN_H, y,
+                mParentView.getWidth(), BOX_WIDTH, UResourceManager.getStringById(R.string
+                .auto_backup), TEXT_SIZE, TEXT_COLOR);
+        mAutoBackupCheck.addToDrawManager();
+        if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
+            mAutoBackupCheck.setChecked(true);
+        }
+        y += mAutoBackupCheck.getHeight() + MARGIN_V;
+
+
+
+        // 手動バックアップ
         // mTitle
         mBackupTitle = UTextView.createInstance(
-                UResourceManager.getStringById(R.string.backup_path_title),
+                UResourceManager.getStringById(R.string.backup_path_title1),
                 TEXT_SIZE_S, DRAW_PRIORITY,
                 UAlignment.None, width, false, false,
                 MARGIN_H, y, width, Color.BLACK, 0);
         mBackupTitle.addToDrawManager();
         y += mBackupTitle.size.height + MARGIN_V_S;
 
-        // backup file path
-        String backupPath = MySharedPref.readString(MySharedPref.RealmBackupPathKey);
+        // path & datetime
+        String backupPath = MySharedPref.readString(MySharedPref.BackupPathKey);
         if (backupPath.length() == 0) {
             backupPath = UResourceManager.getStringById(R.string.no_backup);
+        } else {
+            backupPath = UResourceManager.getStringById(R.string.location) +
+                    backupPath + "\n" + UResourceManager.getStringById(R.string.backup_datetime) +
+                    " : " +
+                    MySharedPref.readString(MySharedPref.BackupDateKey);
         }
-        mBackupPath = UTextView.createInstance(backupPath,
-                TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.None, width, true, true,
-                MARGIN_H, y, 0, UColor.DarkGreen, Color.LTGRAY);
-        mBackupPath.addToDrawManager();
-        y += mBackupPath.size.height + MARGIN_H;
 
-        // backup date time
-        String backupDate = UResourceManager.getStringById(R.string.backup_datetime) + " : " +
-                MySharedPref.readString(MySharedPref.RealmBackupDateKey);
+        // button
+        mRestoreButton1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup1,
+                DRAW_PRIORITY, backupPath,
+                MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
+        mRestoreButton1.addToDrawManager();
 
-        mBackupDate = UTextView.createInstance( backupDate,
+        y += mRestoreButton1.size.height + MARGIN_H;
+
+
+
+
+
+        // 自動バックアップ
+        // title
+        mAutoBackupTitle = UTextView.createInstance(
+                UResourceManager.getStringById(R.string.backup_path_title2),
                 TEXT_SIZE_S, DRAW_PRIORITY,
                 UAlignment.None, width, false, false,
                 MARGIN_H, y, width, Color.BLACK, 0);
-        mBackupDate.addToDrawManager();
-        y += mBackupDate.size.height + MARGIN_V;
+        mAutoBackupTitle.addToDrawManager();
+        y += mAutoBackupTitle.size.height + MARGIN_V_S;
 
-        // backup button
-        x = (width - BUTTON2_W * 2 - MARGIN_H) / 2;
-        mBackupButton = new UButtonText(this, UButtonType.Press, ButtonIdBackup, DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.backup),
-                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor.LightGreen);
-        mBackupButton.addToDrawManager();
-        x += BUTTON2_W + MARGIN_H;
-
-        // restore button
-        mRestoreButton = new UButtonText(this, UButtonType.Press, ButtonIdRestore, DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.restore),
-                x, y, BUTTON2_W, BUTTON2_H, TEXT_SIZE, UColor.DarkYellow, UColor.LightYellow);
-        mRestoreButton.addToDrawManager();
-        x = MARGIN_H;
-        y += mRestoreButton.getHeight() + MARGIN_V;
-
-        // 自動バックアップ CheckBox
-        mAutoBackupCheck = new UCheckBox(this, DRAW_PRIORITY, x, y,
-                mParentView.getWidth(), BOX_WIDTH, UResourceManager.getStringById(R.string
-                .auto_backup), TEXT_SIZE, TEXT_COLOR);
-        mAutoBackupCheck.addToDrawManager();
-        if (MySharedPref.readBoolean(MySharedPref.RealmAutoBackup)) {
-            mAutoBackupCheck.setChecked(true);
+        // path & datetime
+        backupPath = MySharedPref.readString(MySharedPref.AutoBackupPathKey);
+        if (backupPath.length() == 0) {
+            backupPath = UResourceManager.getStringById(R.string.no_backup);
+        } else {
+            backupPath = UResourceManager.getStringById(R.string.location) +
+                    backupPath + "\n" + UResourceManager.getStringById(R.string.backup_datetime) +
+                    " : " +
+                    MySharedPref.readString(MySharedPref.AutoBackupDateKey);
         }
-        y += mAutoBackupCheck.getHeight() + MARGIN_V;
+        // button
+        mRestoreButton2 = new UButtonText(this, UButtonType.Press, ButtonIdBackup2,
+                DRAW_PRIORITY, backupPath,
+                MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
+        mRestoreButton2.addToDrawManager();
 
     }
 
@@ -229,50 +229,59 @@ public class PageViewBackupDB extends UPageView
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
             }
                 break;
-            case ButtonIdRestore:
-            {
+            case ButtonIdBackup1:
+            case ButtonIdBackup2:
                 // 復元ボタン
                 if (mDialog != null) {
                     mDialog.closeWindow();
                 }
                 mDialog = UDialogWindow.createInstance(this, null, UDialogWindow.ButtonDir.Horizontal,
                         mParentView.getWidth(), mParentView
-                        .getHeight());
+                                .getHeight());
                 mDialog.addToDrawManager();
                 mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_restore));
-                mDialog.addButton(ButtonIdRestoreOK, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addButton((id == ButtonIdBackup1) ? ButtonIdRestore1OK : ButtonIdRestore2OK,
+                        "OK", Color.BLACK, Color.WHITE);
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-            }
-            break;
+                break;
+
             case ButtonIdReturn:
                 PageViewManager.getInstance().popPage();
                 break;
+
             case ButtonIdBackupOK:
             {
                 // xmlに保存
-                String filePath = XmlManager.getInstance().saveXml("tango.xml");
+                String filePath = XmlManager.getInstance().saveXml(XmlManager.ManualBackupFile);
                 mDialog.startClosing();
 
                 // 画面表示更新
                 String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
-                mBackupPath.setText(filePath);
-                mBackupDate.setText(UResourceManager.getStringById(R.string.backup_datetime) +
-                        " : " + dateTime);
-                MySharedPref.writeString(MySharedPref.RealmBackupPathKey, filePath);
-                MySharedPref.writeString(MySharedPref.RealmBackupDateKey, dateTime);
+                mRestoreButton1.setText(filePath);
+
+                MySharedPref.writeString(MySharedPref.BackupPathKey, filePath);
+                MySharedPref.writeString(MySharedPref.BackupDateKey, dateTime);
 
                 // ダイアログが閉じたら完了メッセージダイアログを表示
                 showDialog(UResourceManager.getStringById(R.string.finish_backup));
 
+                isFirst = true;
                 return true;
             }
-            case ButtonIdRestoreOK:
-                XmlManager.getInstance().loadXml("tango.xml");
+
+            case ButtonIdRestore1OK:
+                XmlManager.getInstance().loadXml(XmlManager.ManualBackupFile);
                 mDialog.startClosing();
 
                 // ダイアログが閉じたら完了メッセージダイアログを表示
                 showDialog(UResourceManager.getStringById(R.string.finish_restore));
+                break;
+            case ButtonIdRestore2OK:
+                XmlManager.getInstance().loadXml(XmlManager.AutoBackupFile);
+                mDialog.startClosing();
 
+                // ダイアログが閉じたら完了メッセージダイアログを表示
+                showDialog(UResourceManager.getStringById(R.string.finish_restore));
                 break;
         }
         return false;
@@ -296,7 +305,7 @@ public class PageViewBackupDB extends UPageView
      * チェックされた時のイベント
      */
     public void UCheckBoxChanged(boolean checked) {
-        MySharedPref.writeBoolean(MySharedPref.RealmAutoBackup, checked);
+        MySharedPref.writeBoolean(MySharedPref.AutoBackup, checked);
     }
 
 }
