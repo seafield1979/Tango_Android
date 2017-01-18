@@ -18,6 +18,15 @@ public class PageViewBackupDB extends UPageView
         implements UButtonCallbacks, UCheckBoxCallbacks{
 
     /**
+     * Enums
+     */
+    enum EState {
+        None,
+        EndBackup,
+        EndRestore
+    }
+
+    /**
      * Constants
      */
     private static final int DRAW_PRIORITY = 100;
@@ -39,16 +48,15 @@ public class PageViewBackupDB extends UPageView
 
     // button Ids
     private static final int ButtonIdBackup = 100;
-//    private static final int ButtonIdBackup2 = 101;
-    private static final int ButtonIdRestore = 102;
-    private static final int ButtonIdReturn = 103;
-    private static final int ButtonIdBackupOK = 104;
-//    private static final int ButtonIdBackupXmlOK = 105;
-    private static final int ButtonIdRestoreOK = 106;
+    private static final int ButtonIdRestore = 101;
+    private static final int ButtonIdReturn = 102;
+    private static final int ButtonIdBackupOK = 103;
+    private static final int ButtonIdRestoreOK = 104;
 
     /**
      * Member variables
      */
+    private EState mState;
 
     // バックアップタイトル
     private UTextView mBackupTitle;
@@ -62,7 +70,6 @@ public class PageViewBackupDB extends UPageView
     private UButtonText mBackupButton;
     private UButtonText mRestoreButton;
     private UCheckBox mAutoBackupCheck;
-//    private UButtonText mBackupButton2;
 
     // Dialog
     private UDialogWindow mDialog;
@@ -73,11 +80,15 @@ public class PageViewBackupDB extends UPageView
      */
     public PageViewBackupDB(Context context, View parentView, String title) {
         super(context, parentView, title);
+        mState = EState.None;
     }
 
     /**
      * Methods
      */
+    private void setState(EState state) {
+        mState = state;
+    }
 
     protected void onShow() {
 
@@ -237,35 +248,43 @@ public class PageViewBackupDB extends UPageView
                 PageViewManager.getInstance().popPage();
                 break;
             case ButtonIdBackupOK:
-//                // バックアップ
-//                String filePath = RealmManager.backup();
-//                if (filePath != null) {
-//                    String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
-//
-//                    mBackupPath.setText(filePath);
-//                    mBackupDate.setText(UResourceManager.getStringById(R.string.backup_datetime) +
-//                            " : " +
-//                            dateTime);
-//                    MySharedPref.writeString(MySharedPref.RealmBackupPathKey, filePath);
-//                    MySharedPref.writeString(MySharedPref.RealmBackupDateKey, dateTime);
-//                }
-//                mDialog.startClosing();
-//            }
-//            break;
-                XmlManager.getInstance().saveXml("tango.xml");
+            {
+                // xmlに保存
+                String filePath = XmlManager.getInstance().saveXml("tango.xml");
                 mDialog.startClosing();
-                break;
+
+                // 画面表示更新
+                String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
+                mBackupPath.setText(filePath);
+                mBackupDate.setText(UResourceManager.getStringById(R.string.backup_datetime) +
+                        " : " + dateTime);
+                MySharedPref.writeString(MySharedPref.RealmBackupPathKey, filePath);
+                MySharedPref.writeString(MySharedPref.RealmBackupDateKey, dateTime);
+
+                // ダイアログが閉じたら完了メッセージダイアログを表示
+                showDialog(UResourceManager.getStringById(R.string.finish_backup));
+
+                return true;
+            }
             case ButtonIdRestoreOK:
-                // バックアップから復元
-//                RealmManager.restore();
-//
                 XmlManager.getInstance().loadXml("tango.xml");
                 mDialog.startClosing();
+
+                // ダイアログが閉じたら完了メッセージダイアログを表示
+                showDialog(UResourceManager.getStringById(R.string.finish_restore));
+
                 break;
         }
         return false;
     }
 
+    private void showDialog(String message) {
+        mDialog = UDialogWindow.createInstance(null, null, UDialogWindow.ButtonDir.Horizontal,
+                mParentView.getWidth(), mParentView.getHeight());
+        mDialog.setTitle(message);
+        mDialog.addToDrawManager();
+        mDialog.addCloseButton(null,Color.BLACK, Color.WHITE);
+    }
 
     /**
      * Callbacks
@@ -279,4 +298,5 @@ public class PageViewBackupDB extends UPageView
     public void UCheckBoxChanged(boolean checked) {
         MySharedPref.writeBoolean(MySharedPref.RealmAutoBackup, checked);
     }
+
 }

@@ -110,7 +110,6 @@ public class TangoBookHistoryDao {
         int id = getNextId();
         history.setId(id);
         history.setBookId(bookId);
-        history.setLearned(learned);
         history.setOkNum(okNum);
         history.setNgNum(ngNum);
         history.setCorrectRatio((float)okNum / (float)(okNum + ngNum));
@@ -173,5 +172,24 @@ public class TangoBookHistoryDao {
             nextId = maxId.intValue() + 1;
         }
         return nextId;
+    }
+
+
+    /**
+     * XMLファイルから読み込んだデータを追加する
+     */
+    public void addXmlBook(List<BHistory> bookHistory) {
+        mRealm.beginTransaction();
+        for (BHistory _history : bookHistory) {
+            TangoBookHistory history = new TangoBookHistory();
+            history.setId( _history.getId());
+            history.setBookId( _history.getBookId());
+            history.setOkNum( _history.getOkNum());
+            history.setNgNum( _history.getNgNum());
+            history.setCorrectRatio( _history.getCorrectRatio());
+            history.setStudiedDateTime( _history.getStudiedDateTime());
+            mRealm.insert(history);
+        }
+        mRealm.commitTransaction();
     }
 }

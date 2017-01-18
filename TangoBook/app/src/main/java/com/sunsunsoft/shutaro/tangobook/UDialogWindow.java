@@ -209,7 +209,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         return createInstance(DialogType.Mordal, buttonCallbacks,
                 dialogCallbacks,
                 buttonDir, DialogPosType.Center,
-                false, screenW, screenH,
+                true, screenW, screenH,
                 Color.BLACK, Color.LTGRAY);
     }
 
@@ -318,13 +318,23 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
      * @param text
      */
     public void addCloseButton(String text) {
+        addCloseButton(text, 0, 0);
+    }
+
+    public void addCloseButton(String text, int textColor, int bgColor) {
         if (text == null) {
-            text = "Close";
+            text = UResourceManager.getStringById(R.string.close);
+        }
+        if (textColor == 0) {
+            textColor = Color.WHITE;
+        }
+        if (bgColor == 0) {
+            bgColor = Color.rgb(200,100,100);
         }
         UButtonText button = new UButtonText(this, UButtonType.Press, CloseDialogId,
                 0, text, 0, 0,
                 0, 0,
-                50, Color.WHITE, Color.rgb(200,100,100));
+                50, textColor, bgColor);
         mButtons.add(button);
         isUpdate = true;
     }

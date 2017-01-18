@@ -83,6 +83,19 @@ public class TangoCardHistoryDao {
     /**
      * Delete
      */
+
+    /**
+     * 配下の学習カード履歴も含めてすべて削除
+     */
+    public void deleteAll() {
+        RealmResults<TangoCardHistory> results = mRealm.where(TangoCardHistory.class)
+                .findAll();
+
+        mRealm.beginTransaction();
+        results.deleteAllFromRealm();
+        mRealm.commitTransaction();
+    }
+
     public boolean deleteByCardId(int cardId) {
         TangoCardHistory result = mRealm.where(TangoCardHistory.class)
                 .equalTo("cardId", cardId).findFirst();
@@ -126,4 +139,19 @@ public class TangoCardHistoryDao {
         }
     }
 
+    /**
+     * XMLファイルから読み込んだデータを追加する
+     */
+    public void addXmlCard(List<CHistory> cardHistory) {
+        mRealm.beginTransaction();
+        for (CHistory _history : cardHistory) {
+            TangoCardHistory history = new TangoCardHistory();
+            history.setCardId( _history.getCardId());
+            history.setCorrectFlagNum( _history.getCorrectFlagNum());
+            history.setCorrectFlags( _history.getCorrectFlag());
+            history.setStudiedDate( _history.getStudiedDate());
+            mRealm.insert(history);
+        }
+        mRealm.commitTransaction();
+    }
 }

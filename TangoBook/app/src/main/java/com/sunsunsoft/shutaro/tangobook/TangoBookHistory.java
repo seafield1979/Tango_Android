@@ -26,13 +26,10 @@ public class TangoBookHistory extends RealmObject {
     @Index
     private int bookId;
 
-    // 覚え済みフラグ(ユーザー自身がON/OFFする)
-    private boolean learned;
-
-    // 過去のOK数
+    // OK数
     private int okNum;
 
-    // 過去のNG数
+    // NG数
     private int ngNum;
 
     // 正解率
@@ -60,13 +57,13 @@ public class TangoBookHistory extends RealmObject {
         this.bookId = bookId;
     }
 
-    public boolean isLearned() {
-        return learned;
-    }
-
-    public void setLearned(boolean learned) {
-        this.learned = learned;
-    }
+//    public boolean isLearned() {
+//        return learned;
+//    }
+//
+//    public void setLearned(boolean learned) {
+//        this.learned = learned;
+//    }
 
     public Date getStudiedDateTime() {
         return studiedDateTime;

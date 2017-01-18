@@ -18,6 +18,9 @@ import io.realm.annotations.Required;
  * 全データをxmlに書き込むための DTOクラス
  */
 
+/**
+ * TangoCard保存用
+ */
 class Card {
     private int id;
     private String wA;       // 単語帳の表
@@ -74,6 +77,9 @@ class Card {
     }
 }
 
+/**
+ * TangoBook保存用
+ */
 class Book {
     private int id;
     private String nm;        // 単語帳の名前
@@ -117,6 +123,9 @@ class Book {
     }
 }
 
+/**
+ * TangoItemPos保存用
+ */
 class Pos {
     private int pType;  // parentType
     private int pId;    // parentId
@@ -157,18 +166,166 @@ class Pos {
     }
 }
 
+/**
+ * TangoBookHistory保存用
+ */
+class BHistory {
+    private int id;
+    private int bId;        // bookId
+    private boolean learn;  // learned
+    private int ok;         // okNum
+    private int ng;         // ngNum
+    private float cr;       // correctRatio
+    private Date st;        // StudiedDateTime
+
+    /**
+     * Get/Set
+     */
+    public int getId() {
+        return id;
+    }
+
+    public int getBookId() {
+        return bId;
+    }
+
+     public int getOkNum() {
+        return ok;
+    }
+
+    public int getNgNum() {
+        return ng;
+    }
+
+    public float getCorrectRatio() {
+        return cr;
+    }
+
+    public Date getStudiedDateTime() {
+        return st;
+    }
+
+    /**
+     * Constructor
+     */
+    public BHistory(){}
+    public BHistory(int id, int bookId, int okNum, int ngNum, float correctRatio, Date
+            studiedTime) {
+        this.id = id;
+        this.bId = bookId;
+        this.ok = okNum;
+        this.ng = ngNum;
+        this.cr = correctRatio;
+        this.st = studiedTime;
+    }
+}
+
+/**
+ * TangoStudiedCard保存用
+ */
+class StudiedC {
+    private int bId;        // bookHistoryId
+    private int cId;        // cardId
+    private boolean ok;     // okFlag
+
+    /**
+     * Get/Set
+     */
+    public int getBookHistoryId() {
+        return bId;
+    }
+
+    public int getCardId() {
+        return cId;
+    }
+
+    public boolean isOkFlag() {
+        return ok;
+    }
+
+    public StudiedC(){}
+    public StudiedC(int bookHistoryId, int cardId, boolean okFlag) {
+        this.bId = bookHistoryId;
+        this.cId = cardId;
+        this.ok = okFlag;
+    }
+}
+
+/**
+ * TangoCardHistory保存用
+ */
+class CHistory {
+    private int cId;             // cardId
+    private int cfn;     // correctFlagNum
+    private byte[] cf = new byte[10];     // correctFlags
+    private Date date;       // studiedDate
+
+    /**
+     * Get/Set
+     */
+    public int getCardId() {
+        return cId;
+    }
+
+    public int getCorrectFlagNum() {
+        return cfn;
+    }
+
+    public byte[] getCorrectFlag() {
+        return cf;
+    }
+
+    public Date getStudiedDate() {
+        return date;
+    }
+
+    /**
+     * Constructor
+     */
+    public CHistory(){}
+    public CHistory(int cardId, int correctFlagNum, byte[] correctFlag, Date studiedDate){
+        this.cId = cardId;
+        this.cfn = correctFlagNum;
+        this.cf = correctFlag;
+        this.date = studiedDate;
+    }
+}
+
 @Root
 public class XmlTangoTop {
+    @Element
+    // Xml backup version
+    public int version = 100;
 
-    // カード
+    // Number of card
+    @Element
+    public int cardNum;
+
+    // Number of book
+    @Element
+    public int bookNum;
+
+    // card
     @ElementList(required = false)
     public List<Card> card;
 
-    // 単語帳
+    // book
     @ElementList(required = false)
     public List<Book> book;
 
-    // 単語帳、カードの配置場所
+    // card&book location
     @ElementList(required = false)
     public List<Pos> itemPos;
+
+    // 学習単語帳履歴(1学習1履歴)
+    @ElementList(required = false)
+    public List<BHistory> bHistory;
+
+    // 学習カード(1回学習するたびに1つ)
+    @ElementList(required = false)
+    public List<StudiedC> studiedC;
+
+    // 学習カード履歴(1カード1履歴)
+    @ElementList(required = false)
+    public List<CHistory> cHistory;
 }

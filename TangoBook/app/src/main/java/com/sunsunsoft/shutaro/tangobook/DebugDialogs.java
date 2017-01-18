@@ -160,7 +160,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
 
 
                 }
-                mDialog.addCloseButton(null);
+                mDialog.addCloseButton(null, Color.BLACK, Color.WHITE);
                 // 描画マネージャに登録
                 mDialog.setDrawPriority(DrawPriority.Dialog.p());
             }

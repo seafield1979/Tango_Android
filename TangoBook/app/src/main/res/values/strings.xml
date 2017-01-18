@@ -121,7 +121,8 @@
     <string name="backup_path_title">バックアップファイルの場所</string>
     <string name="backup_datetime">バックアップ日時</string>
     <string name="restore">復元</string>
-    <string name="confirm_backup">バックアップしますか？</string>
+    <string name="confirm_backup">バックアップしますか？\nバックアップを行うと、以前の\n状態に戻せるようになります。\n
+        また、別の端末に状態を移動することができます。</string>
     <string name="finish_backup">バックアップが完了しました</string>
     <string name="confirm_restore">バックアップから復元しますか？</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
