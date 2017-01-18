@@ -48,6 +48,20 @@ public class XmlManager {
      */
     private Context mContext;
 
+    // バックアップ情報
+    private int mBackupCardNum;
+    private int mBackupBookNum;
+
+    /**
+     * Get/Set
+     */
+    public int getBackpuCardNum() {
+        return mBackupCardNum;
+    }
+    public int getBackupBookNum() {
+        return mBackupBookNum;
+    }
+
     /**
      * Constructor
      */
@@ -148,10 +162,10 @@ public class XmlManager {
         tangoTop.studiedC = studiedCard2;
 
         // カード数
-        tangoTop.cardNum = cards.size();
+        singleton.mBackupCardNum = tangoTop.cardNum = cards.size();
 
         // 単語帳数
-        tangoTop.bookNum = books.size();
+        singleton.mBackupBookNum = tangoTop.bookNum = books.size();
 
         // ファイルに書き込む
         File path = getInstance().getPath(DirType.ExternalDocument);

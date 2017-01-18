@@ -154,9 +154,9 @@ public class IconInfoDialogTrash extends IconInfoDialog {
                 x, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
         y += TEXT_SIZE + MARGIN_V;
 
-        // Box count
+        // Book count
         titleBoxNum = UTextView.createInstance( UResourceManager
-                .getStringById(R.string.box_count), TEXT_SIZE, 0,
+                .getStringById(R.string.book_count), TEXT_SIZE, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
                 x, y, width - MARGIN_H * 2,
                 TEXT_COLOR, 0);

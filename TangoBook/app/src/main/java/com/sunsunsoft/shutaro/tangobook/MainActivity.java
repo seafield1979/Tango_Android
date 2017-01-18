@@ -55,9 +55,16 @@ public class MainActivity extends AppCompatActivity {
         if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
             String filePath = XmlManager.saveXml(XmlManager.AutoBackupFile);
             if (filePath != null) {
-                MySharedPref.writeString(MySharedPref.AutoBackupPathKey, filePath);
                 String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
-                MySharedPref.writeString(MySharedPref.AutoBackupDateKey, dateTime);
+                String info =  UResourceManager.getStringById(R.string.card_count) +
+                        ":" + XmlManager.getInstance().getBackpuCardNum() +
+                        "   " + UResourceManager.getStringById(R.string.book_count) +
+                        ":" + XmlManager.getInstance().getBackupBookNum() + "\n" +
+                        UResourceManager.getStringById(R.string.location) +
+                        filePath + "\n" +
+                        UResourceManager.getStringById(R.string.datetime) +
+                        " : " + dateTime;
+                MySharedPref.writeString(MySharedPref.AutoBackupInfoKey, info);
             }
         }
 

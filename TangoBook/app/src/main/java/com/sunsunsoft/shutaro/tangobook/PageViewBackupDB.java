@@ -145,27 +145,18 @@ public class PageViewBackupDB extends UPageView
         mBackupTitle.addToDrawManager();
         y += mBackupTitle.size.height + MARGIN_V_S;
 
-        // path & datetime
-        String backupPath = MySharedPref.readString(MySharedPref.BackupPathKey);
-        if (backupPath.length() == 0) {
-            backupPath = UResourceManager.getStringById(R.string.no_backup);
-        } else {
-            backupPath = UResourceManager.getStringById(R.string.location) +
-                    backupPath + "\n" + UResourceManager.getStringById(R.string.backup_datetime) +
-                    " : " +
-                    MySharedPref.readString(MySharedPref.BackupDateKey);
+        // button
+        String buttonTitle = MySharedPref.readString(MySharedPref.BackupInfoKey);
+        if (buttonTitle.length() == 0) {
+            buttonTitle = UResourceManager.getStringById(R.string.no_backup);
         }
 
-        // button
         mRestoreButton1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup1,
-                DRAW_PRIORITY, backupPath,
+                DRAW_PRIORITY, buttonTitle,
                 MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
         mRestoreButton1.addToDrawManager();
 
         y += mRestoreButton1.size.height + MARGIN_H;
-
-
-
 
 
         // 自動バックアップ
@@ -178,23 +169,19 @@ public class PageViewBackupDB extends UPageView
         mAutoBackupTitle.addToDrawManager();
         y += mAutoBackupTitle.size.height + MARGIN_V_S;
 
-        // path & datetime
-        backupPath = MySharedPref.readString(MySharedPref.AutoBackupPathKey);
+
+        // button
+        String backupPath = MySharedPref.readString(MySharedPref.AutoBackupInfoKey);
         if (backupPath.length() == 0) {
             backupPath = UResourceManager.getStringById(R.string.no_backup);
-        } else {
-            backupPath = UResourceManager.getStringById(R.string.location) +
-                    backupPath + "\n" + UResourceManager.getStringById(R.string.backup_datetime) +
-                    " : " +
-                    MySharedPref.readString(MySharedPref.AutoBackupDateKey);
         }
-        // button
         mRestoreButton2 = new UButtonText(this, UButtonType.Press, ButtonIdBackup2,
                 DRAW_PRIORITY, backupPath,
                 MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
         mRestoreButton2.addToDrawManager();
 
     }
+
 
     /**
      * ソフトウェアキーの戻るボタンを押したときの処理
@@ -255,17 +242,30 @@ public class PageViewBackupDB extends UPageView
                 String filePath = XmlManager.getInstance().saveXml(XmlManager.ManualBackupFile);
                 mDialog.startClosing();
 
-                // 画面表示更新
-                String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
-                mRestoreButton1.setText(filePath);
 
-                MySharedPref.writeString(MySharedPref.BackupPathKey, filePath);
-                MySharedPref.writeString(MySharedPref.BackupDateKey, dateTime);
+                // 画面表示更新
+                String buttonTitle;
+                if (filePath == null) {
+                    buttonTitle = UResourceManager.getStringById(R.string.no_backup);
+                } else {
+                    String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
+                    buttonTitle =  UResourceManager.getStringById(R.string.card_count) +
+                            ":" + XmlManager.getInstance().getBackpuCardNum() +
+                            "   " + UResourceManager.getStringById(R.string.book_count) +
+                            ":" + XmlManager.getInstance().getBackupBookNum() + "\n" +
+                            UResourceManager.getStringById(R.string.location) +
+                            filePath + "\n" +
+                            UResourceManager.getStringById(R.string.datetime) +
+                            " : " + dateTime;
+                }
+                mRestoreButton1.setText(buttonTitle);
+
+                // 情報を保存
+                MySharedPref.writeString(MySharedPref.BackupInfoKey, buttonTitle);
 
                 // ダイアログが閉じたら完了メッセージダイアログを表示
                 showDialog(UResourceManager.getStringById(R.string.finish_backup));
 
-                isFirst = true;
                 return true;
             }
 
