@@ -126,6 +126,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         textTitle.draw(canvas, paint, pos);
         for (IconInfoItem item : mItems) {
+            if (item == null) continue;
             item.title.draw(canvas, paint, pos);
             item.body.draw(canvas, paint, pos);
         }
@@ -175,6 +176,9 @@ public class IconInfoDialogCard extends IconInfoDialog {
                 case Comment:
                     titleStr = mContext.getString(R.string.comment);
                     bodyStr = UUtil.convString(mCard.getComment(), false, 2, 0);
+                    if (bodyStr == null || bodyStr.length() == 0) {
+                        continue;
+                    }
                     break;
 
                 case History:   // 学習履歴
@@ -184,10 +188,10 @@ public class IconInfoDialogCard extends IconInfoDialog {
                     if (history != null) {
                         historyStr = history.getCorrectFlagsAsString();
                     } else {
-                        historyStr = "---";
+                        continue;
                     }
 
-                    titleStr = mContext.getString(R.string.studied_date);
+                    titleStr = mContext.getString(R.string.study_history);
                     bodyStr = historyStr;
                 }
                     break;
@@ -219,6 +223,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         // タイトルのwidthを揃える
         for (IconInfoItem item : mItems) {
+            if (item == null) continue;
             item.title.setWidth(width - MARGIN_H * 2);
         }
 
@@ -283,6 +288,11 @@ public class IconInfoDialogCard extends IconInfoDialog {
     }
 
     public boolean doAction() {
+        for (UButtonImage button : imageButtons) {
+            if (button.doAction()) {
+                return true;
+            }
+        }
         return false;
     }
 

@@ -224,6 +224,20 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
     }
 
     public boolean doAction() {
+        // Drawables
+        for (UDrawable obj : mDrawables) {
+            if (obj.doAction()) {
+                return true;
+            }
+        }
+
+        // Buttons
+        for (UButton button : mButtons) {
+            if (button.doAction()) {
+                return true;
+            }
+        }
+
         return false;
     }
 

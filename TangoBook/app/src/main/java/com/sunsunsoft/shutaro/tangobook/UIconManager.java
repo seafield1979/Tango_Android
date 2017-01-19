@@ -134,8 +134,12 @@ public class UIconManager implements UIconCallbacks{
 
         switch (copySrc.getType()) {
             case Card: {
+                TangoItemPos itemPos = copySrc.getTangoItem().getItemPos();
                 TangoCard card = TangoCard.copyCard((TangoCard)copySrc.getTangoItem());
-                RealmManager.getCardDao().addOne(card, TangoParentType.Home, 0, addItemPos);
+                RealmManager.getCardDao().addOne(card,
+                        TangoParentType.toEnum(itemPos.getParentType()),
+                        itemPos.getParentId(),
+                        addItemPos);
                 icon = new IconCard(card, mParentWindow, this);
             }
             break;

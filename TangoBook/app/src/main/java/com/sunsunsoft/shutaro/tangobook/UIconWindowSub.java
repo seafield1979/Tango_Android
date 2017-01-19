@@ -19,6 +19,7 @@ interface UIconWindowSubCallbacks {
     void IconWindowSubEdit(UIcon icon);
     void IconWindowSubCopy(UIcon icon);
     void IconWindowSubDelete(UIcon icon);
+    void IconWindowSubCleanupTrash();
 }
 
 public class UIconWindowSub extends UIconWindow {
@@ -180,6 +181,22 @@ public class UIconWindowSub extends UIconWindow {
     }
 
     /**
+     * 毎フレーム行う処理
+     * @return true:再描画を行う(まだ処理が終わっていない)
+     */
+    public boolean doAction() {
+        if (super.doAction()) {
+            return true;
+        }
+        for (UButtonImage button : getButtons()) {
+            if (button.doAction()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * タッチ処理
      * @param vt
      * @return trueならViewを再描画
@@ -256,6 +273,11 @@ public class UIconWindowSub extends UIconWindow {
             case buttonIdDelete:
                 if (mIconWindowSubCallback != null && mParentIcon != null ) {
                     mIconWindowSubCallback.IconWindowSubDelete(mParentIcon);
+                }
+                break;
+            case buttonIdCleanup:
+                if (mIconWindowSubCallback != null) {
+                    mIconWindowSubCallback.IconWindowSubCleanupTrash();
                 }
                 break;
         }

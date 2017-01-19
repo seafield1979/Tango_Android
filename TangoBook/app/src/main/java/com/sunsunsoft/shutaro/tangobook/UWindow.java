@@ -435,7 +435,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
             mScrollBarV.setBgLength(clientSize.height);
         }
         updateWindow();
-        Log.d(TAG, "winSize:height:" + size.height + " clientSize:" + clientSize.height);
+        ULog.print(TAG, "winSize:height:" + size.height + " clientSize:" + clientSize.height);
 
         return ret;
     }

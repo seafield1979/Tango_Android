@@ -199,6 +199,11 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
     }
 
     public boolean doAction() {
+        for (UButtonImage button : imageButtons) {
+            if (button.doAction()) {
+                return true;
+            }
+        }
         return false;
     }
 

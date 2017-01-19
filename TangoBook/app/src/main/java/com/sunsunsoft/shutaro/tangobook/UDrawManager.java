@@ -267,6 +267,7 @@ public class UDrawManager {
             // 毎フレームの処理
             if (list.doAction()) {
                 redraw = true;
+                break;
             }
         }
 
@@ -445,13 +446,12 @@ class DrawList
      * @return
      */
     public boolean doAction() {
-        boolean allDone = true;
         for (UDrawable obj : list) {
             if (obj.doAction()) {
-                allDone = false;
+                return true;
             }
         }
-        return !allDone;
+        return false;
     }
 
     /**

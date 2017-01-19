@@ -47,6 +47,7 @@ public class ULog {
         setEnable(UButton.TAG, true);
         setEnable(UColor.TAG, false);
         setEnable(UResourceManager.TAG, false);
+        setEnable(UWindow.TAG, false);
     }
 
     // ログ出力

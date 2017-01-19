@@ -183,7 +183,13 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
      * @return true:描画を行う
      */
     public boolean doAction() {
+        for (UButton button : buttons) {
+            if (button == null) continue;
 
+            if (button.doAction()) {
+                return true;
+            }
+        }
         return false;
     }
 

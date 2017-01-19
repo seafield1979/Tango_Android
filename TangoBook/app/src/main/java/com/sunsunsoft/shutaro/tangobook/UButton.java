@@ -51,6 +51,7 @@ abstract public class UButton extends UDrawable {
     protected UButtonCallbacks buttonCallback;
     protected boolean enabled;          // falseならdisableでボタンが押せなくなる
     protected boolean isPressed;
+    protected boolean isClicked;        // クリックされた(クリックイベントを遅延発生させるために使用)
     protected int pressedColor;
     protected int disabledColor;        // enabled == false のときの色
     protected int disabledColor2;       // eanbled == false のときの濃い色
@@ -135,6 +136,20 @@ abstract public class UButton extends UDrawable {
     abstract void draw(Canvas canvas, Paint paint, PointF offset);
 
     /**
+     * 毎フレームの処理
+     * サブクラスでオーバーライドして使用する
+     * @return true:処理中 / false:処理完了
+     */
+    public boolean doAction(){
+        if (isClicked) {
+            isClicked = false;
+            click();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * UDrawable Interface
      */
     /**
@@ -186,11 +201,12 @@ abstract public class UButton extends UDrawable {
                     if (type == UButtonType.Press3) {
                         // Off -> On に切り替わる一回目だけイベント発生
                         if (pressedOn == false) {
-                            click();
+                            isClicked = true;
                             pressedOn = true;
+                            done = true;
                         }
                     } else {
-                        click();
+                        isClicked = true;
                         done = true;
                         if (type == UButtonType.Press2) {
                             pressedOn = !pressedOn;

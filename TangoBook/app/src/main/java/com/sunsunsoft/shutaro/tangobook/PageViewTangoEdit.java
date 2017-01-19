@@ -533,10 +533,12 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 // ゴミ箱を空にする
                 RealmManager.getItemPosDao().deleteItemsInTrash();
                 mDialog.closeDialog();
-                mIconInfoDlg.closeWindow();
-                mIconInfoDlg = null;
+                if (mIconInfoDlg != null) {
+                    mIconInfoDlg.closeWindow();
+                    mIconInfoDlg = null;
+                }
                 mIconWinManager.getSubWindow().sortIcons(false);
-                break;
+                return true;
             case UDialogWindow.CloseDialogId:
                 mDialog.closeDialog();
                 break;
@@ -732,7 +734,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     public static final int CleanupDialogButtonOK = 101;
 
     public void IconInfoCleanup(UIcon icon) {
-        if (icon.getType() == IconType.Trash) {
+        if (icon == null || icon.getType() == IconType.Trash) {
             if (mDialog != null) {
                 mDialog.closeDialog();
                 mDialog = null;
@@ -806,6 +808,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         copyIcon(icon);
     }
 
+    // カードや単語帳を削除する(ゴミ箱に移動する)
     public void IconWindowSubDelete(UIcon icon) {
         moveIconToTrash(icon);
 
@@ -815,5 +818,13 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 subWindow.windowCallbacks.windowClose(subWindow);
             }
         }
+    }
+
+    public void IconWindowSubCleanupTrash() {
+        // ゴミ箱を空にする
+//        RealmManager.getItemPosDao().deleteItemsInTrash();
+//        mIconWinManager.getSubWindow().sortIcons(false);
+//        mParentView.invalidate();
+        IconInfoCleanup(null);
     }
 }

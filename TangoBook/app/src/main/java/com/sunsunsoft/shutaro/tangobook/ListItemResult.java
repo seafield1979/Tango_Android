@@ -131,6 +131,14 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     /**
      * Methods
      */
+
+    public boolean doAction() {
+        if (mStarButton.doAction()) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 描画処理
      * @param canvas

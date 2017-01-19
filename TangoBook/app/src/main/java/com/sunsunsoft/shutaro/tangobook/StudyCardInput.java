@@ -218,6 +218,13 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
                     return true;
                 }
                 break;
+            case None:
+                for (UButtonText button : mQuestionButtons) {
+                    if (button.doAction()) {
+                        return true;
+                    }
+                }
+                break;
         }
         return false;
     }
@@ -246,6 +253,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
         }
         return true;
     }
+
 
     /**
      * Drawable methods

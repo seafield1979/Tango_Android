@@ -186,6 +186,20 @@ public class UDrawItemsWindow extends UScrollWindow {
     }
 
     /**
+     * Window配下のアイテムのdoAction処理を呼び出す
+     */
+    public boolean doAction(){
+        if (!isShow) return false;
+
+        for (UDrawable item : mItems) {
+            if (item.doAction()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 描画処理
      * @param canvas
      * @param paint
