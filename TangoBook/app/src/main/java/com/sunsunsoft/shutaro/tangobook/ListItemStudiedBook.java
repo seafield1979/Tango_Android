@@ -111,15 +111,18 @@ public class ListItemStudiedBook extends UListItem{
         }
 
         // BG (OK > NG なら 緑、そうでないなら 赤)
-        int _color, _textColor;
-        if (mBookHistory.getOkNum() > mBookHistory.getNgNum()) {
-            _color = UColor.LightGreen;
-            _textColor = UColor.BLACK;
+//        int _color, _textColor;
+//        if (mBookHistory.getOkNum() > mBookHistory.getNgNum()) {
+//            _color = UColor.LightGreen;
+//            _textColor = UColor.BLACK;
+//
+//        } else {
+//            _color = UColor.LightRed;
+//            _textColor = UColor.White;
+//        }
+        int _color = UColor.WHITE;
+        int _textColor = UColor.BLACK;
 
-        } else {
-            _color = UColor.LightRed;
-            _textColor = UColor.White;
-        }
         if (isTouching) {
             _color = UColor.addBrightness(_color, -0.2f);
         }

@@ -16,6 +16,11 @@ import java.util.Comparator;
  *
  * 正解入力学習モードで使用するカード
  *
+ * 正解の文字(ボタン)をタップする
+ * 正解なら次の文字へ、不正解なら別のボタンをタップする
+ * 全ての文字をタップしたら次のカードへ
+ * １文字でも間違いをタップしたら不正解
+ *
  */
 
 /**
@@ -73,12 +78,12 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
 
     // 正解の文字列を１文字づつStringに分割したもの
     protected ArrayList<String> mCorrectWords = new ArrayList<>();
+    protected ArrayList<Boolean> mCorrectFlags = new ArrayList<>();
 
     // 正解入力用の文字をバラしてランダムに並び替えた配列
     protected ArrayList<UButtonText> mQuestionButtons = new ArrayList<>();
     protected boolean isTouching;
     protected PointF basePos;
-    protected boolean layouted;
 
     // 正解入力位置
     protected int inputPos;
@@ -91,10 +96,6 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
 
     public RequestToParent getRequest() {
         return mRequest;
-    }
-
-    public void setRequest(RequestToParent request) {
-        mRequest = request;
     }
 
     /**
@@ -136,6 +137,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
         // 空白も除去
         for (int i=1; i<strArray.length; i++) {
             mCorrectWords.add(strArray[i]);
+            mCorrectFlags.add(true);
         }
 
         basePos = new PointF(size.width / 2, size.height / 2);
@@ -146,7 +148,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
         ArrayList<String> questions = new ArrayList<>();
 
         for (int i=1; i<strArray.length; i++) {
-            if (!strArray[i].equals(" ") && !strArray[i].equals("\n")) {
+            if (!isIgnoreStr(strArray[i])) {
                 questions.add(strArray[i]);
             }
         }
@@ -231,6 +233,18 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
         else {
             mState = State.None;
         }
+    }
+
+    /**
+     * 指定の1文字が、ユーザーの入力が必要でないかどうかを判定する
+     * @param str
+     * @return
+     */
+    private boolean isIgnoreStr(String str) {
+        if (str.matches("[0-9a-zA-Z]+")) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -333,7 +347,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
 
         for (int i = 0; i < mCorrectWords.size(); i++) {
             text = mCorrectWords.get(i);
-            if (text.equals(" ")) {
+            if (isIgnoreStr(text)) {
 
             } else if(text.equals("\n")) {
                 // 改行
@@ -346,7 +360,12 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
                 text = "_";
             }
 
-            int bgColor = (i == inputPos) ? UColor.LightGreen : 0;
+            int bgColor = 0;
+            if (!mCorrectFlags.get(i)) {
+                bgColor = UColor.LightRed;
+            } else if (i == inputPos) {
+                bgColor = UColor.LightGreen;
+            }
 
             UDraw.drawTextOneLine(canvas, paint, text, UAlignment.None, TEXT_SIZE,
                     _x, y, TEXT_COLOR, bgColor, 20);
@@ -455,14 +474,13 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
         String text1 = mCorrectWords.get(inputPos);
         String text2 = button.getmText();
         if (text1.equals(text2)) {
+            // 正解のボタンをタップ
             // すでに正解用として使用したので使えなくする
             button.setEnabled(false);
             inputPos++;
             // スペースや改行をスキップする
             for(int i = inputPos; i < mCorrectWords.size(); i++) {
-                if (mCorrectWords.get(i).equals(" ") ||
-                        mCorrectWords.get(i).equals("\n"))
-                {
+                if (isIgnoreStr(mCorrectWords.get(i))) {
                     inputPos++;
                 } else {
                     break;
@@ -481,8 +499,10 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
             }
             return true;
         } else {
+            // 不正解のボタンをタップ
             isMistaken = true;
             button.setColor(NG_BUTTON_COLOR);
+            mCorrectFlags.set(inputPos, false);
             return true;
         }
     }

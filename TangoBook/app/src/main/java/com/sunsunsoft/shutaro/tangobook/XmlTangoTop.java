@@ -305,6 +305,13 @@ public class XmlTangoTop {
     @Element
     public int bookNum;
 
+    // last update date
+    @Element (required = false)
+    public Date updateDate;
+
+    /**
+     * Database
+     */
     // card
     @ElementList(required = false)
     public List<Card> card;

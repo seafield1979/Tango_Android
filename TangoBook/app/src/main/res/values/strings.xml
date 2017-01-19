@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">シンプル単語帳</string>
+    <string name="app_name">Simple単語帳</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -173,7 +173,7 @@
     <string name="help_add_item">カードや</string>
 
     <!-- mail to -->
-    <string name="contact_mail_title">アプリに関するお問い合わせ【シンプル単語帳】</string>
+    <string name="contact_mail_title">アプリに関するお問い合わせ【Simple単語帳】</string>
     <string name="contact_mail_body">アプリに対するご要望や不具合等の内容をお書きください\n\n\nアプリ名:シンプル単語帳\n</string>
 
 </resources>

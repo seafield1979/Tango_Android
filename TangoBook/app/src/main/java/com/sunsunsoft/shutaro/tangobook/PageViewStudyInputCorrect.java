@@ -8,6 +8,9 @@ import java.util.List;
 
 /**
  * Created by shutaro on 2016/12/29.
+ *
+ * 学習モードのページ
+ * 正解を１文字ずつ入力する。１文字でも間違って入力したらNG
  */
 
 public class PageViewStudyInputCorrect extends UPageView

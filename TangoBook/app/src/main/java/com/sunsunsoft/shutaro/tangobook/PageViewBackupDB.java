@@ -146,13 +146,16 @@ public class PageViewBackupDB extends UPageView
         y += mBackupTitle.size.height + MARGIN_V_S;
 
         // button
-        String buttonTitle = MySharedPref.readString(MySharedPref.BackupInfoKey);
-        if (buttonTitle.length() == 0) {
-            buttonTitle = UResourceManager.getStringById(R.string.no_backup);
+        // タイトルに表示する文字列
+        // Prefにあったらそれを使用、なかったらxmlファイルから情報を取得
+        String title = MySharedPref.readString(MySharedPref.BackupInfoKey);
+        if (title.length() == 0) {
+            title = XmlManager.getXmlInfo(XmlManager.BackupFileType.ManualBackup);
+            MySharedPref.writeString(MySharedPref.BackupInfoKey, title);
         }
 
         mRestoreButton1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup1,
-                DRAW_PRIORITY, buttonTitle,
+                DRAW_PRIORITY, title,
                 MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
         mRestoreButton1.addToDrawManager();
 
@@ -171,15 +174,15 @@ public class PageViewBackupDB extends UPageView
 
 
         // button
-        String backupPath = MySharedPref.readString(MySharedPref.AutoBackupInfoKey);
-        if (backupPath.length() == 0) {
-            backupPath = UResourceManager.getStringById(R.string.no_backup);
+        title = MySharedPref.readString(MySharedPref.AutoBackupInfoKey);
+        if (title.length() == 0) {
+            title = XmlManager.getXmlInfo(XmlManager.BackupFileType.AutoBackup);
+            MySharedPref.writeString(MySharedPref.AutoBackupInfoKey, title);
         }
         mRestoreButton2 = new UButtonText(this, UButtonType.Press, ButtonIdBackup2,
-                DRAW_PRIORITY, backupPath,
+                DRAW_PRIORITY, title,
                 MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
         mRestoreButton2.addToDrawManager();
-
     }
 
 
@@ -239,7 +242,7 @@ public class PageViewBackupDB extends UPageView
             case ButtonIdBackupOK:
             {
                 // xmlに保存
-                String filePath = XmlManager.getInstance().saveXml(XmlManager.ManualBackupFile);
+                String filePath = XmlManager.getInstance().saveXml(XmlManager.BackupFileType.ManualBackup);
                 mDialog.startClosing();
 
 
@@ -270,14 +273,14 @@ public class PageViewBackupDB extends UPageView
             }
 
             case ButtonIdRestore1OK:
-                XmlManager.getInstance().loadXml(XmlManager.ManualBackupFile);
+                XmlManager.getInstance().loadXml(XmlManager.BackupFileType.ManualBackup);
                 mDialog.startClosing();
 
                 // ダイアログが閉じたら完了メッセージダイアログを表示
                 showDialog(UResourceManager.getStringById(R.string.finish_restore));
                 break;
             case ButtonIdRestore2OK:
-                XmlManager.getInstance().loadXml(XmlManager.AutoBackupFile);
+                XmlManager.getInstance().loadXml(XmlManager.BackupFileType.AutoBackup);
                 mDialog.startClosing();
 
                 // ダイアログが閉じたら完了メッセージダイアログを表示

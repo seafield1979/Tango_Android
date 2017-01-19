@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         // オートバックアップ
         if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
-            String filePath = XmlManager.saveXml(XmlManager.AutoBackupFile);
+            String filePath = XmlManager.saveXml(XmlManager.BackupFileType.AutoBackup);
             if (filePath != null) {
                 String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
                 String info =  UResourceManager.getStringById(R.string.card_count) +

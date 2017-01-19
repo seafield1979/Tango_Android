@@ -9,6 +9,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,6 +31,12 @@ public class XmlManager {
         ExternalStorage,        // 外部ストレージ
         ExternalDocument,       // 外部ストレージ(共有ドキュメント)
         ExternalDownload,       // 外部ストレージ(共有ダウンロード)
+    }
+
+    // バックアップファイルの種類
+    enum BackupFileType {
+        ManualBackup,
+        AutoBackup
     }
 
     /**
@@ -89,11 +96,45 @@ public class XmlManager {
     }
 
     /**
+     * バックアップファイルの情報を取得
+     * @return XMLファイル情報（ファイルパス、カード数、単語帳数、更新日）
+     */
+    public static String getXmlInfo(BackupFileType type) {
+        String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
+
+        // 指定の場所にファイルがあるかをチェック
+        File path = getInstance().getPath(DirType.ExternalDocument);
+        File source = new File(path, filename);
+
+        XmlTangoTop tangoTop = null;
+        try {
+            Serializer serializer = new Persister();
+            tangoTop = serializer.read(XmlTangoTop.class, source);
+
+            ULog.print(TAG, "ok");
+        } catch (Exception e) {
+            Log.e("tag", e.toString());
+            return null;
+        }
+
+        String str =  UResourceManager.getStringById(R.string.card_count) +
+                ":" + tangoTop.cardNum +
+                "   " + UResourceManager.getStringById(R.string.book_count) +
+                ":" + tangoTop.bookNum + "\n" +
+                UResourceManager.getStringById(R.string.location) +
+                source.toString() + "\n" +
+                UResourceManager.getStringById(R.string.datetime) +
+                " : " + UUtil.convDateFormat(tangoTop.updateDate, ConvDateMode.DateTime);
+        return str;
+    }
+
+    /**
      * 指定したファイルにデータベースの情報を保存する
-     * @param filename
+     * @param type
      * @return ファイルのパス
      */
-    public static String saveXml(String filename) {
+    public static String saveXml(BackupFileType type) {
+        String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
 
         XmlTangoTop tangoTop = new XmlTangoTop();
 
@@ -167,6 +208,9 @@ public class XmlManager {
         // 単語帳数
         singleton.mBackupBookNum = tangoTop.bookNum = books.size();
 
+        // 最終更新日時
+        tangoTop.updateDate = new Date();
+
         // ファイルに書き込む
         File path = getInstance().getPath(DirType.ExternalDocument);
         File result = new File(path, filename);
@@ -184,32 +228,19 @@ public class XmlManager {
 
     /**
      * 指定したxmlファイルから情報を取得し、システム(Realmデータベース)に保存する
-     * @param filename
+     * @param type  バックアップファイルのタイプ(手動、自動)
      * @return
      */
-    public static boolean loadXml(String filename) {
+    public static boolean loadXml(BackupFileType type) {
+        String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
+
         File path = getInstance().getPath(DirType.ExternalDocument);
         File source = new File(path, filename);
 
+        XmlTangoTop tangoTop = null;
         try {
             Serializer serializer = new Persister();
-            XmlTangoTop tangoTop = serializer.read(XmlTangoTop.class, source);
-
-            // データベースを削除
-            RealmManager.getCardDao().deleteAll();
-            RealmManager.getBookDao().deleteAll();
-            RealmManager.getItemPosDao().deleteAll();
-            RealmManager.getBookHistoryDao().deleteAll();
-            RealmManager.getCardHistoryDao().deleteAll();
-            RealmManager.getStudiedCardDao().deleteAll();
-
-            // データベースにxmlファイルから読み込んだデータを追加
-            RealmManager.getCardDao().addXmlCards(tangoTop.card);
-            RealmManager.getBookDao().addXmlBooks(tangoTop.book);
-            RealmManager.getItemPosDao().addXmlPos(tangoTop.itemPos);
-            RealmManager.getBookHistoryDao().addXmlBook(tangoTop.bHistory);
-            RealmManager.getCardHistoryDao().addXmlCard(tangoTop.cHistory);
-            RealmManager.getStudiedCardDao().addXmlCard(tangoTop.studiedC);
+            tangoTop = serializer.read(XmlTangoTop.class, source);
 
             ULog.print(TAG, "ok");
 
@@ -217,6 +248,23 @@ public class XmlManager {
             Log.e("tag", e.toString());
             return false;
         }
+
+        // データベースを削除
+        RealmManager.getCardDao().deleteAll();
+        RealmManager.getBookDao().deleteAll();
+        RealmManager.getItemPosDao().deleteAll();
+        RealmManager.getBookHistoryDao().deleteAll();
+        RealmManager.getCardHistoryDao().deleteAll();
+        RealmManager.getStudiedCardDao().deleteAll();
+
+        // データベースにxmlファイルから読み込んだデータを追加
+        RealmManager.getCardDao().addXmlCards(tangoTop.card);
+        RealmManager.getBookDao().addXmlBooks(tangoTop.book);
+        RealmManager.getItemPosDao().addXmlPos(tangoTop.itemPos);
+        RealmManager.getBookHistoryDao().addXmlBook(tangoTop.bHistory);
+        RealmManager.getCardHistoryDao().addXmlCard(tangoTop.cHistory);
+        RealmManager.getStudiedCardDao().addXmlCard(tangoTop.studiedC);
+
         return true;
     }
 
