@@ -224,6 +224,15 @@ public class MySharedPref {
     }
 
     /**
+     * Delete
+     */
+    public static void delete(String key) {
+        MySharedPref instance = getInstance();
+        instance.mEditor.remove(key);
+        instance.mEditor.apply();
+    }
+
+    /**
      * Write系
      */
     // String

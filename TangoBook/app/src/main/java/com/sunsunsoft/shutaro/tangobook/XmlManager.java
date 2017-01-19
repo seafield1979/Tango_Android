@@ -269,6 +269,18 @@ public class XmlManager {
     }
 
     /**
+     * xmlファイルを削除する
+     * @param type
+     */
+    public static void removeXml(BackupFileType type) {
+        String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
+
+        File path = getInstance().getPath(DirType.ExternalDocument);
+        path = new File(path, filename);
+        path.delete();
+    }
+
+    /**
      *
      * @param dirType
      * @return

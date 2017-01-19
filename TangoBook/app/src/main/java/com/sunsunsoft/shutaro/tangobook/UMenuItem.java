@@ -203,10 +203,11 @@ public class UMenuItem extends UDrawable {
                             (int)drawPos.x + ITEM_W,(int)drawPos.y + ITEM_H),
                     paint);
             // タイトル
-            if (mTextTitle != null && MySharedPref.getMenuHelpMode() ==
-                    MenuHelpMode.Name) {
+//            if (mTextTitle != null && MySharedPref.getMenuHelpMode() ==
+//                    MenuHelpMode.Name)
+//            {
                 mTextTitle.draw(canvas, paint, drawPos);
-            }
+//            }
         }
 
         // 子要素

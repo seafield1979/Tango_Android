@@ -5,19 +5,16 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.net.Uri;
 import android.view.View;
 
-import java.util.Date;
-
 /**
- * Created by shutaro on 2016/12/05.
+ * Created by shutaro on 2017/01/19.
  *
- * 設定ページ
+ * オプション等の各種設定のページ
  */
 
-public class PageViewSettingsTop extends UPageView
+public class PageViewSettingsOption extends UPageView
         implements UButtonCallbacks, UDialogCallbacks {
 
     /**
@@ -30,10 +27,6 @@ public class PageViewSettingsTop extends UPageView
 
     // button ids
     private static final int ButtonIdOption = 99;
-    private static final int ButtonIdBackup = 100;
-    private static final int ButtonIdLicense = 101;
-    private static final int ButtonIdContact = 102;
-    private static final int ButtonIdContactOK = 103;
 
     private static final int TEXT_COLOR = Color.BLACK;
 
@@ -48,7 +41,7 @@ public class PageViewSettingsTop extends UPageView
     /**
      * Constructor
      */
-    public PageViewSettingsTop(Context context, View parentView, String title) {
+    public PageViewSettingsOption(Context context, View parentView, String title) {
         super(context, parentView, title);
     }
 
@@ -112,26 +105,6 @@ public class PageViewSettingsTop extends UPageView
                 .LightRed);
         mWindow.addDrawable(button1, false);
 
-        // backup button
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup,
-                DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.backup_and_restore),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
-                .LightGreen);
-        mWindow.addDrawable(button1, false);
-
-        // ライセンス
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
-                 UResourceManager.getStringById(R.string.license),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, Color.WHITE, UColor.DarkOrange);
-        mWindow.addDrawable(button1, false);
-
-        // お問い合わせ（メール）
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdContact, DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.contact_us),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkBlue, UColor
-                .LightSkyBlue);
-        mWindow.addDrawable(button1, true);
     }
 
     /**
@@ -170,42 +143,11 @@ public class PageViewSettingsTop extends UPageView
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch(id) {
-            case ButtonIdBackup: {
+            case ButtonIdOption: {
                 // バックアップページに遷移
                 PageViewManager.getInstance().stackPage(PageView.BackupDB);
             }
             break;
-            case ButtonIdLicense:
-            {
-                // ライセンスページに遷移
-                // Main2Activity アクティビティを呼び出す
-                Intent intent = new Intent(mContext, LicensePageActivity.class);
-
-                mContext.startActivity(intent);
-            }
-                break;
-            case ButtonIdContact:
-            {
-                // お問い合わせメールダイアログを表示
-                if (mDialog == null) {
-                    mDialog = UDialogWindow.createInstance(this, this,
-                            UDialogWindow.ButtonDir.Horizontal,
-                            mParentView.getWidth(),
-                            mParentView.getHeight());
-                    mDialog.setTitle(UResourceManager.getStringById(R.string.contact_us));
-                    mDialog.addTextView(UResourceManager.getStringById(R.string.contact_message),
-                            UAlignment.CenterX, true, false, TEXT_SIZE, TEXT_COLOR, 0);
-                    mDialog.addButton(ButtonIdContactOK,
-                            UResourceManager.getStringById(R.string.send_mail), 0, Color.WHITE);
-                    mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
-                    mDialog.addToDrawManager();
-                }
-            }
-                break;
-            case ButtonIdContactOK:
-                mDialog.closeDialog();
-                callMailer();
-                break;
         }
         return false;
     }
@@ -218,4 +160,5 @@ public class PageViewSettingsTop extends UPageView
             mDialog = null;
         }
     }
+
 }

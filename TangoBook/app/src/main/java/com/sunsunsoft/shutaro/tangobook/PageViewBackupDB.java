@@ -41,6 +41,7 @@ public class PageViewBackupDB extends UPageView
     private static final int ButtonIdBackupOK = 103;
     private static final int ButtonIdRestore1OK = 104;
     private static final int ButtonIdRestore2OK = 105;
+    private static final int ButtonIdCleanUp = 106;     //
 
     private static final int ButtonIdBackup1 = 200;
     private static final int ButtonIdBackup2 = 201;
@@ -51,15 +52,15 @@ public class PageViewBackupDB extends UPageView
     // バックアップタイトル
     private UTextView mBackupTitle, mAutoBackupTitle;
 
-    // バックアップパス
+    // buttons
     private UButtonText mBackupButton;
     private UButtonText mRestoreButton1, mRestoreButton2;
+    private UButtonText mCleanupButton;
 
     private UCheckBox mAutoBackupCheck;
 
     // Dialog
     private UDialogWindow mDialog;
-
 
     /**
      * Constructor
@@ -107,19 +108,21 @@ public class PageViewBackupDB extends UPageView
     /**
      * そのページで表示される描画オブジェクトを初期化する
      */
-    public void initDrawables() {
-        UDrawManager.getInstance().init();
-
+    public void initDrawables(){
         int width = mParentView.getWidth();
 
         float y = TOP_Y;
+
+        UDrawManager.getInstance().init();
 
         // backup button
         mBackupButton = new UButtonText(this, UButtonType.Press, ButtonIdBackup, DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.backup),
                 MARGIN_H, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
                 .LightGreen);
+
         mBackupButton.addToDrawManager();
+
         y += mBackupButton.size.height + MARGIN_V;
 
 
@@ -128,6 +131,7 @@ public class PageViewBackupDB extends UPageView
                 mParentView.getWidth(), BOX_WIDTH, UResourceManager.getStringById(R.string
                 .auto_backup), TEXT_SIZE, TEXT_COLOR);
         mAutoBackupCheck.addToDrawManager();
+
         if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
             mAutoBackupCheck.setChecked(true);
         }
@@ -143,6 +147,7 @@ public class PageViewBackupDB extends UPageView
                 UAlignment.None, width, false, false,
                 MARGIN_H, y, width, Color.BLACK, 0);
         mBackupTitle.addToDrawManager();
+
         y += mBackupTitle.size.height + MARGIN_V_S;
 
         // button
@@ -170,6 +175,7 @@ public class PageViewBackupDB extends UPageView
                 UAlignment.None, width, false, false,
                 MARGIN_H, y, width, Color.BLACK, 0);
         mAutoBackupTitle.addToDrawManager();
+
         y += mAutoBackupTitle.size.height + MARGIN_V_S;
 
 
@@ -177,12 +183,29 @@ public class PageViewBackupDB extends UPageView
         title = MySharedPref.readString(MySharedPref.AutoBackupInfoKey);
         if (title.length() == 0) {
             title = XmlManager.getXmlInfo(XmlManager.BackupFileType.AutoBackup);
-            MySharedPref.writeString(MySharedPref.AutoBackupInfoKey, title);
+            if (title == null) {
+                title = UResourceManager.getStringById(R.string.no_backup);
+            } else {
+                MySharedPref.writeString(MySharedPref.AutoBackupInfoKey, title);
+            }
         }
         mRestoreButton2 = new UButtonText(this, UButtonType.Press, ButtonIdBackup2,
                 DRAW_PRIORITY, title,
                 MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
         mRestoreButton2.addToDrawManager();
+
+        y += mRestoreButton2.getHeight() + MARGIN_V;
+
+        // cleanup (for Debug)
+        if (UDebug.isDebug) {
+            mCleanupButton = new UButtonText(this, UButtonType.Press, ButtonIdCleanUp, DRAW_PRIORITY,
+                    UResourceManager.getStringById(R.string.clean_up),
+                    MARGIN_H, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, UColor
+                    .LTGRAY);
+        }
+
+        mCleanupButton.addToDrawManager();
+
     }
 
 
@@ -248,8 +271,11 @@ public class PageViewBackupDB extends UPageView
 
                 // 画面表示更新
                 String buttonTitle;
+                int messageId;
+
                 if (filePath == null) {
                     buttonTitle = UResourceManager.getStringById(R.string.no_backup);
+                    messageId = R.string.failed_backup;
                 } else {
                     String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
                     buttonTitle =  UResourceManager.getStringById(R.string.card_count) +
@@ -260,14 +286,17 @@ public class PageViewBackupDB extends UPageView
                             filePath + "\n" +
                             UResourceManager.getStringById(R.string.datetime) +
                             " : " + dateTime;
+                    messageId = R.string.finish_backup;
                 }
                 mRestoreButton1.setText(buttonTitle);
 
                 // 情報を保存
                 MySharedPref.writeString(MySharedPref.BackupInfoKey, buttonTitle);
 
+                initDrawables();
+
                 // ダイアログが閉じたら完了メッセージダイアログを表示
-                showDialog(UResourceManager.getStringById(R.string.finish_backup));
+                showDialog(UResourceManager.getStringById(messageId));
 
                 return true;
             }
@@ -286,6 +315,14 @@ public class PageViewBackupDB extends UPageView
                 // ダイアログが閉じたら完了メッセージダイアログを表示
                 showDialog(UResourceManager.getStringById(R.string.finish_restore));
                 break;
+
+            case ButtonIdCleanUp:
+                MySharedPref.delete(MySharedPref.BackupInfoKey);
+                XmlManager.getInstance().removeXml(XmlManager.BackupFileType.ManualBackup);
+
+                initDrawables();
+
+                return true;
         }
         return false;
     }

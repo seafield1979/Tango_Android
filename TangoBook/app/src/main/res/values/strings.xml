@@ -39,6 +39,7 @@
     <string name="card_count_unit">枚</string>
 
     <!--options-->
+    <string name="option">オプション</string>
     <string name="study_mode_1">１つづつ</string>
     <string name="study_mode_2">まとめて</string>
     <string name="study_mode_3">４択</string>
@@ -73,6 +74,7 @@
     <string name="search_card_name">検索カード名</string>
     <string name="title_debug">Debug</string>
 
+    <!-- 単語帳編集 -->
     <string name="open">開く</string>
     <string name="edit">編集</string>
     <string name="delete">削除</string>
@@ -125,6 +127,7 @@
     <string name="restore">復元</string>
     <string name="confirm_backup">バックアップしますか？\nバックアップを行うと、以前の\n状態に戻せるようになります。\n
         また、別の端末に状態を移動することができます。</string>
+    <string name="failed_backup">バックアップに失敗しました</string>
     <string name="finish_backup">バックアップが完了しました</string>
     <string name="confirm_restore">バックアップから復元しますか？</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
@@ -141,7 +144,7 @@
 
     <string name="preset_title2">Addボタンをタップしてプリセットを追加します</string>
 
-    <string name="add_item">アイテム追加</string>
+    <string name="add_item">追加</string>
     <string name="add_card">単語カード</string>
     <string name="add_book">単語帳</string>
     <string name="add_dummy_card">ダミー単語カード</string>
