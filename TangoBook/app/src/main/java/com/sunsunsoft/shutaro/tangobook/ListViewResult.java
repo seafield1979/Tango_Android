@@ -78,6 +78,15 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
         super.drawContent(canvas, paint, offset);
     }
 
+    public boolean doAction() {
+        for (UListItem item : mItems) {
+            if (item.doAction()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * アイテムを追加する
      * @param okCards

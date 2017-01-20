@@ -60,7 +60,6 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
 
     private int[] colorViewIds = {
             R.id.current_color,
-            R.id.color_view_1,
             R.id.color_view_2,
             R.id.color_view_3,
             R.id.color_view_4,
@@ -70,7 +69,9 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
             R.id.color_view_8,
             R.id.color_view_9,
             R.id.color_view_10,
-            R.id.color_view_11
+            R.id.color_view_11,
+            R.id.color_view_12,
+            R.id.color_view_13,
 
     };
 
@@ -81,7 +82,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
     private int mMode;
     private EditText mEditWordA;
     private EditText mEditWordB;
-    private EditText mEditComment;
+//    private EditText mEditComment;
     // 選択された色を表示するView
     private ColorView mColorView;
 
@@ -174,8 +175,8 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
         mEditWordB = (EditText)view.findViewById(R.id.editWordB);
         mEditWordB.setText(mWordB);
 
-        mEditComment = (EditText)view.findViewById(R.id.editComment);
-        mEditComment.setText(mComment);
+//        mEditComment = (EditText)view.findViewById(R.id.editComment);
+//        mEditComment.setText(mComment);
 
         mColorView = (ColorView)view.findViewById(R.id.current_color);
         mColorView.setColor(mColor);
@@ -220,7 +221,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
         args.putInt(KEY_MODE, mMode);
         args.putString(KEY_WORD_A, mEditWordA.getText().toString());
         args.putString(KEY_WORD_B, mEditWordB.getText().toString());
-        args.putString(KEY_COMMENT, mEditComment.getText().toString());
+//        args.putString(KEY_COMMENT, mEditComment.getText().toString());
         args.putInt(KEY_COLOR, mColorView.getColor());
 
         if (dialogCallbacks != null) {
@@ -249,7 +250,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
 
         mEditWordA.setText("A " + value);
         mEditWordB.setText("B " + value);
-        mEditComment.setText("C " + value);
+//        mEditComment.setText("C " + value);
     }
 
     /**

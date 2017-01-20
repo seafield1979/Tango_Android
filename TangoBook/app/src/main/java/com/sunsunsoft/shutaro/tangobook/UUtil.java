@@ -95,11 +95,13 @@ public class UUtil {
                 if ((pixel & 0xffffff) == 0xffffff) {
                     pix[pos] = pixel;
                 } else {
-                    if (pixel != 0 && colorConvTbl[pixel & 0xff] == 0) {
-                        colorConvTbl[pixel & 0xff] = UColor.colorWithY(newColor,
-                                UColor.RGBtoY(pixel));
+                    // 輝度(明るさ)を元に新しい色を求める。すでに同じ輝度で計算していたら結果をテーブルから取得する
+                    int _y = UColor.RGBtoY(pixel);
+                    if (pixel != 0 && colorConvTbl[_y] == 0) {
+                        colorConvTbl[_y] = UColor.colorWithY(newColor,
+                                _y);
                     }
-                    pix[pos] = alpha | colorConvTbl[pixel & 0xff];
+                    pix[pos] = alpha | colorConvTbl[_y];
                 }
                 pos++;
             }

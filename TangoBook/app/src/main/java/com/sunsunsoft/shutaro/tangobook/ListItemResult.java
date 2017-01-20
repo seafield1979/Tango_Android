@@ -105,7 +105,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
         // Starボタンを追加(On/Offあり)
         if (star) {
             instance.mStarButton = new UButtonImage(instance, ButtonIdStar, 100,
-                    instance.size.width - 150, (instance.size.height - STAR_ICON_W) / 2,
+                    instance.size.width - 200, (instance.size.height - STAR_ICON_W) / 2,
                     STAR_ICON_W, STAR_ICON_W, R.drawable.favorites, -1);
             instance.mStarButton.addState(R.drawable.favorites2);
             instance.mStarButton.setState(card.getStar() ? 1 : 0);
@@ -133,7 +133,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
      */
 
     public boolean doAction() {
-        if (mStarButton.doAction()) {
+        if (mStarButton != null && mStarButton.doAction()) {
             return true;
         }
         return false;
@@ -175,7 +175,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                     UDraw.drawTextOneLine(canvas, paint,
                             UResourceManager.getStringById(R.string.learned),
                             UAlignment.Center, TEXT_SIZE,
-                            _pos.x + size.width - mLearnedTextW / 2 - 20, _pos.y + size.height / 2,
+                            _pos.x + size.width - mLearnedTextW / 2 - 70, _pos.y + size.height / 2,
                             mTextColor);
                 }
                 break;

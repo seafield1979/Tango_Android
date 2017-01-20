@@ -202,10 +202,8 @@ public class PageViewBackupDB extends UPageView
                     UResourceManager.getStringById(R.string.clean_up),
                     MARGIN_H, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, UColor
                     .LTGRAY);
+            mCleanupButton.addToDrawManager();
         }
-
-        mCleanupButton.addToDrawManager();
-
     }
 
 

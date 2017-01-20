@@ -76,7 +76,7 @@ public class MenuBarTangoEdit extends UMenuBar {
      */
     private static final int TEXT_COLOR = Color.WHITE;
     private static final int TEXT_BG_COLOR = Color.argb(128,0,0,0);
-    private static final int ICON_COLOR = UColor.DarkBlue;
+    private static final int ICON_COLOR = UColor.Blue;
 
     /**
      * Constructor

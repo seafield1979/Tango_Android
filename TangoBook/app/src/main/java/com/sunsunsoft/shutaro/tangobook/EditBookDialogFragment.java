@@ -53,7 +53,6 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
 
     private int[] colorViewIds = {
             R.id.current_color,
-            R.id.color_view_1,
             R.id.color_view_2,
             R.id.color_view_3,
             R.id.color_view_4,
@@ -63,7 +62,9 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
             R.id.color_view_8,
             R.id.color_view_9,
             R.id.color_view_10,
-            R.id.color_view_11
+            R.id.color_view_11,
+            R.id.color_view_12,
+            R.id.color_view_13,
 
     };
 
@@ -158,8 +159,8 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
         mEditName = (EditText)view.findViewById(R.id.editName);
         mEditName.setText(mName);
 
-        mEditComment = (EditText)view.findViewById(R.id.editComment);
-        mEditComment.setText(mComment);
+//        mEditComment = (EditText)view.findViewById(R.id.editComment);
+//        mEditComment.setText(mComment);
 
         mColorView = (ColorView)view.findViewById(R.id.current_color);
         mColorView.setColor(mColor);

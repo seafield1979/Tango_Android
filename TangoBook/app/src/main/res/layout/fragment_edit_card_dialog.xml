@@ -41,18 +41,18 @@
                 android:ems="10"
                 android:id="@+id/editWordB"/>
 
-            <TextView
-                android:text="@string/comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView5"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine|textPersonName"
-                android:text=""
-                android:ems="10"
-                android:id="@+id/editComment"/>
+            <!--<TextView-->
+                <!--android:text="@string/comment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/textView5"/>-->
+            <!--<EditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:inputType="textMultiLine|textPersonName"-->
+                <!--android:text=""-->
+                <!--android:ems="10"-->
+                <!--android:id="@+id/editComment"/>-->
 
             <!-- Color -->
             <TextView
@@ -63,7 +63,7 @@
 
             <com.sunsunsoft.shutaro.tangobook.ColorView
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/current_color"
@@ -85,13 +85,6 @@
                     <com.sunsunsoft.shutaro.tangobook.ColorView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        bg_color="#000000"
-                        android:id="@+id/color_view_1"
-                        />
-
-                    <com.sunsunsoft.shutaro.tangobook.ColorView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
                         bg_color="#c0c0c0"
                         android:id="@+id/color_view_2"
                         />
@@ -105,13 +98,13 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/color_view_4"
-                        bg_color="#32CD32"
+                        bg_color="#00A000"
                         />
                     <com.sunsunsoft.shutaro.tangobook.ColorView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/color_view_5"
-                        bg_color="#0000ff"
+                        bg_color="#0000FF"
                         />
                     <com.sunsunsoft.shutaro.tangobook.ColorView
                         android:layout_width="50dp"
@@ -129,25 +122,37 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/color_view_8"
-                        bg_color="#FFA500"
+                        bg_color="#A52A2A"
                         />
                     <com.sunsunsoft.shutaro.tangobook.ColorView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/color_view_9"
-                        bg_color="#9400D3"
+                        bg_color="#00ffff"
                         />
                     <com.sunsunsoft.shutaro.tangobook.ColorView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/color_view_10"
-                        bg_color="#FFA500"
+                        bg_color="#336600"
                         />
                     <com.sunsunsoft.shutaro.tangobook.ColorView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/color_view_11"
-                        bg_color="#9400D3"
+                        bg_color="#FFC0CB"
+                        />
+                    <com.sunsunsoft.shutaro.tangobook.ColorView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/color_view_12"
+                        bg_color="#FFFF00"
+                        />
+                    <com.sunsunsoft.shutaro.tangobook.ColorView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+android:id="@+id/color_view_13"
+                        bg_color="#800000"
                         />
                 </LinearLayout>
             </HorizontalScrollView>
@@ -160,7 +165,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="30dp"
         >
 
         <Button
@@ -173,7 +177,7 @@
             android:textColor="@android:color/background_light"
             android:id="@+id/buttonOK"/>
         <Button
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
