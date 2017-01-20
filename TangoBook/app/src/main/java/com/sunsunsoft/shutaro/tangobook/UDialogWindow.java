@@ -623,6 +623,26 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         }
     }
 
+
+    /**
+     * ソフトウェアキーの戻るボタンを押したときの処理
+     * @return
+     */
+    public boolean onBackKeyDown() {
+        if (isShow()) {
+            if (isClosing()) {
+                return true;
+            }
+            if (isAnimation) {
+                startClosing();
+            } else {
+                closeDialog();
+            }
+            return true;
+        }
+        return false;
+    }
+
     /**
      * UButtonCallbacks
      */

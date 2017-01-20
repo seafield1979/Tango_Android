@@ -73,7 +73,6 @@ public class ListViewResult extends UListView implements UButtonCallbacks{
     /**
      * Methods
      */
-
     public void drawContent(Canvas canvas, Paint paint, PointF offset) {
         super.drawContent(canvas, paint, offset);
     }

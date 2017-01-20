@@ -117,6 +117,17 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
     }
 
     /**
+     * 毎フレーム呼ばれる処理
+     * @return
+     */
+    public boolean doAction() {
+        if (mAddButton != null && mAddButton.doAction()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param vt
      * @return
      */
@@ -139,6 +150,7 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
     public int getHeight() {
         return size.height;
     }
+
 
     /**
      * UButtonCallbacks

@@ -103,6 +103,15 @@ public class UListView extends UScrollWindow
         mBottomY = y;
     }
 
+    public boolean doAction() {
+        for (UListItem item : mItems) {
+            if (item.doAction()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void drawContent(Canvas canvas, Paint paint, PointF offset) {
         // クリッピング前の状態を保存

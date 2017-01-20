@@ -182,7 +182,15 @@ public class PageViewPresetBook extends UPageView
      * @return
      */
     public boolean onBackKeyDown() {
-
+        if (mDialog != null && mDialog.onBackKeyDown()) {
+            return true;
+        }
+        if (mConfirmDialog != null && mConfirmDialog.onBackKeyDown()) {
+            return true;
+        }
+        if (mMessageDialog != null && mMessageDialog.onBackKeyDown()) {
+            return true;
+        }
         return false;
     }
 
