@@ -132,7 +132,7 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
             mMode = args.getInt(KEY_MODE, EditBookDialogMode.Create.ordinal());
             mName = args.getString(KEY_NAME, "");
             mComment = args.getString(KEY_COMMENT, "");
-            mColor = args.getInt(KEY_COLOR, 0);
+            mColor = args.getInt(KEY_COLOR, 0xff000000);
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

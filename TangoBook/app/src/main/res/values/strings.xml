@@ -109,6 +109,7 @@
     <string name="finish">終了</string>
     <string name="cards_remain">あと%d枚</string>
     <string name="confirm_exit">学習を終了しますか？</string>
+    <string name="confirm_moveto_trash">ゴミ箱に捨てますか？</string>
     <string name="confirm_cleanup_trash">ゴミ箱を空にしますか？</string>
     <string name="confirm_clear_history">学習記録をクリアしますか？</string>
 
@@ -151,10 +152,10 @@
     <string name="add_dummy_book">ダミー単語帳</string>
     <string name="add_preset">プリセット単語帳</string>
     <string name="sort">ソート</string>
-    <string name="sort_word_asc">英語(昇順)</string>
-    <string name="sort_word_desc">英語(降順)</string>
-    <string name="sort_time_asc">作成日(昇順)</string>
-    <string name="sort_time_desc">作成日(降順)</string>
+    <string name="sort_word_asc">英語(A->Z)</string>
+    <string name="sort_word_desc">英語(Z->A)</string>
+    <string name="sort_time_asc">作成日(古い->新しい)</string>
+    <string name="sort_time_desc">作成日(新しい->古い)</string>
     <string name="disp_list">項目表示方法</string>
     <string name="list_type1">リスト</string>
     <string name="list_type_grid">グリッド</string>

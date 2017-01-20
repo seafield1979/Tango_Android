@@ -168,8 +168,8 @@ public class UTextView extends UDrawable {
                     _pos.y += mMargin.height;
                     break;
                 case CenterY:
-                    bgPos.y -= size.height / 2;
                     _pos.x += mMargin.height;
+                    bgPos.y -= size.height / 2;
                     break;
                 case Center:
                     bgPos.x -= size.width / 2;
@@ -180,17 +180,22 @@ public class UTextView extends UDrawable {
                     _pos.y += mMargin.height;
                     break;
                 case Right:
-                    _pos.x -= size.width + mMargin.width;
+                    bgPos.x -= size.width;
+                    _pos.x -= mMargin.width;
                     _pos.y += mMargin.height;
                     break;
                 case Right_CenterY:
-                    _pos.x -= size.width + mMargin.width;
+                    bgPos.x -= size.width;
+                    _pos.x -= mMargin.width;
                     bgPos.y -= size.height / 2;
                     break;
             }
 
             if (!multiLine) {
-                if (alignment == UAlignment.CenterX || alignment == UAlignment.None) {
+                if (alignment == UAlignment.CenterX ||
+                        alignment == UAlignment.None ||
+                        alignment == UAlignment.Right)
+                {
                     _pos.y += textSize / 2;
                 }
             }
@@ -208,6 +213,9 @@ public class UTextView extends UDrawable {
                         break;
                     case None:
                         _alignment = UAlignment.CenterY;
+                        break;
+                    case Right:
+                        _alignment = UAlignment.Right_CenterY;
                         break;
                 }
             }

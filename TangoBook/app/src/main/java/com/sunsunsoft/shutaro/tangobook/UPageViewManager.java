@@ -101,7 +101,7 @@ abstract public class UPageViewManager {
     /**
      * ページ切り替え時に呼ばれる処理
      */
-    public void pageChanged() {
+    public void pageChanged(PageView pageId) {
         UDrawManager.clearDebugPoint();
     }
 
@@ -110,7 +110,7 @@ abstract public class UPageViewManager {
      * @param pageId
      */
     public void changePage(PageView pageId) {
-        pageChanged();
+        pageChanged(pageId);
 
         // ページが未初期化なら初期化
         if (pages[pageId.ordinal()] == null) {
@@ -137,7 +137,7 @@ abstract public class UPageViewManager {
      * ページを取得する
      */
     public UPageView getPageView(PageView pageId) {
-        pageChanged();
+        pageChanged(pageId);
 
         if (pages[pageId.ordinal()] == null) {
             initPage(pageId);
@@ -151,7 +151,7 @@ abstract public class UPageViewManager {
      * @param pageId
      */
     public UPageView stackPage(PageView pageId) {
-        pageChanged();
+        pageChanged(pageId);
 
         // ページが未初期化なら初期化
         if (pages[pageId.ordinal()] == null) {
@@ -199,9 +199,19 @@ abstract public class UPageViewManager {
             if (pageIdStack.size() <= 1) {
                 showActionBarBack(false);
             }
+            changePage(page);
+
             return true;
         }
         return false;
+    }
+
+    /**
+     * 外部からアクションIDを受け取る
+     * アクションIDを現在表示中のページで処理される
+     */
+    public void setActionId(int id) {
+        getPageView(currentPage()).setActionId(id);
     }
 
     /**

@@ -129,6 +129,20 @@ public class PageViewManager extends UPageViewManager{
 
 
     /**
+     * ページ切り替え時に呼ばれる処理
+     */
+    public void pageChanged(PageView pageId) {
+        super.pageChanged(pageId);
+
+        if (pageId == PageView.Edit) {
+            MainActivity.getInstance().setMenuType(MainActivity.MenuType.TangoEdit);
+        } else {
+            MainActivity.getInstance().setMenuType(MainActivity.MenuType.None);
+        }
+    }
+
+
+    /**
      * 学習ページを表示開始
      * 他のページと異なり引数を受け取る必要があるため関数化
      * @param book

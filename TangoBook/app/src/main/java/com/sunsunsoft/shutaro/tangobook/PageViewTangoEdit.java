@@ -62,6 +62,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     // Fragmentで内容を編集中のアイコン
     private UIcon editingIcon;
 
+    // ゴミ箱に捨てるアイコン
+    private UIcon mThrowIcon;
+
 
     /**
      * Get/Set
@@ -78,10 +81,13 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     /**
      * Methods
      */
+
+    /**
+     * UPageView
+     */
     public void onShow() {
 
     }
-
     public void onHide() {
         super.onHide();
     }
@@ -137,6 +143,56 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                     0, 0, width, height);
             mWindows[WindowType.Log.ordinal()] = mLogWin;
             ULog.setLogWindow(mLogWin);
+        }
+    }
+
+
+    /**
+     * アクションIDを処理する
+     * サブクラスでオーバーライドして使用する
+     */
+    public void setActionId(int id) {
+        switch(id) {
+            case R.id.action_sort_word_asc: {
+                UIconWindow window = getCurrentWindow();
+                window.mIconManager.sortWithMode(UIconManager.SortMode
+                        .TitleAsc);
+                window.sortIcons(true);
+                mParentView.invalidate();
+            }
+                break;
+            case R.id.action_sort_word_desc: {
+                UIconWindow window = getCurrentWindow();
+                window.mIconManager.sortWithMode(UIconManager.SortMode
+                        .TitleDesc);
+                window.sortIcons(true);
+                mParentView.invalidate();
+            }
+                break;
+            case R.id.action_sort_time_asc: {
+                UIconWindow window = getCurrentWindow();
+                window.mIconManager.sortWithMode(UIconManager.SortMode
+                        .CreateDateAsc);
+                window.sortIcons(true);
+                mParentView.invalidate();
+            }
+                break;
+            case R.id.action_sort_time_desc:
+            {
+                UIconWindow window = getCurrentWindow();
+                window.mIconManager.sortWithMode(UIconManager.SortMode
+                        .CreateDateDesc);
+                window.sortIcons(true);
+                mParentView.invalidate();
+            }
+                break;
+            case R.id.action_help:
+                break;
+            case R.id.action_search_card:
+                PageViewManager.getInstance().stackPage(PageView.SearchCard);
+                break;
+            case R.id.action_settings:
+                break;
         }
     }
 
@@ -332,69 +388,69 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             case AddPresetBook:
                 addPresetBook();
                 break;
-            case SortByWordAsc: {
-                UIconWindow window = getCurrentWindow();
-                window.mIconManager.sortWithMode(UIconManager.SortMode
-                        .TitleAsc);
-                window.sortIcons(true);
-            }
-                break;
-            case SortByWordDesc:
-            {
-                UIconWindow window = getCurrentWindow();
-                window.mIconManager.sortWithMode(UIconManager.SortMode
-                        .TitleDesc);
-                window.sortIcons(true);
-            }
-                break;
-            case SortByTimeAsc:
-            {
-                UIconWindow window = getCurrentWindow();
-                window.mIconManager.sortWithMode(UIconManager.SortMode
-                        .CreateDateAsc);
-                window.sortIcons(true);
-            }
-                break;
-            case SortByTimeDesc:
-            {
-                UIconWindow window = getCurrentWindow();
-                window.mIconManager.sortWithMode(UIconManager.SortMode
-                        .CreateDateDesc);
-                window.sortIcons(true);
-            }
-                break;
+//            case SortByWordAsc: {
+//                UIconWindow window = getCurrentWindow();
+//                window.mIconManager.sortWithMode(UIconManager.SortMode
+//                        .TitleAsc);
+//                window.sortIcons(true);
+//            }
+//                break;
+//            case SortByWordDesc:
+//            {
+//                UIconWindow window = getCurrentWindow();
+//                window.mIconManager.sortWithMode(UIconManager.SortMode
+//                        .TitleDesc);
+//                window.sortIcons(true);
+//            }
+//                break;
+//            case SortByTimeAsc:
+//            {
+//                UIconWindow window = getCurrentWindow();
+//                window.mIconManager.sortWithMode(UIconManager.SortMode
+//                        .CreateDateAsc);
+//                window.sortIcons(true);
+//            }
+//                break;
+//            case SortByTimeDesc:
+//            {
+//                UIconWindow window = getCurrentWindow();
+//                window.mIconManager.sortWithMode(UIconManager.SortMode
+//                        .CreateDateDesc);
+//                window.sortIcons(true);
+//            }
+//                break;
             case Debug1:
                 // ログウィンドウの表示切り替え
                 mLogWin.toggle();
                 mParentView.invalidate();
                 break;
-            case ShowMenuName:
-            {
-                MenuHelpMode helpMode = MySharedPref.getMenuHelpMode();
-                if (helpMode == MenuHelpMode.Name) {
-                    helpMode = MenuHelpMode.None;
-                } else {
-                    helpMode = MenuHelpMode.Name;
-                }
-                MySharedPref.setMenuHelpMode(helpMode);
-            }
-                break;
-            case ShowMenuHelp: {
-                MenuHelpMode helpMode = MySharedPref.getMenuHelpMode();
-                if (helpMode == MenuHelpMode.Help) {
-                    helpMode = MenuHelpMode.None;
-                } else {
-                    helpMode = MenuHelpMode.Help;
-                }
-                MySharedPref.setMenuHelpMode(helpMode);
-            }
-                break;
-            case Setting:
-
-                break;
-            case SearchCard:
-                PageViewManager.getInstance().stackPage(PageView.SearchCard);
-                break;
+//            case ShowMenuName:
+//            {
+//                MenuHelpMode helpMode = MySharedPref.getMenuHelpMode();
+//                if (helpMode == MenuHelpMode.Name) {
+//                    helpMode = MenuHelpMode.None;
+//                } else {
+//                    helpMode = MenuHelpMode.Name;
+//                }
+//                MySharedPref.setMenuHelpMode(helpMode);
+//            }
+//                break;
+//            case ShowMenuHelp: {
+//                MenuHelpMode helpMode = MySharedPref.getMenuHelpMode();
+//                if (helpMode == MenuHelpMode.Help) {
+//                    helpMode = MenuHelpMode.None;
+//                } else {
+//                    helpMode = MenuHelpMode.Help;
+//                }
+//                MySharedPref.setMenuHelpMode(helpMode);
+//            }
+//                break;
+//            case Setting:
+//
+//                break;
+//            case SearchCard:
+//                PageViewManager.getInstance().stackPage(PageView.SearchCard);
+//                break;
         }
         ULog.print(TAG, "menu item clicked " + id);
     }
@@ -539,6 +595,17 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 }
                 mIconWinManager.getSubWindow().sortIcons(false);
                 return true;
+            case TrashDialogButtonOK:
+                // 単語帳をゴミ箱に捨てる
+                moveIconToTrash(mThrowIcon);
+                UIconWindowSub subWindow = mIconWinManager.getSubWindow();
+                if (subWindow.isShow()) {
+                    if (subWindow.windowCallbacks != null) {
+                        subWindow.windowCallbacks.windowClose(subWindow);
+                    }
+                }
+                mDialog.closeDialog();
+                break;
             case UDialogWindow.CloseDialogId:
                 mDialog.closeDialog();
                 break;
@@ -732,6 +799,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      * アイコン配下をクリーンアップする
      */
     public static final int CleanupDialogButtonOK = 101;
+    public static final int TrashDialogButtonOK = 102;
 
     public void IconInfoCleanup(UIcon icon) {
         if (icon == null || icon.getType() == IconType.Trash) {
@@ -810,21 +878,34 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
     // カードや単語帳を削除する(ゴミ箱に移動する)
     public void IconWindowSubDelete(UIcon icon) {
-        moveIconToTrash(icon);
-
-        UIconWindowSub subWindow = mIconWinManager.getSubWindow();
-        if (subWindow.isShow()) {
-            if (subWindow.windowCallbacks != null) {
-                subWindow.windowCallbacks.windowClose(subWindow);
-            }
+        // 確認のダイアログを表示する
+        if (mDialog != null) {
+            mDialog.closeDialog();
+            mDialog = null;
         }
+        // Daoデバッグ用のダイアログを表示
+        mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                this, this,
+                UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                true,
+                mParentView.getWidth(), mParentView.getHeight(),
+                Color.rgb(200,100,100), Color.WHITE);
+        mDialog.addToDrawManager();
+
+        // 確認のダイアログを表示する
+        mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_moveto_trash));
+
+        // ボタンを追加
+        mDialog.addButton(TrashDialogButtonOK, "OK", Color.BLACK,
+                UColor.LightGreen);
+        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+        // 捨てるアイコンを保持
+        mThrowIcon = icon;
     }
 
     public void IconWindowSubCleanupTrash() {
         // ゴミ箱を空にする
-//        RealmManager.getItemPosDao().deleteItemsInTrash();
-//        mIconWinManager.getSubWindow().sortIcons(false);
-//        mParentView.invalidate();
         IconInfoCleanup(null);
     }
 }

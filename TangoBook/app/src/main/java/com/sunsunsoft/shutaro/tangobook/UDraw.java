@@ -361,6 +361,7 @@ public class UDraw {
                 break;
             case Right:
                 x -= width;
+                y -= fontMetrics.ascent;
                 break;
             case Right_CenterY:
                 x -= width;

@@ -16,9 +16,9 @@ import java.util.LinkedList;
 abstract public class UMenuBar extends UWindow {
 
     public static final int DRAW_PRIORITY = 90;
-    public static final int MENU_BAR_H = 150;
+    public static final int MENU_BAR_H = 180;
     protected static final int MARGIN_L = 30;
-    protected static final int MARGIN_LR = 50;
+    protected static final int MARGIN_H = 50;
     protected static final int MARGIN_TOP = 15;
 
 
@@ -57,7 +57,7 @@ abstract public class UMenuBar extends UWindow {
     abstract void initMenuBar();
 
     protected void updateBGSize() {
-        size.width = MARGIN_L + topItems.size() * (UMenuItem.ITEM_W + MARGIN_LR);
+        size.width = MARGIN_L + topItems.size() * (UMenuItem.ITEM_W + MARGIN_H);
     }
 
     /**
@@ -66,7 +66,7 @@ abstract public class UMenuBar extends UWindow {
      * @param image
      */
     protected UMenuItem addTopMenuItem(int menuId, Bitmap image) {
-        UMenuItem item = new UMenuItem(this, menuId, image);
+        UMenuItem item = new UMenuItem(this, menuId, true, image);
         item.setCallbacks(mMenuItemCallbacks);
         item.setShow(true);
 
@@ -74,7 +74,7 @@ abstract public class UMenuBar extends UWindow {
         items.add(item);
 
         // 座標設定
-        item.setPos(MARGIN_LR + (UMenuItem.ITEM_W + MARGIN_LR) * (topItems.size() - 1), MARGIN_TOP);
+        item.setPos(MARGIN_H + (UMenuItem.TOP_ITEM_W + MARGIN_H) * (topItems.size() - 1), MARGIN_TOP);
         return item;
     }
 
@@ -86,7 +86,7 @@ abstract public class UMenuBar extends UWindow {
      * @return
      */
     protected UMenuItem addMenuItem(UMenuItem parent, int menuId, Bitmap image) {
-        UMenuItem item = new UMenuItem(this, menuId, image);
+        UMenuItem item = new UMenuItem(this, menuId, false, image);
         item.setCallbacks(mMenuItemCallbacks);
         item.setmParentItem(parent);
         // 子要素は初期状態では非表示。オープン時に表示される
@@ -197,9 +197,9 @@ abstract public class UMenuBar extends UWindow {
         if (!isShow) return;
 
         // 背景描画
-        UDraw.drawRoundRectFill(canvas, paint, new RectF(pos.x, pos.y, pos.x + getWidth() + 30,
-                pos.y + getHeight()),
-                30, UColor.LightGreen, 0, 0);
+//        UDraw.drawRoundRectFill(canvas, paint, new RectF(pos.x, pos.y, pos.x + getWidth() + 30,
+//                pos.y + getHeight()),
+//                30, UColor.LightGreen, 0, 0);
 
         // トップのアイテムから描画
         for (UMenuItem item : topItems) {

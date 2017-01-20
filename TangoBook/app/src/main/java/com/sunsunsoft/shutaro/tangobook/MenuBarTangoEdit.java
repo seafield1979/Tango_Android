@@ -29,22 +29,22 @@ public class MenuBarTangoEdit extends UMenuBar {
         AddDummyBook(MenuItemType.Child, R.drawable.number_2, R.string.add_dummy_book, true),
         AddPresetBook(MenuItemType.Child, R.drawable.cards, R.string.add_preset, false),
 
-        SortTop(MenuItemType.Top, R.drawable.sort, R.string.sort, false),
-        SortByWordAsc(MenuItemType.Child, R.drawable.sort_by_alphabet2_asc, R.string.sort_word_asc, false),
-        SortByWordDesc(MenuItemType.Child, R.drawable.sort_by_alphabet2_desc, R.string
-                .sort_word_desc, false),
-        SortByTimeAsc(MenuItemType.Child, R.drawable.sort_by_time_asc, R.string.sort_time_asc, false),
-        SortByTimeDesc(MenuItemType.Child, R.drawable.sort_by_time_desc, R.string.sort_time_desc, false),
+//        SortTop(MenuItemType.Top, R.drawable.sort, R.string.sort, false),
+//        SortByWordAsc(MenuItemType.Child, R.drawable.sort_by_alphabet2_asc, R.string.sort_word_asc, false),
+//        SortByWordDesc(MenuItemType.Child, R.drawable.sort_by_alphabet2_desc, R.string
+//                .sort_word_desc, false),
+//        SortByTimeAsc(MenuItemType.Child, R.drawable.sort_by_time_asc, R.string.sort_time_asc, false),
+//        SortByTimeDesc(MenuItemType.Child, R.drawable.sort_by_time_desc, R.string.sort_time_desc, false),
 
         DebugTop(MenuItemType.Top, R.drawable.debug, R.string.debug, true),
         Debug1(MenuItemType.Child, R.drawable.number_1, R.string.debug1, true),
 
-        Help(MenuItemType.Top, R.drawable.question, R.string.help, false),
-        ShowMenuName(MenuItemType.Child, R.drawable.number_1, R.string.disp_menu_name, false),
-        ShowMenuHelp(MenuItemType.Child, R.drawable.number_2, R.string.disp_menu_help, false),
+//        Help(MenuItemType.Top, R.drawable.question, R.string.help, false),
+//        ShowMenuName(MenuItemType.Child, R.drawable.number_1, R.string.disp_menu_name, false),
+//        ShowMenuHelp(MenuItemType.Child, R.drawable.number_2, R.string.disp_menu_help, false),
 
-        Setting(MenuItemType.Top, R.drawable.settings_1, R.string.title_settings, false),
-        SearchCard(MenuItemType.Top, R.drawable.loupe, R.string.search_card, false)
+//        Setting(MenuItemType.Top, R.drawable.settings_1, R.string.title_settings, false),
+//        SearchCard(MenuItemType.Top, R.drawable.loupe, R.string.search_card, false)
         ;
 
         private MenuItemType type;
@@ -83,6 +83,9 @@ public class MenuBarTangoEdit extends UMenuBar {
      */
     public MenuBarTangoEdit(UMenuItemCallbacks callbackClass, int parentW, int parentH, int bgColor) {
         super(callbackClass, parentW, parentH, bgColor);
+
+        // 画面右端に寄せる
+        pos.x = parentW - UMenuItem.ITEM_W - MARGIN_H * 2;
     }
 
     /**
@@ -115,16 +118,17 @@ public class MenuBarTangoEdit extends UMenuBar {
             switch(itemId.getType()) {
                 case Top:
                     item = itemTop = addTopMenuItem(itemId.ordinal(), image);
-                    item.addTitle(UResourceManager.getStringById(itemId.getStringId()),
-                            UAlignment.CenterX,
-                            item.getWidth() / 2, item.getHeight() - 40, TEXT_COLOR, TEXT_BG_COLOR);
+//                    item.addTitle(UResourceManager.getStringById(itemId.getStringId()),
+//                            UAlignment.CenterX,
+//                            item.getWidth() / 2, item.getHeight() - 40, TEXT_COLOR, TEXT_BG_COLOR);
                     break;
                 case Child:
                     item = addMenuItem(itemTop, itemId.ordinal(), image);
-                    // テキストは右側に表示する
+
+                    // アイコンの左側に表示
                     item.addTitle(UResourceManager.getStringById(itemId.getStringId()),
-                            UAlignment.CenterY,
-                            item.getWidth() + 10, item.getHeight() / 2, TEXT_COLOR, TEXT_BG_COLOR);
+                            UAlignment.Right_CenterY,
+                            -20, item.getHeight() / 2, TEXT_COLOR, TEXT_BG_COLOR);
                     break;
                 case State:
                     item.addState(image);

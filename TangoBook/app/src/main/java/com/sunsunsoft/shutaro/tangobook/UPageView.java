@@ -27,7 +27,6 @@ abstract public class UPageView {
      */
     protected Context mContext;
     protected View mParentView;
-    protected UScrollWindow mWindow;        // ページ全体を覆うWindow。ここに描画オブジェクトを追加する
     protected String mTitle;
 
     // UDrawManagerで描画を行うページ番号
@@ -78,6 +77,14 @@ abstract public class UPageView {
             initDrawables();
         }
         return false;
+    }
+
+    /**
+     * アクションIDを処理する
+     * サブクラスでオーバーライドして使用する
+     */
+    public void setActionId(int id) {
+
     }
 
     /**

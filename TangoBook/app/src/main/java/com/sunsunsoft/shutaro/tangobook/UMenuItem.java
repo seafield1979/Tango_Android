@@ -22,14 +22,14 @@ public class UMenuItem extends UDrawable {
     public static final String TAG = "UMenuItem";
 
     public static final int DRAW_PRIORITY = 200;
+    public static final int TOP_ITEM_W = 150;
     public static final int ITEM_W = 120;
-    public static final int ITEM_H = 120;
     public static final int ANIME_FRAME = 10;
 
 
     private static final int CHILD_MARGIN_V = 30;
     private static final int CHILD_MARGIN_H = 30;
-    private static final int TEXT_SIZE = 30;
+    private static final int TEXT_SIZE = 40;
 
     /**
      * メンバ変数
@@ -91,8 +91,8 @@ public class UMenuItem extends UDrawable {
         }
     }
 
-    public UMenuItem(UMenuBar menuBar, int id, Bitmap icon) {
-        super(DRAW_PRIORITY, 0,0,ITEM_W,ITEM_H);
+    public UMenuItem(UMenuBar menuBar, int id, boolean isTop, Bitmap icon) {
+        super(DRAW_PRIORITY, 0,0, isTop ? TOP_ITEM_W : ITEM_W, isTop ? TOP_ITEM_W : ITEM_W);
         this.mMenuBar = menuBar;
         this.mItemId = id;
         this.mStateId = 0;
@@ -114,7 +114,7 @@ public class UMenuItem extends UDrawable {
         mTextTitle = UTextView.createInstance(title, TEXT_SIZE, 0, alignment,
                 0, false, true, x, y, 0, color, bgColor);
         mShowTitle = true;
-        mTextTitle.setMargin(10, 10);
+        mTextTitle.setMargin(15, 15);
     }
 
     /**
@@ -200,14 +200,16 @@ public class UMenuItem extends UDrawable {
             // 領域の幅に合わせて伸縮
             canvas.drawBitmap(icon, new Rect(0,0,icon.getWidth(), icon.getHeight()),
                     new Rect((int)drawPos.x, (int)drawPos.y,
-                            (int)drawPos.x + ITEM_W,(int)drawPos.y + ITEM_H),
+                            (int)drawPos.x + size.width,(int)drawPos.y + size.width),
                     paint);
             // タイトル
-//            if (mTextTitle != null && MySharedPref.getMenuHelpMode() ==
-//                    MenuHelpMode.Name)
-//            {
-                mTextTitle.draw(canvas, paint, drawPos);
-//            }
+            if (mTextTitle != null && MySharedPref.getMenuHelpMode() ==
+                    MenuHelpMode.Name)
+            {
+                if (!isMoving && !isClosing) {
+                    mTextTitle.draw(canvas, paint, drawPos);
+                }
+            }
         }
 
         // 子要素
@@ -321,7 +323,7 @@ public class UMenuItem extends UDrawable {
 
             if (mNestCount == 0) {
                 // 縦方向
-                item.startMoving(0, -count * (ITEM_H + CHILD_MARGIN_V), ANIME_FRAME);
+                item.startMoving(0, -count * (ITEM_W + CHILD_MARGIN_V), ANIME_FRAME);
             } else if (mNestCount == 1) {
                 // 横方向
                 item.startMoving(count * (ITEM_W + CHILD_MARGIN_H), 0, ANIME_FRAME);
