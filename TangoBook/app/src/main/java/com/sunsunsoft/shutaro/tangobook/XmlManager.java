@@ -23,15 +23,6 @@ public class XmlManager {
     /**
      * enum
      */
-    // ファイルの保存先の種類
-    enum DirType{
-        AppStorage,     // アプリの永続化ストレージ
-        AppCache,       // アプリのキャッシュ（一時的に使用する）領域
-        AppExternal,    // アプリの外部
-        ExternalStorage,        // 外部ストレージ
-        ExternalDocument,       // 外部ストレージ(共有ドキュメント)
-        ExternalDownload,       // 外部ストレージ(共有ダウンロード)
-    }
 
     // バックアップファイルの種類
     enum BackupFileType {
@@ -103,7 +94,7 @@ public class XmlManager {
         String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
 
         // 指定の場所にファイルがあるかをチェック
-        File path = getInstance().getPath(DirType.ExternalDocument);
+        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
         File source = new File(path, filename);
 
         XmlTangoTop tangoTop = null;
@@ -212,7 +203,7 @@ public class XmlManager {
         tangoTop.updateDate = new Date();
 
         // ファイルに書き込む
-        File path = getInstance().getPath(DirType.ExternalDocument);
+        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
         File result = new File(path, filename);
         try {
             Serializer serializer = new Persister();
@@ -234,7 +225,7 @@ public class XmlManager {
     public static boolean loadXml(BackupFileType type) {
         String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
 
-        File path = getInstance().getPath(DirType.ExternalDocument);
+        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
         File source = new File(path, filename);
 
         XmlTangoTop tangoTop = null;
@@ -275,40 +266,10 @@ public class XmlManager {
     public static void removeXml(BackupFileType type) {
         String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
 
-        File path = getInstance().getPath(DirType.ExternalDocument);
+        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
         path = new File(path, filename);
         path.delete();
     }
 
-    /**
-     *
-     * @param dirType
-     * @return
-     */
 
-    private File getPath(DirType dirType) {
-        switch (dirType) {
-            case AppStorage:
-                return mContext.getFilesDir();
-            case AppCache:
-                return mContext.getCacheDir();
-            case AppExternal:
-            {
-//                File[] dirs = mContext.getExternalFilesDirs(null);
-//                StringBuffer buf = new StringBuffer();
-//                if (dirs != null && dirs.length > 0) {
-//                    return dirs[0];
-//                }
-            }
-            case ExternalStorage:
-                return Environment.getExternalStorageDirectory();
-            case ExternalDocument:
-                return Environment.getExternalStoragePublicDirectory
-                        (Environment.DIRECTORY_DOCUMENTS);
-            case ExternalDownload:
-                return Environment.getExternalStoragePublicDirectory
-                        (Environment.DIRECTORY_DOWNLOADS);
-        }
-        return null;
-    }
 }

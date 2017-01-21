@@ -40,7 +40,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     public static final int MIN_HEIGHT = 150;
 
     protected static final int MOVE_FRAME = 10;
-    protected static final int MOVE_IN_FRAME = 20;
+    protected static final int MOVE_IN_FRAME = 30;
 
     protected static final int TEXT_SIZE = 50;
     protected static final int MARGIN_TEXT_H = 40;
@@ -194,7 +194,17 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
      */
     public void startMoveIntoBox(float dstX, float dstY)
     {
-        startMoving(MovingType.Deceleration, dstX, dstY, size.width / 5, size.height / 5,
+        int width, height;
+        final int dstWidth = 50;
+        if (size.width > size.height) {
+            width = dstWidth;
+            height = (int)(dstWidth * ((float)size.height / (float)size.width));
+        } else {
+            height = dstWidth;
+            width = (int)(dstWidth * ((float)size.width / (float)size.height));
+        }
+
+        startMoving(MovingType.Deceleration, dstX, dstY, width, height,
                 MOVE_IN_FRAME);
         mState = State.Moving;
         isMoveToBox = true;

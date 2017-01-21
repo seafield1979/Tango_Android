@@ -9,12 +9,14 @@ import android.view.View;
 import java.util.List;
 
 /**
- * Created by shutaro on 2016/12/18.
+ * Created by shutaro on 2017/01/20.
  *
- * プリセット単語帳リストを表示、追加するページ
+ * CSVから単語帳を追加するページ
+ * 検索パス以下にあるcsvを見つけてListViewに表示する
+ * このListViewの項目を選択して追加
  */
 
-public class PageViewPresetBook extends UPageView
+public class PageViewCsvBook extends UPageView
         implements UButtonCallbacks, UListItemCallbacks, UDialogCallbacks{
     /**
      * Constants
@@ -48,7 +50,7 @@ public class PageViewPresetBook extends UPageView
     /**
      * Constructor
      */
-    public PageViewPresetBook(Context context, View parentView, String title) {
+    public PageViewCsvBook(Context context, View parentView, String title) {
         super(context, parentView, title);
     }
 
@@ -103,12 +105,12 @@ public class PageViewPresetBook extends UPageView
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
-                        .preset_title2),
+                        .csv_title2),
                 TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.CenterX, width, false, false,
+                UAlignment.CenterX, width, true, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.size.height + MARGIN_V;
+        y += mTitleText.getHeight() + MARGIN_V;
 
         // ListView
         int listViewH = height - (MARGIN_H * 3 + mTitleText.size.height);
@@ -118,8 +120,8 @@ public class PageViewPresetBook extends UPageView
         mListView.addToDrawManager();
 
         // add items to ListView
-        List<PresetBook> presetBooks = PresetBookManager.getInstance().getBooks();
-        for (PresetBook presetBook : presetBooks) {
+        List<PresetBook> books = PresetBookManager.getInstance().getCsvBookList();
+        for (PresetBook presetBook : books) {
             ListItemPresetBook item = new ListItemPresetBook(this, presetBook, mListView.clientSize.width);
             mListView.add(item);
         }
@@ -137,7 +139,7 @@ public class PageViewPresetBook extends UPageView
         // Dialog
         mDialog = UDialogWindow.createInstance(null, null,
                 UDialogWindow.ButtonDir.Horizontal, width, mParentView
-                .getHeight());
+                        .getHeight());
         mDialog.addToDrawManager();
 
         // Title
@@ -211,7 +213,7 @@ public class PageViewPresetBook extends UPageView
                 mConfirmDialog.closeDialog();
                 showMessageDialog();
             }
-                break;
+            break;
             case ButtonIdAddOk2:
                 mMessageDialog.closeDialog();
                 break;
@@ -264,7 +266,7 @@ public class PageViewPresetBook extends UPageView
                     mBook = book.getBook();
                 }
             }
-                break;
+            break;
         }
     }
 

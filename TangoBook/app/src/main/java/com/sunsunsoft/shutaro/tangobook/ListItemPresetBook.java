@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -59,9 +60,10 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
         mBook = book;
 
         // Add Button
-        mAddButton = new UButtonImage(this, ButtonIdAdd, 0,
+        Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.add, UColor.Green);
+        mAddButton = UButtonImage.createButton(this, ButtonIdAdd, 0,
                 size.width - 150, (size.height - STAR_ICON_W) / 2,
-                STAR_ICON_W, STAR_ICON_W, R.drawable.add, -1);
+                STAR_ICON_W, STAR_ICON_W, image, null);
         mAddButton.scaleRect(2.0f, 1.5f);
 
     }

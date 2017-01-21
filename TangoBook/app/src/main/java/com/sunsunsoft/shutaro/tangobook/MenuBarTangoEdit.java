@@ -28,23 +28,8 @@ public class MenuBarTangoEdit extends UMenuBar {
         AddDummyCard(MenuItemType.Child, R.drawable.number_1, R.string.add_dummy_card, true),
         AddDummyBook(MenuItemType.Child, R.drawable.number_2, R.string.add_dummy_book, true),
         AddPresetBook(MenuItemType.Child, R.drawable.cards, R.string.add_preset, false),
+        AddCsvBook(MenuItemType.Child, R.drawable.cards, R.string.add_csv, false),
 
-//        SortTop(MenuItemType.Top, R.drawable.sort, R.string.sort, false),
-//        SortByWordAsc(MenuItemType.Child, R.drawable.sort_by_alphabet2_asc, R.string.sort_word_asc, false),
-//        SortByWordDesc(MenuItemType.Child, R.drawable.sort_by_alphabet2_desc, R.string
-//                .sort_word_desc, false),
-//        SortByTimeAsc(MenuItemType.Child, R.drawable.sort_by_time_asc, R.string.sort_time_asc, false),
-//        SortByTimeDesc(MenuItemType.Child, R.drawable.sort_by_time_desc, R.string.sort_time_desc, false),
-
-        DebugTop(MenuItemType.Top, R.drawable.debug, R.string.debug, true),
-        Debug1(MenuItemType.Child, R.drawable.number_1, R.string.debug1, true),
-
-//        Help(MenuItemType.Top, R.drawable.question, R.string.help, false),
-//        ShowMenuName(MenuItemType.Child, R.drawable.number_1, R.string.disp_menu_name, false),
-//        ShowMenuHelp(MenuItemType.Child, R.drawable.number_2, R.string.disp_menu_help, false),
-
-//        Setting(MenuItemType.Top, R.drawable.settings_1, R.string.title_settings, false),
-//        SearchCard(MenuItemType.Top, R.drawable.loupe, R.string.search_card, false)
         ;
 
         private MenuItemType type;

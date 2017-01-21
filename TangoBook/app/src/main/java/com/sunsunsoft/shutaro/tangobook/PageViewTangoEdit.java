@@ -201,10 +201,20 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      * @return
      */
     public boolean onBackKeyDown() {
+        // 各種ダイアログ
+        if (mDialog != null) {
+            mDialog.startClosing();
+            return true;
+        }
         // アイコンダイアログが開いていたら閉じる
         if (mIconInfoDlg != null) {
             mIconInfoDlg.closeWindow();
             mIconInfoDlg = null;
+            return true;
+        }
+
+        // メニューが開いていたら閉じる
+        if (mMenuBar.onBackKeyDown()) {
             return true;
         }
 
@@ -214,11 +224,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             if (mIconWinManager.hideWindow(subWindow, true)) {
                 return true;
             }
-        }
-
-        // メニューが開いていたら閉じる
-        if (mMenuBar.onBackKeyDown()) {
-            return true;
         }
 
         return false;
@@ -258,6 +263,11 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     // プリセットの単語帳を追加する
     private void addPresetBook() {
         PageViewManager.getInstance().stackPage(PageView.PresetBook);
+    }
+
+    // Csvファイルから単語帳を追加する
+    private void addCsvBook() {
+        PageViewManager.getInstance().stackPage(PageView.CsvBook);
     }
 
     /**
@@ -388,41 +398,8 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             case AddPresetBook:
                 addPresetBook();
                 break;
-//            case SortByWordAsc: {
-//                UIconWindow window = getCurrentWindow();
-//                window.mIconManager.sortWithMode(UIconManager.SortMode
-//                        .TitleAsc);
-//                window.sortIcons(true);
-//            }
-//                break;
-//            case SortByWordDesc:
-//            {
-//                UIconWindow window = getCurrentWindow();
-//                window.mIconManager.sortWithMode(UIconManager.SortMode
-//                        .TitleDesc);
-//                window.sortIcons(true);
-//            }
-//                break;
-//            case SortByTimeAsc:
-//            {
-//                UIconWindow window = getCurrentWindow();
-//                window.mIconManager.sortWithMode(UIconManager.SortMode
-//                        .CreateDateAsc);
-//                window.sortIcons(true);
-//            }
-//                break;
-//            case SortByTimeDesc:
-//            {
-//                UIconWindow window = getCurrentWindow();
-//                window.mIconManager.sortWithMode(UIconManager.SortMode
-//                        .CreateDateDesc);
-//                window.sortIcons(true);
-//            }
-//                break;
-            case Debug1:
-                // ログウィンドウの表示切り替え
-                mLogWin.toggle();
-                mParentView.invalidate();
+            case AddCsvBook:
+                addCsvBook();
                 break;
 //            case ShowMenuName:
 //            {
@@ -854,7 +831,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      * UDialogCallbacks
      */
     public void dialogClosed(UDialogWindow dialog) {
-
+        if (dialog == mDialog) {
+            mDialog = null;
+        }
     }
 
 

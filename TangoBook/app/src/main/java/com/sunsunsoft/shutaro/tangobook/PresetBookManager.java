@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,6 +76,37 @@ public class PresetBookManager {
     }
 
     /**
+     * Methods
+     */
+    /**
+     * 一覧に表示するためのcsv単語帳リストを作成する
+     */
+    public List<PresetBook> getCsvBookList() {
+        // 指定のフォルダにあるcsvファイルを読み込み
+        File[] files = UUtil.getPath(mContext, FilePathType.ExternalDocument).listFiles();
+        LinkedList<PresetBook> books = new LinkedList<>();
+
+        if (files.length <= 0) {
+            return null;
+        }
+
+        for(File file : files){
+            if(file.isFile() && file.getName().endsWith(".csv")){
+                PresetBook book = CsvParser.getFileBook(mContext, file, true);
+                if (book != null) {
+                    books.add(book);
+                }
+            }
+        }
+
+        for (PresetBook book : books) {
+            book.log();
+        }
+        return books;
+    }
+
+
+    /**
      * データベースにプリセット単語帳のデータを登録
      * @return 作成したBook
      */
@@ -115,7 +147,8 @@ class PresetBook {
     public String mName;
     public String mComment;
     private Context mContext;
-    private int mCsvId;
+    private int mCsvId = -1;
+    private File mFile;
 
     private LinkedList<PresetCard> mCards;
 
@@ -124,8 +157,12 @@ class PresetBook {
      */
     public List<PresetCard> getCards() {
         if (mCards == null) {
-            mCards = CsvParser.getPresetCards(PresetBookManager.getInstance().getContext(),
-                    mCsvId);
+            if (mCsvId != -1) {
+                mCards = CsvParser.getPresetCards(PresetBookManager.getInstance().getContext(),
+                        mCsvId);
+            } else if (mFile != null){
+                mCards = CsvParser.getPresetCards(mFile);
+            }
         }
         return mCards;
     }
@@ -137,6 +174,12 @@ class PresetBook {
         mContext = context;
         mCsvId = csvId;
         mName = name;
+        mComment = comment;
+    }
+    public PresetBook(Context context, File file, String name, String comment) {
+        mContext = context;
+        mName = name;
+        mFile = file;
         mComment = comment;
     }
 

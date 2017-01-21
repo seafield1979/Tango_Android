@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -63,11 +65,55 @@ public class CsvParser {
                     }
                 }
             }
-
         } catch (IOException e) {
 
         }
         return book;
+    }
+
+    /**
+     * CSVファイルを読み込む
+     * @param context
+     * @param file
+     * @param onlyBook  Book情報のみ取得、Card情報は取得しない
+     * @return
+     */
+    static PresetBook getFileBook(Context context, File file, boolean onlyBook) {
+        try {
+            InputStream is = new FileInputStream(file);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            PresetBook book = null;
+
+            boolean isFirst = true;
+            String line;
+            String[] words;
+
+            while ((line = br.readLine()) != null) {
+                words = line.split(",");
+
+                if (isFirst) {
+                    // 最初の行は単語帳データ
+                    isFirst = false;
+
+                    if (words.length >= 2) {
+                        book = new PresetBook(context, file, words[0], words[1]);
+                    }
+                    if (onlyBook) {
+                        break;
+                    }
+                }
+                else {
+                    if (words.length >= 2) {
+                        PresetCard card = new PresetCard(words[0], words[1], words[2]);
+                        book.addCard(card);
+                    }
+                }
+            }
+            return book;
+        } catch (IOException e) {
+
+        }
+        return null;
     }
 
     /**
@@ -78,6 +124,21 @@ public class CsvParser {
      */
     static LinkedList<PresetCard> getPresetCards(Context context, int csvId) {
         InputStream is = context.getResources().openRawResource(csvId);
+        return getPresetCards(is);
+    }
+
+    static LinkedList<PresetCard> getPresetCards(File file) {
+        try {
+            InputStream is = new FileInputStream(file);
+            return getPresetCards( is);
+        } catch (IOException e) {
+
+        }
+        return null;
+    }
+
+
+    static LinkedList<PresetCard> getPresetCards(InputStream is) {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         LinkedList<PresetCard> cards = new LinkedList<>();
 

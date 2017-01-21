@@ -1,10 +1,13 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Environment;
 import android.util.FloatMath;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +21,17 @@ enum ConvDateMode {
     Date,
     DateTime
 }
+
+// ファイルの保存先の種類
+enum FilePathType{
+    AppStorage,     // アプリの永続化ストレージ
+    AppCache,       // アプリのキャッシュ（一時的に使用する）領域
+    AppExternal,    // アプリの外部
+    ExternalStorage,        // 外部ストレージ
+    ExternalDocument,       // 外部ストレージ(共有ドキュメント)
+    ExternalDownload,       // 外部ストレージ(共有ダウンロード)
+}
+
 
 public class UUtil {
     public static final double RAD = 3.1415 / 180.0;
@@ -170,5 +184,36 @@ public class UUtil {
             return _text.substring(0, maxLength - 1);
         }
         return _text;
+    }
+
+    /**
+     *
+     * @param pathType
+     * @return
+     */
+    public static File getPath(Context mContext, FilePathType pathType) {
+        switch (pathType) {
+            case AppStorage:
+                return mContext.getFilesDir();
+            case AppCache:
+                return mContext.getCacheDir();
+            case AppExternal:
+            {
+//                File[] dirs = mContext.getExternalFilesDirs(null);
+//                StringBuffer buf = new StringBuffer();
+//                if (dirs != null && dirs.length > 0) {
+//                    return dirs[0];
+//                }
+            }
+            case ExternalStorage:
+                return Environment.getExternalStorageDirectory();
+            case ExternalDocument:
+                return Environment.getExternalStoragePublicDirectory
+                        (Environment.DIRECTORY_DOCUMENTS);
+            case ExternalDownload:
+                return Environment.getExternalStoragePublicDirectory
+                        (Environment.DIRECTORY_DOWNLOADS);
+        }
+        return null;
     }
 }

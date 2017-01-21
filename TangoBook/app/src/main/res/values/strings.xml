@@ -65,6 +65,7 @@
     <string name="title_studying_input_correct">単語帳学習 正解入力</string>
     <string name="title_study_select">学習する</string>
     <string name="title_preset_book">プリセット単語帳</string>
+    <string name="title_csv_book">CSV単語帳を選択</string>
     <string name="title_search_card">カードを探す</string>
     <string name="title_history">学習の記録</string>
     <string name="title_settings">設定</string>
@@ -143,7 +144,8 @@
     <string name="contact_message">ご要望、不具合の報告等は\nこちらからお願いします\n</string>
     <string name="send_mail">メールを送る</string>
 
-    <string name="preset_title2">Addボタンをタップしてプリセットを追加します</string>
+    <string name="preset_title2">Addボタンをタップしてプリセットを\n追加します</string>
+    <string name="csv_title2">指定のフォルダ(/sdcard/Documents/)\nにあるCSVファイルから単語帳を追加します。</string>
 
     <string name="add_item">追加</string>
     <string name="add_card">単語カード</string>
@@ -151,6 +153,7 @@
     <string name="add_dummy_card">ダミー単語カード</string>
     <string name="add_dummy_book">ダミー単語帳</string>
     <string name="add_preset">プリセット単語帳</string>
+    <string name="add_csv">CSVから追加</string>
     <string name="sort">ソート</string>
     <string name="sort_word_asc">英語(A->Z)</string>
     <string name="sort_word_desc">英語(Z->A)</string>
