@@ -65,6 +65,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     // ゴミ箱に捨てるアイコン
     private UIcon mThrowIcon;
 
+    // CSV出力アイコン
+    private IconBook mExportIcon;
+
 
     /**
      * Get/Set
@@ -583,6 +586,41 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 }
                 mDialog.closeDialog();
                 break;
+            case ExportDialogButtonOK:
+                // CSVファイルに出力する
+            {
+                List<TangoCard> cards = mExportIcon.getItems();
+                String path = PresetBookManager.getInstance()
+                        .exportToCsvFile(mExportIcon.getTitle(), cards);
+
+                String message;
+                if (path == null) {
+                    // 失敗
+                    message = UResourceManager.getStringById(R.string.failed_backup);
+                } else {
+                    // 成功
+                    message = path + "\n" + UResourceManager.getStringById(R.string.finish_export);
+                }
+
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                }
+                mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                        this, this,
+                        UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
+                        true, mParentView.getWidth(), mParentView.getHeight(),
+                        Color.BLACK, Color.LTGRAY);
+                mDialog.addToDrawManager();
+                mDialog.setTitle(message);
+                mDialog.addButton(ExportFinishedDialogButtonOk, "OK", Color.BLACK, Color.WHITE);
+            }
+                break;
+            case ExportFinishedDialogButtonOk:
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+                break;
             case UDialogWindow.CloseDialogId:
                 mDialog.closeDialog();
                 break;
@@ -777,6 +815,8 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      */
     public static final int CleanupDialogButtonOK = 101;
     public static final int TrashDialogButtonOK = 102;
+    public static final int ExportDialogButtonOK = 103;
+    public static final int ExportFinishedDialogButtonOk = 104;
 
     public void IconInfoCleanup(UIcon icon) {
         if (icon == null || icon.getType() == IconType.Trash) {
@@ -836,55 +876,84 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         }
     }
 
-
     /**
      * UIconWindowSubCallbacks
      */
-    public void IconWindowSubClose() {
-        mIconWinManager.hideWindow(mIconWinManager.getSubWindow(), true);
-    }
+    public void IconWindowSubAction(UIconWindowSub.ActionId id, UIcon icon) {
+        switch (id) {
+            case Close:
+                mIconWinManager.hideWindow(mIconWinManager.getSubWindow(), true);
+                break;
+            case Edit:
+                editingIcon = icon;
+                if (icon instanceof IconBook) {
+                    editBookDialog((IconBook)editingIcon);
+                }
+                break;
+            case Copy:
+                copyIcon(icon);
+                break;
+            case Delete: {
+                // 確認のダイアログを表示する
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+                // Daoデバッグ用のダイアログを表示
+                mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                        this, this,
+                        UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                        true,
+                        mParentView.getWidth(), mParentView.getHeight(),
+                        Color.rgb(200,100,100), Color.WHITE);
+                mDialog.addToDrawManager();
 
-    public void IconWindowSubEdit(UIcon icon) {
-        editingIcon = icon;
-        if (icon instanceof IconBook) {
-            editBookDialog((IconBook)editingIcon);
+                // 確認のダイアログを表示する
+                mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_moveto_trash));
+
+                // ボタンを追加
+                mDialog.addButton(TrashDialogButtonOK, "OK", Color.BLACK,
+                        UColor.LightGreen);
+                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+                // 捨てるアイコンを保持
+                mThrowIcon = icon;
+            }
+                break;
+            case Export:
+            {
+                // 確認のダイアログを表示する
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+                // Daoデバッグ用のダイアログを表示
+                mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                        this, this,
+                        UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                        true,
+                        mParentView.getWidth(), mParentView.getHeight(),
+                        Color.rgb(200,100,100), Color.WHITE);
+                mDialog.addToDrawManager();
+
+                // 確認のダイアログを表示する
+                mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_export_csv));
+
+                // ボタンを追加
+                mDialog.addButton(ExportDialogButtonOK, "OK", Color.BLACK,
+                        UColor.LightGreen);
+                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+                // 捨てるアイコンを保持
+                if (icon.getType() == IconType.Book) {
+                    mExportIcon = (IconBook)icon;
+                }
+            }
+                break;
+            case Cleanup:
+                // ゴミ箱を空にする
+                IconInfoCleanup(null);
+                break;
         }
-    }
-
-    public void IconWindowSubCopy(UIcon icon) {
-        copyIcon(icon);
-    }
-
-    // カードや単語帳を削除する(ゴミ箱に移動する)
-    public void IconWindowSubDelete(UIcon icon) {
-        // 確認のダイアログを表示する
-        if (mDialog != null) {
-            mDialog.closeDialog();
-            mDialog = null;
-        }
-        // Daoデバッグ用のダイアログを表示
-        mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                this, this,
-                UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
-                true,
-                mParentView.getWidth(), mParentView.getHeight(),
-                Color.rgb(200,100,100), Color.WHITE);
-        mDialog.addToDrawManager();
-
-        // 確認のダイアログを表示する
-        mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_moveto_trash));
-
-        // ボタンを追加
-        mDialog.addButton(TrashDialogButtonOK, "OK", Color.BLACK,
-                UColor.LightGreen);
-        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-
-        // 捨てるアイコンを保持
-        mThrowIcon = icon;
-    }
-
-    public void IconWindowSubCleanupTrash() {
-        // ゴミ箱を空にする
-        IconInfoCleanup(null);
     }
 }

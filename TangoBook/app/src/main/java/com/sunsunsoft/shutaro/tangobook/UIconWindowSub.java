@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.RectF;
 
 /**
@@ -15,11 +14,7 @@ import android.graphics.RectF;
 
 // コールバック
 interface UIconWindowSubCallbacks {
-    void IconWindowSubClose();
-    void IconWindowSubEdit(UIcon icon);
-    void IconWindowSubCopy(UIcon icon);
-    void IconWindowSubDelete(UIcon icon);
-    void IconWindowSubCleanupTrash();
+    void IconWindowSubAction(UIconWindowSub.ActionId actionId, UIcon icon);
 }
 
 public class UIconWindowSub extends UIconWindow {
@@ -29,6 +24,7 @@ public class UIconWindowSub extends UIconWindow {
     private static final int buttonIdCopy = 301;
     private static final int buttonIdDelete = 302;
     private static final int buttonIdCleanup = 303;
+    private static final int buttonIdExport = 304;
 
     // color
     private static final int ICON_BG_COLOR = UColor.LightYellow;
@@ -36,11 +32,12 @@ public class UIconWindowSub extends UIconWindow {
     /**
      * Enum
      */
-    enum ButtonId {
+    enum ActionId {
         Close(R.drawable.close, R.string.close, buttonIdClose),
         Edit(R.drawable.edit, R.string.edit, buttonIdEdit),
         Copy(R.drawable.copy, R.string.copy, buttonIdCopy),
         Delete(R.drawable.trash, R.string.trash, buttonIdDelete),
+        Export(R.drawable.export, R.string.export, buttonIdExport),
         Cleanup(R.drawable.trash2, R.string.clean_up, buttonIdCleanup)
         ;
 
@@ -48,7 +45,7 @@ public class UIconWindowSub extends UIconWindow {
         private int buttonId;
         private String title;
 
-        private ButtonId(int imageId, int stringId, int buttonId) {
+        private ActionId(int imageId, int stringId, int buttonId) {
             this.imageId = imageId;
             this.buttonId = buttonId;
             this.title = UResourceManager.getStringById(stringId);
@@ -63,11 +60,12 @@ public class UIconWindowSub extends UIconWindow {
             return title;
         }
 
-        public static ButtonId[] bookIds() {
-            return new ButtonId[]{Close, Edit, Copy, Delete};
+        public static ActionId[] bookIds() {
+            return new ActionId[]{Close, Edit, Copy, Export,
+                    Delete};
         }
-        public static ButtonId[] trashIds() {
-            return new ButtonId[]{Close, Cleanup};
+        public static ActionId[] trashIds() {
+            return new ActionId[]{Close, Cleanup};
         }
     }
 
@@ -88,8 +86,8 @@ public class UIconWindowSub extends UIconWindow {
 
 
     // SubWindowの上に表示するアイコンボタン
-    private UButtonImage[] mBookButtons = new UButtonImage[ButtonId.bookIds().length];
-    private UButtonImage[] mTrashButtons = new UButtonImage[ButtonId.trashIds().length];
+    private UButtonImage[] mBookButtons = new UButtonImage[ActionId.bookIds().length];
+    private UButtonImage[] mTrashButtons = new UButtonImage[ActionId.trashIds().length];
 
     // コールバック用のインターフェース
     private UIconWindowSubCallbacks mIconWindowSubCallback;
@@ -157,7 +155,7 @@ public class UIconWindowSub extends UIconWindow {
 
         // Bookを開いたときのアイコンを初期化
         int i = 0;
-        for (ButtonId id : ButtonId.bookIds()) {
+        for (ActionId id : ActionId.bookIds()) {
             image = UResourceManager.getBitmapWithColor(id.getImageId(), UColor.DarkGreen);
             mBookButtons[i] = UButtonImage.createButton(this, id.getButtonId(), 0, x, y,
                     ACTION_ICON_W, ACTION_ICON_W, image, null);
@@ -170,7 +168,7 @@ public class UIconWindowSub extends UIconWindow {
         // ゴミ箱を開いたときのアイコンを初期化
         x = MARGIN_H;
         i = 0;
-        for (ButtonId id : ButtonId.trashIds()) {
+        for (ActionId id : ActionId.trashIds()) {
             image = UResourceManager.getBitmapWithColor(id.getImageId(), UColor.DarkGreen);
             mTrashButtons[i] = UButtonImage.createButton(this, id.getButtonId(), 0, x, y,
                     ACTION_ICON_W, ACTION_ICON_W, image, null);
@@ -260,27 +258,32 @@ public class UIconWindowSub extends UIconWindow {
         switch (id) {
             case buttonIdClose:
                 if (mIconWindowSubCallback != null) {
-                    mIconWindowSubCallback.IconWindowSubClose();
+                    mIconWindowSubCallback.IconWindowSubAction(ActionId.Close, null);
                 }
                 break;
             case buttonIdEdit:
                 if (mIconWindowSubCallback != null && mParentIcon != null ) {
-                    mIconWindowSubCallback.IconWindowSubEdit(mParentIcon);
+                    mIconWindowSubCallback.IconWindowSubAction(ActionId.Edit, mParentIcon);
                 }
                 break;
             case buttonIdCopy:
                 if (mIconWindowSubCallback != null && mParentIcon != null ) {
-                    mIconWindowSubCallback.IconWindowSubCopy(mParentIcon);
+                    mIconWindowSubCallback.IconWindowSubAction(ActionId.Copy, mParentIcon);
+                }
+                break;
+            case buttonIdExport:
+                if (mIconWindowSubCallback != null && mParentIcon != null ) {
+                    mIconWindowSubCallback.IconWindowSubAction(ActionId.Export, mParentIcon);
                 }
                 break;
             case buttonIdDelete:
                 if (mIconWindowSubCallback != null && mParentIcon != null ) {
-                    mIconWindowSubCallback.IconWindowSubDelete(mParentIcon);
+                    mIconWindowSubCallback.IconWindowSubAction(ActionId.Delete, mParentIcon);
                 }
                 break;
             case buttonIdCleanup:
                 if (mIconWindowSubCallback != null) {
-                    mIconWindowSubCallback.IconWindowSubCleanupTrash();
+                    mIconWindowSubCallback.IconWindowSubAction(ActionId.Cleanup, null);
                 }
                 break;
         }

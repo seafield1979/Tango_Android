@@ -2,7 +2,12 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -131,12 +136,28 @@ public class PresetBookManager {
     }
 
     /**
-     * プリセット単語帳を追加  テスト用
-     * @return  作成したBook
+     * Csvファイルにエクスポートする
+     * @return エクスポートファイルのパス
      */
-    public TangoBook test1() {
-        PresetBook book = mBooks.get(0);
-        return addBookToDB(book);
+    public String exportToCsvFile(String bookName, List<TangoCard> cards) {
+        File path = UUtil.getPath(mContext, FilePathType.ExternalDocument);
+        try {
+            String filePath = path.toString() + "/" + bookName + ".csv";
+            FileWriter fw = new FileWriter(filePath);
+
+            // 1行目はbooke名
+            fw.write(bookName + "\n");
+            // 2行目以降はcardの英語、日本語
+            for (TangoCard card : cards) {
+                fw.write(card.getWordA() + "," + card.getWordB() + "\n");
+            }
+            fw.close();
+
+            return filePath;
+        } catch (Exception e) {
+            ULog.print(TAG, e.toString());
+            return null;
+        }
     }
 }
 

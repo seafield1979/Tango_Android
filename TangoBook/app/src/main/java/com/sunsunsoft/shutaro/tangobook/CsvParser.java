@@ -53,14 +53,22 @@ public class CsvParser {
 
                     if (words.length >= 2) {
                         book = new PresetBook(context, csvId, words[0], words[1]);
+                    } else if (words.length >= 1) {
+                        book = new PresetBook(context, csvId, words[0], null);
                     }
                     if (onlyBook) {
                         break;
                     }
                 }
                 else {
-                    if (words.length >= 3) {
-                        PresetCard card = new PresetCard(words[0], words[1], words[2]);
+                    PresetCard card;
+
+                    if (words.length >= 2) {
+                        if (words.length >= 3) {
+                            card = new PresetCard(words[0], words[1], words[2]);
+                        } else {
+                            card = new PresetCard(words[0], words[1], null);
+                        }
                         book.addCard(card);
                     }
                 }
@@ -95,8 +103,12 @@ public class CsvParser {
                     // 最初の行は単語帳データ
                     isFirst = false;
 
-                    if (words.length >= 2) {
-                        book = new PresetBook(context, file, words[0], words[1]);
+                    if (words.length >= 1) {
+                        if (words.length >= 2) {
+                            book = new PresetBook(context, file, words[0], words[1]);
+                        } else {
+                            book = new PresetBook(context, file, words[0], null);
+                        }
                     }
                     if (onlyBook) {
                         break;
@@ -104,7 +116,12 @@ public class CsvParser {
                 }
                 else {
                     if (words.length >= 2) {
-                        PresetCard card = new PresetCard(words[0], words[1], words[2]);
+                        PresetCard card;
+                        if (words.length >= 3) {
+                            card = new PresetCard(words[0], words[1], words[2]);
+                        } else {
+                            card = new PresetCard(words[0], words[1], null);
+                        }
                         book.addCard(card);
                     }
                 }

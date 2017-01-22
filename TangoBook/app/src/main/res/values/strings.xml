@@ -113,6 +113,7 @@
     <string name="confirm_moveto_trash">ゴミ箱に捨てますか？</string>
     <string name="confirm_cleanup_trash">ゴミ箱を空にしますか？</string>
     <string name="confirm_clear_history">学習記録をクリアしますか？</string>
+    <string name="confirm_export_csv">CSVに出力しますか？</string>
 
     <string name="retry1">"すべて\nリトライ"</string>
     <string name="retry2">"NGのみ\nリトライ"</string>
@@ -131,6 +132,8 @@
         また、別の端末に状態を移動することができます。</string>
     <string name="failed_backup">バックアップに失敗しました</string>
     <string name="finish_backup">バックアップが完了しました</string>
+    <string name="failed_export">CSVファイルへの出力に失敗しました</string>
+    <string name="finish_export">への書き込みが完了しました</string>
     <string name="confirm_restore">バックアップから復元しますか？</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
     <string name="no_backup">バックアップはありません</string>
@@ -154,6 +157,7 @@
     <string name="add_dummy_book">ダミー単語帳</string>
     <string name="add_preset">プリセット単語帳</string>
     <string name="add_csv">CSVから追加</string>
+    <string name="export">csv出力</string>
     <string name="sort">ソート</string>
     <string name="sort_word_asc">英語(A->Z)</string>
     <string name="sort_word_desc">英語(Z->A)</string>
