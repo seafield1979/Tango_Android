@@ -234,6 +234,8 @@ public class UIconWindowSub extends UIconWindow {
     {
         super.drawContent(canvas, paint, offset);
 
+        if (isMoving) return;
+
         // アイコンの背景
         UButtonImage[] buttons = getButtons();
 
@@ -249,6 +251,7 @@ public class UIconWindowSub extends UIconWindow {
         for (UButtonImage button : buttons) {
             button.draw(canvas, paint, pos);
         }
+
     }
 
     /**

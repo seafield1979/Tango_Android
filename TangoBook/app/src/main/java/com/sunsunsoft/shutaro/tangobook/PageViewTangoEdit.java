@@ -902,7 +902,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 // Daoデバッグ用のダイアログを表示
                 mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
                         this, this,
-                        UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                        UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
                         true,
                         mParentView.getWidth(), mParentView.getHeight(),
                         Color.rgb(200,100,100), Color.WHITE);
@@ -927,10 +927,10 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                     mDialog.closeDialog();
                     mDialog = null;
                 }
-                // Daoデバッグ用のダイアログを表示
+
                 mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
                         this, this,
-                        UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                        UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
                         true,
                         mParentView.getWidth(), mParentView.getHeight(),
                         Color.rgb(200,100,100), Color.WHITE);
@@ -944,7 +944,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                         UColor.LightGreen);
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
-                // 捨てるアイコンを保持
+                // アイコンを保持
                 if (icon.getType() == IconType.Book) {
                     mExportIcon = (IconBook)icon;
                 }
