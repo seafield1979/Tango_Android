@@ -54,7 +54,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
     public static final String KEY_MODE = "key_mode";
     public static final String KEY_WORD_A = "key_word_a";
     public static final String KEY_WORD_B = "key_word_b";
-    public static final String KEY_COMMENT = "key_comment";
+//    public static final String KEY_COMMENT = "key_comment";
     public static final String KEY_COLOR = "key_color";
 
 
@@ -88,7 +88,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
 
     private String mWordA;
     private String mWordB;
-    private String mComment;
+//    private String mComment;
     private int mColor;
 
     /**
@@ -120,9 +120,9 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
             if (card.getWordB() != null) {
                 args.putString(KEY_WORD_B, card.getWordB());
             }
-            if (card.getComment() != null) {
-                args.putString(KEY_COMMENT, card.getComment());
-            }
+//            if (card.getComment() != null) {
+//                args.putString(KEY_COMMENT, card.getComment());
+//            }
             args.putInt(KEY_COLOR, card.getColor());
 
         } else {
@@ -145,7 +145,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
             mMode = args.getInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
             mWordA = args.getString(KEY_WORD_A, "");
             mWordB = args.getString(KEY_WORD_B, "");
-            mComment = args.getString(KEY_COMMENT, "");
+//            mComment = args.getString(KEY_COMMENT, "");
             mColor = args.getInt(KEY_COLOR, 0);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

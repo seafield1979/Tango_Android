@@ -99,7 +99,7 @@ abstract public class UButton extends UDrawable {
         this.color = color;
         if (color != 0) {
             if (type == UButtonType.BGColor) {
-                this.pressedColor = UColor.addBrightness(color, 0.3f);
+                this.pressedColor = UColor.addBrightness(color, 0.2f);
             } else {
                 this.pressedColor = UColor.addBrightness(color, -0.2f);
             }

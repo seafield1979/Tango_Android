@@ -3,6 +3,7 @@
     <item
         android:id="@+id/action_sort"
         android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
         android:title="@string/sort">
         <menu>
             <item android:id="@+id/action_sort_word_asc"
@@ -23,7 +24,9 @@
     <item
         android:id="@+id/action_help"
         android:orderInCategory="100"
-        android:title="@string/help"/>
+        android:icon="@drawable/sort2"
+        android:title="@string/help"
+        />
     <item
         android:id="@+id/action_search_card"
         android:orderInCategory="100"

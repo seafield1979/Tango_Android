@@ -105,7 +105,7 @@ public class PageViewPresetBook extends UPageView
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
                         .preset_title2),
                 TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.CenterX, width, false, false,
+                UAlignment.CenterX, width, true, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
         y += mTitleText.size.height + MARGIN_V;

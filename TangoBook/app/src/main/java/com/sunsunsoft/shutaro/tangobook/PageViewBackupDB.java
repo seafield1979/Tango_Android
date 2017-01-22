@@ -161,7 +161,7 @@ public class PageViewBackupDB extends UPageView
 
         mRestoreButton1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup1,
                 DRAW_PRIORITY, title,
-                MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
+                MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.BLACK, Color.LTGRAY);
         mRestoreButton1.addToDrawManager();
 
         y += mRestoreButton1.size.height + MARGIN_H;
@@ -191,7 +191,7 @@ public class PageViewBackupDB extends UPageView
         }
         mRestoreButton2 = new UButtonText(this, UButtonType.Press, ButtonIdBackup2,
                 DRAW_PRIORITY, title,
-                MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.DarkGreen, Color.LTGRAY);
+                MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.BLACK, Color.LTGRAY);
         mRestoreButton2.addToDrawManager();
 
         y += mRestoreButton2.getHeight() + MARGIN_V;

@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import java.io.InputStream;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -147,11 +146,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * ヘルプトップページを表示する
+     */
+    public void showHelpTopPage() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        HelpFragment fragment = new HelpFragment();
+
+        transaction.replace(R.id.fragment_container, fragment, TopFragment.TAG);
+        // 戻るボタンで元のFragmentを表示
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    /**
+     * ヘルプ詳細ページを表示する
+     * @param helpPage
+     */
+    public void showHelpPage(HelpPageId helpPage) {
+        FragmentHelpPage fragment = FragmentHelpPage.createInstance(helpPage);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.fragment_container, fragment, TopFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    /**
      * メニューボタンを生成する
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_tango_edit, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 

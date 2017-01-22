@@ -206,7 +206,7 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
 
         args.putInt(KEY_MODE, mMode);
         args.putString(KEY_NAME, mEditName.getText().toString());
-        args.putString(KEY_COMMENT, mEditComment.getText().toString());
+//        args.putString(KEY_COMMENT, mEditComment.getText().toString());
         args.putInt(KEY_COLOR, mColorView.getColor());
 
         if (dialogCallbacks != null) {

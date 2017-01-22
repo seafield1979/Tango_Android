@@ -25,7 +25,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
                 .history),
         Settings(R.string.title_settings, UColor.DarkBlue, UColor.DarkBlue, Color.rgb(153,204,255), R.drawable
                 .settings_1),
-        Help(R.string.title_help, UColor.White, UColor.DarkOrange, Color.rgb(255,178,102), R.drawable.question),
+        Help(R.string.title_help, UColor.White, UColor.DarkOrange, Color.rgb(255,178,102), R.drawable.question2),
         Debug(R.string.title_debug, UColor.WHITE, UColor.DarkGray, Color.rgb(150,150,150), R.drawable.debug),
         ;
 
@@ -190,7 +190,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
                 PageViewManager.getInstance().stackPage(PageView.Settings);
                 break;
             case Help:
-                PageViewManager.getInstance().stackPage(PageView.Help);
+                MainActivity.getInstance().showHelpTopPage();
                 break;
             case Debug:
                 PageViewManager.getInstance().stackPage(PageView.Debug);

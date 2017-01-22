@@ -30,6 +30,9 @@ public class UIconWindowSub extends UIconWindow {
     private static final int buttonIdDelete = 302;
     private static final int buttonIdCleanup = 303;
 
+    // color
+    private static final int ICON_BG_COLOR = UColor.LightYellow;
+
     /**
      * Enum
      */
@@ -242,7 +245,7 @@ public class UIconWindowSub extends UIconWindow {
         float y = pos.y - MARGIN_V2 - MARGIN_V - ACTION_ICON_W;
         UDraw.drawRoundRectFill(canvas, paint, new RectF(x, y, x + width, y +
                 height),
-                30, Color.LTGRAY, 0, 0);
+                30, ICON_BG_COLOR, 0, 0);
 
         // アイコンの描画
         for (UButtonImage button : buttons) {
