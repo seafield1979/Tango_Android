@@ -45,8 +45,8 @@ public class UScrollWindow extends UWindow {
     /**
      * Methods
      */
-    public boolean doAction() {
-        return false;
+    public DoActionRet doAction() {
+        return DoActionRet.None;
     }
 
     public void drawContent(Canvas canvas, Paint paint, PointF offset) {

@@ -122,11 +122,11 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
      * 毎フレーム呼ばれる処理
      * @return
      */
-    public boolean doAction() {
-        if (mAddButton != null && mAddButton.doAction()) {
-            return true;
+    public DoActionRet doAction() {
+        if (mAddButton != null ) {
+            return mAddButton.doAction();
         }
-        return false;
+        return DoActionRet.None;
     }
 
     /**

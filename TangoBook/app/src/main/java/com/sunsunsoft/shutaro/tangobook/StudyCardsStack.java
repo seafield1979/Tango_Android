@@ -132,7 +132,7 @@ public class StudyCardsStack extends UDrawable {
      * 毎フレームの処理
      * @return true:処理中
      */
-    public boolean doAction() {
+    public DoActionRet doAction() {
         // 表示待ちのカードを表示させるかの判定
         if (mCardsInBackYard.size() > 0) {
             boolean startFlag = false;
@@ -207,18 +207,18 @@ public class StudyCardsStack extends UDrawable {
 
 
         // カードの移動等の処理
-        boolean isAllFinished = true;
+        DoActionRet ret = DoActionRet.None;
         for (StudyCard card : mCards) {
-            if (card.doAction()) {
-                isAllFinished = false;
+            if (card.doAction() != DoActionRet.None) {
+                ret = DoActionRet.Redraw;
             }
         }
         for (StudyCard card : mToBoxCards) {
-            if (card.doAction()) {
-                isAllFinished = false;
+            if (card.doAction() != DoActionRet.None) {
+                ret = DoActionRet.Redraw;
             }
         }
-        return !isAllFinished;
+        return ret;
     }
 
     /**

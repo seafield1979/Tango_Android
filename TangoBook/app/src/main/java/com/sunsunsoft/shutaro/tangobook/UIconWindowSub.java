@@ -185,17 +185,29 @@ public class UIconWindowSub extends UIconWindow {
      * 毎フレーム行う処理
      * @return true:再描画を行う(まだ処理が終わっていない)
      */
-    public boolean doAction() {
-        boolean done = false;
-        if (super.doAction()) {
-            done = true;
+    public DoActionRet doAction() {
+        DoActionRet ret = DoActionRet.None;
+
+        DoActionRet _ret = super.doAction();
+        switch(_ret) {
+            case Done:
+                return ret;
+            case Redraw:
+                ret = _ret;
+                break;
         }
+
         for (UButtonImage button : getButtons()) {
-            if (button.doAction()) {
-                done = true;
+            _ret = button.doAction();
+            switch(_ret) {
+                case Done:
+                    return _ret;
+                case Redraw:
+                    ret = _ret;
+                    break;
             }
         }
-        return done;
+        return ret;
     }
 
     /**

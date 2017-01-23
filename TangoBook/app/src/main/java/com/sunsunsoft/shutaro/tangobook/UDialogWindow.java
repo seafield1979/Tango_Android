@@ -223,22 +223,34 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         pos.y = (size.height - size.height) / 2;
     }
 
-    public boolean doAction() {
+    public DoActionRet doAction() {
+        DoActionRet ret = DoActionRet.None;
+        DoActionRet _ret;
         // Drawables
         for (UDrawable obj : mDrawables) {
-            if (obj.doAction()) {
-                return true;
+            _ret = obj.doAction();
+            switch(_ret) {
+                case Done:
+                    return _ret;
+                case Redraw:
+                    ret = _ret;
+                    break;
             }
         }
 
         // Buttons
         for (UButton button : mButtons) {
-            if (button.doAction()) {
-                return true;
+            _ret = button.doAction();
+            switch(_ret) {
+                case Done:
+                    return _ret;
+                case Redraw:
+                    ret = _ret;
+                    break;
             }
         }
 
-        return false;
+        return ret;
     }
 
     /**

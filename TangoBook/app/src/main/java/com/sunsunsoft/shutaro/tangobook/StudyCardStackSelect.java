@@ -155,7 +155,7 @@ public class StudyCardStackSelect extends UDrawable {
      * 毎フレームの処理
      * @return true:処理中
      */
-    public boolean doAction() {
+    public DoActionRet doAction() {
 
         switch(mState) {
             case Main:
@@ -222,14 +222,14 @@ public class StudyCardStackSelect extends UDrawable {
         }
 
         // カードの移動等の処理
-        boolean isAllFinished = true;
+        DoActionRet ret = DoActionRet.None;
         for (StudyCardSelect card : mStudyCards) {
-            if (card.doAction()) {
-                isAllFinished = false;
+            if (card.doAction() != DoActionRet.None) {
+                ret = DoActionRet.Redraw;
             }
         }
 
-        return !isAllFinished;
+        return ret;
     }
 
 

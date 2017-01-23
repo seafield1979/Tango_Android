@@ -303,8 +303,8 @@ public class UIconWindow extends UWindow {
      * 毎フレーム行う処理
      * @return true:再描画を行う(まだ処理が終わっていない)
      */
-    public boolean doAction() {
-        boolean redraw = false;
+    public DoActionRet doAction() {
+        DoActionRet ret = DoActionRet.None;
         boolean allFinished;
         List<UIcon> icons = getIcons();
 
@@ -327,11 +327,11 @@ public class UIconWindow extends UWindow {
                 if (allFinished) {
                     endIconMoving();
                 }
-                redraw = true;
+                ret = DoActionRet.Redraw;
             }
         }
 
-        return redraw;
+        return ret;
     }
 
     /**

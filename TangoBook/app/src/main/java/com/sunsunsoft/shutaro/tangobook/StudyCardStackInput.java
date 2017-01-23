@@ -124,7 +124,7 @@ public class StudyCardStackInput extends UDrawable {
      * 毎フレームの処理
      * @return true:処理中
      */
-    public boolean doAction() {
+    public DoActionRet doAction() {
 
         switch(mState) {
             case Main:
@@ -154,11 +154,11 @@ public class StudyCardStackInput extends UDrawable {
         }
 
         // カードの移動等の処理
-        if (mStudyCard.doAction()) {
-            return true;
+        if (mStudyCard.doAction() != DoActionRet.None) {
+            return DoActionRet.Redraw;
         }
 
-        return false;
+        return DoActionRet.None;
     }
 
 

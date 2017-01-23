@@ -245,13 +245,19 @@ public class IconInfoDialogTrash extends IconInfoDialog {
         return false;
     }
 
-    public boolean doAction() {
+    public DoActionRet doAction() {
+        DoActionRet ret = DoActionRet.None;
         for (UButtonImage button : imageButtons) {
-            if (button.doAction()) {
-                return true;
+            DoActionRet _ret = button.doAction();
+            switch(_ret) {
+                case Done:
+                    return DoActionRet.Done;
+                case Redraw:
+                    ret = DoActionRet.Redraw;
+                    break;
             }
         }
-        return false;
+        return ret;
     }
 
     /**

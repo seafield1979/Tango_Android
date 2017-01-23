@@ -227,15 +227,15 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
      * 自動で実行される何かしらの処理
      * @return
      */
-    public boolean doAction() {
+    public DoActionRet doAction() {
         switch (mState) {
             case Moving:
                 if (autoMoving()) {
-                    return true;
+                    return DoActionRet.Redraw;
                 }
                 break;
         }
-        return false;
+        return DoActionRet.None;
     }
 
     /**

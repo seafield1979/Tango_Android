@@ -188,15 +188,21 @@ public class UDrawItemsWindow extends UScrollWindow {
     /**
      * Window配下のアイテムのdoAction処理を呼び出す
      */
-    public boolean doAction(){
-        if (!isShow) return false;
+    public DoActionRet doAction(){
+        if (!isShow) return DoActionRet.None;
 
+        DoActionRet ret = DoActionRet.None;
         for (UDrawable item : mItems) {
-            if (item.doAction()) {
-                return true;
+            DoActionRet _ret = item.doAction();
+            switch(_ret) {
+                case Done:
+                    return _ret;
+                case Redraw:
+                    ret = _ret;
+                    break;
             }
         }
-        return false;
+        return ret;
     }
 
     /**

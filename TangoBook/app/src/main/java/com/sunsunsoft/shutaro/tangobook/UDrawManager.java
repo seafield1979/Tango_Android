@@ -265,9 +265,12 @@ public class UDrawManager {
 
         for (DrawList list : lists.values()) {
             // 毎フレームの処理
-            if (list.doAction()) {
+            DoActionRet ret = list.doAction();
+            if (ret == DoActionRet.Done) {
                 redraw = true;
                 break;
+            } else if (ret == DoActionRet.Redraw) {
+                redraw = true;
             }
         }
 
@@ -445,14 +448,20 @@ class DrawList
      * 毎フレームの処理
      * @return
      */
-    public boolean doAction() {
-        boolean done = false;
+    public DoActionRet doAction() {
+
+        DoActionRet ret = DoActionRet.None;
         for (UDrawable obj : list) {
-            if (obj.doAction()) {
-                done = true;
+            DoActionRet _ret = obj.doAction();
+            switch(_ret) {
+                case Done:
+                    return _ret;
+                case Redraw:
+                    ret = _ret;
+                    break;
             }
         }
-        return done;
+        return ret;
     }
 
     /**

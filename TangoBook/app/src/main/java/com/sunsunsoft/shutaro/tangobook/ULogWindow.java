@@ -121,14 +121,14 @@ public class ULogWindow extends UWindow {
      *
      * @return true:描画を行う
      */
-    public boolean doAction() {
+    public DoActionRet doAction() {
         // 自動移動
         if (isMoving) {
             if (autoMoving()) {
-                return true;
+                return DoActionRet.Redraw;
             }
         }
-        return false;
+        return DoActionRet.None;
     }
 
 

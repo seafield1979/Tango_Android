@@ -132,11 +132,11 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
      * Methods
      */
 
-    public boolean doAction() {
-        if (mStarButton != null && mStarButton.doAction()) {
-            return true;
+    public DoActionRet doAction() {
+        if (mStarButton != null) {
+            return mStarButton.doAction();
         }
-        return false;
+        return DoActionRet.None;
     }
 
     /**

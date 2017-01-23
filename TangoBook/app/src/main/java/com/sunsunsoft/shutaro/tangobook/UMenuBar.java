@@ -105,17 +105,23 @@ abstract public class UMenuBar extends UWindow {
      * @return true:処理中 / false:完了
      */
     @Override
-    public boolean doAction() {
-        if (!isShow) return false;
+    public DoActionRet doAction() {
+        if (!isShow) return DoActionRet.None;
 
-        boolean allFinished = true;
+        DoActionRet ret = DoActionRet.None;
         for (UMenuItem item : topItems) {
-            if (item.doAction()) {
-                allFinished = false;
+            DoActionRet _ret = item.doAction();
+            switch(_ret) {
+                case Done:
+                    return _ret;
+                case Redraw:
+                    ret = _ret;
+                    break;
+
             }
         }
 
-        return !allFinished;
+        return ret;
     }
 
     /**

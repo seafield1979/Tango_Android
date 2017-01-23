@@ -282,8 +282,8 @@ public class IconInfoDialogBook extends IconInfoDialog {
         return false;
     }
 
-    public boolean doAction() {
-        return false;
+    public DoActionRet doAction() {
+        return DoActionRet.None;
     }
 
     /**

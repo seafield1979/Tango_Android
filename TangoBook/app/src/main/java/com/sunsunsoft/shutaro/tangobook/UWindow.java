@@ -301,7 +301,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks{
      *
      * @return true:描画を行う
      */
-    abstract public boolean doAction();
+    abstract public DoActionRet doAction();
 
     /**
      * 描画

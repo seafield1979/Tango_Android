@@ -140,13 +140,13 @@ abstract public class UButton extends UDrawable {
      * サブクラスでオーバーライドして使用する
      * @return true:処理中 / false:処理完了
      */
-    public boolean doAction(){
+    public DoActionRet doAction(){
         if (isClicked) {
             isClicked = false;
             click();
-            return true;
+            return DoActionRet.Done;
         }
-        return false;
+        return DoActionRet.None;
     }
 
     /**

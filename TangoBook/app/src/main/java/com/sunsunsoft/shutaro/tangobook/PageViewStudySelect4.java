@@ -117,16 +117,16 @@ public class PageViewStudySelect4 extends UPageView
      * 毎フレームの処理
      * @return true:処理中
      */
-    public boolean doAction() {
+    public DoActionRet doAction() {
         switch (mState) {
             case Start:
                 break;
             case Main:
                 break;
             case Finish:
-                return true;
+                return DoActionRet.Done;
         }
-        return false;
+        return DoActionRet.None;
     }
 
     /**

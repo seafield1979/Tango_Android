@@ -230,7 +230,8 @@ public class IconInfoDialogCard extends IconInfoDialog {
         // アクションボタン
         int x = (width - (ICON_W * icons.size() + MARGIN_H * (icons.size() - 1))) / 2;
         for (ActionIcons icon : icons) {
-            Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), frameColor);
+            int color = (icon == ActionIcons.Favorite) ? UColor.LightYellow : frameColor;
+            Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), color);
             UButtonImage imageButton = UButtonImage.createButton( this,
                             icon.ordinal(), 0,
                             x, y,
@@ -239,7 +240,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
             // お気に入りはON/OFF用の２つ画像を登録する
             if (icon == ActionIcons.Favorite) {
                 imageButton.addState(UResourceManager.getBitmapWithColor(R.drawable.favorites2,
-                        frameColor));
+                        color));
                 if (mCard.getStar()) {
                     imageButton.setState(mCard.getStar() ? 1 : 0);
                 }
@@ -287,13 +288,18 @@ public class IconInfoDialogCard extends IconInfoDialog {
         return false;
     }
 
-    public boolean doAction() {
+    public DoActionRet doAction() {
+        DoActionRet ret = DoActionRet.None;
         for (UButtonImage button : imageButtons) {
-            if (button.doAction()) {
-                return true;
+            DoActionRet _ret = button.doAction();
+            switch(_ret){
+                case Done:
+                    return DoActionRet.Done;
+                case Redraw:
+                    ret = DoActionRet.Redraw;
             }
         }
-        return false;
+        return ret;
     }
 
     /**
@@ -308,7 +314,6 @@ public class IconInfoDialogCard extends IconInfoDialog {
             return true;
         }
 
-        ULog.print(TAG, "UButtonCkick:" + id);
         switch(ActionIcons.toEnum(id)) {
             case Edit:
                 mIconInfoCallbacks.IconInfoEditIcon(mIcon);

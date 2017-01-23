@@ -144,16 +144,16 @@ public class StudyCardSelect extends UDrawable{
      * 自動で実行される何かしらの処理
      * @return
      */
-    public boolean doAction() {
+    public DoActionRet doAction() {
         switch (mState) {
             case Appearance:
             case Disappearance:
                 if (autoMoving()) {
-                    return true;
+                    return DoActionRet.Redraw;
                 }
                 break;
         }
-        return false;
+        return DoActionRet.None;
     }
 
     /**

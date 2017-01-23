@@ -103,13 +103,19 @@ public class UListView extends UScrollWindow
         mBottomY = y;
     }
 
-    public boolean doAction() {
+    public DoActionRet doAction() {
+        DoActionRet ret = DoActionRet.None;
         for (UListItem item : mItems) {
-            if (item.doAction()) {
-                return true;
+            DoActionRet _ret = item.doAction();
+            switch (_ret) {
+                case Done:
+                    return DoActionRet.Done;
+                case Redraw:
+                    ret = _ret;
+                    break;
             }
         }
-        return false;
+        return ret;
     }
 
 

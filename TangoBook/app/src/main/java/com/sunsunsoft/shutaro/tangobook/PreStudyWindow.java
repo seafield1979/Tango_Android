@@ -182,15 +182,21 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
      *
      * @return true:描画を行う
      */
-    public boolean doAction() {
+    public DoActionRet doAction() {
+        DoActionRet ret = DoActionRet.None;
         for (UButton button : buttons) {
             if (button == null) continue;
 
-            if (button.doAction()) {
-                return true;
+            DoActionRet _ret = button.doAction();
+            switch(_ret) {
+                case Done:
+                    return _ret;
+                case Redraw:
+                    ret = _ret;
+                    break;
             }
         }
-        return false;
+        return ret;
     }
 
     /**

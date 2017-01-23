@@ -353,31 +353,36 @@ public class UMenuItem extends UDrawable {
      * 毎フレームの処理
      * @return true:処理中(再描画あり)
      */
-    public boolean doAction() {
-        boolean allFinished = true;
+    public DoActionRet doAction() {
+        DoActionRet ret = DoActionRet.None;
 
         // 自分の処理
         // 移動
         if (autoMoving()) {
-            allFinished = false;
+            ret = DoActionRet.Redraw;
         } else if (isClosing) {
             setShow(false);
         }
 
         // アニメーション
         if (animate()) {
-            allFinished = false;
+            ret = DoActionRet.Redraw;
         }
 
         // 子要素のdoAction
         if (mChildItem != null) {
             for (UMenuItem item : mChildItem) {
-                if (item.doAction()) {
-                    allFinished = false;
+                DoActionRet _ret = item.doAction();
+                switch (_ret) {
+                    case Done:
+                        return _ret;
+                    case Redraw:
+                        ret = _ret;
+                        break;
                 }
             }
         }
-        return !allFinished;
+        return ret;
     }
 
     /**

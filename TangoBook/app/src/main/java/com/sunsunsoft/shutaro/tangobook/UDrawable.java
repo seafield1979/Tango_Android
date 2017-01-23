@@ -15,6 +15,12 @@ import android.graphics.RectF;
  *
  * 描画の他に、自動移動、アニメーション等の機能も持っている
  */
+// doActionメソッドをの戻り値
+enum DoActionRet {
+    None,               // 何も処理しない
+    Redraw,             // 再描画あり(doActionループ処理を継続)
+    Done                // 完了(doActionループ終了)
+}
 
 abstract public class UDrawable {
     /**
@@ -26,6 +32,7 @@ abstract public class UDrawable {
         Acceleration,       // 加速
         Deceleration        // 減速
     }
+
 
     /**
      * Constants
@@ -223,8 +230,8 @@ abstract public class UDrawable {
      * サブクラスでオーバーライドして使用する
      * @return true:処理中 / false:処理完了
      */
-    public boolean doAction(){
-        return false;
+    public DoActionRet doAction(){
+        return DoActionRet.None;
     }
 
     /**
