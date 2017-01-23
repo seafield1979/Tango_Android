@@ -446,12 +446,13 @@ class DrawList
      * @return
      */
     public boolean doAction() {
+        boolean done = false;
         for (UDrawable obj : list) {
             if (obj.doAction()) {
-                return true;
+                done = true;
             }
         }
-        return false;
+        return done;
     }
 
     /**

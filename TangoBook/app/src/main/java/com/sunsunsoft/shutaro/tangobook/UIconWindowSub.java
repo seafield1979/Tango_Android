@@ -151,7 +151,7 @@ public class UIconWindowSub extends UIconWindow {
         // アイコンボタンの初期化
         Bitmap image;
         float x = MARGIN_H;
-        float y = -ACTION_ICON_W - MARGIN_V2;
+        float y = - ACTION_ICON_W - MARGIN_V2;
 
         // Bookを開いたときのアイコンを初期化
         int i = 0;
@@ -186,15 +186,16 @@ public class UIconWindowSub extends UIconWindow {
      * @return true:再描画を行う(まだ処理が終わっていない)
      */
     public boolean doAction() {
+        boolean done = false;
         if (super.doAction()) {
-            return true;
+            done = true;
         }
         for (UButtonImage button : getButtons()) {
             if (button.doAction()) {
-                return true;
+                done = true;
             }
         }
-        return false;
+        return done;
     }
 
     /**
@@ -209,11 +210,9 @@ public class UIconWindowSub extends UIconWindow {
         if (offset == null) {
             offset = new PointF(pos.x, pos.y);
         }
-        if (super.touchEvent(vt, offset)) {
-            return true;
-        }
 
         // アイコンのタッチ処理
+        offset.y += size.height;
         for (UButtonImage button : getButtons()) {
             if (button.touchEvent(vt, offset)) {
                 return true;
@@ -242,14 +241,16 @@ public class UIconWindowSub extends UIconWindow {
         float width = buttons.length * (ACTION_ICON_W + MARGIN_H) + MARGIN_H;
         final float height = ACTION_ICON_W + MARGIN_V + MARGIN_V2;
         float x = pos.x;
-        float y = pos.y - MARGIN_V2 - MARGIN_V - ACTION_ICON_W;
+        float y = pos.y + size.height - MARGIN_V2 - MARGIN_V - ACTION_ICON_W;
+
         UDraw.drawRoundRectFill(canvas, paint, new RectF(x, y, x + width, y +
                 height),
                 30, ICON_BG_COLOR, 0, 0);
 
         // アイコンの描画
+        PointF _pos = new PointF(pos.x, pos.y + size.height);
         for (UButtonImage button : buttons) {
-            button.draw(canvas, paint, pos);
+            button.draw(canvas, paint, _pos);
         }
 
     }
