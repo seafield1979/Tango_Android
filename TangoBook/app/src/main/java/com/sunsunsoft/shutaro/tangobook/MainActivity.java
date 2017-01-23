@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
      * Member variables
      */
     TopFragment mTopFragment;
+    HelpFragment mHelpFragment;
+    HelpPageFragment mHelpPageFragment;
 
     private boolean mShowMenu;
 
@@ -109,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         if(keyCode != KeyEvent.KEYCODE_BACK){
             return super.onKeyDown(keyCode, event);
         } else {
-            // 戻るボタン
             if (mTopFragment.onBackKeyDown()) {
                 return true;
             }
@@ -127,6 +128,17 @@ public class MainActivity extends AppCompatActivity {
         switch(itemId) {
             case android.R.id.home:
                 // 戻るボタン
+                if (mHelpPageFragment != null && mHelpPageFragment.isVisible()) {
+                    if (mHelpPageFragment.onBackKeyDown()) {
+                        return true;
+                    }
+                }
+                else if (mHelpFragment != null && mHelpFragment.isVisible()) {
+                    if (mHelpFragment.onBackKeyDown()) {
+                        showActionBarBack(false);
+                        return true;
+                    }
+                }
                 if (mTopFragment.onBackKeyDown()) {
                     return true;
                 }
@@ -150,9 +162,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public void showHelpTopPage() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        HelpFragment fragment = new HelpFragment();
+        mHelpFragment = new HelpFragment();
 
-        transaction.replace(R.id.fragment_container, fragment, TopFragment.TAG);
+        transaction.replace(R.id.fragment_container, mHelpFragment, TopFragment.TAG);
         // 戻るボタンで元のFragmentを表示
         transaction.addToBackStack(null);
         transaction.commit();
@@ -163,11 +175,11 @@ public class MainActivity extends AppCompatActivity {
      * @param helpPage
      */
     public void showHelpPage(HelpPageId helpPage) {
-        FragmentHelpPage fragment = FragmentHelpPage.createInstance(helpPage);
+        mHelpPageFragment = HelpPageFragment.createInstance(helpPage);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        transaction.replace(R.id.fragment_container, fragment, TopFragment.TAG);
+        transaction.replace(R.id.fragment_container, mHelpPageFragment, TopFragment.TAG);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -207,5 +219,15 @@ public class MainActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
                 break;
         }
+    }
+
+    /**
+     * アクションバーの戻るボタン(←)を表示する
+     * @param show false:非表示 / true:表示
+     */
+    public void showActionBarBack(boolean show) {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(show);
+        actionBar.setDisplayHomeAsUpEnabled(show);
     }
 }

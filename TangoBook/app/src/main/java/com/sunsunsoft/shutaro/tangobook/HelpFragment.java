@@ -4,6 +4,8 @@ package com.sunsunsoft.shutaro.tangobook;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,8 +105,11 @@ public class HelpFragment extends Fragment implements OnItemClickListener{
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
+        // 戻るボタンを表示
+        MainActivity.getInstance().showActionBarBack(true);
         return view;
     }
+
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ListView lv = (ListView)parent;
@@ -129,4 +134,12 @@ public class HelpFragment extends Fragment implements OnItemClickListener{
         }
     }
 
+
+    /**
+     * 戻るボタンが押された時の処理
+     */
+    public boolean onBackKeyDown() {
+        getFragmentManager().popBackStack();
+        return true;
+    }
 }

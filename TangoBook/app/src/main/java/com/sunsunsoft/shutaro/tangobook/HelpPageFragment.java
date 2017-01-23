@@ -12,17 +12,17 @@ import android.view.ViewGroup;
  * ヘルプページのFragment
  * ページレイアウトのxmlを表示するだけ
  */
-public class FragmentHelpPage extends Fragment {
+public class HelpPageFragment extends Fragment {
 
     /**
      * Member variables
      */
     private HelpPageId mHelpItem;
 
-    public FragmentHelpPage() {}
+    public HelpPageFragment() {}
 
-    public static FragmentHelpPage createInstance(HelpPageId helpItem) {
-        FragmentHelpPage instance = new FragmentHelpPage();
+    public static HelpPageFragment createInstance(HelpPageId helpItem) {
+        HelpPageFragment instance = new HelpPageFragment();
 
         Bundle args = new Bundle();
         args.putInt("helpItem", helpItem.ordinal());
@@ -52,4 +52,13 @@ public class FragmentHelpPage extends Fragment {
         return inflater.inflate(layoutId, container, false);
     }
 
+
+
+    /**
+     * 戻るボタンが押された時の処理
+     */
+    public boolean onBackKeyDown() {
+        getFragmentManager().popBackStack();
+        return true;
+    }
 }

@@ -160,7 +160,7 @@ public class TopFragment extends Fragment implements OnClickListener, OnTouchLis
     }
 
     /**
-     * MyFragment
+     * 戻るボタンが押された時の処理
      */
     public boolean onBackKeyDown() {
         if (topView.onBackKeyDown()) {
