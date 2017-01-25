@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -104,10 +105,14 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
         instance.mStudyMode = studyMode;
         // Starボタンを追加(On/Offあり)
         if (star) {
-            instance.mStarButton = new UButtonImage(instance, ButtonIdStar, 100,
+            Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.favorites, UColor
+                    .OrangeRed);
+            Bitmap image2 = UResourceManager.getBitmapWithColor(R.drawable.favorites2, UColor
+                    .OrangeRed);
+            instance.mStarButton = UButtonImage.createButton(instance, ButtonIdStar, 100,
                     instance.size.width - 200, (instance.size.height - STAR_ICON_W) / 2,
-                    STAR_ICON_W, STAR_ICON_W, R.drawable.favorites, -1);
-            instance.mStarButton.addState(R.drawable.favorites2);
+                    STAR_ICON_W, STAR_ICON_W, image, null);
+            instance.mStarButton.addState(image2);
             instance.mStarButton.setState(card.getStar() ? 1 : 0);
             instance.mStarButton.scaleRect(1.3f, 1.0f);
         }

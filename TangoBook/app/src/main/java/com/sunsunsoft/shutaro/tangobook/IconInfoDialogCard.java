@@ -231,19 +231,30 @@ public class IconInfoDialogCard extends IconInfoDialog {
         int x = (width - (ICON_W * icons.size() + MARGIN_H * (icons.size() - 1))) / 2;
         for (ActionIcons icon : icons) {
             int color = (icon == ActionIcons.Favorite) ? UColor.LightYellow : frameColor;
-            Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), color);
-            UButtonImage imageButton = UButtonImage.createButton( this,
-                            icon.ordinal(), 0,
-                            x, y,
-                            ICON_W, ICON_W, image, null);
 
+            UButtonImage imageButton;
             // お気に入りはON/OFF用の２つ画像を登録する
             if (icon == ActionIcons.Favorite) {
-                imageButton.addState(UResourceManager.getBitmapWithColor(R.drawable.favorites2,
-                        color));
+                Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.favorites, UColor
+                        .OrangeRed);
+                Bitmap image2 = UResourceManager.getBitmapWithColor(R.drawable.favorites2, UColor
+                        .OrangeRed);
+
+                imageButton = UButtonImage.createButton( this,
+                        icon.ordinal(), 0,
+                        x, y,
+                        ICON_W, ICON_W, image, null);
+
+                imageButton.addState(image2);
                 if (mCard.getStar()) {
                     imageButton.setState(mCard.getStar() ? 1 : 0);
                 }
+            } else {
+                Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), color);
+                imageButton = UButtonImage.createButton( this,
+                        icon.ordinal(), 0,
+                        x, y,
+                        ICON_W, ICON_W, image, null);
             }
 
             // アイコンの下に表示するテキストを設定

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -16,12 +17,118 @@
             android:orientation="vertical">
 
             <TextView
-                android:text=""
+                android:text="CSVファイルから単語帳を追加\n\n
+本アプリはPC等で作成したCSVファイルを元に単語帳を追加することができます。CSVファイルとは要素をカンマ(,)で区切ったテキストファイルのことです。CSVファイルに追加したい単語帳、単語カードの情報を作成し、これを本アプリで読み込み単語帳として追加します。\n\n
+■CSVファイルの作成\n\n
+まずはPC等でCSVファイルを作成します。CSVファイル名は 単語帳名 + .csv で保存します。\n(例: cities.csv)\n\n
+■CSVファイルを編集\n\n
+CSVファイルの中身を編集します。CSVファイルのフォーマットは以下になります。\n\n
+1行目: 単語帳の名前,単語帳の説明\n
+2行目~: カードの英語,カードの日本語\n
+  ~ 好きなだけカードの行を書く ~ \n
+\n
+以下にCSVファイルのサンプルを示します。
+\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView5"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
+
+            <TextView
+                android:text="例: cities.csv\n
+\n
+都市,世界の都市の名前\n
+Tokyo,東京\n
+New York,ニューヨーク\n
+Beijing,北京\n
+\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ffa0a0"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <TextView
+                android:text="これは単語帳の名前が'果物'、カード名がそれぞれ'apple', 'orange', 'melon' です。\n
+\n
+■CSVファイルのコピー\n
+\n
+次に、CSVファイルをAndroid端末の指定のフォルダにコピーします。\n\n
+Androidのコピー先フォルダ:\n
+/sdcard/Documents/\n
+(もしくは /storage/emulated/0/Documents/\n
+sdcard~ と storage/emulated/0~ は同じフォルダを指す)\n
+\n
+コピーするには\n
+▼Windows PCなら\n
+Android端末とPCをUSBをつなぐ\n\n
+▼Macなら\n
+Macにというアプリをインストールしてから Android端末とPCをUSBでつなぐ\n\n
+これでPC上でAndroidのフォルダが表示されるはずなので、\n
+\n
+/sdcard/Documents/ フォルダ （Macの Android File Transferなら [内部ストレージ]以下の Documents）に CSVファイルをコピーします。\n
+これで、PCでの操作は終わりです。\n
+\n
+アプリでCSVファイルを読み込む\n
+\n
+アプリの単語帳編集ページの右下にある「＋」ボタンから「CSVから追加」をタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                app:srcCompat="@drawable/help_add_csv_book"
+                />
+            <TextView
+                android:text="\nするとCSV単語帳がリストで表示されるので、追加したい単語帳の右側の「＋」ボタンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="222dp"
+                app:srcCompat="@drawable/help_add_csv_list"
+                />
+            <TextView
+                android:text="\n追加するかたずねられるので「OK」ボタンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                app:srcCompat="@drawable/help_confirm_add_csv"
+                />
+
+            <TextView
+                android:text="\n追加完了のメッセージが表示されます。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="94dp"
+                app:srcCompat="@drawable/help_finish_add_csv"
+                />
+            <TextView
+                android:text="\n単語帳（ここでは都市を追加）が追加されました。ホームに単語帳が追加されているのが確認できます。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="101dp"
+                android:layout_marginBottom="200dp"
+                app:srcCompat="@drawable/help_added_csv"
+                />
         </LinearLayout>
     </ScrollView>
 

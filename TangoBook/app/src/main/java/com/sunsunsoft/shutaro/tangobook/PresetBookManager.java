@@ -183,16 +183,24 @@ class PresetBook {
         }
         return mCards;
     }
+    public String getFileName() {
+        if (mFile != null) {
+            return "(" + mFile.getName() + ")";
+        }
+        return "";
+    }
 
     /**
      * Constructor
      */
+    // アプリ内のCSVから追加する
     public PresetBook(Context context, int csvId, String name, String comment) {
         mContext = context;
         mCsvId = csvId;
         mName = name;
         mComment = comment;
     }
+    // ストレージにあるCSVから追加する
     public PresetBook(Context context, File file, String name, String comment) {
         mContext = context;
         mName = name;

@@ -105,7 +105,8 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
         x += ICON_W + MARGIN_H;
 
         // Name
-        UDraw.drawTextOneLine(canvas, paint, mBook.mName, UAlignment.None, TEXT_SIZE,
+        UDraw.drawTextOneLine(canvas, paint, mBook.mName + " " + mBook.getFileName(), UAlignment
+                .None, TEXT_SIZE,
                 x, y, TEXT_COLOR);
         y += TEXT_SIZE + marginV;
 

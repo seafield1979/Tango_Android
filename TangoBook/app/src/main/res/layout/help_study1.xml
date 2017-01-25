@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -16,12 +17,60 @@
             android:orientation="vertical">
 
             <TextView
-                android:text=""
+                android:text="単語帳を学習する流れ\n
+\n
+単語帳編集ページで作成した単語帳は、学習ページから学習することができます。本アプリでは４つの学習モードが用意されております。お好きなモードをご利用ください。学習の大まかな流れは以下のようになります。\n
+\n
+■学習の流れ\n
+1. 学習したい単語帳を選択する
+2. 学習オプションを設定する
+3. 学習する\n
+4. 結果ページ、もう一度学習したい場合はリトライする\n
+\n
+
+順にくわしく説明していきます。\n
+\n
+まずは、タイトルページから学習単語帳選択ページに移動します。タイトルページの「学習する」ボタンをタップしましょう。\n
+"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView5"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="112dp"
+                app:srcCompat="@drawable/help_study_button"
+                />
+            <TextView
+                android:text="\n学習単語帳選択ページに単語帳のリストが表示されるので、ここで学習したい単語帳をタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="282dp"
+                app:srcCompat="@drawable/help_study_book_list"
+                />
+            <TextView
+                android:text="\n学習オプションページが表示されます。ここでは学習に関する設定が行えます。\n
+・学習モード\n
+・出題方法\n
+・出題順\n
+・絞り込み\n
+\n
+の設定を行い「開始」ボタンを押すと学習が開始します。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="422dp"
+                app:srcCompat="@drawable/help_study_options"
+                />
+
         </LinearLayout>
     </ScrollView>
 

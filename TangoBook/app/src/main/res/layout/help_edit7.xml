@@ -20,6 +20,8 @@
                 android:text="プリセット単語帳について\n\n
 プリセット単語帳とはあらかじめアプリで用意された単語帳のことです。好きなプリセット単語帳を自分のホームに追加することができます。\n
 \n
+プリセット単語帳の追加\n
+\n
 プリセット単語帳を追加するにはまず単語編集ページの追加ボタンから「プリセット単語帳」をタップします。\n
 "
                 android:layout_width="match_parent"
@@ -54,7 +56,7 @@
                 app:srcCompat="@drawable/help_confirm_add_preset"
                 />
             <TextView
-                android:text="\n追加するかたずねられるので「OK」ボタンをタップします。\n"
+                android:text="\n追加完了のメッセージが表示されます。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -73,6 +75,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="103dp"
+                android:layout_marginBottom="200dp"
                 app:srcCompat="@drawable/help_added_preset_book"
                 />
 
