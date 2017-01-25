@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="作成済みの単語カード、単語帳を編集する方法\n
+\n
+カードの編集\n\n
+カードを編集するにはカードアイコンをタップして表示されるダイアログ上の「編集」アイコンをタップします\n
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:srcCompat="@drawable/help_dlg_edit"
+                />
+
+            <TextView
+                android:text="\nカード編集ダイアログが表示されるので、ここで英語、日本語を編集します\n\n\n\n
+単語帳の編集\n\n
+単語帳を編集するには単語帳アイコンをタップして表示されるウィンドウの「編集」アイコンをタップします\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                app:srcCompat="@drawable/help_book_win_edit"
+                />
+            <TextView
+                android:text="\nここから単語帳の名前を編集します\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

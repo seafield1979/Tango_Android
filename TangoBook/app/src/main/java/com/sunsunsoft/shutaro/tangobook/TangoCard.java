@@ -128,6 +128,9 @@ public class TangoCard extends RealmObject implements TangoItem{
         TangoCard card = new TangoCard();
         card.newFlag = true;
         card.color = Color.BLACK;
+        card.wordA = "";
+        card.wordB = "";
+        card.star = false;
         card.createTime = new Date();
         card.updateTime = new Date();
 

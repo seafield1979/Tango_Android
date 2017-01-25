@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-        android:text="info1"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView5"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="カラフル単語帳は英単語を覚えるためのアプリです。\n
+\n
+簡単に単語カード、単語帳を作成して、簡単に学習する\n
+ことを目的にしています。\n
+\n
+アプリの使い方の流れとしては\n
+１．カード、単語帳を作る\n
+２．好きなモードで単語を学習する\n
+これだけです。\n
+\n
+紙の単語カードを使うとのと同じように、直感的に操作できるように独自のUIを採用しました。\n
+単語帳を作るのも、学習するのもとても簡単です。\n
+直感操作でカードを作ったり、単語帳をまとめたり、カードを他の単語帳に移動したりできます。\n
+\n
+'カラフル単語帳'を使ってサクッと単語帳を作ってサクッと学習してみましょう。\n
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

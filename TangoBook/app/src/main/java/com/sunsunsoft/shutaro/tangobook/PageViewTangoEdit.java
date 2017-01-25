@@ -189,7 +189,17 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 mParentView.invalidate();
             }
                 break;
-            case R.id.action_help:
+            case R.id.action_card_name_a:
+                // カードアイコンの名前を英語で表示
+                MySharedPref.writeBoolean(MySharedPref.EditCardNameKey, false);
+                mIconWinManager.resetCardTitle();
+                mParentView.invalidate();
+                break;
+            case R.id.action_card_name_b:
+                // カードアイコンの名前を日本語で表示
+                MySharedPref.writeBoolean(MySharedPref.EditCardNameKey, true);
+                mIconWinManager.resetCardTitle();
+                mParentView.invalidate();
                 break;
             case R.id.action_search_card:
                 PageViewManager.getInstance().stackPage(PageView.SearchCard);
@@ -568,11 +578,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             case CleanupDialogButtonOK:
                 // ゴミ箱を空にする
                 RealmManager.getItemPosDao().deleteItemsInTrash();
+                mIconWinManager.getSubWindow().getIcons().clear();
+
                 mDialog.closeDialog();
-                if (mIconInfoDlg != null) {
-                    mIconInfoDlg.closeWindow();
-                    mIconInfoDlg = null;
-                }
                 mIconWinManager.getSubWindow().sortIcons(false);
                 return true;
             case TrashDialogButtonOK:
@@ -585,7 +593,8 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                     }
                 }
                 mDialog.closeDialog();
-                break;
+                return true;
+
             case ExportDialogButtonOK:
                 // CSVファイルに出力する
             {

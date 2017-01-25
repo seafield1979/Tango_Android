@@ -2,11 +2,7 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
 
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,9 +20,9 @@ public class PresetBookManager {
     public static final String TAG = "PresetBookManager";
 
     private static int[] presetCsvs = {
-            R.raw.cbook1,
-            R.raw.cbook2,
-            R.raw.cbook3,
+            R.raw.fruit,
+            R.raw.week,
+            R.raw.month,
             R.raw.toeic1
     };
 

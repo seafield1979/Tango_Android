@@ -4,9 +4,38 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-        android:text="info2"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView6"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="本アプリで単語を学習するまでの手順は次のようになります。\n
+\n
+１．単語帳を作成する\n
+　まずは単語カードを入れるための単語帳を作成します。\n
+  この単語帳に単語カードを追加していきます。\n
+\n
+２．１の単語帳にカードを追加する（１枚以上）\n
+　覚えたい単語カードを単語帳に追加します。
+\n
+３．単語帳を選択して学習する\n
+　覚えたい単語を含む単語帳を選んで学習を行います。いくつかの学習モードがあるので、自分にあった覚えやすいモードで学習を行いましょう。
+\n
+これらのステップを行いながら\n
+あとは必要なカードを追加したり、不要になったカードや単語帳を削除したりして自分の好みの単語帳を作っていきます。\n
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

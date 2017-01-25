@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="単語帳を作る方法を説明します。\n
+\n
+単語帳を作るには、「単語帳」を作ってからそれに「単語カード」を追加していきます。\n
+「単語帳」は単語カードをまとめてリングにつなぐあの単語帳です。
+"
+
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                app:srcCompat="@drawable/cards"
+
+                />
+            <TextView
+                android:text="↑こういうやつ\n
+
+これに「単語カード」を追加していきます。単語カードは英語と日本語が書かれてあるカードです。\n
+カードの裏表に別々に言葉が書いてあるので、カードをめくれば裏に今見ている言葉の正解が書いてあります。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                app:srcCompat="@drawable/card"
+                />
+            <TextView
+                android:text="↑こういうやつ\n
+\n
+まとめると、\n
+１．単語帳を作る\n
+２．単語カードを単語帳に追加する\n
+となります。\n
+\n
+単語カードを先に作っても、後から自由に単語帳に追加できるので順番は特に関係ありません。\n
+本アプリでは単語帳と単語カードを簡単に移動できるので、\n
+必要なカードを全部作ってからどの単語帳に追加するか考えるのでも大丈夫です。\n
+\n
+できるだけ自由に単語帳を作れるような作りになっているので、まずはいろいろやって試してみましょう。
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

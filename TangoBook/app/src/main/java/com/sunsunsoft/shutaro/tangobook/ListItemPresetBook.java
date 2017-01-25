@@ -96,7 +96,8 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
                 _color, FRAME_WIDTH, FRAME_COLOR);
 
         float x = _pos.x + MARGIN_H;
-        float y = _pos.y + MARGIN_V;
+        float marginV = (ITEM_H - TEXT_SIZE * 2) / 3;
+        float y = _pos.y + marginV;
         // Icon image
         UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.cards), x,
                 _pos.y + (ITEM_H - ICON_W) / 2,
@@ -106,7 +107,7 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
         // Name
         UDraw.drawTextOneLine(canvas, paint, mBook.mName, UAlignment.None, TEXT_SIZE,
                 x, y, TEXT_COLOR);
-        y += TEXT_SIZE + MARGIN_V;
+        y += TEXT_SIZE + marginV;
 
         // Comment
         UDraw.drawTextOneLine(canvas, paint, mBook.mComment, UAlignment.None, TEXT_SIZE,

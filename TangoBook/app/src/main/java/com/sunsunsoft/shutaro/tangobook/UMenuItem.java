@@ -203,9 +203,7 @@ public class UMenuItem extends UDrawable {
                             (int)drawPos.x + size.width,(int)drawPos.y + size.width),
                     paint);
             // タイトル
-            if (mTextTitle != null && MySharedPref.getMenuHelpMode() ==
-                    MenuHelpMode.Name)
-            {
+            if (mTextTitle != null ) {
                 if (!isMoving && !isClosing) {
                     mTextTitle.draw(canvas, paint, drawPos);
                 }

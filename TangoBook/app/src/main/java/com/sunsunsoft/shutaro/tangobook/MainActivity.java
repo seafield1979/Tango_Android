@@ -148,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_sort_word_desc:
             case R.id.action_sort_time_asc:
             case R.id.action_sort_time_desc:
-            case R.id.action_help:
+            case R.id.action_card_name_a:
+            case R.id.action_card_name_b:
             case R.id.action_search_card:
             case R.id.action_settings:
                 PageViewManager.getInstance().setActionId(itemId);
@@ -219,6 +220,15 @@ public class MainActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
                 break;
         }
+    }
+
+    /**
+     * アクションバーのタイトル文字を設定する
+     * @param text
+     */
+    public void setActionBarTitle(String text) {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(text);
     }
 
     /**

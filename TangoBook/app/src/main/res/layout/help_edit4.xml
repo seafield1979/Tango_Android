@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="カード、単語帳の移動\n\n
+カードや単語帳はアイコンをタップしたまま移動、ドロップすることで並び順を変えたり、カードを別の単語帳に移動したりできます。
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/icon_move"
+                android:id="@+id/imageView"/>
+            <TextView
+                android:text="アイコンをタップしたまま移動します\n\n
+２枚のカードの場所を交換\n
+カードをタップしたまま移動先のカードの上にドロップすると\n
+２つのカードの位置が入れ替わります。\n
+\n
+カードを単語帳の中に移動\n
+カードをタップしたまま移動先の単語帳の上にドロップするとドロップした単語帳の中にカードが移動します。\n
+\n
+\n
+カードを単語帳の中に移動　その２\n
+単語帳をタップして開きます。開いた単語帳の中にカードをドロップします。\n
+開いた状態の単語帳へのカードの移動は自由に行えます。例えば、開いた単語帳の中のカードをホームにある別の単語帳の中に直接移動したりもできます。\n
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

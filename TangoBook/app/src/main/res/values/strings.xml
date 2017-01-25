@@ -176,6 +176,7 @@
     <string name="help">ヘルプ</string>
     <string name="disp_menu_name">メニュー名を表示</string>
     <string name="disp_menu_help">メニューの説明を表示</string>
+    <string name="edit_page_word_type">カードの名前</string>
 
     <!-- error message -->
     <string name="not_exit_study_card">学習できるカードがありません</string>
@@ -186,5 +187,35 @@
     <!-- mail to -->
     <string name="contact_mail_title">アプリに関するお問い合わせ【カラフル単語帳】</string>
     <string name="contact_mail_body">アプリに対するご要望や不具合等の内容をお書きください\n\n\nアプリ名:カラフル単語帳\n</string>
+
+
+    <!-- help -->
+    <!-- title -->
+    <string name="help_title_basic">基本</string>
+    <string name="help_title_basic1">本アプリについて</string>
+    <string name="help_title_basic2">使用方法</string>
+
+    <string name="help_title_edit">単語帳の作成</string>
+    <string name="help_title_edit0">単語帳の作成について</string>
+    <string name="help_title_edit1">単語帳の作成</string>
+    <string name="help_title_edit2">カードの作成</string>
+    <string name="help_title_edit3">カード、単語帳の編集</string>
+    <string name="help_title_edit4">カードの移動</string>
+    <string name="help_title_edit5">カードをまとめて移動</string>
+    <string name="help_title_edit6">カード、単語帳の削除</string>
+    <string name="help_title_edit7">プリセット単語帳を追加</string>
+    <string name="help_title_edit8">csv単語帳を追加</string>
+
+    <string name="help_title_study">学習（単語を覚える）</string>
+    <string name="help_title_study1">学習の流れ</string>
+    <string name="help_title_study2">学習モード1（１つづつスライド）</string>
+    <string name="help_title_study3">学習モード2（まとめてスライド）</string>
+    <string name="help_title_study4">学習モード3（４択）</string>
+    <string name="help_title_study5">学習モード4（正解を入力）</string>
+
+    <string name="help_title_backup">バックアップ（保存と復元）</string>
+    <string name="help_title_backup1">バックアップについて</string>
+    <string name="help_title_backup2">環境をバックアップ</string>
+    <string name="help_title_backup3">単語帳をバックアップ</string>
 
 </resources>

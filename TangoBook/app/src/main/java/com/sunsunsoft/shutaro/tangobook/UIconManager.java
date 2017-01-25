@@ -197,14 +197,14 @@ public class UIconManager implements UIconCallbacks{
         UIcon icon = null;
         switch (type) {
             case Card: {
-                TangoCard card = TangoCard.createDummyCard();
+                TangoCard card = TangoCard.createCard();
                 RealmManager.getCardDao().addOne(card, parentType, parentId, true);
                 icon = new IconCard(card, mParentWindow, this);
             }
                 break;
             case Book:
             {
-                TangoBook book = TangoBook.createDummyBook();
+                TangoBook book = TangoBook.createBook();
                 RealmManager.getBookDao().addOne(book, true);
                 icon = new IconBook(book, mParentWindow, this);
             }

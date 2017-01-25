@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="プリセット単語帳について\n\n
+プリセット単語帳とはあらかじめアプリで用意された単語帳のことです。好きなプリセット単語帳を自分のホームに追加することができます。\n
+\n
+プリセット単語帳を追加するにはまず単語編集ページの追加ボタンから「プリセット単語帳」をタップします。\n
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="308dp"
+                app:srcCompat="@drawable/help_add_preset_book"
+                />
+            <TextView
+                android:text="\nするとプリセット単語帳がリストで表示されるので、追加したい単語帳の右側の「＋」ボタンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="259dp"
+                app:srcCompat="@drawable/help_preset_list"
+                />
+            <TextView
+                android:text="\n追加するかたずねられるので「OK」ボタンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="92dp"
+                app:srcCompat="@drawable/help_confirm_add_preset"
+                />
+            <TextView
+                android:text="\n追加するかたずねられるので「OK」ボタンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="89dp"
+                app:srcCompat="@drawable/help_finish_add_preset"
+                />
+            <TextView
+                android:text="\nプリセット単語帳（ここでは果物を追加）が追加されました。ホームに単語帳が追加されているのが確認できます。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="103dp"
+                app:srcCompat="@drawable/help_added_preset_book"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

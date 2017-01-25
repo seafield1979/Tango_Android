@@ -38,6 +38,7 @@ public class TangoBook extends RealmObject implements TangoItem {
     public static TangoBook createBook() {
         TangoBook book = new TangoBook();
         book.newFlag = true;
+        book.name = "";
         book.color = Color.BLACK;
         book.createTime = new Date();
         book.updateTime = new Date();

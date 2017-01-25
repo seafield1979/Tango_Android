@@ -125,6 +125,8 @@ public class MySharedPref {
     public static final String TAG = "MySharedPref";
 
     // option key
+    // 単語編集ページのカードの名前表示
+    public static final String EditCardNameKey = "EditCardName";
 
     // 出題方法
     public static final String StudyModeKey = "StudyMode";
@@ -210,6 +212,7 @@ public class MySharedPref {
     /**
      * Methods
      */
+    public static boolean getCardName() { return readBoolean(EditCardNameKey);}
     public static StudyMode getStudyMode() {
         return StudyMode.toEnum(readInt(StudyModeKey));
     }

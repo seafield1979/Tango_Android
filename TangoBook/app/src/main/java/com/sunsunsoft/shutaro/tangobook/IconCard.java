@@ -116,7 +116,8 @@ public class IconCard extends UIcon{
     public void updateTitle() {
         // 改行ありなら１行目のみ切り出す
         if (card.getWordA() == null) return;
-        String[] strs = card.getWordA().split("\n");
+        String str = (MySharedPref.getCardName()) ? card.getWordB() : card.getWordA();
+        String[] strs = str.split("\n");
 
         if (strs[0].length() < DISP_TITLE_LEN) {
             this.title = strs[0];

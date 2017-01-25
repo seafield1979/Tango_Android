@@ -25,8 +25,16 @@
         android:id="@+id/action_help"
         android:orderInCategory="100"
         android:icon="@drawable/sort2"
-        android:title="@string/help"
-        />
+        android:title="@string/edit_page_word_type">
+        <menu>
+            <item android:id="@+id/action_card_name_a"
+                  android:title="@string/word_a"
+                />
+            <item android:id="@+id/action_card_name_b"
+                  android:title="@string/word_b"
+                />
+        </menu>
+    </item>
     <item
         android:id="@+id/action_search_card"
         android:orderInCategory="100"

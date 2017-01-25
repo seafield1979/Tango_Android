@@ -35,10 +35,11 @@ public class HelpListAdapter extends ArrayAdapter<HelpListItemData> {
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(
                     R.layout.list_item_help, null);
-            TextView textView = (TextView) convertView.findViewById(R.id.text);
-            textView.setText(item.getmText());
-            textView.setTextColor(item.getTextColor());
         }
+        TextView textView = (TextView) convertView.findViewById(R.id.text);
+        textView.setText(item.getmText());
+        textView.setTextColor(item.getTextColor());
+
 
         convertView.setBackgroundColor(item.getBgColor());
 

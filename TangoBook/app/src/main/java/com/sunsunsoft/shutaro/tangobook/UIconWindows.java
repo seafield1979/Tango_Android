@@ -178,6 +178,20 @@ public class UIconWindows implements UWindowCallbacks {
     }
 
     /**
+     * 全てのウィンドウのカードの表示を更新する
+     */
+    public void resetCardTitle() {
+        for (UIconWindow window : windows) {
+            List<UIcon> icons = window.getIcons();
+
+            if (icons == null) continue;
+            for (UIcon icon : icons) {
+                icon.updateTitle();
+            }
+        }
+    }
+
+    /**
      * 全てのアイコンの情報を表示する for Debug
      */
     public void showAllIconsInfo() {

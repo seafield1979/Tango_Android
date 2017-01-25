@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:text="単語帳を作る手順\n
+\n
+タイトルページの「単語帳を作る」ボタンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="111dp"
+                android:layout_height="136dp"
+                app:srcCompat="@drawable/help_edit_button"
+
+                />
+
+            <TextView
+                android:text="\n単語帳作成ページに遷移します。\n
+ここで画面右下にある「追加ボタン」をタップします\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="75dp"
+                app:srcCompat="@drawable/help_add_button"
+                />
+            <TextView
+                android:text="\n「追加ボタン」の上に追加系のアイコンが表示されます。\n
+この中にある「単語帳」アイコンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="181dp"
+                android:layout_height="224dp"
+                android:layout_gravity="left"
+                app:srcCompat="@drawable/help_add_book"
+                />
+            <TextView
+                android:text="\n単語帳作成画面が表示されるので、ここで単語帳の名前を入力して「OK」ボタンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                app:srcCompat="@drawable/help_edit_cards"
+                android:layout_weight="0.70"/>
+
+            <TextView
+                android:text="\nホーム（ページのトップ）に単語帳のアイコンが作成されます。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                app:srcCompat="@drawable/help_new_book"
+                />
+
+            <TextView
+                android:text="\n以上が単語帳の作成手順です\n\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

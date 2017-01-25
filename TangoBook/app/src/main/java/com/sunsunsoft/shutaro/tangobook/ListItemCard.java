@@ -82,7 +82,8 @@ public class ListItemCard extends UListItem {
                 _color, FRAME_WIDTH, FRAME_COLOR);
 
         float x = _pos.x + MARGIN_H;
-        float y = _pos.y + MARGIN_V;
+        float marginV = (ITEM_H - TEXT_SIZE * 2) / 3;
+        float y = _pos.y + marginV;
         // Icon image
         UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.card), x,
                 _pos.y + (ITEM_H - ICON_W) / 2,
@@ -94,19 +95,20 @@ public class ListItemCard extends UListItem {
                 UResourceManager.getStringById(R.string.word_a) + ": " + mPresetCard.mWordA,
                 UAlignment.None, TEXT_SIZE,
                 x, y, TEXT_COLOR);
-        y += TEXT_SIZE + MARGIN_V;
+        y += TEXT_SIZE + marginV;
 
         // WordB
         UDraw.drawTextOneLine(canvas, paint,
                 UResourceManager.getStringById(R.string.word_b) + ": " + mPresetCard.mWordB,
                 UAlignment.None, TEXT_SIZE,
                 x, y, TEXT_COLOR);
-        y += TEXT_SIZE + MARGIN_V;
 
         // Comment
-        UDraw.drawTextOneLine(canvas, paint,
-                UResourceManager.getStringById(R.string.comment) + ": " + mPresetCard.mComment,
-                UAlignment.None, TEXT_SIZE,
-                x, y, TEXT_COLOR);
+//        if (mPresetCard.mComment != null) {
+//            UDraw.drawTextOneLine(canvas, paint,
+//                    UResourceManager.getStringById(R.string.comment) + ": " + mPresetCard.mComment,
+//                    UAlignment.None, TEXT_SIZE,
+//                    x, y, TEXT_COLOR);
+//        }
     }
 }

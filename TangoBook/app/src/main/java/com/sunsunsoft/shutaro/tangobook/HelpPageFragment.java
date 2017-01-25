@@ -36,17 +36,14 @@ public class HelpPageFragment extends Fragment {
         // 引数を受け取る
         mHelpItem = HelpPageId.toEnum(getArguments().getInt("helpItem"));
 
+        // アクションバーのタイトル
+        MainActivity.getInstance().setActionBarTitle(mHelpItem.getText());
+
         int layoutId = 0;
 
-        switch(mHelpItem) {
-            case Info1:
-                layoutId = R.layout.help_page_info1;
-                break;
-            case Info2:
-                layoutId = R.layout.help_page_info2;
-                break;
-            default:
-                layoutId = R.layout.fragment_help_page;
+        layoutId = mHelpItem.getLayoutId();
+        if (layoutId == -1) {
+            layoutId = R.layout.help_page_info1;
         }
 
         return inflater.inflate(layoutId, container, false);

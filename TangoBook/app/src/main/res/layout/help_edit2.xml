@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="単語カードを作る手順\n
+\n
+タイトルページの「単語帳を作る」ボタンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="111dp"
+                android:layout_height="136dp"
+                app:srcCompat="@drawable/help_edit_button"
+
+                />
+            <TextView
+                android:text="\n単語帳作成ページに遷移します。\n
+ここで画面右下にある「追加ボタン」をタップします\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="75dp"
+                app:srcCompat="@drawable/help_add_button"
+                />
+            <TextView
+                android:text="\n「追加ボタン」の上に追加系のアイコンが表示されます。\n
+この中にある「単語カード」アイコンをタップします。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="181dp"
+                android:layout_height="224dp"
+                android:layout_gravity="left"
+                app:srcCompat="@drawable/help_add_card"
+                />
+            <TextView
+                android:text="\n単語カード作成画面が表示されるので、ここで英語、日本語を入力して「OK」ボタンをタップします。\n
+（ここでは英語に「apple」、日本語に「りんご」を入力しました）\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                app:srcCompat="@drawable/help_edit_card"
+                android:layout_weight="0.70"/>
+
+            <TextView
+                android:text="\nホームに単語カード（appleという名前）が作成されました。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/help_new_card"
+                />
+
+            <TextView
+                android:text="\nカードアイコンをタップするとメニューが表示されます。ここからカードを編集、コピー等の操作を行なえます。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                app:srcCompat="@drawable/help_card_info"
+                android:layout_weight="0.05"/>
+            <TextView
+                android:text="\n以上が単語カードの作成手順です\n\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
