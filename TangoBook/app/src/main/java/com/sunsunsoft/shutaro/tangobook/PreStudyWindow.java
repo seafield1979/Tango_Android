@@ -212,7 +212,9 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
         // textViews
         textTitle.draw(canvas, paint, pos);
         textCount.draw(canvas, paint, pos);
-        textLastStudied.draw(canvas, paint, pos);
+        if (textLastStudied != null) {
+            textLastStudied.draw(canvas, paint, pos);
+        }
         textStudyMode.draw(canvas, paint, pos);
         textStudyType.draw(canvas, paint, pos);
         textStudyOrder.draw(canvas, paint, pos);
@@ -262,13 +264,15 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
 
         // 最終学習日時
         Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(mBook.getId());
-        textLastStudied = UTextView.createInstance(
-                UResourceManager.getStringById(R.string
-                .last_studied_date) + ": " + UUtil.convDateFormat(date, ConvDateMode.DateTime),
-                TEXT_SIZE, 0,
-                UAlignment.CenterX, screenW, false, false,
-                width / 2, y, TITLE_WIDTH, TEXT_DATE_COLOR, 0);
-        y += textLastStudied.getHeight() + MARGIN_V * 2;
+        if (date != null) {
+            textLastStudied = UTextView.createInstance(
+                    UResourceManager.getStringById(R.string
+                            .last_studied_date) + ": " + UUtil.convDateFormat(date, ConvDateMode.DateTime),
+                    TEXT_SIZE, 0,
+                    UAlignment.CenterX, screenW, false, false,
+                    width / 2, y, TITLE_WIDTH, TEXT_DATE_COLOR, 0);
+            y += textLastStudied.getHeight() + MARGIN_V * 2;
+        }
 
         /**
          * Buttons

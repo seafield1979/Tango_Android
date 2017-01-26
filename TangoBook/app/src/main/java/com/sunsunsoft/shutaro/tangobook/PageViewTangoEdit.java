@@ -660,7 +660,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             // 戻り値を取得
             card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
             card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
-//            card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+            card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
             card.setColor(args.getInt(EditBookDialogFragment.KEY_COLOR, 0));
 
             iconCard.updateTitle();
@@ -672,7 +672,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             TangoCard card = (TangoCard)editingIcon.getTangoItem();
             card.setWordA(args.getString(EditCardDialogFragment.KEY_WORD_A, ""));
             card.setWordB(args.getString(EditCardDialogFragment.KEY_WORD_B, ""));
-//            card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+            card.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
             int color = card.getColor();
             card.setColor(args.getInt(EditCardDialogFragment.KEY_COLOR, 0));
 
@@ -729,7 +729,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             TangoBook book = (TangoBook)bookIcon.getTangoItem();
 
             book.setName(args.getString(EditBookDialogFragment.KEY_NAME, ""));
-//            book.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
+            book.setComment(args.getString(EditCardDialogFragment.KEY_COMMENT, ""));
             int color = book.getColor();
             book.setColor(args.getInt(EditBookDialogFragment.KEY_COLOR, 0));
 

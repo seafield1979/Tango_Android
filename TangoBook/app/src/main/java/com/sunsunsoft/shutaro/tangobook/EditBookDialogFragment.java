@@ -159,8 +159,8 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
         mEditName = (EditText)view.findViewById(R.id.editName);
         mEditName.setText(mName);
 
-//        mEditComment = (EditText)view.findViewById(R.id.editComment);
-//        mEditComment.setText(mComment);
+        mEditComment = (EditText)view.findViewById(R.id.editComment);
+        mEditComment.setText(mComment);
 
         mColorView = (ColorView)view.findViewById(R.id.current_color);
         mColorView.setColor(mColor);
@@ -177,12 +177,6 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
                 cancel();
             }
         });
-
-//        (view.findViewById(R.id.buttonRandom)).setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                setRandomValue();
-//            }
-//        });
 
         for (int id : colorViewIds) {
             view.findViewById(id).setOnClickListener(this);
@@ -206,7 +200,7 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
 
         args.putInt(KEY_MODE, mMode);
         args.putString(KEY_NAME, mEditName.getText().toString());
-//        args.putString(KEY_COMMENT, mEditComment.getText().toString());
+        args.putString(KEY_COMMENT, mEditComment.getText().toString());
         args.putInt(KEY_COLOR, mColorView.getColor());
 
         if (dialogCallbacks != null) {

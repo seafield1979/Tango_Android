@@ -8,10 +8,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <!-- OK / Cancel -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:text="OK"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ok_button_state"
+                    android:textColor="@android:color/background_light"
+                    android:id="@+id/buttonOK"/>
+                <Button
+                    android:text="@string/cancel"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonCancel"
+                    android:background="@drawable/cancel_button_state"
+                    android:textColor="@android:color/background_light"/>
+
+            </LinearLayout>
 
             <TextView
                 android:text="@string/word_a"
@@ -41,18 +69,18 @@
                 android:ems="10"
                 android:id="@+id/editWordB"/>
 
-            <!--<TextView-->
-                <!--android:text="@string/comment"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/textView5"/>-->
-            <!--<EditText-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="textMultiLine|textPersonName"-->
-                <!--android:text=""-->
-                <!--android:ems="10"-->
-                <!--android:id="@+id/editComment"/>-->
+            <TextView
+                android:text="@string/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine|textPersonName"
+                android:text=""
+                android:ems="10"
+                android:id="@+id/editComment"/>
 
             <!-- Color -->
             <TextView
@@ -160,32 +188,6 @@ android:id="@+id/color_view_13"
     </ScrollView>
 
 
-    <!-- OK / Cancel -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <Button
-            android:text="OK"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ok_button_state"
-            android:textColor="@android:color/background_light"
-            android:id="@+id/buttonOK"/>
-        <Button
-            android:text="@string/cancel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonCancel"
-            android:background="@drawable/cancel_button_state"
-            android:textColor="@android:color/background_light"/>
-
-    </LinearLayout>
 
     <!-- for debug -->
     <!--<Button-->
