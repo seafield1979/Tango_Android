@@ -20,6 +20,7 @@ public class PresetBookManager {
     public static final String TAG = "PresetBookManager";
 
     private static int[] presetCsvs = {
+            R.raw.animal,
             R.raw.fruit,
             R.raw.week,
             R.raw.month,
@@ -142,10 +143,23 @@ public class PresetBookManager {
             FileWriter fw = new FileWriter(filePath);
 
             // 1行目はbooke名
-            fw.write(bookName + "\n");
+            fw.write(escapeCsv(bookName) + "\n");
             // 2行目以降はcardの英語、日本語
             for (TangoCard card : cards) {
-                fw.write(card.getWordA() + "," + card.getWordB() + "\n");
+                if (card.getWordA() != null) {
+                    fw.write(escapeCsv(card.getWordA()));
+                }
+                fw.write(",");
+
+                if (card.getWordB() != null) {
+                    fw.write(escapeCsv(card.getWordB()));
+                }
+                fw.write(",");
+
+                if (card.getComment() != null) {
+                    fw.write(escapeCsv(card.getComment()));
+                }
+                fw.write("\n");
             }
             fw.close();
 
@@ -154,6 +168,19 @@ public class PresetBookManager {
             ULog.print(TAG, e.toString());
             return null;
         }
+    }
+
+    /**
+     * CSVの文字列をエスケープする
+     * CSV文字列中にカンマ(,)があったら文字列を""で囲む
+     * @param word
+     * @return
+     */
+    private String escapeCsv(String word) {
+        if (word.contains(",")) {
+            return "\"" + word + "\"";
+        }
+        return word;
     }
 }
 

@@ -45,7 +45,7 @@ public class CsvParser {
             String[] words;
 
             while ((line = br.readLine()) != null) {
-                words = line.split(",");
+                words = splitCsvLine(line);
 
                 if (isFirst) {
                     // 最初の行は単語帳データ
@@ -80,6 +80,50 @@ public class CsvParser {
     }
 
     /**
+     * CSVファイルの１行をカンマで分割する
+     * "~"で囲まれる文字の中のカンマは区切り文字として使用しない
+     * @param str
+     * @return
+     */
+    private static String[] splitCsvLine(String str) {
+        LinkedList<String> list = new LinkedList<>();
+        StringBuffer buf = new StringBuffer();
+        boolean seekDQ = false;
+
+        for (String ch : str.split("")) {
+            if (seekDQ) {
+                if (ch.equals("\"")) {
+                    seekDQ = false;
+                    list.add(buf.toString());
+                    buf.setLength(0);
+                }
+                else {
+                    buf.append(ch);
+                }
+            }
+            else {
+                // " を見つけたら次の"を見つけるまでカンマスキップモード
+                if (ch.equals("\"")) {
+                    seekDQ = true;
+                } else if (ch.equals(",")) {
+                    if (buf.length() > 0) {
+                        list.add(buf.toString());
+                        buf.setLength(0);
+                    }
+                } else {
+                    buf.append(ch);
+                }
+            }
+        }
+        if (buf.length() > 0) {
+            list.add(buf.toString());
+            buf.setLength(0);
+        }
+
+        return list.toArray(new String[0]);
+    }
+
+    /**
      * CSVファイルを読み込む
      * @param context
      * @param file
@@ -97,7 +141,7 @@ public class CsvParser {
             String[] words;
 
             while ((line = br.readLine()) != null) {
-                words = line.split(",");
+                words = splitCsvLine(line);
 
                 if (isFirst) {
                     // 最初の行は単語帳データ
@@ -170,7 +214,7 @@ public class CsvParser {
                     isFirst = false;
                 }
                 else {
-                    words = line.split(",");
+                    words = splitCsvLine(line);
                     if (words.length >= 2) {
                         String wordA = (words.length >= 1) ? words[0] : "";
                         String wordB = (words.length >= 2) ? words[1] : "";

@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         // PresetBookManager
         PresetBookManager.createInstance(this);
-        PresetBookManager.getInstance().makeBookList();
+//        PresetBookManager.getInstance().makeBookList();
 
         mShowMenu = true;
     }

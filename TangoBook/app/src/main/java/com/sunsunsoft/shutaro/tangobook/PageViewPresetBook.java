@@ -50,6 +50,8 @@ public class PageViewPresetBook extends UPageView
      */
     public PageViewPresetBook(Context context, View parentView, String title) {
         super(context, parentView, title);
+
+        PresetBookManager.getInstance().makeBookList();
     }
 
     /**
