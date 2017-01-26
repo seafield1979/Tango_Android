@@ -156,7 +156,11 @@ public class PageViewBackupDB extends UPageView
         String title = MySharedPref.readString(MySharedPref.BackupInfoKey);
         if (title.length() == 0) {
             title = XmlManager.getXmlInfo(XmlManager.BackupFileType.ManualBackup);
-            MySharedPref.writeString(MySharedPref.BackupInfoKey, title);
+            if (title == null) {
+                title = UResourceManager.getStringById(R.string.no_backup);
+            } else {
+                MySharedPref.writeString(MySharedPref.BackupInfoKey, title);
+            }
         }
 
         mRestoreButton1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup1,
@@ -197,13 +201,13 @@ public class PageViewBackupDB extends UPageView
         y += mRestoreButton2.getHeight() + MARGIN_V;
 
         // cleanup (for Debug)
-        if (UDebug.isDebug) {
+//        if (UDebug.isDebug) {
             mCleanupButton = new UButtonText(this, UButtonType.Press, ButtonIdCleanUp, DRAW_PRIORITY,
                     UResourceManager.getStringById(R.string.clean_up),
                     MARGIN_H, y, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, UColor
                     .LTGRAY);
             mCleanupButton.addToDrawManager();
-        }
+//        }
     }
 
 
@@ -317,6 +321,9 @@ public class PageViewBackupDB extends UPageView
             case ButtonIdCleanUp:
                 MySharedPref.delete(MySharedPref.BackupInfoKey);
                 XmlManager.getInstance().removeXml(XmlManager.BackupFileType.ManualBackup);
+
+                MySharedPref.delete(MySharedPref.AutoBackupInfoKey);
+                XmlManager.getInstance().removeXml(XmlManager.BackupFileType.AutoBackup);
 
                 initDrawables();
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -16,12 +17,75 @@
             android:orientation="vertical">
 
             <TextView
-                android:text=""
+                android:text="学習モード4\n
+正解文字をタップ\n
+\n
+日本語の出題に対して、正解の英単語を順にタップします。英語のスペルが１文字づつに分解され表示されるので、正解のスペルを１つづつタップしていきます。もし途中で間違ったスペルをタップすると、最後まで文字をタップしてもそのカードはNG(間違い)なります。\n
+このモードは日本語 -> 英語 限定です。\n
+\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView5"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="372dp"
+                app:srcCompat="@drawable/help_study_mode4_1"
+                />
+            <TextView
+                android:text="\n単語のアルファベットが１文字づつに分解されて表示されます。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                app:srcCompat="@drawable/help_study_mode4_2"
+                />
+            <TextView
+                android:text="\n正解を１文字づつタップしてきます。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="185dp"
+                app:srcCompat="@drawable/help_study_mode4_3"
+                />
+            <TextView
+                android:text="\最後まで間違わずにタップできたらOK(正解)です。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                app:srcCompat="@drawable/help_study_mode4_4"
+                />
+            <TextView
+                android:text="\途中で１文字でも間違いをタップすると\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:srcCompat="@drawable/help_study_mode4_5"
+                />
+            <TextView
+                android:text="\n最後まで文字をタップしても、そのカードはNG(間違い)になります。\n
+\n
+カードの英語の中に記号やスペース等、アルファベットの文字以外があった場合は、初めから正解の文字の中に表示されるためタップする必要はありません。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
         </LinearLayout>
     </ScrollView>
 

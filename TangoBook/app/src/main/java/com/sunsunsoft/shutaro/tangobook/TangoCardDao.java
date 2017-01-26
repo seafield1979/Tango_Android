@@ -169,11 +169,27 @@ public class TangoCardDao {
         }
         RealmResults<TangoCard> results = query.findAll();
 
+        List<TangoCard> cards;
         if (results != null && changeable) {
-            return toChangeable(results);
+            cards = toChangeable(results);
+        } else {
+            cards = results;
+        }
+        LinkedList<TangoCard> _cards = new LinkedList<>(cards);
+
+        // itemPoses の順番に並び替え
+        LinkedList<TangoCard> sortedList = new LinkedList<>();
+        for (TangoItemPos item : itemPoses) {
+            for (TangoCard card : _cards) {
+                if (item.getItemId() == card.getId()) {
+                    sortedList.add(card);
+                    _cards.remove(card);
+                    break;
+                }
+            }
         }
 
-        return results;
+        return sortedList;
     }
 
     /**

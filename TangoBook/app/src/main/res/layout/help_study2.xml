@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -16,10 +17,50 @@
             android:orientation="vertical">
 
             <TextView
-                android:text=""
+                android:text="学習モード1\n
+１つづつスライド\n
+\n
+１つづつ表示される単語カードを自分でOK、NG判定するモードです。\n
+単語の答えがわかったら右側(OK側)、わからなかったら左側(NG側)にスライドします。\n
+\n
+"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView5"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="419dp"
+                app:srcCompat="@drawable/help_study_mode1_1"
+                />
+            <TextView
+                android:text="\n学習を始めるとカードが表示されるので、答え(英語が表示されていたら日本語、日本語が表示されていたら英語)がわかったら右にスライド、わからなかったら左にスライドする。\n
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="337dp"
+                app:srcCompat="@drawable/help_study_mode1_2"
+                />
+            <TextView
+                android:text="\n↑正解がわかったら右にスライド。そうするとカードがOKボックスに入る。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="334dp"
+                app:srcCompat="@drawable/help_study_mode1_3"
+                />
+            <TextView
+                android:text="\nわからなかったら左にスライド。カードはNGボックスに入る。\nこれをカードがなくなるまで繰り返します。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
         </LinearLayout>

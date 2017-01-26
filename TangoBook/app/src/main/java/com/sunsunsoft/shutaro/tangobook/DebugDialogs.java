@@ -249,7 +249,7 @@ public class DebugDialogs implements UButtonCallbacks, UDialogCallbacks {
 
             // Icons
             case IconsShowAll:
-                UIconWindows.getPublicInstance().showAllIconsInfo();
+                UIconWindows.getInstance().showAllIconsInfo();
                 return true;
 
             // DrawManager

@@ -1,6 +1,5 @@
 package com.sunsunsoft.shutaro.tangobook;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -78,7 +77,7 @@ public class IconTrash extends IconContainer {
             drawPos = pos;
         }
 
-        if (isLongTouched || isTouched || isDroping) {
+        if (isLongTouched || isTouched || isDroped) {
             // 長押し、タッチ、ドロップ中はBGを表示
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(drawPos.x, drawPos.y, drawPos.x + ICON_W, drawPos.y + ICON_H),

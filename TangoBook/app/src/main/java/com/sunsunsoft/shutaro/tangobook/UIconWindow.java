@@ -685,6 +685,16 @@ public class UIconWindow extends UWindow {
                 continue;
             }
 
+            // BookタイプのアイコンをサブWindowに移動できない
+            // ただしサブWindowがゴミ箱の場合は除く
+            if (window == windows.getSubWindow()) {
+                if (dragedIcon.type == IconType.Book &&
+                        window.getParentType() != TangoParentType.Trash)
+                {
+                    continue;
+                }
+            }
+
             List<UIcon> dstIcons = window.getIcons();
 
             if (dstIcons == null) continue;
@@ -732,10 +742,7 @@ public class UIconWindow extends UWindow {
                 }
 
                 if (isMoved) {
-                    // BookタイプのアイコンをサブWindowに移動できない
-                    if (dragedIcon.type == IconType.Book && window == windows.getSubWindow()) {
-                        continue;
-                    }
+
 
                     // 最後のアイコンの後の空きスペースにドロップされた場合
                     // ドラッグ中のアイコンをリストの最後に移動

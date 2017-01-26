@@ -47,7 +47,7 @@ public class UIconWindows implements UWindowCallbacks {
     }
 
     // デバッグ用のどこからでも参照できるインスタンス
-    public static UIconWindows getPublicInstance() {
+    public static UIconWindows getInstance() {
         return publicInstance;
     }
 
@@ -187,6 +187,20 @@ public class UIconWindows implements UWindowCallbacks {
             if (icons == null) continue;
             for (UIcon icon : icons) {
                 icon.updateTitle();
+            }
+        }
+    }
+
+    /**
+     * 全てのアイコンのドロップ状態をクリアする
+     */
+    public void clearDroped() {
+        for (UIconWindow window : windows) {
+            List<UIcon> icons = window.getIcons();
+
+            if (icons == null) continue;
+            for (UIcon icon : icons) {
+                icon.isDroped = false;
             }
         }
     }

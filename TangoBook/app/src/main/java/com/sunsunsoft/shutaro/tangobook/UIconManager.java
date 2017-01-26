@@ -1,7 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Point;
-import android.view.View;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -78,12 +77,11 @@ public class UIconManager implements UIconCallbacks{
 
     public void setDropedIcon(UIcon dropedIcon) {
         // 全てのアイコンのdropフラグを解除
-        for (UIcon icon : icons) {
-            icon.isDroping = false;
-        }
+        UIconWindows.getInstance().clearDroped();
+
         if (dropedIcon != null) {
             this.dropedIcon = dropedIcon;
-            dropedIcon.isDroping = true;
+            dropedIcon.isDroped = true;
         }
     }
 

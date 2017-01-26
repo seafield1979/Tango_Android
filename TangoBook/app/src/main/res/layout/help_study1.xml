@@ -19,7 +19,8 @@
             <TextView
                 android:text="単語帳を学習する流れ\n
 \n
-単語帳編集ページで作成した単語帳は、学習ページから学習することができます。本アプリでは４つの学習モードが用意されております。お好きなモードをご利用ください。学習の大まかな流れは以下のようになります。\n
+単語帳編集ページで作成した単語帳は、学習ページから学習することができます。本アプリでは４つの学習モードが用意されており、好きなモードで学習することができます。\n
+学習の大まかな流れは以下のようになります。\n
 \n
 ■学習の流れ\n
 1. 学習したい単語帳を選択する
@@ -28,9 +29,9 @@
 4. 結果ページ、もう一度学習したい場合はリトライする\n
 \n
 
-順にくわしく説明していきます。\n
+順に説明します。\n
 \n
-まずは、タイトルページから学習単語帳選択ページに移動します。タイトルページの「学習する」ボタンをタップしましょう。\n
+まずはタイトルページの「学習する」ボタンをタップしましょう。\n
 "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,7 +44,9 @@
                 app:srcCompat="@drawable/help_study_button"
                 />
             <TextView
-                android:text="\n学習単語帳選択ページに単語帳のリストが表示されるので、ここで学習したい単語帳をタップします。\n"
+                android:text="\n■学習単語帳選択ページ
+\n
+単語帳のリストが表示されるので、ここで学習したい単語帳をタップします。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -54,7 +57,8 @@
                 app:srcCompat="@drawable/help_study_book_list"
                 />
             <TextView
-                android:text="\n学習オプションページが表示されます。ここでは学習に関する設定が行えます。\n
+                android:text="\n■学習オプションページ\n
+ここでは学習に関する設定が行えます。\n
 ・学習モード\n
 ・出題方法\n
 ・出題順\n
@@ -70,7 +74,38 @@
                 android:layout_height="422dp"
                 app:srcCompat="@drawable/help_study_options"
                 />
+            <TextView
+                android:text="\n学習中（学習モードによって学習方法は変わります）。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="423dp"
+                app:srcCompat="@drawable/help_study_mode2"
+                />
+            <TextView
+                android:text="\n\n↓学習後の結果ページ。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="422dp"
+                app:srcCompat="@drawable/help_study_result"
+                />
+            <TextView
+                android:text="\nOK（正解）とNG(間違い）に分かれて学習したカードの一覧が表示されます。\n
+\n
+OKのカードには覚えたアイコンが表示されます。これをタップすると覚えた、という情報を保存され、次回以降の学習で覚えた単語を出題しないといった使い方ができます。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
         </LinearLayout>
     </ScrollView>
 

@@ -69,7 +69,7 @@ abstract public class UIcon extends UDrawable {
     protected boolean isChecking;      // 選択可能状態(チェックボックスが表示される)
     protected boolean isChecked;       // 選択中
     protected boolean isDraging;        // ドラッグ中
-    protected boolean isDroping;        // ドロップ中(上に他のアイコンがドラッグ)
+    protected boolean isDroped;        // ドロップ中(上に他のアイコンがドラッグ)
     protected boolean isTouched;        // タッチ中
     protected boolean isLongTouched;    // 長押し中
 

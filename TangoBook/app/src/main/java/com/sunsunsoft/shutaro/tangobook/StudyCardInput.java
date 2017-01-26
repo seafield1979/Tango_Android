@@ -131,7 +131,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
         mState = State.None;
         mCard = card;
         mWord = card.getWordA();
-        String[] strArray = card.getWordA().split("");
+        String[] strArray = card.getWordA().toLowerCase().split("");
 
         // strArrayの先頭に余分な空文字が入っているので除去
         // 空白も除去

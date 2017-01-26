@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -16,12 +17,63 @@
             android:orientation="vertical">
 
             <TextView
-                android:text=""
+                android:text="学習モード2\n
+まとめてスライド\n
+\n
+画面に表示できるだけの単語カードを自分でOK、NG判定するモードです。\n
+単語の答えがわかったら右側(OK側)、わからなかったら左側(NG側)にスライドします。\n
+\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView5"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="373dp"
+                app:srcCompat="@drawable/help_study_mode2_1"
+                />
+            <TextView
+                android:text="\n学習を開始すると画面の上方向からカードが降ってくるので、これらのカードを順次 OK,NGに振り分けていきます。\n
+振り分けの順番はどこカードからでもOKです。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="342dp"
+                app:srcCompat="@drawable/help_study_mode2_2"
+                />
+            <TextView
+                android:text="\nOKなら右にスライド\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="370dp"
+                app:srcCompat="@drawable/help_study_mode2_3"
+                />
+            <TextView
+                android:text="\nNGなら左にスライド\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="265dp"
+                app:srcCompat="@drawable/help_study_mode2_4"
+                />
+            <TextView
+                android:text="\nカードがなくなるまで振り分けを繰り返します。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
         </LinearLayout>
     </ScrollView>
 

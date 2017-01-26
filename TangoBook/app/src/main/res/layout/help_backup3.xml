@@ -16,10 +16,18 @@
             android:orientation="vertical">
 
             <TextView
-                android:text=""
+                android:text="単語帳をバックアップ\n
+\n
+単語帳は個別にファイル(csv)に保存することができます。\n
+保存したcsvファイルからいつでも単語帳を復元できます。\n
+\n
+■単語帳のバックアップ\n
+\n
+単語帳をバックするには\n
+まず、単語編集ページでバックアップしたいファイルをタップします。\n
+"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView5"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
         </LinearLayout>

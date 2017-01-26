@@ -1,6 +1,5 @@
 package com.sunsunsoft.shutaro.tangobook;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -77,7 +76,7 @@ public class IconBook extends IconContainer {
             drawPos = pos;
         }
 
-        if (isLongTouched || isTouched || isDroping) {
+        if (isLongTouched || isTouched || isDroped) {
             // 長押し、タッチ、ドロップ中はBGを表示
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(drawPos.x, drawPos.y, drawPos.x + ICON_W, drawPos.y + ICON_H),
@@ -138,6 +137,10 @@ public class IconBook extends IconContainer {
      * @return
      */
     public boolean canDrop(UIcon dstIcon, float dropX, float dropY) {
+        // ドロップ先のアイコンがサブWindowの中なら不可能
+        if (dstIcon.getParentWindow().getType() == UIconWindow.WindowType.Sub) {
+            return false;
+        }
         // ドロップ座標がアイコンの中に含まれているかチェック
         if (!dstIcon.checkDrop(dropX, dropY)) return false;
 
