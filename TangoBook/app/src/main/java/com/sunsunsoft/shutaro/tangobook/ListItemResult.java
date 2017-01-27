@@ -26,7 +26,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     /**
      * Constants
      */
-    public static final String TAG = "ListItemResult";
+    public static final String TAG = "ListItemOption";
 
     private static final int MAX_TEXT = 20;
 

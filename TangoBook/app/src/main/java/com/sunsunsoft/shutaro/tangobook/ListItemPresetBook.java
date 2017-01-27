@@ -20,7 +20,7 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
     /**
      * Constants
      */
-    public static final String TAG = "ListItemResult";
+    public static final String TAG = "ListItemOption";
 
     public static final int ButtonIdAdd = 100100;
     private static final int ITEM_H = 200;

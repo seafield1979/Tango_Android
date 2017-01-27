@@ -170,6 +170,11 @@ public class PageViewSettingsTop extends UPageView
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch(id) {
+            case ButtonIdOption: {
+                // オプション設定ページに移動
+                PageViewManager.getInstance().stackPage(PageView.Options);
+            }
+                break;
             case ButtonIdBackup: {
                 // バックアップページに遷移
                 PageViewManager.getInstance().stackPage(PageView.BackupDB);

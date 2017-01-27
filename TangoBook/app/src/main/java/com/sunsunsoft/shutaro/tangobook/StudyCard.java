@@ -43,6 +43,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     protected static final int MOVE_IN_FRAME = 30;
 
     protected static final int TEXT_SIZE = 50;
+    protected static final int TEXT_SIZE_L = 70;
     protected static final int MARGIN_TEXT_H = 40;
     protected static final int MARGIN_TEXT_V = 20;
 
@@ -76,6 +77,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     protected String wordA, wordB;
     protected String hintA, hintB;
     protected TangoCard mCard;
+    protected int mTextSize;
     protected boolean isTouching;
     protected float slideX;
     protected boolean showArrow;
@@ -158,9 +160,11 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
             if (height < MIN_HEIGHT) height = MIN_HEIGHT;
             else if (height > maxHeight) height = maxHeight;
             size.height = height;
+            mTextSize = TEXT_SIZE;
         } else {
             size.width = maxWidth;
             size.height = maxHeight;
+            mTextSize = TEXT_SIZE_L;
         }
 
 
@@ -293,7 +297,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
         if (!isMoveToBox) {
             // タッチ中は正解を表示
             String text = isTouching ? wordB : wordA;
-            UDraw.drawText(canvas, text, UAlignment.Center, TEXT_SIZE,
+            UDraw.drawText(canvas, text, UAlignment.Center, mTextSize,
                     _pos.x, _pos.y + size.height / 2, TEXT_COLOR);
         }
 

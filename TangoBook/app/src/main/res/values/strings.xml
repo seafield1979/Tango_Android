@@ -69,6 +69,7 @@
     <string name="title_search_card">カードを探す</string>
     <string name="title_history">学習の記録</string>
     <string name="title_settings">設定</string>
+    <string name="title_options">オプション</string>
     <string name="title_backup">バックアップと復元</string>
     <string name="title_help">ヘルプ</string>
     <string name="search_card">カードを探す</string>
@@ -124,8 +125,8 @@
     <string name="backup_xml">バックアップ(xml)</string>
     <string name="backup_and_restore">バックアップと復元</string>
     <string name="location">場所: </string>
-    <string name="backup_path_title1">手動バックアップファイル</string>
-    <string name="backup_path_title2">自動バックアップファイル</string>
+    <string name="backup_path_title1">手動バックアップ</string>
+    <string name="backup_path_title2">自動バックアップ</string>
     <string name="datetime">日時</string>
     <string name="restore">復元</string>
     <string name="confirm_backup">バックアップしますか？\nバックアップを行うと、以前の\n状態に戻せるようになります。\n
@@ -217,5 +218,17 @@
     <string name="help_title_backup1">バックアップについて</string>
     <string name="help_title_backup2">環境をバックアップ</string>
     <string name="help_title_backup3">単語帳をバックアップ</string>
+
+    <!--オプションページ-->
+    <string name="title_options2">アプリの各種オプションを設定します</string>
+    <string name="title_option_edit">単語帳編集</string>
+    <string name="option_color_book">単語帳の色（初期）</string>
+    <string name="option_color_card">カードの色（初期）</string>
+    <string name="option_card_title">単語カードの表示</string>
+    <string name="option_default_name_card">新規カードの初期名</string>
+    <string name="option_default_name_book">新規単語帳の初期名</string>
+    <string name="title_option_study">学習</string>
+    <string name="option_add_ng_card">NGカードをNG単語帳に追加する</string>
+    <string name="option_mode4_1">単語入力モードの文字並び順</string>
 
 </resources>

@@ -20,6 +20,7 @@ enum PageView {
     StudyResult,        // 単語帳結果
     History,            // 履歴
     Settings,           // 設定
+    Options,            // オプション設定
     BackupDB,           // バックアップ
     PresetBook,         // プリセット単語帳選択
     CsvBook,            // Csv単語帳選択
@@ -95,6 +96,10 @@ public class PageViewManager extends UPageViewManager{
             case Settings:           // 設定
                 page = new PageViewSettingsTop(mContext, mParentView,
                         UResourceManager.getStringById(R.string.title_settings));
+                break;
+            case Options:
+                page = new PageViewOptions(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.title_options));
                 break;
             case BackupDB:           // バックアップ
                 page = new PageViewBackupDB(mContext, mParentView,

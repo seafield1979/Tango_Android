@@ -23,6 +23,7 @@ public class PageViewSettingsEdit extends UPageView implements UButtonCallbacks{
     private static final int TEXT_SIZE = 50;
 
     // button ids
+    private static final int ButtonIdOptions = 99;
     private static final int ButtonIdBackup = 100;
     private static final int ButtonIdLicense = 101;
     private static final int ButtonIdContact = 102;
@@ -130,6 +131,11 @@ public class PageViewSettingsEdit extends UPageView implements UButtonCallbacks{
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch(id) {
+            case ButtonIdOptions: {
+                // バックアップページに遷移
+                PageViewManager.getInstance().stackPage(PageView.Options);
+            }
+            break;
             case ButtonIdBackup: {
                 // バックアップページに遷移
                 PageViewManager.getInstance().stackPage(PageView.BackupDB);

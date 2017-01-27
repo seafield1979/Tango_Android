@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -43,6 +44,7 @@ public class ListItemStudyBook extends UListItem {
     private String mStudiedDate;
     private String mCardCount;
     private TangoBook mBook;
+    private Bitmap mIcon;
 
     /**
      * Get/Set
@@ -62,6 +64,9 @@ public class ListItemStudyBook extends UListItem {
 
         // 単語帳名
         mTextName = UResourceManager.getStringById(R.string.book_name2) + " : " + book.getName();
+
+        // 単語帳アイコン(色あり)
+        mIcon = UResourceManager.getBitmapWithColor(R.drawable.cards, book.getColor());
 
         // カード数 & 覚えていないカード数
         int count = RealmManager
@@ -107,7 +112,7 @@ public class ListItemStudyBook extends UListItem {
         float x = _pos.x + MARGIN_H;
         float y = _pos.y + MARGIN_V;
         // Icon image
-        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.cards), x,
+        UDraw.drawBitmap(canvas, paint, mIcon, x,
                 _pos.y + (ITEM_H - ICON_W) / 2,
                 ICON_W, ICON_W );
         x += ICON_W + MARGIN_H;
