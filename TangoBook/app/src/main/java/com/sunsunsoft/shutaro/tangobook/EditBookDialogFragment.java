@@ -116,6 +116,11 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
         } else {
             args.putInt(KEY_MODE, EditBookDialogMode.Create.ordinal());
             args.putInt(KEY_COLOR, MySharedPref.readInt(MySharedPref.DefaultColorBookKey, UColor.BLACK));
+
+            String defaultName = MySharedPref.readString(MySharedPref.DefaultNameBookKey);
+            if (defaultName != null) {
+                args.putString(KEY_NAME, defaultName);
+            }
         }
         dialog.setArguments(args);
 

@@ -72,6 +72,12 @@ public class UListView extends UScrollWindow
         contentSize.height = (int)mBottomY;
     }
 
+    public void update(UListItem oldItem, UListItem newItem) {
+        int index = mItems.indexOf(oldItem);
+        newItem.setPos(oldItem.pos.x, oldItem.pos.y);
+        mItems.set(index, newItem);
+    }
+
     public void remove(UListItem item) {
         int index = mItems.indexOf(item);
         removeCore(item, index);

@@ -127,6 +127,15 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
         } else {
             args.putInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
             args.putInt(KEY_COLOR, MySharedPref.readInt(MySharedPref.DefaultColorCardKey, UColor.BLACK));
+            // デフォルトのカード名が設定されれていたらそれを使用する
+            String defaultWordA = MySharedPref.readString(MySharedPref.DefaultCardWordAKey);
+            if (defaultWordA != null) {
+                args.putString(KEY_WORD_A, defaultWordA);
+            }
+            String defaultWordB = MySharedPref.readString(MySharedPref.DefaultCardWordBKey);
+            if (defaultWordB != null) {
+                args.putString(KEY_WORD_B, defaultWordB);
+            }
         }
         dialog.setArguments(args);
 

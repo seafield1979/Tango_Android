@@ -225,10 +225,15 @@
     <string name="option_color_book">単語帳の色（初期）</string>
     <string name="option_color_card">カードの色（初期）</string>
     <string name="option_card_title">単語カードの表示</string>
-    <string name="option_default_name_card">新規カードの初期名</string>
-    <string name="option_default_name_book">新規単語帳の初期名</string>
+    <string name="option_default_name_card">カードのデフォルト名</string>
+    <string name="option_default_name_book">単語帳のデフォルト名</string>
     <string name="title_option_study">学習</string>
     <string name="option_add_ng_card">NGカードをNG単語帳に追加する</string>
     <string name="option_mode4_1">単語入力モードの文字並び順</string>
 
+    <string name="default_word_a">カード：英語のデフォルト名</string>
+    <string name="default_word_b">カード：日本語のデフォルト名</string>
+    <string name="default_name_book">単語帳のデフォルト名</string>
+
+    <string name="card_name_title">カードアイコンに表示する名前を\n英語か日本語から選んでください</string>
 </resources>

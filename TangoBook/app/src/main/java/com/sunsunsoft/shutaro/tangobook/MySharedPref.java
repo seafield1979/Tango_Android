@@ -125,7 +125,7 @@ public class MySharedPref {
     public static final String TAG = "MySharedPref";
 
     // option key
-    // 単語編集ページのカードの名前表示
+    // 単語編集ページのカードの名前表示 (false:英語 / true:日本語)
     public static final String EditCardNameKey = "EditCardName";
 
     // 出題方法
@@ -161,10 +161,11 @@ public class MySharedPref {
     public static final String DefaultColorBookKey = "DefaultColorBook";
 
     // 単語カードの表示方式
-    public static final String CardNameTypeKey = "CardNameType";
+//    public static final String CardNameTypeKey = "CardNameType";
 
     // デフォルトのカード名
-    public static final String DefaultNameCardKey = "DefaultNameCard";
+    public static final String DefaultCardWordAKey = "DefaultCardWordA";
+    public static final String DefaultCardWordBKey = "DefaultCardWordB";
 
     // デフォルトの単語帳名
     public static final String DefaultNameBookKey = "DefaultNameBook";

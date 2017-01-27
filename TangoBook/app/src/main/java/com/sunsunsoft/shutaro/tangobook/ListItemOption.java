@@ -33,6 +33,9 @@ public class ListItemOption extends UListItem {
     /**
      * Get/Set
      */
+    public void setTitle(String title) {
+        mTitle = title;
+    }
 
     /**
      * Constructor
