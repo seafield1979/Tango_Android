@@ -28,8 +28,6 @@ public class PageViewSettingsOption extends UPageView
     // button ids
     private static final int ButtonIdOption = 99;
 
-    private static final int TEXT_COLOR = Color.BLACK;
-
     /**
      * Member variables
      */

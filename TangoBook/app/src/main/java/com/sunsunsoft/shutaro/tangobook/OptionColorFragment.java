@@ -9,46 +9,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.EditText;
-import android.view.View.OnClickListener;
-import java.util.Random;
+import android.widget.TextView;
 
-
-interface EditBookDialogCallbacks {
-    void submitEditBook(Bundle args);
-    void cancelEditBook();
-}
-
-enum EditBookDialogMode {
-    Create,     // 新しくアイコンを作成する
-    Edit        // 既存のアイコンを編集する
-    ;
-
-    public static EditBookDialogMode toEnum(int value) {
-        for (EditBookDialogMode id : values()) {
-            if (id.ordinal() == value) {
-                return id;
-            }
-        }
-        return EditBookDialogMode.Create;
-    }
+/**
+ *  DialogFragmentのコールバック
+ */
+interface OptionColorDialogCallbacks {
+    void submitOptionColor(Bundle args);
+    void cancelOptionColor();
 }
 
 /**
- * 複数の入力項目があるダイアログ
- *
- * 全画面表示
+ * オプションの色設定DialogFragment
  */
-public class EditBookDialogFragment extends DialogFragment implements OnClickListener{
+public class OptionColorFragment extends DialogFragment
+        implements View.OnClickListener {
+
+    /**
+     * Enums
+     */
+    enum ColorMode {
+        Book,
+        Card
+    }
     /**
      * Constract
      */
-    public static final String TAG = "EditBookDialogFragment";
+    public static final String TAG = "OptionColorFragment";
 
     // key names
-    public static final String KEY_MODE = "key_mode";
-    public static final String KEY_NAME = "key_name";
-    public static final String KEY_COMMENT = "key_comment";
     public static final String KEY_COLOR = "key_color";
 
     private int[] colorViewIds = {
@@ -65,21 +54,14 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
             R.id.color_view_11,
             R.id.color_view_12,
             R.id.color_view_13,
-
     };
 
     /**
      * Member variables
      */
-    private EditBookDialogCallbacks dialogCallbacks;
-    private int mMode;
-
-    private String mName;
-    private String mComment;
+    private OptionColorDialogCallbacks dialogCallbacks;
     private int mColor;
-
-    private EditText mEditName;
-    private EditText mEditComment;
+    private ColorMode mMode;
 
     // 選択された色を表示するView
     private ColorView mColorView;
@@ -91,37 +73,24 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
     /**
      * Constructor
      */
-    static EditBookDialogFragment createInstance(EditBookDialogCallbacks callbacks) {
-        return createInstance(callbacks, null);
-    }
-
-    static EditBookDialogFragment createInstance(EditBookDialogCallbacks callbacks, TangoBook book) {
-        EditBookDialogFragment dialog = new EditBookDialogFragment();
+    static OptionColorFragment createInstance(OptionColorDialogCallbacks callbacks,
+                                              ColorMode mode)
+    {
+        OptionColorFragment dialog = new OptionColorFragment();
 
         dialog.dialogCallbacks = callbacks;
+        dialog.mMode = mode;
 
         // set arguments
         Bundle args = new Bundle();
 
-        if (book != null) {
-            args.putInt(KEY_MODE, EditCardDialogMode.Edit.ordinal());
+        String keyName = (mode == ColorMode.Book) ? MySharedPref.DefaultColorBookKey : MySharedPref.DefaultColorCardKey;
 
-            if (book.getName() != null) {
-                args.putString(KEY_NAME, book.getName());
-            }
-            if (book.getComment() != null) {
-                args.putString(KEY_COMMENT, book.getComment());
-            }
-            args.putInt(KEY_COLOR, book.getColor());
-        } else {
-            args.putInt(KEY_MODE, EditBookDialogMode.Create.ordinal());
-            args.putInt(KEY_COLOR, MySharedPref.readInt(MySharedPref.DefaultColorBookKey, UColor.BLACK));
-        }
+        args.putInt(KEY_COLOR, MySharedPref.readInt(keyName));
         dialog.setArguments(args);
 
         return dialog;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,9 +99,6 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
         // 引数を取得
         Bundle args = getArguments();
         if (args != null) {
-            mMode = args.getInt(KEY_MODE, EditBookDialogMode.Create.ordinal());
-            mName = args.getString(KEY_NAME, "");
-            mComment = args.getString(KEY_COMMENT, "");
             mColor = args.getInt(KEY_COLOR, 0xff000000);
         }
 
@@ -149,22 +115,19 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        return inflater.inflate(R.layout.fragment_edit_book_dialog, container, false);
+        return inflater.inflate(R.layout.fragment_option_color_dialog, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        mEditName = (EditText)view.findViewById(R.id.editName);
-        mEditName.setText(mName);
-
-        mEditComment = (EditText)view.findViewById(R.id.editComment);
-        mEditComment.setText(mComment);
-
         mColorView = (ColorView)view.findViewById(R.id.current_color);
         mColorView.setColor(mColor);
+
+        // title text
+        int titleId = (mMode == ColorMode.Book) ? R.string.book_color : R.string.card_color;
+        ((TextView)(view.findViewById(R.id.textView))).setText(UResourceManager.getStringById(titleId));
 
         // Listener
         (view.findViewById(R.id.buttonOK)).setOnClickListener(new View.OnClickListener() {
@@ -199,13 +162,14 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
     private void submit() {
         Bundle args = new Bundle();
 
-        args.putInt(KEY_MODE, mMode);
-        args.putString(KEY_NAME, mEditName.getText().toString());
-        args.putString(KEY_COMMENT, mEditComment.getText().toString());
         args.putInt(KEY_COLOR, mColorView.getColor());
 
+        MySharedPref.writeInt(
+                (mMode == ColorMode.Book) ? MySharedPref.DefaultColorBookKey : MySharedPref.DefaultColorCardKey,
+                mColorView.getColor());
+
         if (dialogCallbacks != null) {
-            dialogCallbacks.submitEditBook(args);
+            dialogCallbacks.submitOptionColor(args);
         }
 
         dismiss();
@@ -216,21 +180,9 @@ public class EditBookDialogFragment extends DialogFragment implements OnClickLis
      */
     private void cancel() {
         if (dialogCallbacks != null) {
-            dialogCallbacks.cancelEditBook();
+            dialogCallbacks.cancelOptionColor();
         }
         dismiss();
-    }
-
-    /**
-     * ランダム値を設定
-     */
-    private void setRandomValue() {
-        Random rand = new Random();
-        int value = rand.nextInt(1000);
-
-        mEditName.setText("N " + value);
-        mEditComment.setText("C " + value);
-
     }
 
     /**

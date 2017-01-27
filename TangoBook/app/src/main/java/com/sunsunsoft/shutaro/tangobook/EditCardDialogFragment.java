@@ -126,7 +126,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
 
         } else {
             args.putInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
-            args.putInt(KEY_COLOR, Color.BLACK);
+            args.putInt(KEY_COLOR, MySharedPref.readInt(MySharedPref.DefaultColorCardKey, UColor.BLACK));
         }
         dialog.setArguments(args);
 

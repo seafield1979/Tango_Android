@@ -664,7 +664,8 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             card.setColor(args.getInt(EditBookDialogFragment.KEY_COLOR, 0));
 
             iconCard.updateTitle();
-
+            iconCard.setColor(card.getColor());
+            iconCard.updateIconImage();
             // DB更新
             RealmManager.getCardDao().updateOne(card);
         } else {
@@ -719,6 +720,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             book.setComment(args.getString(EditBookDialogFragment.KEY_COMMENT, ""));
             book.setColor(args.getInt(EditBookDialogFragment.KEY_COLOR, 0));
             bookIcon.updateTitle();
+
+            bookIcon.setColor(book.getColor());
+            bookIcon.updateIconImage();
 
             // DB更新
             RealmManager.getBookDao().updateOne(book);

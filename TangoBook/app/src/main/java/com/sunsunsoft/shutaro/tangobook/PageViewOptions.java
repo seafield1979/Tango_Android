@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.List;
@@ -14,14 +16,14 @@ import java.util.List;
  */
 
 public class PageViewOptions extends UPageView
-        implements UButtonCallbacks, UListItemCallbacks, UWindowCallbacks{
+        implements OptionColorDialogCallbacks, UListItemCallbacks, UWindowCallbacks{
     /**
      * Enum
      */
     enum OptionItems {
         TitleEdit(R.string.title_option_edit, true, Color.BLACK, UColor.LightGreen),
-        ColorCard(R.string.option_color_book, false, Color.BLACK, Color.WHITE),
-        ColorBook(R.string.option_color_card, false, Color.BLACK, Color.WHITE),
+        ColorBook(R.string.option_color_book, false, Color.BLACK, Color.WHITE),
+        ColorCard(R.string.option_color_card, false, Color.BLACK, Color.WHITE),
         CardTitle(R.string.option_card_title, false, Color.BLACK, Color.WHITE),
         DefaultNameBook(R.string.option_default_name_card, false, Color.BLACK, Color.WHITE),
         DefaultNameCard(R.string.option_default_name_book, false, Color.BLACK, Color.WHITE),
@@ -185,10 +187,16 @@ public class PageViewOptions extends UPageView
      * @param item
      */
     public void ListItemClicked(UListItem item) {
-        switch(OptionItems.toEnum(item.getIndex())) {
-            case ColorCard:
-                break;
+        OptionItems itemId = OptionItems.toEnum(item.getIndex());
+        switch(itemId) {
             case ColorBook:
+            case ColorCard:
+            {
+                OptionColorFragment.ColorMode mode = (itemId == OptionItems.ColorBook) ?  OptionColorFragment.ColorMode.Book : OptionColorFragment.ColorMode.Card;
+                OptionColorFragment dialogFragment = OptionColorFragment.createInstance(this, mode);
+                dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
+                        "fragment_dialog");
+            }
                 break;
             case CardTitle:
                 break;
@@ -205,6 +213,17 @@ public class PageViewOptions extends UPageView
     public void ListItemButtonClicked(UListItem item, int buttonId) {
 
     }
+
+    /**
+     * OptionColorDialogCallbacks
+     */
+    public void submitOptionColor(Bundle args) {
+        if (args == null) return;
+    }
+    public void cancelOptionColor() {
+
+    }
+
 
     /**
      * UWindowCallbacks

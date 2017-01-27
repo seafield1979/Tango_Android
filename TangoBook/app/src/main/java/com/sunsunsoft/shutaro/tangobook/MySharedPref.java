@@ -151,6 +151,31 @@ public class MySharedPref {
     // メニューヘルプ(0:非表示 / 1:メニュー名を表示 / 2:メニューヘルプを表示)
     public static final String MenuHelpModeKey = "MenuHelpMode";
 
+    /*
+    　オプション
+     */
+    // デフォルトのカード色
+    public static final String DefaultColorCardKey = "DefaultColorCard";
+
+    // デフォルトの単語帳色
+    public static final String DefaultColorBookKey = "DefaultColorBook";
+
+    // 単語カードの表示方式
+    public static final String CardNameTypeKey = "CardNameType";
+
+    // デフォルトのカード名
+    public static final String DefaultNameCardKey = "DefaultNameCard";
+
+    // デフォルトの単語帳名
+    public static final String DefaultNameBookKey = "DefaultNameBook";
+
+    // NGカードを自動的に単語帳に追加
+    public static final String AddNgCardToBookKey = "AddNgCardToBook";
+
+    // 単語入力モードの文字並び
+    public static final String StudyMode4SeqKey = "StudyMode4Seq";
+
+
     /**
      * Static varialbes
      */
@@ -271,17 +296,36 @@ public class MySharedPref {
 
         return instance.mPrefs.getString(key, "");
     }
+    public static String readString(String key, String defaultValue) {
+        MySharedPref instance = getInstance();
+
+        return instance.mPrefs.getString(key, defaultValue);
+    }
+
+
     // int
     public static int readInt(String key) {
         MySharedPref instance = getInstance();
 
         return instance.mPrefs.getInt(key, 0);
     }
+    public static int readInt(String key, int defaultValue) {
+        MySharedPref instance = getInstance();
+
+        return instance.mPrefs.getInt(key, defaultValue);
+    }
+
     // boolean
     public static boolean readBoolean(String key) {
         MySharedPref instance = getInstance();
 
         return instance.mPrefs.getBoolean(key, false);
+    }
+
+    public static boolean readBoolean(String key, boolean defaultValue) {
+        MySharedPref instance = getInstance();
+
+        return instance.mPrefs.getBoolean(key, defaultValue);
     }
 
     /**
