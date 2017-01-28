@@ -160,9 +160,6 @@ public class MySharedPref {
     // デフォルトの単語帳色
     public static final String DefaultColorBookKey = "DefaultColorBook";
 
-    // 単語カードの表示方式
-//    public static final String CardNameTypeKey = "CardNameType";
-
     // デフォルトのカード名
     public static final String DefaultCardWordAKey = "DefaultCardWordA";
     public static final String DefaultCardWordBKey = "DefaultCardWordB";
@@ -174,7 +171,7 @@ public class MySharedPref {
     public static final String AddNgCardToBookKey = "AddNgCardToBook";
 
     // 単語入力モードの文字並び
-    public static final String StudyMode4SeqKey = "StudyMode4Seq";
+    public static final String StudyMode4OptionKey = "StudyMode4Seq";
 
 
     /**

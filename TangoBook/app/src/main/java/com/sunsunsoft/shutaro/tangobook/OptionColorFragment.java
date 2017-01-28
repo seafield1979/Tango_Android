@@ -101,12 +101,6 @@ public class OptionColorFragment extends DialogFragment
         if (args != null) {
             mColor = args.getInt(KEY_COLOR, 0xff000000);
         }
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
-//        } else {
-//            setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar);
-//        }
     }
 
     @Override
@@ -126,8 +120,15 @@ public class OptionColorFragment extends DialogFragment
         mColorView.setColor(mColor);
 
         // title text
-        int titleId = (mMode == ColorMode.Book) ? R.string.book_color : R.string.card_color;
-        ((TextView)(view.findViewById(R.id.textView))).setText(UResourceManager.getStringById(titleId));
+        int messageId;
+        if (mMode == ColorMode.Book) {
+            messageId = R.string.default_book_color_message;
+        } else {
+            messageId = R.string.default_card_color_message;
+        }
+
+        ((TextView)(view.findViewById(R.id.textView))).setText(UResourceManager.getStringById
+                (messageId));
 
         // Listener
         (view.findViewById(R.id.buttonOK)).setOnClickListener(new View.OnClickListener() {

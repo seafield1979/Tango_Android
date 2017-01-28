@@ -29,9 +29,11 @@ public class DefaultBookNameFragment extends DialogFragment {
      * Constract
      */
     public static final String TAG = "DefaultBookNameFragment";
+    public static final int FragmentType = 1;
 
     // key names
     public static final String KEY_NAME = "key_name";
+    public static final String KEY_FRAGMENT_TYPE = "key_fragment_type";
 
     /**
      * Member variables
@@ -118,6 +120,7 @@ public class DefaultBookNameFragment extends DialogFragment {
     private void submit() {
         Bundle args = new Bundle();
 
+        args.putInt(KEY_FRAGMENT_TYPE, FragmentType);
         args.putString(KEY_NAME, mNameEdit.getText().toString());
 
         MySharedPref.writeString(MySharedPref.DefaultNameBookKey, mNameEdit.getText().toString());

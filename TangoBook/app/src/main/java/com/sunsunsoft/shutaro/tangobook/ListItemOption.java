@@ -9,7 +9,7 @@ import android.graphics.Rect;
 
 /**
  * Created by shutaro on 2017/01/27.
- * オプションページのListView二表示する項目
+ * オプションページのListViewに表示する項目
  */
 
 public class ListItemOption extends UListItem {
@@ -26,6 +26,7 @@ public class ListItemOption extends UListItem {
     /**
      * Member variables
      */
+    private OptionItems mItemType;
     private String mTitle;
     private int mColor;
     private int mBgColor;
@@ -41,20 +42,35 @@ public class ListItemOption extends UListItem {
      * Constructor
      */
     public ListItemOption(UListItemCallbacks listItemCallbacks,
-                          String title, boolean isTitle, int color, int bgColor,
+                          OptionItems itemType, String title, boolean isTitle, int color, int
+                                  bgColor,
                           float x, int width) {
-        super(listItemCallbacks, !isTitle, x, width, isTitle ? TITLE_H : TITLE_H2, bgColor);
+        super(listItemCallbacks, !isTitle, x, width, TITLE_H, bgColor);
+        this.mItemType = itemType;
         this.mTitle = title;
         this.mColor = color;
         this.mBgColor = bgColor;
+
+        switch(mItemType) {
+            case ColorBook:
+            case ColorCard:
+                size.height = 150;
+                break;
+            case CardTitle:
+            case DefaultNameBook:
+            case DefaultNameCard:
+            case AddNgCard:
+            case StudyMode4:
+                size.height = 200;
+                break;
+        }
+
     }
 
     /**
      * Methods
      */
-//    public DoActionRet doAction() {
-//        return DoActionRet.None;
-//    }
+
      /**
      * 描画処理
      * @param canvas
@@ -78,31 +94,28 @@ public class ListItemOption extends UListItem {
                         (int) _pos.x + size.width, (int) _pos.y + size.height),
                 _color, FRAME_WIDTH, FRAME_COLOR);
 
-        UDraw.drawTextOneLine(canvas, paint, mTitle, UAlignment.Center, TEXT_SIZE,
+        UDraw.drawText(canvas, mTitle, UAlignment.Center, TEXT_SIZE,
                 _pos.x + size.width / 2, _pos.y + size.height / 2, mColor);
-    }
 
-    /**
-     *
-     * @param vt
-     * @return
-     */
-//    public boolean touchEvent(ViewTouch vt, PointF offset) {
-//        boolean isDraw = false;
-//        switch(vt.type) {
-//            case Touch:
-//                if (isTouchable) {
-//                    if (rect.contains((int) (vt.touchX() - offset.x),
-//                            (int) (vt.touchY() - offset.y))) {
-//                        isTouching = true;
-//                        isDraw = true;
-//                    }
-//                }
-//                break;
-//        }
-//
-//        return isDraw;
-//    }
+        switch(mItemType) {
+            case ColorBook:
+            case ColorCard: {
+                int color = MySharedPref.readInt(
+                        (mItemType == OptionItems.ColorBook) ?
+                                MySharedPref.DefaultColorBookKey :
+                                MySharedPref.DefaultColorCardKey);
+                if (color != 0) {
+                    _pos.x += size.width - 150;
+                    _pos.y += 20;
+                    UDraw.drawRectFill(canvas, paint,
+                            new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + 100, (int) _pos.y +
+                                    size.height - 40),
+                            color, 0, 0);
+                }
+            }
+                break;
+        }
+    }
 
     /**
      * 高さを返す

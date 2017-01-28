@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.TextView;
 
 /**
  * オプションの色設定DialogFragment
@@ -20,10 +19,12 @@ public class DefaultCardNameFragment extends DialogFragment {
      * Constract
      */
     public static final String TAG = "DefaultBookNameFragment";
+    public static final int FragmentType = 2;
 
     // key names
     public static final String KEY_WORD_A = "key_word_a";
     public static final String KEY_WORD_B = "key_word_b";
+    public static final String KEY_FRAGMENT_TYPE = "key_fragment_type";
 
     /**
      * Member variables
@@ -109,6 +110,8 @@ public class DefaultCardNameFragment extends DialogFragment {
      */
     private void submit() {
         Bundle args = new Bundle();
+
+        args.putInt(KEY_FRAGMENT_TYPE, FragmentType);
 
         String wordA, wordB;
         wordA = mEditWordA.getText().toString();

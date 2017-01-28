@@ -15,45 +15,45 @@ import static com.sunsunsoft.shutaro.tangobook.MySharedPref.EditCardNameKey;
  * オプション設定ページ
  */
 
+/**DefaultNameDialogCallbacks
+ * Enum
+ */
+enum OptionItems {
+    TitleEdit(R.string.title_option_edit, true, Color.BLACK, UColor.LightGreen),
+    ColorBook(R.string.option_color_book, false, Color.BLACK, Color.WHITE),
+    ColorCard(R.string.option_color_card, false, Color.BLACK, Color.WHITE),
+    CardTitle(R.string.option_card_title, false, Color.BLACK, Color.WHITE),
+    DefaultNameBook(R.string.option_default_name_book, false, Color.BLACK, Color.WHITE),
+    DefaultNameCard(R.string.option_default_name_card, false, Color.BLACK, Color.WHITE),
+    TitleStudy(R.string.title_option_study, true, Color.BLACK, UColor.LightRed),
+    AddNgCard(R.string.option_add_ng_card, false, Color.BLACK, Color.WHITE),
+    StudyMode4(R.string.option_mode4_1, false, Color.BLACK, Color.WHITE),
+    ;
+
+    public String title;
+    public boolean isTitle;
+    public int color;
+    public int bgColor;
+
+    OptionItems(int titleId, boolean isTitle, int color, int bgColor) {
+        this.title = UResourceManager.getStringById(titleId);
+        this.isTitle = isTitle;
+        this.color = color;
+        this.bgColor = bgColor;
+    }
+    public static OptionItems toEnum(int val) {
+        if (val >= values().length) {
+            return TitleEdit;
+        }
+        return values()[val];
+    }
+}
+
+
 public class PageViewOptions extends UPageView
         implements UButtonCallbacks, UDialogCallbacks, OptionColorDialogCallbacks,
-        DefaultNameDialogCallbacks, UListItemCallbacks, UWindowCallbacks
+        DefaultNameDialogCallbacks, UListItemCallbacks
 {
-    /**DefaultNameDialogCallbacks
-     * Enum
-     */
-    enum OptionItems {
-        TitleEdit(R.string.title_option_edit, true, Color.BLACK, UColor.LightGreen),
-        ColorBook(R.string.option_color_book, false, Color.BLACK, Color.WHITE),
-        ColorCard(R.string.option_color_card, false, Color.BLACK, Color.WHITE),
-        CardTitle(R.string.option_card_title, false, Color.BLACK, Color.WHITE),
-        DefaultNameBook(R.string.option_default_name_book, false, Color.BLACK, Color.WHITE),
-        DefaultNameCard(R.string.option_default_name_card, false, Color.BLACK, Color.WHITE),
-        TitleStudy(R.string.title_option_study, true, Color.BLACK, UColor.LightRed),
-        AddNgCard(R.string.option_add_ng_card, false, Color.BLACK, Color.WHITE),
-        StudyMode4_1(R.string.option_mode4_1, false, Color.BLACK, Color.WHITE),
-        ;
-
-        public String title;
-        public boolean isTitle;
-        public int color;
-        public int bgColor;
-
-        OptionItems(int titleId, boolean isTitle, int color, int bgColor) {
-            this.title = UResourceManager.getStringById(titleId);
-            this.isTitle = isTitle;
-            this.color = color;
-            this.bgColor = bgColor;
-        }
-        public static OptionItems toEnum(int val) {
-            if (val >= values().length) {
-                return TitleEdit;
-            }
-            return values()[val];
-        }
-    }
-
-
     /**
      * Constants
      */
@@ -66,9 +66,12 @@ public class PageViewOptions extends UPageView
 
     // button ids
     private static final int ButtonIdReturn = 100;
-    private static final int ButtonIdCardNameA = 101;
-    private static final int ButtonIdCardNameB = 102;
-
+    private static final int ButtonIdCardWordA = 101;
+    private static final int ButtonIdCardWordB = 102;
+    private static final int ButtonIdAddNgCardOk = 103;
+    private static final int ButtonIdAddNgCardNg = 104;
+    private static final int ButtonIdStudySorted = 105;
+    private static final int ButtonIdStudyRandom = 106;
 
     /**
      * Member variables
@@ -150,17 +153,8 @@ public class PageViewOptions extends UPageView
         mListView.addToDrawManager();
 
         // アイテムを追加
-        String title;
         for (OptionItems option : OptionItems.values()) {
-            if (option == OptionItems.CardTitle) {
-                boolean cardTitleE = MySharedPref.readBoolean(MySharedPref.EditCardNameKey, false);
-                String str = UResourceManager.getStringById( cardTitleE ?
-                        R.string.word_b : R.string.word_a);
-                title = option.title + " : " + str;
-            } else {
-                title = option.title;
-            }
-            ListItemOption item = new ListItemOption(this, title,
+            ListItemOption item = new ListItemOption(this, option, getItemTitle(option),
                     option.isTitle, option.color, option.bgColor,
                     0, mListView.getWidth());
             mListView.add(item);
@@ -168,6 +162,81 @@ public class PageViewOptions extends UPageView
 
         // スクロールバー等のサイズを更新
         mListView.updateWindow();
+    }
+
+    /**
+     * アイテムに表示するテキストを取得する
+     * @param option
+     * @return
+     */
+    private String getItemTitle(OptionItems option) {
+        String title = null;
+
+        switch (option) {
+            case CardTitle: {
+                boolean cardTitleE = MySharedPref.readBoolean(MySharedPref.EditCardNameKey, false);
+                String str = UResourceManager.getStringById(cardTitleE ?
+                        R.string.word_b : R.string.word_a);
+                title = option.title + " : " + str;
+            }
+            break;
+            case DefaultNameBook: {
+                String str = MySharedPref.readString(MySharedPref.DefaultNameBookKey);
+                if (str != null) {
+                    title = option.title + "\n" + str;
+                } else {
+                    title = option.title;
+                }
+            }
+            break;
+            case DefaultNameCard:
+            {
+                StringBuffer buf = new StringBuffer(OptionItems.DefaultNameCard.title);
+                String str = MySharedPref.readString(MySharedPref
+                        .DefaultCardWordAKey);
+                if (str != null) {
+                    buf.append("\n" + UResourceManager.getStringById(R.string.word_a) + " : " +
+                            str);
+                }
+                str = MySharedPref.readString(MySharedPref
+                        .DefaultCardWordBKey);
+                if (str != null) {
+                    buf.append("\n" + UResourceManager.getStringById(R.string.word_b) + " : "
+                            +str);
+                }
+                title = buf.toString();
+            }
+            break;
+            case AddNgCard:
+            {
+                String str = UResourceManager.getStringById(
+                        MySharedPref.readBoolean(MySharedPref.AddNgCardToBookKey) ?
+                                R.string.option_add_ng_card1 : R.string.option_add_ng_card2);
+
+                if (str != null) {
+                    title = option.title + "\n    " + str;
+                } else {
+                    title = option.title;
+                }
+            }
+            break;
+            case StudyMode4:
+            {
+                String str = UResourceManager.getStringById(
+                        MySharedPref.readBoolean(MySharedPref.StudyMode4OptionKey) ?
+                                R.string.option_mode4_4 : R.string.option_mode4_3);
+
+                if (str != null) {
+                    title = option.title + "\n    " + str;
+                } else {
+                    title = option.title;
+                }
+            }    break;
+            default:
+                title = option.title;
+                break;
+        }
+        return title;
     }
 
     private void closeDialog() {
@@ -178,29 +247,60 @@ public class PageViewOptions extends UPageView
     }
 
     /**
-     * リストの項目を更新
-     */
-    private void updateListItem(OptionItems option) {
-        switch(option) {
-            case CardTitle: {
-                boolean cardTitleE = MySharedPref.readBoolean(MySharedPref.EditCardNameKey, false);
-                ListItemOption item = (ListItemOption)mListView.get(option.ordinal());
-                String str = UResourceManager.getStringById( cardTitleE ?
-                        R.string.word_b : R.string.word_a);
-                String title = option.title + " : " + str;
-                item.setTitle(title);
-            }
-                break;
-        }
-    }
-
-
-    /**
      * ソフトウェアキーの戻るボタンを押したときの処理
      * @return
      */
     public boolean onBackKeyDown() {
         return false;
+    }
+
+    /**
+     * カードのタイトル表示設定のダイアログを表示する
+     */
+    private void showCardTitleDialog() {
+        mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                this, this,
+                UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                true, mParentView.getWidth(), mParentView.getHeight(),
+                Color.BLACK, Color.LTGRAY);
+        mDialog.addToDrawManager();
+        mDialog.setTitle(UResourceManager.getStringById(R.string.card_name_title));
+        mDialog.addButton(ButtonIdCardWordA, UResourceManager.getStringById(R.string.word_a), UColor.White, UColor.DarkBlue);
+        mDialog.addButton(ButtonIdCardWordB, UResourceManager.getStringById(R.string.word_b), Color.WHITE, UColor.LightRed);
+        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+    }
+
+    /**
+     * NGカード自動追加ダイアログを表示
+     */
+    private void showAddNgCardDialog() {
+        mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                this, this,
+                UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                true, mParentView.getWidth(), mParentView.getHeight(),
+                Color.BLACK, Color.LTGRAY);
+        mDialog.addToDrawManager();
+        mDialog.setTitle(UResourceManager.getStringById(R.string.option_add_ng_card_msg));
+        mDialog.addButton(ButtonIdAddNgCardOk, UResourceManager.getStringById(R.string.option_add_ng_card1), UColor
+                .BLACK, UColor.White);
+        mDialog.addButton(ButtonIdAddNgCardNg, UResourceManager.getStringById(R.string.option_add_ng_card2), Color.BLACK, UColor.White);
+        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+    }
+
+    /**
+     * 学習モード４の単語の並び設定のダイアログを表示
+     */
+    private void showStudyMode4OptionDialog() {
+        mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                this, this,
+                UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                true, mParentView.getWidth(), mParentView.getHeight(),
+                Color.BLACK, Color.LTGRAY);
+        mDialog.addToDrawManager();
+        mDialog.setTitle(UResourceManager.getStringById(R.string.option_mode4_2));
+        mDialog.addButton(ButtonIdStudySorted, UResourceManager.getStringById(R.string.option_mode4_3), UColor.BLACK, UColor.White);
+        mDialog.addButton(ButtonIdStudyRandom, UResourceManager.getStringById(R.string.option_mode4_4), Color.BLACK, UColor.White);
+        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 
     /**
@@ -215,21 +315,51 @@ public class PageViewOptions extends UPageView
             case ButtonIdReturn:
                 PageViewManager.getInstance().popPage();
                 break;
-            case ButtonIdCardNameA:
-                MySharedPref.writeBoolean(EditCardNameKey, false);
-                updateListItem(OptionItems.CardTitle);
+            case ButtonIdCardWordA:
+            case ButtonIdCardWordB: {
+                boolean flag = (id == ButtonIdCardWordA) ? false : true;
+                MySharedPref.writeBoolean(EditCardNameKey, flag);
+
+                // アイテムのテキストを更新
+                ListItemOption item = (ListItemOption) mListView.get(OptionItems.CardTitle.ordinal());
+                item.setTitle(getItemTitle(OptionItems.CardTitle));
                 if (mDialog != null) {
                     mDialog.closeDialog();
                     mDialog = null;
                 }
+            }
+            break;
+
+            case ButtonIdAddNgCardOk:
+            case ButtonIdAddNgCardNg: {
+                boolean flag = (id == ButtonIdAddNgCardOk) ? true : false;
+                MySharedPref.writeBoolean(MySharedPref.AddNgCardToBookKey, flag);
+
+                // アイテムのテキストを更新
+                ListItemOption item = (ListItemOption) mListView.get(OptionItems.AddNgCard.ordinal());
+                item.setTitle(getItemTitle(OptionItems.AddNgCard));
+
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+            }
                 break;
-            case ButtonIdCardNameB:
-                MySharedPref.writeBoolean(EditCardNameKey, true);
-                updateListItem(OptionItems.CardTitle);
+
+            case ButtonIdStudySorted:
+            case ButtonIdStudyRandom: {
+                boolean flag = (id == ButtonIdStudyRandom) ? true : false;
+                MySharedPref.writeBoolean(MySharedPref.StudyMode4OptionKey, flag);
+
+                // アイテムのテキストを更新
+                ListItemOption item = (ListItemOption) mListView.get(OptionItems.StudyMode4.ordinal());
+                item.setTitle(getItemTitle(OptionItems.StudyMode4));
+
                 if (mDialog != null) {
                     mDialog.closeDialog();
                     mDialog = null;
                 }
+            }
                 break;
         }
         return false;
@@ -269,16 +399,7 @@ public class PageViewOptions extends UPageView
                     mDialog.closeDialog();
                     mDialog = null;
                 }
-                mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                        this, this,
-                        UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
-                        true, mParentView.getWidth(), mParentView.getHeight(),
-                        Color.BLACK, Color.LTGRAY);
-                mDialog.addToDrawManager();
-                mDialog.setTitle(UResourceManager.getStringById(R.string.card_name_title));
-                mDialog.addButton(ButtonIdCardNameA, UResourceManager.getStringById(R.string.word_a), UColor.White, UColor.DarkBlue);
-                mDialog.addButton(ButtonIdCardNameB, UResourceManager.getStringById(R.string.word_b), Color.WHITE, UColor.LightRed);
-                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+                showCardTitleDialog();
             }
                 break;
             case DefaultNameBook:
@@ -297,11 +418,22 @@ public class PageViewOptions extends UPageView
             }
                 break;
             case AddNgCard:
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+                showAddNgCardDialog();
                 break;
-            case StudyMode4_1:
+            case StudyMode4:
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+                showStudyMode4OptionDialog();
                 break;
         }
     }
+
     public void ListItemButtonClicked(UListItem item, int buttonId) {
 
     }
@@ -310,7 +442,7 @@ public class PageViewOptions extends UPageView
      * OptionColorDialogCallbacks
      */
     public void submitOptionColor(Bundle args) {
-        if (args == null) return;
+        mParentView.invalidate();
     }
     public void cancelOptionColor() {
 
@@ -320,18 +452,22 @@ public class PageViewOptions extends UPageView
      * DefaultNameDialogCallbacks
      */
     public void submitDefaultName(Bundle args) {
-//        updateListItem(OptionItems.CardTitle);
+        int fragment_type = 0;
+        if (args != null) {
+            fragment_type = args.getInt(DefaultBookNameFragment.KEY_FRAGMENT_TYPE);
+        }
+
+        // アイテムのテキストを更新
+        OptionItems option = (fragment_type == DefaultBookNameFragment.FragmentType) ?
+                OptionItems.DefaultNameBook : OptionItems.DefaultNameCard;
+
+        ListItemOption item = (ListItemOption) mListView.get(option.ordinal());
+        if (item != null) {
+            item.setTitle(getItemTitle(option));
+            mParentView.invalidate();
+        }
     }
     public void cancelDefaultName() {
     }
 
-    /**
-     * UWindowCallbacks
-     */
-    public void windowClose(UWindow window) {
-//        // Windowを閉じる
-//        if (mPreStudyWindow == window) {
-//            mPreStudyWindow.setShow(false);
-//        }
-    }
 }

@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:text="@string/book_name"
+        android:text="@string/default_name_book2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView"/>
