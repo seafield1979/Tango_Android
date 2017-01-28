@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by shutaro on 2016/12/28.
@@ -22,11 +23,6 @@ import java.util.Comparator;
  * １文字でも間違いをタップしたら不正解
  *
  */
-
-/**
- * ランダムで表示される文字列の１文字分の情報
- */
-
 public class StudyCardInput extends UDrawable implements UButtonCallbacks{
     /**
      * Enums
@@ -120,10 +116,6 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
     /**
      * Constructor
      */
-    /**
-     *
-     * @param card
-     */
     public StudyCardInput(TangoCard card, int canvasW, int height)
     {
         super(0, 0, 0, canvasW - MARGIN_H * 2, height);
@@ -143,21 +135,33 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks{
         basePos = new PointF(size.width / 2, size.height / 2);
         inputPos = 0;
 
-        // ランダムな正解入力用の文字列を作成する
-        // 元の単語のアルファベットを１文字つづ分割してランダムに並べる
         ArrayList<String> questions = new ArrayList<>();
 
+        // 出題文字化どうかの判定を行う（記号や数字使用しない）
         for (int i=1; i<strArray.length; i++) {
             if (!isIgnoreStr(strArray[i])) {
                 questions.add(strArray[i]);
             }
         }
+
+        // 出題文字列を並び替える
         String[] _questions = questions.toArray(new String[0]);
-        Arrays.sort(_questions, new Comparator<String>() {
-            public int compare(String str1, String str2) {
-                return str1.compareTo(str2);
-            }
-        });
+
+        if (MySharedPref.readBoolean(MySharedPref.StudyMode4OptionKey)) {
+            // ランダムに並び替える
+            // リストの並びをシャッフルします。
+            // 配列はシャッフルできないので一旦リストに変換する
+            List<String> list = Arrays.asList(_questions);
+            Collections.shuffle(list);
+            _questions = list.toArray(new String[0]);
+        } else {
+            // アルファベット順に並び替える
+            Arrays.sort(_questions, new Comparator<String>() {
+                public int compare(String str1, String str2) {
+                    return str1.compareTo(str2);
+                }
+            });
+        }
 
         int i=0;
         for (String str : _questions) {

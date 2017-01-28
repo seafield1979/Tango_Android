@@ -109,7 +109,7 @@ public class PageViewSettingsTop extends UPageView
                 DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.option),
                 0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkRed, UColor
-                .LightRed);
+                .LightCyan);
         mWindow.addDrawable(button1, false);
 
         // backup button
@@ -123,7 +123,7 @@ public class PageViewSettingsTop extends UPageView
         // ライセンス
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
                  UResourceManager.getStringById(R.string.license),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, Color.WHITE, UColor.DarkOrange);
+                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, UColor.LightGray);
         mWindow.addDrawable(button1, false);
 
         // お問い合わせ（メール）

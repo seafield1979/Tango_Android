@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
 
@@ -35,14 +36,17 @@ public class PageViewStudyInputCorrect extends UPageView
     private static final int TEXT_SIZE = 50;
     private static final int BUTTON_W = 300;
     private static final int BUTTON_H = 120;
-
     private static final int DRAW_PRIORITY = 100;
+    private static final int SETTING_BUTTON_W = 120;
 
     // button ids
     private static final int ButtonIdExit = 100;
     private static final int ButtonIdSkip = 101;
-
+    private static final int ButtonIdSetting = 102;
     private static final int ButtonIdExitOk = 200;
+    private static final int ButtonIdStudySorted = 300;
+    private static final int ButtonIdStudyRandom = 301;
+
 
     /**
      * Member variables
@@ -56,13 +60,14 @@ public class PageViewStudyInputCorrect extends UPageView
     private UTextView mTextCardCount;
     private UButtonText mExitButton;
     private UButtonText mSkipButton;
+    private UButtonImage mSettingButton;
 
     // 学習する単語帳 or カードリスト
     private TangoBook mBook;
     private List<TangoCard> mCards;
 
     // 終了確認ダイアログ
-    private UDialogWindow mConfirmDialog;
+    private UDialogWindow mDialog;
 
     private boolean isCloseOk;
 
@@ -169,6 +174,14 @@ public class PageViewStudyInputCorrect extends UPageView
                 BUTTON_W, BUTTON_H,
                 TEXT_SIZE, Color.BLACK, UColor.LightPink);
         mSkipButton.addToDrawManager();
+
+        // 設定ボタン
+        Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.settings_1, UColor.Green);
+        mSettingButton = UButtonImage.createButton(this, ButtonIdSetting, DRAW_PRIORITY,
+                screenW - SETTING_BUTTON_W - MARGIN_H, screenH - 150,
+                SETTING_BUTTON_W, SETTING_BUTTON_W,
+                image, null);
+        mSettingButton.addToDrawManager();
     }
 
     private String getCardsRemainText(int count) {
@@ -195,18 +208,18 @@ public class PageViewStudyInputCorrect extends UPageView
         switch(id) {
             case ButtonIdExit:
                 // 終了ボタンを押したら確認用のモーダルダイアログを表示
-                if (mConfirmDialog == null) {
+                if (mDialog == null) {
                     isCloseOk = false;
 
-                    mConfirmDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                    mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
                             this, this,
                             UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
                             true, mParentView.getWidth(), mParentView.getHeight(),
                             Color.BLACK, Color.LTGRAY);
-                    mConfirmDialog.addToDrawManager();
-                    mConfirmDialog.setTitle(mContext.getString(R.string.confirm_exit));
-                    mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
-                    mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+                    mDialog.addToDrawManager();
+                    mDialog.setTitle(mContext.getString(R.string.confirm_exit));
+                    mDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
+                    mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
                 }
                 break;
             case ButtonIdSkip:
@@ -216,10 +229,43 @@ public class PageViewStudyInputCorrect extends UPageView
             case ButtonIdExitOk:
                 // 終了
                 isCloseOk = true;
-                mConfirmDialog.startClosing();
+                mDialog.startClosing();
                 break;
+            case ButtonIdSetting:
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+                showSettingDialog();
+                break;
+            case ButtonIdStudySorted:
+            case ButtonIdStudyRandom: {
+                boolean flag = (id == ButtonIdStudyRandom) ? true : false;
+                MySharedPref.writeBoolean(MySharedPref.StudyMode4OptionKey, flag);
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+            }
+            break;
         }
         return false;
+    }
+
+    /**
+     * 設定用のダイアログを開く
+     */
+    private void showSettingDialog() {
+        mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                this, this,
+                UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+                true, mParentView.getWidth(), mParentView.getHeight(),
+                Color.BLACK, Color.LTGRAY);
+        mDialog.addToDrawManager();
+        mDialog.setTitle(UResourceManager.getStringById(R.string.option_mode4_22));
+        mDialog.addButton(ButtonIdStudySorted, UResourceManager.getStringById(R.string.option_mode4_3), UColor.BLACK, UColor.White);
+        mDialog.addButton(ButtonIdStudyRandom, UResourceManager.getStringById(R.string.option_mode4_4), Color.BLACK, UColor.White);
+        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 
     /**
@@ -230,8 +276,8 @@ public class PageViewStudyInputCorrect extends UPageView
             // 終了して前のページに戻る
             PageViewManager.getInstance().popPage();
         }
-        if (dialog == mConfirmDialog) {
-            mConfirmDialog = null;
+        if (dialog == mDialog) {
+            mDialog = null;
         }
     }
 

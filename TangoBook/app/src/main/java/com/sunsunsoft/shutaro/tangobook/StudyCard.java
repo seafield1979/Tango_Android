@@ -75,7 +75,6 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
     protected PointF basePos = new PointF();
     protected State mState;
     protected String wordA, wordB;
-    protected String hintA, hintB;
     protected TangoCard mCard;
     protected int mTextSize;
     protected boolean isTouching;

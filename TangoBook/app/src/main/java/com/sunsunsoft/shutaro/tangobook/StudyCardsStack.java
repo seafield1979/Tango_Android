@@ -87,6 +87,9 @@ public class StudyCardsStack extends UDrawable {
     public int getCardCount() {
         return mCardsInBackYard.size() + mCards.size();
     }
+    public int getCardCount2() {
+        return mCardsInBackYard.size() + mCards.size() + mToBoxCards.size();
+    }
 
     /**
      * Constructor
@@ -167,6 +170,7 @@ public class StudyCardsStack extends UDrawable {
                 }
 
                 card.setMoveRequest(StudyCard.RequestToParent.None);
+
                 // スライドして無くなったすきまを埋めるための移動
                 float bottomY = card.getBottom();
 
@@ -176,6 +180,7 @@ public class StudyCardsStack extends UDrawable {
                             MOVING_FRAME + 5);
                     bottomY -= card2.getHeight() + MARGIN_V;
                 }
+                mCards.remove(card);
                 mToBoxCards.add(card);
             }
         }
@@ -193,12 +198,11 @@ public class StudyCardsStack extends UDrawable {
                     mToBoxCards.remove(card);
                     breakLoop = true;
 
-                    mCards.remove(card);
                     if (cardsStackCallbacks != null) {
-                        cardsStackCallbacks.CardsStackChangedCardNum(getCardCount());
+                        cardsStackCallbacks.CardsStackChangedCardNum(getCardCount2());
                     }
 
-                    if (getCardCount() == 0) {
+                    if (getCardCount2() == 0) {
                         cardsStackCallbacks.CardsStackFinished();
                     }
                     break;

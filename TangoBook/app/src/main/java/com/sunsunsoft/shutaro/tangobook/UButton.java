@@ -162,6 +162,9 @@ abstract public class UButton extends UDrawable {
             if (isPressed) {
                 isPressed = false;
                 done = true;
+                if (buttonCallback != null) {
+                    buttonCallback.UButtonClicked(id, false);
+                }
             }
         }
         return done;

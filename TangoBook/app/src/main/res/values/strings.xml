@@ -233,8 +233,9 @@
     <string name="title_option_study">学習</string>
     <string name="option_add_ng_card">NGカードを自動追加</string>
     <string name="option_add_ng_card_msg">学習終了時にNGだったカードを自動でNG単語帳に追加するかどうか選んでください</string>
-    <string name="option_mode4_1">スペル選択学習モードの文字並び順</string>
-    <string name="option_mode4_2">スペル選択学習モードの文字並び順を選んでください</string>
+    <string name="option_mode4_1">正解入力学習モードの文字並び順</string>
+    <string name="option_mode4_2">正解入力学習モードの文字並び順を選んでください</string>
+    <string name="option_mode4_22">正解入力用の文字の並び順を選んでください</string>
     <string name="option_mode4_3">アルファベット順</string>
     <string name="option_mode4_4">ランダム</string>
 
