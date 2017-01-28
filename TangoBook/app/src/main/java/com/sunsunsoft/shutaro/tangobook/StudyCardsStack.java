@@ -283,8 +283,9 @@ public class StudyCardsStack extends UDrawable {
      * @return true:処理中
      */
     public boolean touchEvent(ViewTouch vt, PointF offset) {
+        PointF _offset = new PointF(pos.x + size.width / 2, pos.y);
         for (StudyCard card : mCards) {
-            if (card.touchEvent(vt, pos)) {
+            if (card.touchEvent(vt, _offset)) {
                 return true;
             }
         }

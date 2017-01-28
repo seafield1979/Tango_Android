@@ -312,7 +312,14 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
         return touchEvent(vt, null);
     }
 
-    public boolean touchEvent(ViewTouch vt, PointF parentPos) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
+        PointF _pos = new PointF(pos.x, pos.y);
+        if (offset != null) {
+            _pos.x += offset.x;
+            _pos.y += offset.y;
+        }
+        _pos.x += slideX;
+
         boolean done = false;
 
         // 矢印
@@ -323,7 +330,6 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
             done = true;
         }
 
-        PointF offset = new PointF(parentPos.x + pos.x + size.width / 2, parentPos.y + pos.y);
         if ( mArrowL.touchEvent(vt, offset) ) {
             return true;
         }
@@ -333,7 +339,9 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
 
         switch(vt.type) {
             case Touch:        // タッチ開始
-                if (rect.contains((int)(vt.touchX() - parentPos.x), (int)(vt.touchY() - parentPos.y))) {
+                Rect _rect = new Rect((int)_pos.x - size.width / 2 , (int)_pos.y,
+                        (int)_pos.x + size.width / 2, (int)_pos.y + size.height);
+                if (_rect.contains((int)(vt.touchX()), (int)(vt.touchY()))) {
                     isTouching = true;
                     done = true;
                 }
