@@ -20,6 +20,8 @@ public class TangoBookDao {
      */
     public static final String TAG = "TangoBookDao";
 
+    public static final int NGBookId = 100000;
+
     /**
      * Member variables
      */
@@ -151,6 +153,23 @@ public class TangoBookDao {
             TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
             book.setItemPos(itemPos);
         }
+    }
+
+    /**
+     * NGカード用の単語帳を作成する
+     */
+    public void addNgBook() {
+        TangoBook book = TangoBook.createBook();
+        book.setName("NG Cards");
+        book.setId(NGBookId);
+
+        mRealm.beginTransaction();
+        mRealm.copyToRealm(book);
+        mRealm.commitTransaction();
+
+        // 位置情報を追加（単語帳はホームにしか作れないので作成場所にホームを指定）
+        TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(book, TangoParentType.Home, 0);
+        book.setItemPos(itemPos);
     }
 
     /**

@@ -256,8 +256,6 @@ public class TangoCardDao {
         card.setId(newId);
         card.setWordA(wordA);
         card.setWordB(wordB);
-        card.setHintAB("hintAB");
-        card.setHintAB("hintBA");
         card.setComment("comment");
         Date now = new Date();
         card.setCreateTime(now);
@@ -314,8 +312,6 @@ public class TangoCardDao {
         card.setId(newId);
         card.setWordA("hoge" + randVal);
         card.setWordB("ほげ" + randVal);
-        card.setHintAB("hintAB:" + randVal);
-        card.setHintBA("hintBA:" + randVal);
         card.setComment("comment:" + randVal);
         card.setColor(Color.BLACK);
         card.setStar(false);
@@ -363,8 +359,6 @@ public class TangoCardDao {
 
         newCard.setWordA(card.getWordA());
         newCard.setWordB(card.getWordB());
-        newCard.setHintAB(card.getHintAB());
-        newCard.setHintBA(card.getHintBA());
         newCard.setComment(card.getComment());
         newCard.setColor(card.getColor());
         newCard.setUpdateTime(new Date());
@@ -530,7 +524,7 @@ public class TangoCardDao {
 
 
     /**
-     * XMLファイルから読み込んだCardを追加する
+     * XMLファイルから読み込んだバックアップ用を追加する
      */
     public void addXmlCards(List<Card> cards) {
 
@@ -548,5 +542,38 @@ public class TangoCardDao {
             mRealm.copyToRealm(card);
         }
         mRealm.commitTransaction();
+    }
+
+    /**
+     * NGカードを追加する
+     * すでにNG単語帳に同じ名前のカードがあったら追加しない。
+     * @param cards
+     */
+    public void addNgCards(List<TangoCard> cards) {
+        if (cards == null || cards.size() == 0) return;
+
+        LinkedList<TangoCard> _cards = new LinkedList<>(toChangeable(cards));
+        // NG単語帳内のカードを取得
+        List<TangoCard> ngCards = RealmManager.getItemPosDao().selectCardsByBookId(TangoBookDao
+                .NGBookId);
+
+        // 追加するカードからNG単語帳のカードを除去
+        if (ngCards != null && ngCards.size() > 0) {
+            for (TangoCard ngCard : ngCards) {
+                for (TangoCard card : _cards) {
+                    if (card.getId() == ngCard.getOriginalId()) {
+                        _cards.remove(card);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 追加する
+        for (TangoCard card : _cards) {
+            card.setOriginalId(card.getId());
+            RealmManager.getCardDao().addOne(card, TangoParentType.Book, TangoBookDao.NGBookId,
+                    true);
+        }
     }
 }

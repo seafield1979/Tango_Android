@@ -17,11 +17,12 @@ import io.realm.annotations.Required;
 public class TangoCard extends RealmObject implements TangoItem{
     @PrimaryKey
     private int id;
+
+    private int originalId;     // コピー元のカードのID
+
     @Required
     private String wordA;       // 単語帳の表
     private String wordB;       // 単語帳の裏
-    private String hintAB;      // 思い出すためのヒント A->B
-    private String hintBA;      // 思い出すためのヒント B->A
     private String comment;     // 説明や例文
     private Date createTime;    // 作成日時
     private Date updateTime;    // 更新日時
@@ -43,6 +44,16 @@ public class TangoCard extends RealmObject implements TangoItem{
     public void setId(int id) {
         this.id = id;
     }
+
+    // originalId
+    public int getOriginalId() {
+        return originalId;
+    }
+
+    public void setOriginalId(int originalId) {
+        this.originalId = originalId;
+    }
+
     // wordA
     public String getWordA(){ return wordA; }
     public void setWordA(String wordA) { this.wordA = wordA; }
@@ -50,14 +61,6 @@ public class TangoCard extends RealmObject implements TangoItem{
     // wordB
     public String getWordB(){ return wordB; }
     public void setWordB(String wordB) { this.wordB = wordB; }
-
-    // hintAtoB
-    public String getHintAB(){ return hintAB; }
-    public void setHintAB(String hintAtoB) { this.hintAB = hintAtoB; }
-
-    // hintBtoA
-    public String getHintBA(){ return hintBA; }
-    public void setHintBA(String hintBtoA) { this.hintBA = hintBtoA; }
 
     // comment
     public String getComment(){ return comment; }
@@ -126,6 +129,7 @@ public class TangoCard extends RealmObject implements TangoItem{
      */
     public static TangoCard createCard() {
         TangoCard card = new TangoCard();
+        card.originalId = 0;
         card.newFlag = true;
         card.color = Color.BLACK;
         card.wordA = "";
@@ -145,8 +149,6 @@ public class TangoCard extends RealmObject implements TangoItem{
         TangoCard card = new TangoCard();
         card.wordA = "A " + randVal;
         card.wordB = "あ " + randVal;
-        card.hintAB = "HB " + randVal;
-        card.hintBA = "ひんと " + randVal;
         card.comment = "C " + randVal;
         card.color = Color.BLACK;
         card.star = false;
@@ -163,15 +165,6 @@ public class TangoCard extends RealmObject implements TangoItem{
         }
         if (card.wordB != null) {
             newCard.wordB = new String(card.wordB);
-        }
-        if (card.hintAB != null) {
-            newCard.hintAB = new String(card.hintAB);
-        }
-        if (card.hintAB != null) {
-            newCard.hintBA = new String(card.hintBA);
-        }
-        if (card.hintAB != null) {
-            newCard.comment = new String(card.comment);
         }
         newCard.createTime = new Date();
         newCard.updateTime = new Date();

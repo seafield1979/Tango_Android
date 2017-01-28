@@ -177,11 +177,6 @@ public class StudyCardsStack extends UDrawable {
                     bottomY -= card2.getHeight() + MARGIN_V;
                 }
                 mToBoxCards.add(card);
-                mCards.remove(card);
-
-                if (cardsStackCallbacks != null) {
-                    cardsStackCallbacks.CardsStackChangedCardNum(getCardCount());
-                }
             }
         }
 
@@ -197,6 +192,12 @@ public class StudyCardsStack extends UDrawable {
                     card.setMoveRequest(StudyCard.RequestToParent.None);
                     mToBoxCards.remove(card);
                     breakLoop = true;
+
+                    mCards.remove(card);
+                    if (cardsStackCallbacks != null) {
+                        cardsStackCallbacks.CardsStackChangedCardNum(getCardCount());
+                    }
+
                     if (getCardCount() == 0) {
                         cardsStackCallbacks.CardsStackFinished();
                     }

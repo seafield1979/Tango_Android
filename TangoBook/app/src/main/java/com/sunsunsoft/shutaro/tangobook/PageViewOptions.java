@@ -182,7 +182,7 @@ public class PageViewOptions extends UPageView
             break;
             case DefaultNameBook: {
                 String str = MySharedPref.readString(MySharedPref.DefaultNameBookKey);
-                if (str != null) {
+                if (str != null && str.length() > 0) {
                     title = option.title + "\n" + str;
                 } else {
                     title = option.title;
@@ -194,13 +194,13 @@ public class PageViewOptions extends UPageView
                 StringBuffer buf = new StringBuffer(OptionItems.DefaultNameCard.title);
                 String str = MySharedPref.readString(MySharedPref
                         .DefaultCardWordAKey);
-                if (str != null) {
+                if (str != null && str.length() > 0) {
                     buf.append("\n" + UResourceManager.getStringById(R.string.word_a) + " : " +
                             str);
                 }
                 str = MySharedPref.readString(MySharedPref
                         .DefaultCardWordBKey);
-                if (str != null) {
+                if (str != null && str.length() > 0) {
                     buf.append("\n" + UResourceManager.getStringById(R.string.word_b) + " : "
                             +str);
                 }

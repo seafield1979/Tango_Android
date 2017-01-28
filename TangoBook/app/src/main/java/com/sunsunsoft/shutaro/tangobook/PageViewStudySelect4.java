@@ -244,7 +244,7 @@ public class PageViewStudySelect4 extends UPageView
             // 学習結果をDBに保存する
             mFirstStudy = false;
 
-            saveStudyResult();
+            StudyUtil.saveStudyResult(mCardsManager, mBook);
         }
 
         // カードが０になったので学習完了。リザルトページに遷移
@@ -253,23 +253,5 @@ public class PageViewStudySelect4 extends UPageView
                 mCardsManager.getOkCards(), mCardsManager.getNgCards());
 
         mParentView.invalidate();
-    }
-
-    /**
-     * 学習結果を保存
-     */
-    private void saveStudyResult() {
-        List<TangoCard> okCards = mCardsManager.getOkCards();
-        List<TangoCard> ngCards = mCardsManager.getNgCards();
-
-        // 単語帳の学習履歴
-        int historyId = RealmManager.getBookHistoryDao().addOne(mBook.getId(), false, okCards.size(), ngCards.size());
-
-        // 学習したカード番号
-        RealmManager.getStudiedCardDao().addStudiedCards(historyId, okCards, ngCards);
-
-        // カードの学習履歴
-        TangoCardHistoryDao cardHistoryDao = RealmManager.getCardHistoryDao();
-        cardHistoryDao.updateCards(okCards, ngCards);
     }
 }

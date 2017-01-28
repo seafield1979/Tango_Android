@@ -125,13 +125,9 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
         if (isEnglish) {
             wordA = card.getWordA();
             wordB = card.getWordB();
-            hintA = card.getHintAB();
-            hintB = card.getHintBA();
         } else {
             wordA = card.getWordB();
             wordB = card.getWordA();
-            hintA = card.getHintBA();
-            hintB = card.getHintAB();
         }
         mState = State.None;
         mCard = card;

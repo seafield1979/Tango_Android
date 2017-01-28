@@ -66,9 +66,10 @@ public class TangoItemPosDao {
     /**
      * 指定の親以下にあるアイテムを全て取得する
      */
-    public List<TangoItemPos> selectByParentType(TangoParentType parentType) {
+    public List<TangoItemPos> selectByParent(TangoParentType parentType, int parentId) {
         RealmResults<TangoItemPos> results = mRealm.where(TangoItemPos.class)
                 .equalTo("parentType", parentType.ordinal())
+                .equalTo("parentId", parentId)
                 .findAllSorted("pos", Sort.ASCENDING);
         return results;
     }
