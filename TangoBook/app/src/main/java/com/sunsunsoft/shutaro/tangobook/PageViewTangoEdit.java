@@ -597,7 +597,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             {
                 List<TangoCard> cards = mExportIcon.getItems();
                 String path = PresetBookManager.getInstance()
-                        .exportToCsvFile(mExportIcon.getTitle(), cards);
+                        .exportToCsvFile((TangoBook)mExportIcon.getTangoItem(), cards);
 
                 String message;
                 if (path == null) {

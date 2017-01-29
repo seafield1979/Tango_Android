@@ -136,14 +136,18 @@ public class PresetBookManager {
      * Csvファイルにエクスポートする
      * @return エクスポートファイルのパス
      */
-    public String exportToCsvFile(String bookName, List<TangoCard> cards) {
+    public String exportToCsvFile(TangoBook book, List<TangoCard> cards) {
         File path = UUtil.getPath(mContext, FilePathType.ExternalDocument);
         try {
-            String filePath = path.toString() + "/" + bookName + ".csv";
+            String filePath = path.toString() + "/" + book.getName() + ".csv";
             FileWriter fw = new FileWriter(filePath);
 
             // 1行目はbooke名
-            fw.write(escapeCsv(bookName) + "\n");
+            StringBuffer bookText = new StringBuffer(escapeCsv(book.getName()));
+            if (book.getComment() != null && book.getComment().length() > 0) {
+                bookText.append("," + escapeCsv(book.getComment()));
+            }
+            fw.write(bookText.toString() + "\n");
             // 2行目以降はcardの英語、日本語
             for (TangoCard card : cards) {
                 if (card.getWordA() != null) {
