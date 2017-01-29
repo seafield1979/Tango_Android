@@ -13,8 +13,8 @@ import java.util.List;
  * 正解を１つだけふくむ４つの選択肢から正解を選ぶ学習モード
  */
 
-public class PageViewStudySelect4 extends UPageView
-        implements UButtonCallbacks, UDialogCallbacks, CardsStackCallbacks
+public class PageViewStudySelect4 extends PageViewStudy
+        implements CardsStackCallbacks
 {
     /**
      * Enums
@@ -39,11 +39,8 @@ public class PageViewStudySelect4 extends UPageView
     private static final int DRAW_PRIORITY = 100;
 
     // button ids
-    private static final int ButtonIdExit = 100;
     private static final int ButtonIdOk = 101;
     private static final int ButtonIdNg = 102;
-
-    private static final int ButtonIdExitOk = 200;
 
     /**
      * Member variables
@@ -60,11 +57,6 @@ public class PageViewStudySelect4 extends UPageView
     // 学習する単語帳 or カードリスト
     private TangoBook mBook;
     private List<TangoCard> mCards;
-
-    // 終了確認ダイアログ
-    private UDialogWindow mConfirmDialog;
-
-    private boolean isCloseOk;
 
     /**
      * Get/Set
@@ -167,15 +159,6 @@ public class PageViewStudySelect4 extends UPageView
     }
 
     /**
-     * ソフトウェアキーの戻るボタンを押したときの処理
-     * @return
-     */
-    public boolean onBackKeyDown() {
-
-        return false;
-    }
-
-    /**
      * Callbacks
      */
 
@@ -184,46 +167,12 @@ public class PageViewStudySelect4 extends UPageView
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch(id) {
-            case ButtonIdExit:
-                // 終了ボタンを押したら確認用のモーダルダイアログを表示
-                if (mConfirmDialog == null) {
-                    isCloseOk = false;
-
-                    mConfirmDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                            this, this,
-                            UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
-                            true, mParentView.getWidth(), mParentView.getHeight(),
-                            Color.BLACK, Color.LTGRAY);
-                    mConfirmDialog.addToDrawManager();
-                    mConfirmDialog.setTitle(mContext.getString(R.string.confirm_exit));
-                    mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
-                    mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-                }
-                break;
             case ButtonIdOk:
                 break;
             case ButtonIdNg:
                 break;
-            case ButtonIdExitOk:
-                // 終了
-                isCloseOk = true;
-                mConfirmDialog.startClosing();
-                break;
         }
         return false;
-    }
-
-    /**
-     * UDialogCallbacks
-     */
-    public void dialogClosed(UDialogWindow dialog) {
-        if (isCloseOk) {
-            // 終了して前のページに戻る
-            PageViewManager.getInstance().popPage();
-        }
-        if (dialog == mConfirmDialog) {
-            mConfirmDialog = null;
-        }
     }
 
     /**

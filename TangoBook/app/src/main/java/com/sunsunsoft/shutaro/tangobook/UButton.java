@@ -156,18 +156,13 @@ abstract public class UButton extends UDrawable {
      * タッチアップイベント
      */
     public boolean touchUpEvent(ViewTouch vt) {
-        boolean done = false;
-
         if (vt.isTouchUp()) {
             if (isPressed) {
                 isPressed = false;
-                done = true;
-                if (buttonCallback != null) {
-                    buttonCallback.UButtonClicked(id, false);
-                }
+                return true;
             }
         }
-        return done;
+        return false;
     }
 
     /**

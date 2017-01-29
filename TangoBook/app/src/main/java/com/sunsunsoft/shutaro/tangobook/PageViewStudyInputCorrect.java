@@ -14,8 +14,8 @@ import java.util.List;
  * 正解を１文字ずつ入力する。１文字でも間違って入力したらNG
  */
 
-public class PageViewStudyInputCorrect extends UPageView
-        implements UButtonCallbacks, UDialogCallbacks, CardsStackCallbacks
+public class PageViewStudyInputCorrect extends PageViewStudy
+        implements CardsStackCallbacks
 {
     /**
      * Enums
@@ -40,13 +40,10 @@ public class PageViewStudyInputCorrect extends UPageView
     private static final int SETTING_BUTTON_W = 120;
 
     // button ids
-    private static final int ButtonIdExit = 100;
     private static final int ButtonIdSkip = 101;
     private static final int ButtonIdSetting = 102;
-    private static final int ButtonIdExitOk = 200;
     private static final int ButtonIdStudySorted = 300;
     private static final int ButtonIdStudyRandom = 301;
-
 
     /**
      * Member variables
@@ -69,7 +66,6 @@ public class PageViewStudyInputCorrect extends UPageView
     // 終了確認ダイアログ
     private UDialogWindow mDialog;
 
-    private boolean isCloseOk;
 
     /**
      * Get/Set
@@ -91,7 +87,6 @@ public class PageViewStudyInputCorrect extends UPageView
      */
     public PageViewStudyInputCorrect(Context context, View parentView, String title) {
         super(context, parentView, title);
-
     }
 
     /**
@@ -189,15 +184,6 @@ public class PageViewStudyInputCorrect extends UPageView
     }
 
     /**
-     * ソフトウェアキーの戻るボタンを押したときの処理
-     * @return
-     */
-    public boolean onBackKeyDown() {
-
-        return false;
-    }
-
-    /**
      * Callbacks
      */
 
@@ -206,30 +192,9 @@ public class PageViewStudyInputCorrect extends UPageView
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch(id) {
-            case ButtonIdExit:
-                // 終了ボタンを押したら確認用のモーダルダイアログを表示
-                if (mDialog == null) {
-                    isCloseOk = false;
-
-                    mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                            this, this,
-                            UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
-                            true, mParentView.getWidth(), mParentView.getHeight(),
-                            Color.BLACK, Color.LTGRAY);
-                    mDialog.addToDrawManager();
-                    mDialog.setTitle(mContext.getString(R.string.confirm_exit));
-                    mDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
-                    mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-                }
-                break;
             case ButtonIdSkip:
                 // 次の問題へ
                 mCardsStack.skipCard();
-                break;
-            case ButtonIdExitOk:
-                // 終了
-                isCloseOk = true;
-                mDialog.startClosing();
                 break;
             case ButtonIdSetting:
                 if (mDialog != null) {
@@ -272,11 +237,10 @@ public class PageViewStudyInputCorrect extends UPageView
      * UDialogCallbacks
      */
     public void dialogClosed(UDialogWindow dialog) {
-        if (isCloseOk) {
-            // 終了して前のページに戻る
-            PageViewManager.getInstance().popPage();
-        }
+        super.dialogClosed(dialog);
+            
         if (dialog == mDialog) {
+            mDialog.closeDialog();
             mDialog = null;
         }
     }

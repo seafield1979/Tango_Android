@@ -27,6 +27,7 @@ public class PageViewSettingsTop extends UPageView
 
     private static final int BUTTON2_H = 200;
     private static final int TEXT_SIZE = 50;
+    private static final int BUTTON_COLOR = UColor.LightBlue;
 
     // button ids
     private static final int ButtonIdOption = 99;
@@ -108,29 +109,26 @@ public class PageViewSettingsTop extends UPageView
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdOption ,
                 DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.option),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkRed, UColor
-                .LightCyan);
+                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
         mWindow.addDrawable(button1, false);
 
         // backup button
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup,
                 DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.backup_and_restore),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkGreen, UColor
-                .LightGreen);
+                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
         mWindow.addDrawable(button1, false);
 
         // ライセンス
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
                  UResourceManager.getStringById(R.string.license),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, UColor.LightGray);
+                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
         mWindow.addDrawable(button1, false);
 
         // お問い合わせ（メール）
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdContact, DRAW_PRIORITY,
                 UResourceManager.getStringById(R.string.contact_us),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.DarkBlue, UColor
-                .LightSkyBlue);
+                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
         mWindow.addDrawable(button1, true);
     }
 

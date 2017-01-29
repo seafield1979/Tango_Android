@@ -14,8 +14,8 @@ import java.util.List;
  * カードが全てOK/NG処理されるまで上から単語カードが降ってくる
  */
 
-public class PageViewStudySlide extends UPageView
-        implements UButtonCallbacks, UDialogCallbacks, CardsStackCallbacks
+public class PageViewStudySlide extends PageViewStudy
+        implements CardsStackCallbacks
 {
     /**
      * Enums
@@ -44,11 +44,9 @@ public class PageViewStudySlide extends UPageView
     private static final int DRAW_PRIORITY = 100;
 
     // button ids
-    private static final int ButtonIdExit = 100;
     private static final int ButtonIdOk = 101;
     private static final int ButtonIdNg = 102;
 
-    private static final int ButtonIdExitOk = 200;
 
     /**
      * Member variables
@@ -66,11 +64,6 @@ public class PageViewStudySlide extends UPageView
     // 学習する単語帳 or カードリスト
     private TangoBook mBook;
     private List<TangoCard> mCards;
-
-    // 終了確認ダイアログ
-    private UDialogWindow mConfirmDialog;
-
-    private boolean isCloseOk;
 
     /**
      * Get/Set
@@ -195,14 +188,6 @@ public class PageViewStudySlide extends UPageView
         return String.format(mContext.getString(R.string.cards_remain), count);
     }
 
-    /**
-     * ソフトウェアキーの戻るボタンを押したときの処理
-     * @return
-     */
-    public boolean onBackKeyDown() {
-
-        return false;
-    }
 
     /**
      * Callbacks
@@ -212,48 +197,19 @@ public class PageViewStudySlide extends UPageView
      * UButtonCallbacks
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
-        switch(id) {
-            case ButtonIdExit:
-                // 終了ボタンを押したら確認用のモーダルダイアログを表示
-                if (mConfirmDialog == null) {
-                    isCloseOk = false;
+        if (super.UButtonClicked(id, pressedOn)) {
+            return true;
+        }
 
-                    mConfirmDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                            this, this,
-                            UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
-                            true, mParentView.getWidth(), mParentView.getHeight(),
-                            Color.BLACK, Color.LTGRAY);
-                    mConfirmDialog.addToDrawManager();
-                    mConfirmDialog.setTitle(mContext.getString(R.string.confirm_exit));
-                    mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
-                    mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-                }
-                break;
+        switch(id) {
             case ButtonIdOk:
                 break;
             case ButtonIdNg:
-                break;
-            case ButtonIdExitOk:
-                // 終了
-                isCloseOk = true;
-                mConfirmDialog.startClosing();
                 break;
         }
         return false;
     }
 
-    /**
-     * UDialogCallbacks
-     */
-    public void dialogClosed(UDialogWindow dialog) {
-        if (isCloseOk) {
-            // 終了して前のページに戻る
-            PageViewManager.getInstance().popPage();
-        }
-        if (dialog == mConfirmDialog) {
-            mConfirmDialog = null;
-        }
-    }
 
     /**
      * CardsStackCallbacks
@@ -261,8 +217,6 @@ public class PageViewStudySlide extends UPageView
     public void CardsStackChangedCardNum(int count) {
         String title = getCardsRemainText(count);
         mTextCardCount.setText(title);
-
-
     }
 
     /**

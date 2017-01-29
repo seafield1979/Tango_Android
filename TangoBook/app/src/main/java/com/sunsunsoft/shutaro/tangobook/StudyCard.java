@@ -227,6 +227,13 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
      * @return
      */
     public DoActionRet doAction() {
+        if (mArrowL.doAction() != DoActionRet.None) {
+            return DoActionRet.Redraw;
+        }
+        if (mArrowR.doAction() != DoActionRet.None) {
+            return DoActionRet.Redraw;
+        }
+
         switch (mState) {
             case Moving:
                 if (autoMoving()) {
@@ -330,10 +337,10 @@ public class StudyCard extends UDrawable implements UButtonCallbacks{
             done = true;
         }
 
-        if ( mArrowL.touchEvent(vt, offset) ) {
+        if ( mArrowL.touchEvent(vt, _pos) ) {
             return true;
         }
-        if (mArrowR.touchEvent(vt, offset)) {
+        if ( mArrowR.touchEvent(vt, _pos)) {
             return true;
         }
 
