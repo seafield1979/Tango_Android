@@ -113,7 +113,7 @@
                     <com.sunsunsoft.shutaro.tangobook.ColorView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        bg_color="#c0c0c0"
+                        bg_color="#ffffff"
                         android:id="@+id/color_view_2"
                         />
                     <com.sunsunsoft.shutaro.tangobook.ColorView

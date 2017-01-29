@@ -238,7 +238,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
      */
     public void dialogClosed(UDialogWindow dialog) {
         super.dialogClosed(dialog);
-            
+
         if (dialog == mDialog) {
             mDialog.closeDialog();
             mDialog = null;
