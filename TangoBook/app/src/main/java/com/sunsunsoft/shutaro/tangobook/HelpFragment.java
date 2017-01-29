@@ -167,6 +167,9 @@ public class HelpFragment extends Fragment implements OnItemClickListener{
      */
     public boolean onBackKeyDown() {
         getFragmentManager().popBackStack();
+        if (getFragmentManager().getBackStackEntryCount() <= 1) {
+            MainActivity.getInstance().showActionBarBack(false);
+        }
         return true;
     }
 }

@@ -24,7 +24,6 @@ public class PageViewHelp extends UPageView implements UButtonCallbacks{
      */
 
     protected void onShow() {
-
     }
 
     protected void onHide() {

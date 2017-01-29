@@ -60,8 +60,9 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
 
     private static final int TOP_Y = 50;
     private static final int BUTTON_W = 400;
+    private static final int BUTTON_H = 200;
     private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
+    private static final int MARGIN_V = 30;
 
     private static final int TITLE_TEXT_SIZE = 80;
     private static final int TEXT_SIZE = 50;
@@ -113,33 +114,45 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
         // ボタンの配置
         // 横向きなら３列、縦向きなら３列
         int columnNum;
-        int rowNum;
-        if( width > mParentView.getHeight()) {
-            columnNum = 3;
-            rowNum =2;
-        } else {
-            columnNum = 2;
-            rowNum = 3;
-        }
+        columnNum = 2;
 
+        // 単語帳作成＆学習ボタンは正方形
         int buttonW = (width - (columnNum + 1) * MARGIN_H) / columnNum;
-        int buttonH = (height - (rowNum + 1) * MARGIN_H) / rowNum;
-        float x = MARGIN_H;
-        float y = MARGIN_V;
 
-        for (int i = 0; i< mButtons.length; i++) {
-            if (i != 0 && (i % columnNum) == 0) {
-                x = MARGIN_H;
-                y += buttonH + MARGIN_H;
-            }
+        float x = MARGIN_H;
+        float y = MARGIN_V + 100.f;
+        buttonType = UButtonType.Press;
+
+        for (int i = 0; i < 2; i++) {
             ButtonId id = ButtonId.values()[i];
 
+            mButtons[i] = new UButtonText(this, buttonType, id.ordinal(), DRAW_PRIORITY,
+                    id.getTitle(mContext), x, y,
+                    buttonW, buttonW,
+                    TEXT_SIZE, id.textColor, id.bgColor);
+            Bitmap image = UResourceManager.getBitmapWithColor(id.imageId, id.lineColor);
+            mButtons[i].setImage(image, new Size(IMAGE_W, IMAGE_W));
+            UDrawManager.getInstance().addDrawable(mButtons[i]);
+
+            // 表示座標を少し調整
+            mButtons[i].setImageOffset(0, -50f);
+            mButtons[i].setTextOffset(0, 40f);
+
+            x += buttonW + MARGIN_H;
+        }
+        y += buttonW + MARGIN_V;
+
+        // 下の段は横長ボタン
+        buttonW = width - MARGIN_H * 2;
+        int buttonH = BUTTON_H;
+        x = MARGIN_H;
+        for (int i = 2; i < ButtonId.values().length; i++) {
             // デバッグモードがONの場合のみDebugを表示
+            ButtonId id = ButtonId.values()[i];
+
             if (id == ButtonId.Debug) {
                 if (!UDebug.isDebug) continue;
             }
-
-            buttonType = UButtonType.Press;
 
             mButtons[i] = new UButtonText(this, buttonType, id.ordinal(), DRAW_PRIORITY,
                     id.getTitle(mContext), x, y,
@@ -147,14 +160,13 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks{
                     TEXT_SIZE, id.textColor, id.bgColor);
             Bitmap image = UResourceManager.getBitmapWithColor(id.imageId, id.lineColor);
             mButtons[i].setImage(image, new Size(IMAGE_W, IMAGE_W));
-
-
             UDrawManager.getInstance().addDrawable(mButtons[i]);
-            // 表示座標を少し調整
-            mButtons[i].setImageOffset(0, -50f);
-            mButtons[i].setTextOffset(0, 40f);
 
-            x += buttonW + MARGIN_H;
+            // 表示座標を少し調整
+            mButtons[i].setImageOffset(-IMAGE_W - 60 - MARGIN_H / 2, 0);
+            mButtons[i].setTextOffset(MARGIN_H / 2, 0);
+
+            y += buttonH + MARGIN_V;
         }
     }
 

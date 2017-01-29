@@ -114,6 +114,16 @@ public class MainActivity extends AppCompatActivity {
             if (mTopFragment.onBackKeyDown()) {
                 return true;
             }
+            else if (mHelpPageFragment != null && mHelpPageFragment.isVisible()) {
+                if (mHelpPageFragment.onBackKeyDown()) {
+                    return true;
+                }
+            }
+            else if (mHelpFragment != null && mHelpFragment.isVisible()) {
+                if (mHelpFragment.onBackKeyDown()) {
+                    return true;
+                }
+            }
             return super.onKeyDown(keyCode, event);
         }
     }
