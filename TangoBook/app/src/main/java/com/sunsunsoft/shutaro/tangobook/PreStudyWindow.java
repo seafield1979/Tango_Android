@@ -272,6 +272,8 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
                     UAlignment.CenterX, screenW, false, false,
                     width / 2, y, TITLE_WIDTH, TEXT_DATE_COLOR, 0);
             y += textLastStudied.getHeight() + MARGIN_V * 2;
+        } else {
+            textLastStudied = null;
         }
 
         /**

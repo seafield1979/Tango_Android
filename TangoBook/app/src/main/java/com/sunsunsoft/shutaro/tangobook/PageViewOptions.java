@@ -41,6 +41,24 @@ enum OptionItems {
         this.color = color;
         this.bgColor = bgColor;
     }
+
+    public static OptionItems[] getItems(PageViewOptions.Mode mode) {
+        switch(mode) {
+            case All:
+            default:
+                return values();
+            case Edit:
+                return new OptionItems[]{
+                        TitleEdit, ColorBook, ColorCard, CardTitle, DefaultNameBook,
+                        DefaultNameCard,
+                };
+            case Study:
+                return new OptionItems[]{
+                        TitleStudy, AddNgCard, StudyMode4
+                };
+        }
+    }
+
     public static OptionItems toEnum(int val) {
         if (val >= values().length) {
             return TitleEdit;
@@ -54,6 +72,16 @@ public class PageViewOptions extends UPageView
         implements UButtonCallbacks, UDialogCallbacks, OptionColorDialogCallbacks,
         DefaultNameDialogCallbacks, UListItemCallbacks
 {
+    /**
+     * Enums
+     */
+    // モード(リストに表示する項目が変わる)
+    enum Mode {
+        All,        // 全オプションを表示
+        Edit,       // 単語帳編集系の項目を表示
+        Study       // 学習系の項目を表示
+    }
+
     /**
      * Constants
      */
@@ -76,6 +104,7 @@ public class PageViewOptions extends UPageView
     /**
      * Member variables
      */
+    private Mode mMode;
     private UTextView mTitleText;
     private UListView mListView;
     private UDialogWindow mDialog;
@@ -85,6 +114,13 @@ public class PageViewOptions extends UPageView
      */
     public PageViewOptions(Context context, View parentView, String title) {
         super(context, parentView, title);
+    }
+
+    /**
+     * Get/Set
+     */
+    public void setMode(Mode mode) {
+        mMode = mode;
     }
 
     /**
@@ -153,7 +189,7 @@ public class PageViewOptions extends UPageView
         mListView.addToDrawManager();
 
         // アイテムを追加
-        for (OptionItems option : OptionItems.values()) {
+        for (OptionItems option : OptionItems.getItems(mMode)) {
             ListItemOption item = new ListItemOption(this, option, getItemTitle(option),
                     option.isTitle, option.color, option.bgColor,
                     0, mListView.getWidth());

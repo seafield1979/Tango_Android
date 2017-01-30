@@ -166,6 +166,9 @@ public class PageViewStudySelect4 extends PageViewStudy
      * UButtonCallbacks
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
+        if (super.UButtonClicked(id, pressedOn)) {
+            return true;
+        }
         switch(id) {
             case ButtonIdOk:
                 break;

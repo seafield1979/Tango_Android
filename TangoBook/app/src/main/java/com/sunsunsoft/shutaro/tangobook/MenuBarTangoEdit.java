@@ -22,25 +22,26 @@ public class MenuBarTangoEdit extends UMenuBar {
 
     // メニューのID、画像ID、Topかどうかのフラグ
     enum MenuItemId {
-        AddTop(MenuItemType.Top, R.drawable.add, R.string.add_item, false),
-        AddCard(MenuItemType.Child, R.drawable.card, R.string.add_card, false),
-        AddBook(MenuItemType.Child, R.drawable.cards, R.string.add_book, false),
-        AddDummyCard(MenuItemType.Child, R.drawable.number_1, R.string.add_dummy_card, true),
-        AddDummyBook(MenuItemType.Child, R.drawable.number_2, R.string.add_dummy_book, true),
-        AddPresetBook(MenuItemType.Child, R.drawable.cards, R.string.add_preset, false),
-        AddCsvBook(MenuItemType.Child, R.drawable.cards, R.string.add_csv, false),
-
+        AddTop(MenuItemType.Top, R.drawable.add, R.string.add_item, UColor.Blue, false),
+        AddCard(MenuItemType.Child, R.drawable.card, R.string.add_card, ICON_COLOR, false),
+        AddBook(MenuItemType.Child, R.drawable.cards, R.string.add_book, ICON_COLOR, false),
+        AddDummyCard(MenuItemType.Child, R.drawable.number_1, R.string.add_dummy_card, ICON_COLOR, true),
+        AddDummyBook(MenuItemType.Child, R.drawable.number_2, R.string.add_dummy_book, ICON_COLOR, true),
+        AddPresetBook(MenuItemType.Child, R.drawable.cards, R.string.add_preset, ICON_COLOR, false),
+        AddCsvBook(MenuItemType.Child, R.drawable.cards, R.string.add_csv, ICON_COLOR, false),
         ;
 
         private MenuItemType type;
         private int imageId;
         private int stringId;
+        private int color;
         private boolean forDebug;       // デバッグ用のアイテム
 
-        MenuItemId(MenuItemType type, int imageId, int stringId, boolean forDebug) {
+        MenuItemId(MenuItemType type, int imageId, int stringId, int color, boolean forDebug) {
             this.imageId = imageId;
             this.type = type;
             this.stringId = stringId;
+            this.color = color;
             this.forDebug = forDebug;
         }
 
@@ -49,6 +50,7 @@ public class MenuBarTangoEdit extends UMenuBar {
         }
         public MenuItemType getType() { return type; }
         public int getStringId() { return stringId; }
+        public int getColor() { return color; }
 
         public static MenuItemId toEnum(int value) {
             if (value >= values().length) return AddTop;
@@ -61,7 +63,7 @@ public class MenuBarTangoEdit extends UMenuBar {
      */
     private static final int TEXT_COLOR = Color.WHITE;
     private static final int TEXT_BG_COLOR = Color.argb(128,0,0,0);
-    private static final int ICON_COLOR = UColor.Blue;
+    private static final int ICON_COLOR = UColor.BLACK;
 
     /**
      * Constructor
@@ -99,13 +101,11 @@ public class MenuBarTangoEdit extends UMenuBar {
         for (MenuItemId itemId : MenuItemId.values()) {
             if (itemId.forDebug) continue;
 
-            Bitmap image = UResourceManager.getBitmapWithColor(itemId.getImageId(), ICON_COLOR);
+            Bitmap image = UResourceManager.getBitmapWithColor(itemId.getImageId(), itemId
+                    .getColor());
             switch(itemId.getType()) {
                 case Top:
                     item = itemTop = addTopMenuItem(itemId.ordinal(), image);
-//                    item.addTitle(UResourceManager.getStringById(itemId.getStringId()),
-//                            UAlignment.CenterX,
-//                            item.getWidth() / 2, item.getHeight() - 40, TEXT_COLOR, TEXT_BG_COLOR);
                     break;
                 case Child:
                     item = addMenuItem(itemTop, itemId.ordinal(), image);

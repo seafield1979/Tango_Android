@@ -191,6 +191,10 @@ public class PageViewStudyInputCorrect extends PageViewStudy
      * UButtonCallbacks
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
+        if (super.UButtonClicked(id, pressedOn)) {
+            return true;
+        }
+
         switch(id) {
             case ButtonIdSkip:
                 // 次の問題へ
@@ -240,7 +244,6 @@ public class PageViewStudyInputCorrect extends PageViewStudy
         super.dialogClosed(dialog);
 
         if (dialog == mDialog) {
-            mDialog.closeDialog();
             mDialog = null;
         }
     }
@@ -251,8 +254,6 @@ public class PageViewStudyInputCorrect extends PageViewStudy
     public void CardsStackChangedCardNum(int count) {
         String title = getCardsRemainText(count);
         mTextCardCount.setText(title);
-
-
     }
 
     /**

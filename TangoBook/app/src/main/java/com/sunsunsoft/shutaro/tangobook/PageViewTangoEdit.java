@@ -202,6 +202,9 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 PageViewManager.getInstance().stackPage(PageView.SearchCard);
                 break;
             case R.id.action_settings:
+//                MainActivity.getInstance().showHelpTopPage();
+                PageViewManager.getInstance().startOptionPage(PageViewOptions.Mode.Edit);
+                mParentView.invalidate();
                 break;
         }
     }

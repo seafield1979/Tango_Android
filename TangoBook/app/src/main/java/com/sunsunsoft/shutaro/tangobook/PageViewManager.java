@@ -260,6 +260,15 @@ public class PageViewManager extends UPageViewManager{
     }
 
     /**
+     * オプション設定ページを表示
+     */
+    public void startOptionPage(PageViewOptions.Mode mode) {
+        PageViewOptions page = (PageViewOptions)getPageView(PageView.Options);
+        page.setMode(mode);
+        stackPage(PageView.Options);
+    }
+
+    /**
      * Callbacks
      */
 
