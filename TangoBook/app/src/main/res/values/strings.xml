@@ -54,6 +54,8 @@
     <string name="study_filter_1">すべて</string>
     <string name="study_filter_2">覚えていないカード</string>
 
+    <string name="know">知ってる</string>
+    <string name="dont_know">知らない</string>
     <string name="count_not_learned">未収得</string>
     <string name="item_count">アイテム数</string>
     <string name="title_edit">単語帳を作る</string>

@@ -145,6 +145,14 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         screenSize.width = screenW;
         screenSize.height = screenH;
 
+        if (isAnimation) {
+            updateBasePos();
+            startAnimation(AnimationType.Opening);
+        }
+        if (type == DialogType.Mordal) {
+            bgColor = Color.argb(160,0,0,0);
+        }
+
     }
 
     // 座標指定タイプ
@@ -178,25 +186,6 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks{
         UDialogWindow instance = new UDialogWindow( type, buttonCallbacks,
                 dialogCallbacks, dir, posType, isAnimation, 0, 0, screenW, screenH,
                 textColor, dialogColor);
-        // ダミーのサイズ
-
-        instance.type = type;
-        instance.posType = DialogPosType.Center;
-        instance.buttonDir = dir;
-        instance.paint = new Paint();
-        instance.textColor = textColor;
-        instance.dialogColor = dialogColor;
-        instance.buttonCallbacks = buttonCallbacks;
-        instance.dialogCallbacks = dialogCallbacks;
-        instance.isAnimation = isAnimation;
-        if (isAnimation) {
-            instance.updateBasePos();
-            instance.startAnimation(AnimationType.Opening);
-        }
-        if (type == DialogType.Mordal) {
-            instance.bgColor = Color.argb(160,0,0,0);
-        }
-
         return instance;
     }
 

@@ -30,7 +30,7 @@ public class DialogCard extends UDialogWindow {
         super(DialogType.Mordal, null, null,
                 ButtonDir.Horizontal, DialogPosType.Center,
                 isAnimation, 0, 0, screenW, screenH,
-                Color.BLACK, Color.WHITE);
+                Color.BLACK, UColor.WHITE);
 
         this.buttonCallbacks = this;
         this.frameColor = Color.BLACK;
@@ -38,7 +38,7 @@ public class DialogCard extends UDialogWindow {
 
         // Text views
         // WordA
-        if (card.getWordA() != null) {
+        if (card.getWordA() != null && card.getWordA().length() > 0) {
             addTextView(UResourceManager.getStringById(R.string.word_a), UAlignment.CenterX, true, false,
                     UDraw.getFontSize(FontSize.M), Color.BLACK, 0);
 
@@ -47,7 +47,7 @@ public class DialogCard extends UDialogWindow {
         }
 
         // WordB
-        if (card.getWordB() != null) {
+        if (card.getWordB() != null && card.getWordB().length() > 0) {
             addTextView(UResourceManager.getStringById(R.string.word_b),
                     UAlignment.CenterX, true, false,
                     UDraw.getFontSize(FontSize.M), Color.BLACK, 0);
@@ -56,7 +56,7 @@ public class DialogCard extends UDialogWindow {
         }
 
         // Comment
-        if (card.getComment() != null) {
+        if (card.getComment() != null && card.getComment().length() > 0) {
             addTextView(UResourceManager.getStringById(R.string.comment),
                     UAlignment.CenterX, true, false,
                     UDraw.getFontSize(FontSize.M), Color.BLACK, 0);
@@ -68,13 +68,11 @@ public class DialogCard extends UDialogWindow {
         String historyStr;
         if (history != null) {
             historyStr = history.getCorrectFlagsAsString();
-        } else {
-            historyStr = "---";
+            addTextView(UResourceManager.getStringById(R.string.study_history) + " : " + historyStr,
+                    UAlignment.CenterX,
+                    true, true,
+                    UDraw.getFontSize(FontSize.M), Color.BLACK, Color.LTGRAY);
         }
-        addTextView(UResourceManager.getStringById(R.string.study_history) + " : " + historyStr,
-                UAlignment.CenterX,
-                true, true,
-                UDraw.getFontSize(FontSize.M), Color.BLACK, Color.LTGRAY);
 
         // Cancel
         addCloseButton(UResourceManager.getStringById(R.string.close));

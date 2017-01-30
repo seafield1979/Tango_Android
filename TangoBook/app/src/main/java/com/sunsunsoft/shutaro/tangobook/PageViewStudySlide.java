@@ -164,14 +164,14 @@ public class PageViewStudySlide extends PageViewStudy
         mOkView = new UImageView(DRAW_PRIORITY, R.drawable.box1,
                        screenW - BOX_W - MARGIN_H, screenH - BOX_H - MARGIN_V,
                         BOX_W, BOX_H, UColor.DarkGreen);
-        mOkView.setTitle("OK", 50, UColor.DarkGreen);
+        mOkView.setTitle(UResourceManager.getStringById(R.string.know), 50, UColor.DarkGreen);
         mOkView.addToDrawManager();
 
         // NG
         mNgView = new UImageView(DRAW_PRIORITY, R.drawable.box1,
                 MARGIN_H, screenH - BOX_H - MARGIN_V,
                 BOX_W, BOX_H, UColor.DarkRed);
-        mNgView.setTitle("NG", 50, UColor.DarkRed);
+        mNgView.setTitle(UResourceManager.getStringById(R.string.dont_know), 50, UColor.DarkRed);
         mNgView.addToDrawManager();
 
 

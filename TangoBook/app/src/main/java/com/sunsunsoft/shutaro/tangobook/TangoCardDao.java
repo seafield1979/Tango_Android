@@ -82,8 +82,9 @@ public class TangoCardDao {
         if (searchStr == null || searchStr.length() == 0) return null;
 
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class)
-                        .contains("wordA", searchStr).
-                        findAll();
+                        .contains("wordA", searchStr)
+                        .or().contains("wordB", searchStr)
+                        .findAll();
         return results;
     }
 
