@@ -137,8 +137,6 @@ abstract public class UPageViewManager {
      * ページを取得する
      */
     public UPageView getPageView(PageView pageId) {
-        pageChanged(pageId);
-
         if (pages[pageId.ordinal()] == null) {
             initPage(pageId);
         }

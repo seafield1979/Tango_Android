@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 単語帳編集ページでアイコンを長押ししてチェック状態にした時のメニュー -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--ゴミ箱に移動-->
+    <item
+        android:id="@+id/action_move_to_trash"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/trash3"
+        android:title="@string/trash"/>
+
+    <!-- いつものメニュー -->
+    <item
+        android:id="@+id/action_sort"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="@string/sort">
+        <menu>
+            <item android:id="@+id/action_sort_word_asc"
+                  android:title="@string/sort_word_asc"
+                />
+            <item android:id="@+id/action_sort_word_desc"
+                  android:title="@string/sort_word_desc"
+                />
+            <item android:id="@+id/action_sort_time_asc"
+                  android:title="@string/sort_time_asc"
+                />
+            <item android:id="@+id/action_sort_time_desc"
+                  android:title="@string/sort_time_desc"
+                />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:icon="@drawable/sort2"
+        android:title="@string/edit_page_word_type">
+        <menu>
+            <item android:id="@+id/action_card_name_a"
+                  android:title="@string/word_a"
+                />
+            <item android:id="@+id/action_card_name_b"
+                  android:title="@string/word_b"
+                />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_search_card"
+        android:orderInCategory="100"
+        android:title="@string/search_card"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/title_settings"/>
+
+</menu>

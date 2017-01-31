@@ -153,6 +153,23 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
      */
     public void setActionId(int id) {
         switch(id) {
+            case R.id.action_move_to_trash: {
+                if (mDialog != null) {
+                    return;
+                }
+                // ゴミ箱に移動するかの確認ダイアログを表示する
+                mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                        this, this,
+                        UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
+                        true, mParentView.getWidth(), mParentView.getHeight(),
+                        Color.BLACK, Color.LTGRAY);
+                mDialog.addToDrawManager();
+                mDialog.setTitle(mContext.getString(R.string.confirm_moveto_trash));
+                mDialog.addButton(ButtonIdMoveIconsToTrash, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+                mParentView.invalidate();
+            }
+                break;
             case R.id.action_sort_word_asc: {
                 UIconWindow window = getCurrentWindow();
                 window.mIconManager.sortWithMode(UIconManager.SortMode
@@ -202,7 +219,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 PageViewManager.getInstance().stackPage(PageView.SearchCard);
                 break;
             case R.id.action_settings:
-//                MainActivity.getInstance().showHelpTopPage();
                 PageViewManager.getInstance().startOptionPage(PageViewOptions.Mode.Edit);
                 mParentView.invalidate();
                 break;
@@ -595,6 +611,18 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 mDialog.closeDialog();
                 return true;
 
+            case ButtonIdMoveIconsToTrash:
+                // チェックしたアイコンをゴミ箱に移動する
+                UIcon trashIcon = mIconWinManager.getMainWindow().getIconManager().getTrashIcon();
+                for (UIconWindow window : mIconWinManager.getWindows()) {
+                    window.moveIconsIntoBox(window.getIconManager().getCheckedIcons(),
+                        trashIcon);
+                }
+
+                if(mDialog != null) {
+                    mDialog.startClosing();
+                }
+                return true;
             case ExportDialogButtonOK:
                 // CSVファイルに出力する
             {
@@ -830,6 +858,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     public static final int TrashDialogButtonOK = 102;
     public static final int ExportDialogButtonOK = 103;
     public static final int ExportFinishedDialogButtonOk = 104;
+    public static final int ButtonIdMoveIconsToTrash = 105;
 
     public void IconInfoCleanup(UIcon icon) {
         if (icon == null || icon.getType() == IconType.Trash) {

@@ -194,6 +194,7 @@ public class UIconWindow extends UWindow {
             break;
             case icon_selecting:
             {
+                // アイコンのチェック状態をクリア
                 if (state == WindowState.none) {
                     List<UIcon> icons = getIcons();
                     for (UIcon icon : icons) {
@@ -210,6 +211,10 @@ public class UIconWindow extends UWindow {
 
         // 前処理
         switch(state){
+            case none:
+                // アクションバーを更新
+                MainActivity.getInstance().setMenuType(MainActivity.MenuType.TangoEdit);
+                break;
             case icon_moving:
             {
                 List<UIcon> icons = mIconManager.getCheckedIcons();
@@ -217,7 +222,13 @@ public class UIconWindow extends UWindow {
                     UDrawManager.getInstance().addDrawable(icon);
                 }
             }
-            break;
+                break;
+            case icon_selecting:
+                // ゴミ箱の中のアイコンを選択状態にしてもゴミ箱メニューは表示しない(TangoEdit2に切り替えない)
+                if (getParentType() != TangoParentType.Trash) {
+                    MainActivity.getInstance().setMenuType(MainActivity.MenuType.TangoEdit2);
+                }
+                break;
         }
 
         this.state = state;
@@ -1352,7 +1363,7 @@ public class UIconWindow extends UWindow {
      * チェックされた複数のアイコンをBook/Trashの中に移動する
      * @param dropedIcon
      */
-    private void moveIconsIntoBox(List<UIcon>checkedIcons, UIcon dropedIcon) {
+    protected void moveIconsIntoBox(List<UIcon>checkedIcons, UIcon dropedIcon) {
 
         if (!(dropedIcon instanceof IconContainer)) {
             return;
@@ -1411,11 +1422,15 @@ public class UIconWindow extends UWindow {
 
     /**
      * アイコンの選択状態を変更する
+     * ただしゴミ箱アイコンは除く
      */
     private void changeIconChecked(List<UIcon> icons, boolean isChecking) {
         if (icons == null) return;
 
         for (UIcon icon : icons) {
+            if (icon instanceof IconTrash) {
+                continue;
+            }
             icon.isChecking = isChecking;
             if (!isChecking) {
                 icon.isChecked = false;

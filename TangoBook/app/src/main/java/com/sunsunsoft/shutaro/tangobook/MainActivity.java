@@ -18,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
     // アクションバーに表示するメニューの種類
     enum MenuType {
         None,           // 非表示
-        TangoEdit       // 単語帳編集ページ
+        TangoEdit,      // 単語帳編集ページ
+        TangoEdit2      // 単語帳編集ページ(アイコン選択時0
     }
 
     /**
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     HelpPageFragment mHelpPageFragment;
 
     private boolean mShowMenu;
+    private MenuType mMenuType;
 
     public static MainActivity getInstance() {
         return gActivity;
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
 
+            case R.id.action_move_to_trash:
             case R.id.action_sort_word_asc:
             case R.id.action_sort_word_desc:
             case R.id.action_sort_time_asc:
@@ -198,7 +201,14 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_tango_edit, menu);
+        switch(mMenuType) {
+            case TangoEdit:
+                getMenuInflater().inflate(R.menu.menu_tango_edit, menu);
+                break;
+            case TangoEdit2:
+                getMenuInflater().inflate(R.menu.menu_tango_edit2, menu);
+                break;
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -218,12 +228,14 @@ public class MainActivity extends AppCompatActivity {
      * @param type
      */
     public void setMenuType(MenuType type) {
+        mMenuType = type;
         switch(type) {
             case None:
                 mShowMenu = false;
                 invalidateOptionsMenu();
                 break;
             case TangoEdit:
+            case TangoEdit2:
                 mShowMenu = true;
                 invalidateOptionsMenu();
                 break;

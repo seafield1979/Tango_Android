@@ -16,10 +16,8 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="カラフル単語帳は英単語を覚えるためのアプリです。\n
-\n
-簡単に単語カード、単語帳を作成して、簡単に学習する\n
-ことを目的にしています。\n
+                android:text="
+本アプリは
 \n
 アプリの使い方の流れとしては\n
 １．カード、単語帳を作る\n
