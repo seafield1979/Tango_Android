@@ -25,6 +25,7 @@ public class UIconManager implements UIconCallbacks{
      * Enums
      */
     enum SortMode {
+        None,
         TitleAsc,       // タイトル文字昇順(カードはWordA,単語帳はName)
         TitleDesc,      // タイトル文字降順
         CreateDateAsc,  // 更新日時 昇順

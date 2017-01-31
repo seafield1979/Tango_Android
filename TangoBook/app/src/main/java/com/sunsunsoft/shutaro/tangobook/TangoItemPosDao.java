@@ -1,7 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
-import android.util.Log;
-
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -166,7 +166,15 @@ public class TangoItemPosDao {
     // itemTypeで取得するアイテムのタイプを指定できるバージョン
     // itemTypeがnullなら全てのタイプを取得
     public List<TangoItem> selectItemsByParentType(
-            TangoParentType parentType, int parentId, TangoItemType itemType, boolean changeable)
+            TangoParentType parentType, int parentId, TangoItemType itemType, boolean changeable) {
+        return selectItemsByParentTypeWithSort(parentType, parentId, itemType, IconSortMode.None,
+                changeable);
+    }
+
+    public List<TangoItem> selectItemsByParentTypeWithSort(
+            TangoParentType parentType, int parentId, TangoItemType itemType,
+            IconSortMode sortMode,
+            boolean changeable)
     {
         RealmResults<TangoItemPos> _itemPoses;
 
@@ -260,7 +268,11 @@ public class TangoItemPosDao {
         }
 
         // posの順にリストを作成
-        items = joinWithSort(cards, books);
+        if (sortMode == IconSortMode.None) {
+            items = joinWithSort(cards, books);
+        } else {
+            items = joinWithSortMode(cards, books, sortMode);
+        }
 
         return items;
     }
@@ -439,9 +451,62 @@ public class TangoItemPosDao {
             // 全ての要素をチェックし終わったら終了
             if (count >= totalCount) break;
         }
-
         return items;
+    }
 
+    /**
+     * 指定の方法でCardとBookのリストをソート＆結合する
+     * @param cards
+     * @param books
+     * @return
+     */
+    public List<TangoItem> joinWithSortMode(List<TangoCard> cards,
+                                        List<TangoBook> books,
+                                            final IconSortMode sortMode
+    ) {
+        if (cards.size() == 0 && books.size() == 0) return null;
+
+        LinkedList<TangoItem> items = new LinkedList<>();
+
+        // まずはリストを結合
+        for (TangoCard card : cards) {
+            items.add(card);
+        }
+        for (TangoBook book : books) {
+            items.add(book);
+        }
+
+        TangoItem[] _items = items.toArray(new TangoItem[0]);
+
+
+        // _icons を SortMode の方法でソートする
+        Arrays.sort(_items, new Comparator<TangoItem>() {
+            public int compare(TangoItem item1, TangoItem item2) {
+                if (item1 == null || item2 == null) {
+                    return 0;
+                }
+                switch(sortMode) {
+                    case TitleAsc:       // タイトル文字昇順(カードはWordA,単語帳はName)
+                        return item1.getTitle().compareTo (
+                                item2.getTitle());
+                    case TitleDesc:      // タイトル文字降順
+                        return item2.getTitle().compareTo(
+                                item1.getTitle());
+                    case TimeAsc:        // 作成日時 昇順
+                        if (item1.getCreateTime() == null || item2.getCreateTime() == null)
+                            break;
+                        return item1.getCreateTime().compareTo(
+                                item2.getCreateTime());
+                    case TimeDesc:       // 作成日時 降順
+                        if (item1.getCreateTime() == null || item2.getCreateTime() == null)
+                            break;
+                        return item2.getCreateTime().compareTo(
+                                item1.getCreateTime());
+                }
+                return 0;
+            }
+        });
+        return Arrays.asList(_items);
     }
 
     public static List<Integer> listToIds(List<TangoCard> list) {
@@ -704,30 +769,6 @@ public class TangoItemPosDao {
 
         return true;
     }
-
-//    public void deleteItemPoses(List<TangoItemPos> items) {
-//        if (items == null) return;
-//        boolean isFirst = false;
-//
-//        RealmQuery<TangoItemPos> query = mRealm.where(TangoItemPos.class);
-//
-//        for (TangoItemPos item : items) {
-//            if (!isFirst) {
-//                isFirst = true;
-//            } else {
-//                query.or();
-//            }
-//            query.equalTo("parentType", item.getParentType())
-//                    .equalTo("itemType", item.getItemType())
-//                    .equalTo("itemId", item.getItemId());
-//        }
-//        RealmResults<TangoItemPos> results = query.findAll();
-//        if (results == null) return;
-//
-//        mRealm.beginTransaction();
-//        results.deleteAllFromRealm();
-//        mRealm.commitTransaction();
-//    }
 
     /**
      * １アイテムを追加する

@@ -151,6 +151,9 @@ public class MySharedPref {
     // メニューヘルプ(0:非表示 / 1:メニュー名を表示 / 2:メニューヘルプを表示)
     public static final String MenuHelpModeKey = "MenuHelpMode";
 
+    // 学習する単語帳編集ページ
+    public static final String StudyBookSortKey = "StudyBookSort";
+
     /*
     　オプション
      */

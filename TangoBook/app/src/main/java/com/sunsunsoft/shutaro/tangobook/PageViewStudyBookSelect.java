@@ -15,7 +15,11 @@ import java.util.List;
  */
 
 public class PageViewStudyBookSelect extends UPageView
-        implements UButtonCallbacks, UListItemCallbacks, UWindowCallbacks{
+        implements UButtonCallbacks, UListItemCallbacks, UWindowCallbacks {
+    /**
+     * Enums
+     */
+
     /**
      * Constants
      */
@@ -40,6 +44,7 @@ public class PageViewStudyBookSelect extends UPageView
     private UListView mListView;
     private UButtonText mReturnButton;
     private TangoBook mBook;
+    private IconSortMode mSortMode;
 
     // 学習開始前のオプション等を選択するダイアログ
     private PreStudyWindow mPreStudyWindow;
@@ -49,6 +54,9 @@ public class PageViewStudyBookSelect extends UPageView
      */
     public PageViewStudyBookSelect(Context context, View parentView, String title) {
         super(context, parentView, title);
+
+        mSortMode = IconSortMode.toEnum(MySharedPref.readInt(MySharedPref
+                .StudyBookSortKey));
     }
 
     /**
@@ -116,9 +124,10 @@ public class PageViewStudyBookSelect extends UPageView
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
 
-        // アイテムを追加
-        List<TangoItem> books = RealmManager.getItemPosDao().selectItemsByParentType(
-                TangoParentType.Home, 0, TangoItemType.Book, true);
+        // ListViewにアイテムを追加
+        List<TangoItem> books = RealmManager.getItemPosDao().selectItemsByParentTypeWithSort(
+                TangoParentType.Home, 0, TangoItemType.Book,
+                mSortMode, true);
         for (TangoItem book : books) {
             TangoBook _book = (TangoBook)book;
             ListItemStudyBook listItem = new ListItemStudyBook(this, _book, mListView.size.width,
@@ -141,6 +150,33 @@ public class PageViewStudyBookSelect extends UPageView
         // PreStudyWindow 学習開始前に設定を行うウィンドウ
         mPreStudyWindow = new PreStudyWindow(this, this, mParentView);
         mPreStudyWindow.addToDrawManager();
+    }
+
+    /**
+     * アクションIDを処理する
+     * サブクラスでオーバーライドして使用する
+     */
+    public void setActionId(int id) {
+
+        switch (id) {
+            case R.id.action_sort_word_asc:
+                mSortMode = IconSortMode.TitleAsc;
+                break;
+            case R.id.action_sort_word_desc:
+                mSortMode = IconSortMode.TitleDesc;
+                break;
+            case R.id.action_sort_time_asc:
+                mSortMode = IconSortMode.TimeAsc;
+                break;
+            case R.id.action_sort_time_desc:
+                mSortMode = IconSortMode.TimeDesc;
+                break;
+            default:
+                return;
+        }
+        MySharedPref.writeInt(MySharedPref.StudyBookSortKey, mSortMode.ordinal());
+        isFirst = true;
+        mParentView.invalidate();
     }
 
     /**

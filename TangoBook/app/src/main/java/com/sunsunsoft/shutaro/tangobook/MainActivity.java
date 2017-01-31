@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
     enum MenuType {
         None,           // 非表示
         TangoEdit,      // 単語帳編集ページ
-        TangoEdit2      // 単語帳編集ページ(アイコン選択時0
+        TangoEdit2,     // 単語帳編集ページ(アイコン選択時0
+        SelectStudyBook // 学習する単語帳選択ページ
     }
 
     /**
@@ -208,6 +209,9 @@ public class MainActivity extends AppCompatActivity {
             case TangoEdit2:
                 getMenuInflater().inflate(R.menu.menu_tango_edit2, menu);
                 break;
+            case SelectStudyBook:
+                getMenuInflater().inflate(R.menu.menu_select_study_book, menu);
+                break;
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -229,16 +233,12 @@ public class MainActivity extends AppCompatActivity {
      */
     public void setMenuType(MenuType type) {
         mMenuType = type;
-        switch(type) {
-            case None:
-                mShowMenu = false;
-                invalidateOptionsMenu();
-                break;
-            case TangoEdit:
-            case TangoEdit2:
-                mShowMenu = true;
-                invalidateOptionsMenu();
-                break;
+        if (type == MenuType.None) {
+            mShowMenu = false;
+            invalidateOptionsMenu();
+        } else {
+            mShowMenu = true;
+            invalidateOptionsMenu();
         }
     }
 

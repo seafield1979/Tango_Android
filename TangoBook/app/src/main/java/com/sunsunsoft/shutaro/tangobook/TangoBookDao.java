@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 
 import java.util.Date;
@@ -162,6 +163,7 @@ public class TangoBookDao {
         TangoBook book = TangoBook.createBook();
         book.setName("NG Cards");
         book.setId(NGBookId);
+        book.setColor(Color.RED);
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(book);

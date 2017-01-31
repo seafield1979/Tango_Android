@@ -450,7 +450,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks{
             mDialog = UDialogWindow.createInstance(this, this, UDialogWindow.ButtonDir.Vertical,
                     mParentView.getWidth(), mParentView.getHeight());
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_type));
-            mDialog.addTextView(UResourceManager.getStringById(R.string.study_order_exp),
+            mDialog.addTextView(UResourceManager.getStringById(R.string.study_type_exp),
                     UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
             mDialog.addButton(ButtonIdOption2_1, UResourceManager.getStringById(R.string
                     .study_type_1), TEXT_COLOR, UColor.LightGreen);

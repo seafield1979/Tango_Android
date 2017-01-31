@@ -144,10 +144,15 @@ public class PageViewManager extends UPageViewManager{
     public void pageChanged(PageView pageId) {
         super.pageChanged(pageId);
 
-        if (pageId == PageView.Edit) {
-            MainActivity.getInstance().setMenuType(MainActivity.MenuType.TangoEdit);
-        } else {
-            MainActivity.getInstance().setMenuType(MainActivity.MenuType.None);
+        switch(pageId) {
+            case Edit:
+                MainActivity.getInstance().setMenuType(MainActivity.MenuType.TangoEdit);
+                break;
+            case StudyBookSelect:
+                MainActivity.getInstance().setMenuType(MainActivity.MenuType.SelectStudyBook);
+                break;
+            default:
+                MainActivity.getInstance().setMenuType(MainActivity.MenuType.None);
         }
     }
 

@@ -7,14 +7,30 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.Log;
-import android.view.View;
 
 import static com.sunsunsoft.shutaro.tangobook.UDebug.drawIconId;
+
+
+// 単語帳ソートの種類
+enum IconSortMode {
+    None,
+    TitleAsc,
+    TitleDesc,
+    TimeAsc,
+    TimeDesc
+    ;
+
+    public static IconSortMode toEnum(int val) {
+        if (val > IconSortMode.values().length) {
+            return TitleAsc;
+        }
+        return IconSortMode.values()[val];
+    }
+}
 
 /**
  * アイコンをクリックしたりドロップした時のコールバック
  */
-
 interface UIconCallbacks {
     void iconClicked(UIcon icon);
     void longClickIcon(UIcon icon);
