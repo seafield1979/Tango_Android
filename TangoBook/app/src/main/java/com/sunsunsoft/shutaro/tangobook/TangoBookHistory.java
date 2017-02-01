@@ -57,14 +57,6 @@ public class TangoBookHistory extends RealmObject {
         this.bookId = bookId;
     }
 
-//    public boolean isLearned() {
-//        return learned;
-//    }
-//
-//    public void setLearned(boolean learned) {
-//        this.learned = learned;
-//    }
-
     public Date getStudiedDateTime() {
         return studiedDateTime;
     }

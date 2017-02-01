@@ -156,10 +156,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_move_to_trash:
+            case R.id.action_sort_none:
             case R.id.action_sort_word_asc:
             case R.id.action_sort_word_desc:
             case R.id.action_sort_time_asc:
             case R.id.action_sort_time_desc:
+            case R.id.action_sort_studied_time_asc:
+            case R.id.action_sort_studied_time_desc:
             case R.id.action_card_name_a:
             case R.id.action_card_name_b:
             case R.id.action_search_card:

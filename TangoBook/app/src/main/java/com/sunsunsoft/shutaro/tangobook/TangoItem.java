@@ -21,4 +21,5 @@ interface TangoItem {
 
     Date getCreateTime();
     Date getUpdateTime();
+    Date getLastStudiedTime();
 }

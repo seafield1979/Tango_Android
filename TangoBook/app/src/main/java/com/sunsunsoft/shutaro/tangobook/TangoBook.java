@@ -2,6 +2,9 @@ package com.sunsunsoft.shutaro.tangobook;
 
 import android.graphics.Color;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -24,6 +27,8 @@ public class TangoBook extends RealmObject implements TangoItem {
     // メタデータ
     private Date createTime;    // 作成日時
     private Date updateTime;    // 更新日時
+    private Date lastStudiedTime;  // 最終学習日
+
     private boolean newFlag;    // NEW
 
     @Ignore
@@ -113,6 +118,14 @@ public class TangoBook extends RealmObject implements TangoItem {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getLastStudiedTime() {
+        return this.lastStudiedTime;
+    }
+
+    public void setLastStudiedTime(Date time) {
+        lastStudiedTime = time;
     }
 
     public TangoItemPos getItemPos() {

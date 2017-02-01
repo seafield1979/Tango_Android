@@ -16,8 +16,10 @@ enum IconSortMode {
     None,
     TitleAsc,
     TitleDesc,
-    TimeAsc,
-    TimeDesc
+    CreateTimeAsc,
+    CreateTimeDesc,
+    StudiedTimeAsc,
+    StudiedTimeDesc
     ;
 
     public static IconSortMode toEnum(int val) {

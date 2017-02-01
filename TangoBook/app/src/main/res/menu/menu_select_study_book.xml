@@ -15,5 +15,11 @@
     <item android:id="@+id/action_sort_time_desc"
           android:title="@string/sort_time_desc_2"
         />
+    <item android:id="@+id/action_sort_studied_time_asc"
+          android:title="@string/sort_studied_time_asc"
+        />
+    <item android:id="@+id/action_sort_studied_time_desc"
+          android:title="@string/sort_studied_time_desc"
+        />
 
 </menu>

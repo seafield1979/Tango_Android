@@ -159,6 +159,9 @@ public class PageViewStudyBookSelect extends UPageView
     public void setActionId(int id) {
 
         switch (id) {
+            case R.id.action_sort_none:
+                mSortMode = IconSortMode.None;
+                break;
             case R.id.action_sort_word_asc:
                 mSortMode = IconSortMode.TitleAsc;
                 break;
@@ -166,10 +169,16 @@ public class PageViewStudyBookSelect extends UPageView
                 mSortMode = IconSortMode.TitleDesc;
                 break;
             case R.id.action_sort_time_asc:
-                mSortMode = IconSortMode.TimeAsc;
+                mSortMode = IconSortMode.CreateTimeAsc;
                 break;
             case R.id.action_sort_time_desc:
-                mSortMode = IconSortMode.TimeDesc;
+                mSortMode = IconSortMode.CreateTimeDesc;
+                break;
+            case R.id.action_sort_studied_time_asc:
+                mSortMode = IconSortMode.StudiedTimeAsc;
+                break;
+            case R.id.action_sort_studied_time_desc:
+                mSortMode = IconSortMode.StudiedTimeDesc;
                 break;
             default:
                 return;

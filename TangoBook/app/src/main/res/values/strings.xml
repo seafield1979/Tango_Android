@@ -167,11 +167,13 @@
     <string name="sort_word_desc">英語(Z → A)</string>
     <string name="sort_time_asc">作成日(古い → 新しい)</string>
     <string name="sort_time_desc">作成日(新しい → 古い)</string>
-    <string name="sort_none">ソートなし</string>
+    <string name="sort_none">ソート(元の並び)</string>
     <string name="sort_word_asc_2">ソート(A → Z)</string>
     <string name="sort_word_desc_2">ソート(Z → A)</string>
-    <string name="sort_time_asc_2">ソート(古い → 新しい)</string>
-    <string name="sort_time_desc_2">ソート(新しい → 古い)</string>
+    <string name="sort_time_asc_2">ソート 作成日時(古い → 新しい)</string>
+    <string name="sort_time_desc_2">ソート 作成日時(新しい → 古い)</string>
+    <string name="sort_studied_time_asc">ソート 学習日時(古い → 新し い)</string>
+    <string name="sort_studied_time_desc">ソート 学習日時(新しい → 古い)</string>
     <string name="disp_list">項目表示方法</string>
     <string name="list_type1">リスト</string>
     <string name="list_type_grid">グリッド</string>

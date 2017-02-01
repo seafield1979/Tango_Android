@@ -216,6 +216,7 @@ public class TangoBookDao {
         newBook.setColor(book.getColor());
         newBook.setComment(book.getComment());
         newBook.setUpdateTime(new Date());
+        newBook.setLastStudiedTime(book.getLastStudiedTime());
 
         mRealm.commitTransaction();
     }

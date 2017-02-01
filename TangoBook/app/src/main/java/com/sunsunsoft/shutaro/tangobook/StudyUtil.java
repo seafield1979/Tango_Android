@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,8 +19,12 @@ public class StudyUtil {
         List<TangoCard> ngCards = cardsManager.getNgCards();
 
         // 単語帳の学習履歴
-        int historyId = RealmManager.getBookHistoryDao().addOne(book.getId(), false, okCards.size(),
+        int historyId = RealmManager.getBookHistoryDao().addOne(book.getId(), okCards.size(),
                 ngCards.size());
+
+        // 単語帳の最終学習日時
+        book.setLastStudiedTime(new Date());
+        RealmManager.getBookDao().updateOne(book);
 
         // 学習したカード番号
         RealmManager.getStudiedCardDao().addStudiedCards(historyId, okCards, ngCards);

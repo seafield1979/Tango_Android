@@ -110,16 +110,6 @@ public class ListItemStudiedBook extends UListItem{
             _pos.y += offset.y;
         }
 
-        // BG (OK > NG なら 緑、そうでないなら 赤)
-//        int _color, _textColor;
-//        if (mBookHistory.getOkNum() > mBookHistory.getNgNum()) {
-//            _color = UColor.LightGreen;
-//            _textColor = UColor.BLACK;
-//
-//        } else {
-//            _color = UColor.LightRed;
-//            _textColor = UColor.White;
-//        }
         int _color = UColor.WHITE;
         int _textColor = UColor.BLACK;
 

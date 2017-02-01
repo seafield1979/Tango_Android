@@ -1,7 +1,11 @@
 package com.sunsunsoft.shutaro.tangobook;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -492,21 +496,64 @@ public class TangoItemPosDao {
                     case TitleDesc:      // タイトル文字降順
                         return item2.getTitle().compareTo(
                                 item1.getTitle());
-                    case TimeAsc:        // 作成日時 昇順
+
+                    case CreateTimeAsc:        // 作成 昇順
+                    {
                         if (item1.getCreateTime() == null || item2.getCreateTime() == null)
                             break;
                         return item1.getCreateTime().compareTo(
                                 item2.getCreateTime());
-                    case TimeDesc:       // 作成日時 降順
+                    }
+                    case CreateTimeDesc:       // 作成 降順
+                    {
                         if (item1.getCreateTime() == null || item2.getCreateTime() == null)
                             break;
                         return item2.getCreateTime().compareTo(
                                 item1.getCreateTime());
+                    }
+                    case StudiedTimeAsc:        // 学習日時 昇順
+                    {
+                        Date date1 = item1.getLastStudiedTime();
+                        Date date2 = item2.getLastStudiedTime();
+                        if (date1 == null && date2 == null) break;
+
+                        if (date1 == null) date1 = getOldDate();
+                        if (date2 == null) date2 = getOldDate();
+                        return date1.compareTo(date2);
+                    }
+                    case StudiedTimeDesc:       // 学習日時 降順
+                    {
+                        Date date1 = item1.getLastStudiedTime();
+                        Date date2 = item2.getLastStudiedTime();
+                        if (date1 == null && date2 == null) break;
+
+                        if (date1 == null) date1 = getOldDate();
+                        if (date2 == null) date2 = getOldDate();
+                        return date2.compareTo(date1);
+                    }
                 }
                 return 0;
             }
         });
         return Arrays.asList(_items);
+    }
+
+    /**
+     * アプリを使用していて出てこないような古い日時を取得する
+     * @return
+     */
+    static Date _oldDate = null;
+    private Date getOldDate() {
+        if (_oldDate != null) {
+            return _oldDate;
+        }
+        DateFormat df = new SimpleDateFormat("yyy-MM-dd hh:mm:ss");
+        try {
+            _oldDate = df.parse("2000-01-01 00:00:00");
+            return _oldDate;
+        } catch (ParseException e) {
+        }
+        return null;
     }
 
     public static List<Integer> listToIds(List<TangoCard> list) {

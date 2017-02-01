@@ -78,8 +78,9 @@ public class ListItemStudyBook extends UListItem {
                 UResourceManager.getStringById(R.string.count_not_learned) + ": " + ngCount;
 
         // 最終学習日
-        Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(book.getId());
+        Date date = book.getLastStudiedTime();
         String dateStr = (date == null) ? " --- " : UUtil.convDateFormat(date, ConvDateMode.DateTime);
+
         mStudiedDate = String.format("学習日時 : %s", dateStr);
     }
 

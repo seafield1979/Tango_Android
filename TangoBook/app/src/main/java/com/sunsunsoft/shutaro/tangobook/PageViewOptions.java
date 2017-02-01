@@ -45,7 +45,6 @@ enum OptionItems {
     public static OptionItems[] getItems(PageViewOptions.Mode mode) {
         switch(mode) {
             case All:
-            default:
                 return values();
             case Edit:
                 return new OptionItems[]{
@@ -56,6 +55,8 @@ enum OptionItems {
                 return new OptionItems[]{
                         TitleStudy, AddNgCard, StudyMode4
                 };
+            default:
+                return null;
         }
     }
 
@@ -114,6 +115,7 @@ public class PageViewOptions extends UPageView
      */
     public PageViewOptions(Context context, View parentView, String title) {
         super(context, parentView, title);
+        mMode = Mode.All;
     }
 
     /**

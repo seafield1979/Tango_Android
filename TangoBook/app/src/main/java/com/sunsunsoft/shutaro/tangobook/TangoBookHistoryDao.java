@@ -99,12 +99,11 @@ public class TangoBookHistoryDao {
     /**
      * レコードを１つ追加
      * @param bookId
-     * @param learned
      * @param okNum
      * @param ngNum
      * @return 作成したレコードのid
      */
-    public int addOne(int bookId, boolean learned, int okNum, int ngNum)
+    public int addOne(int bookId, int okNum, int ngNum)
     {
         TangoBookHistory history = new TangoBookHistory();
         int id = getNextId();

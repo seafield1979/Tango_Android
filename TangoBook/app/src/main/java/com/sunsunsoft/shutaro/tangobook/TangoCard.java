@@ -26,6 +26,7 @@ public class TangoCard extends RealmObject implements TangoItem{
     private String comment;     // 説明や例文
     private Date createTime;    // 作成日時
     private Date updateTime;    // 更新日時
+//    private Date lastStudiedTime;   // 最終学習時間
 
     private int color;          // カードの色
     private boolean star;       // 覚えたフラグ
@@ -76,6 +77,15 @@ public class TangoCard extends RealmObject implements TangoItem{
     // updateTime
     public Date getUpdateTime() { return updateTime; }
     public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
+
+    // lastStudiedTime
+    public Date getLastStudiedTime() {
+        return null;
+    }
+
+    public void setLastStudiedTime(Date time) {
+    }
+
 
     // pos
     public TangoItemPos getItemPos() {
