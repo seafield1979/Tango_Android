@@ -143,25 +143,25 @@ public class PresetBookManager {
             FileWriter fw = new FileWriter(filePath);
 
             // 1行目はbooke名
-            StringBuffer bookText = new StringBuffer(escapeCsv(book.getName()));
+            StringBuffer bookText = new StringBuffer(encodeCsv(book.getName()));
             if (book.getComment() != null && book.getComment().length() > 0) {
-                bookText.append("," + escapeCsv(book.getComment()));
+                bookText.append("," + encodeCsv(book.getComment()));
             }
             fw.write(bookText.toString() + "\n");
             // 2行目以降はcardの英語、日本語
             for (TangoCard card : cards) {
                 if (card.getWordA() != null) {
-                    fw.write(escapeCsv(card.getWordA()));
+                    fw.write(encodeCsv(card.getWordA()));
                 }
                 fw.write(",");
 
                 if (card.getWordB() != null) {
-                    fw.write(escapeCsv(card.getWordB()));
+                    fw.write(encodeCsv(card.getWordB()));
                 }
                 fw.write(",");
 
                 if (card.getComment() != null) {
-                    fw.write(escapeCsv(card.getComment()));
+                    fw.write(encodeCsv(card.getComment()));
                 }
                 fw.write("\n");
             }
@@ -177,14 +177,17 @@ public class PresetBookManager {
     /**
      * CSVの文字列をエスケープする
      * CSV文字列中にカンマ(,)があったら文字列を""で囲む
+     * 改行を\nに変換する
      * @param word
      * @return
      */
-    private String escapeCsv(String word) {
-        if (word.contains(",")) {
-            return "\"" + word + "\"";
+    private String encodeCsv(String word) {
+        String output = word.replace("\n", "\\n");
+
+        if (output.contains(",")) {
+            return "\"" + output + "\"";
         }
-        return word;
+        return output;
     }
 }
 

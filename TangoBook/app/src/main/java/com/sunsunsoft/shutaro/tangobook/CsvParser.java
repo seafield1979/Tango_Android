@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by shutaro on 2016/12/27.
@@ -90,11 +89,11 @@ public class CsvParser {
         StringBuffer buf = new StringBuffer();
         boolean seekDQ = false;
 
-        for (String ch : str.split("")) {
+        for (String ch : str.split("")) {       // １文字づつ処理する
             if (seekDQ) {
                 if (ch.equals("\"")) {
                     seekDQ = false;
-                    list.add(buf.toString());
+                    list.add(decodeCsv(buf.toString()));
                     buf.setLength(0);
                 }
                 else {
@@ -107,7 +106,7 @@ public class CsvParser {
                     seekDQ = true;
                 } else if (ch.equals(",")) {
                     if (buf.length() > 0) {
-                        list.add(buf.toString());
+                        list.add(decodeCsv(buf.toString()));
                         buf.setLength(0);
                     }
                 } else {
@@ -116,11 +115,22 @@ public class CsvParser {
             }
         }
         if (buf.length() > 0) {
-            list.add(buf.toString());
+            // "\n" を改行に変換してからリストに追加する
+            list.add( decodeCsv(buf.toString()));
             buf.setLength(0);
         }
 
         return list.toArray(new String[0]);
+    }
+
+    /**
+     * CSV中のワードをデコードする
+     * @param word
+     * @return
+     */
+    private static String decodeCsv(String word) {
+        // \nを改行に変換
+        return word.replace("\\n", "\n");
     }
 
     /**
