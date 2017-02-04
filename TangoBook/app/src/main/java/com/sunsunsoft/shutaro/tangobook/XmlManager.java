@@ -168,7 +168,7 @@ public class XmlManager {
         for (TangoBookHistory history : bookHistory) {
             BHistory saveBHistory = new BHistory(history.getId(), history.getId(),
                     history.getOkNum(), history.getNgNum(),
-                    history.getCorrectRatio(), history.getStudiedDateTime());
+                    history.getStudiedDateTime());
             bookHistory2.add(saveBHistory);
         }
         tangoTop.bHistory = bookHistory2;

@@ -175,7 +175,6 @@ class BHistory {
     private boolean learn;  // learned
     private int ok;         // okNum
     private int ng;         // ngNum
-    private float cr;       // correctRatio
     private Date st;        // StudiedDateTime
 
     /**
@@ -197,10 +196,6 @@ class BHistory {
         return ng;
     }
 
-    public float getCorrectRatio() {
-        return cr;
-    }
-
     public Date getStudiedDateTime() {
         return st;
     }
@@ -209,13 +204,11 @@ class BHistory {
      * Constructor
      */
     public BHistory(){}
-    public BHistory(int id, int bookId, int okNum, int ngNum, float correctRatio, Date
-            studiedTime) {
+    public BHistory(int id, int bookId, int okNum, int ngNum, Date studiedTime) {
         this.id = id;
         this.bId = bookId;
         this.ok = okNum;
         this.ng = ngNum;
-        this.cr = correctRatio;
         this.st = studiedTime;
     }
 }

@@ -111,7 +111,6 @@ public class TangoBookHistoryDao {
         history.setBookId(bookId);
         history.setOkNum(okNum);
         history.setNgNum(ngNum);
-        history.setCorrectRatio((float)okNum / (float)(okNum + ngNum));
         history.setStudiedDateTime(new Date());
 
         mRealm.beginTransaction();
@@ -185,7 +184,6 @@ public class TangoBookHistoryDao {
             history.setBookId( _history.getBookId());
             history.setOkNum( _history.getOkNum());
             history.setNgNum( _history.getNgNum());
-            history.setCorrectRatio( _history.getCorrectRatio());
             history.setStudiedDateTime( _history.getStudiedDateTime());
             mRealm.insert(history);
         }

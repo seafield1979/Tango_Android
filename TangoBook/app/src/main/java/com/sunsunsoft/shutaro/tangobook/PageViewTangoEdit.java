@@ -342,8 +342,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                     TangoCard newCard = RealmManager.getCardDao().copyOne(card);
                     // ItemPos
                     RealmManager.getItemPosDao().addOne(newCard, TangoParentType
-                            .Book, dstBook.getTangoItem().getId());
-
+                            .Book, dstBook.getTangoItem().getId(), -1);
                 }
             }
         }
@@ -615,8 +614,11 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 // チェックしたアイコンをゴミ箱に移動する
                 UIcon trashIcon = mIconWinManager.getMainWindow().getIconManager().getTrashIcon();
                 for (UIconWindow window : mIconWinManager.getWindows()) {
-                    window.moveIconsIntoBox(window.getIconManager().getCheckedIcons(),
-                        trashIcon);
+                    List<UIcon> icons = window.getIconManager().getCheckedIcons();
+                    if (icons != null && icons.size() > 0) {
+                        window.moveIconsIntoBox(icons, trashIcon);
+                        window.sortIcons(true);
+                    }
                 }
 
                 if(mDialog != null) {
@@ -662,9 +664,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 mDialog.closeDialog();
                 break;
         }
-        return false;
-    }
-    public boolean UButtonLongClick(int id) {
         return false;
     }
 

@@ -824,19 +824,53 @@ public class TangoItemPosDao {
      * @param parentType
      * @param parentId
      */
-    public TangoItemPos addOne(TangoItem item, TangoParentType parentType, int parentId) {
+    public TangoItemPos addOne(TangoItem item, TangoParentType parentType, int parentId, int
+            addPos) {
         TangoItemPos itemPos = new TangoItemPos();
         itemPos.setParentType(parentType.ordinal());
         itemPos.setParentId(parentId);
         itemPos.setItemType(item.getItemType().ordinal());
         itemPos.setItemId(item.getId());
-        itemPos.setPos( getNextPos(parentType.ordinal(), parentId) );
+        if (addPos == -1) {
+            itemPos.setPos(getNextPos(parentType.ordinal(), parentId));
+        } else {
+            itemPos.setPos(addPos + 1);
+            // 挿入位置以下の位置を１つづつずらす
+            slideItemPos(parentType, parentId, addPos);
+        }
 
         mRealm.beginTransaction();
         mRealm.copyToRealm(itemPos);
         mRealm.commitTransaction();
 
         return itemPos;
+    }
+
+    /**
+     * 指定位置以降のアイテムを１つづつスライドする
+     * @param pos
+     */
+    public void slideItemPos(TangoParentType parentType, int parentId, int pos) {
+        RealmQuery<TangoItemPos> query = mRealm.where(TangoItemPos.class);
+        query.equalTo("parentType", parentType.ordinal());
+        if (parentType == TangoParentType.Book) {
+            query.equalTo("parentId", parentId);
+        }
+
+        RealmResults<TangoItemPos> results = query.greaterThanOrEqualTo("pos", pos)
+                .findAllSorted("pos", Sort.ASCENDING);
+
+        if (results == null || results.size() == 0) {
+            return;
+        }
+
+        List<TangoItemPos> list = toChangeableItemPos(results);
+        mRealm.beginTransaction();
+        for (TangoItemPos itemPos : list) {
+            itemPos.setPos(itemPos.getPos() + 1);
+            mRealm.copyToRealm(itemPos);
+        }
+        mRealm.commitTransaction();
     }
 
     /**

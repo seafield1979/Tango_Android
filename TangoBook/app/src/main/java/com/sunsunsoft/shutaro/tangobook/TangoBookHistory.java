@@ -32,9 +32,6 @@ public class TangoBookHistory extends RealmObject {
     // NG数
     private int ngNum;
 
-    // 正解率
-    private float correctRatio;
-
     // 学習日
     private Date studiedDateTime;
 
@@ -79,13 +76,5 @@ public class TangoBookHistory extends RealmObject {
 
     public void setNgNum(int ngNum) {
         this.ngNum = ngNum;
-    }
-
-    public float getCorrectRatio() {
-        return correctRatio;
-    }
-
-    public void setCorrectRatio(float correctRatio) {
-        this.correctRatio = correctRatio;
     }
 }

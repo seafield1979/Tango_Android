@@ -129,16 +129,15 @@ public class UIconManager implements UIconCallbacks{
      */
     public UIcon copyIcon(UIcon copySrc, AddPos addPos) {
         UIcon icon = null;
-        boolean addItemPos = (addPos != null) ? true : false;
+
+        TangoItemPos itemPos = copySrc.getTangoItem().getItemPos();
 
         switch (copySrc.getType()) {
             case Card: {
-                TangoItemPos itemPos = copySrc.getTangoItem().getItemPos();
                 TangoCard card = TangoCard.copyCard((TangoCard)copySrc.getTangoItem());
                 RealmManager.getCardDao().addOne(card,
                         TangoParentType.toEnum(itemPos.getParentType()),
-                        itemPos.getParentId(),
-                        addItemPos);
+                        itemPos.getParentId(),itemPos.getPos());
                 icon = new IconCard(card, mParentWindow, this);
             }
             break;
@@ -146,7 +145,7 @@ public class UIconManager implements UIconCallbacks{
             {
                 TangoBook book = TangoBook.copyBook((TangoBook)copySrc.getTangoItem());
 
-                RealmManager.getBookDao().addOne(book, addItemPos);
+                RealmManager.getBookDao().addOne(book, itemPos.getPos());
                 icon = new IconBook(book, mParentWindow, this);
 
             }
@@ -197,14 +196,14 @@ public class UIconManager implements UIconCallbacks{
         switch (type) {
             case Card: {
                 TangoCard card = TangoCard.createCard();
-                RealmManager.getCardDao().addOne(card, parentType, parentId, true);
+                RealmManager.getCardDao().addOne(card, parentType, parentId, -1);
                 icon = new IconCard(card, mParentWindow, this);
             }
                 break;
             case Book:
             {
                 TangoBook book = TangoBook.createBook();
-                RealmManager.getBookDao().addOne(book, true);
+                RealmManager.getBookDao().addOne(book, -1);
                 icon = new IconBook(book, mParentWindow, this);
             }
                 break;

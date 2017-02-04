@@ -14,6 +14,8 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+import static io.realm.Case.INSENSITIVE;
+
 /**
  * 単語帳のDAO
  */
@@ -82,8 +84,8 @@ public class TangoCardDao {
         if (searchStr == null || searchStr.length() == 0) return null;
 
         RealmResults<TangoCard> results = mRealm.where(TangoCard.class)
-                        .contains("wordA", searchStr)
-                        .or().contains("wordB", searchStr)
+                        .contains("wordA", searchStr, INSENSITIVE)
+                        .or().contains("wordB", searchStr, INSENSITIVE)
                         .findAll();
         return results;
     }
@@ -270,9 +272,10 @@ public class TangoCardDao {
     /**
      * 要素を追加 TangoCardオブジェクトをそのまま追加
      * @param card
+     * @param addPos カードの追加位置 -1なら最後に追加
      */
     public void addOne(TangoCard card, TangoParentType parentType, int parentId,
-                       boolean addItemPos)
+                       int addPos)
     {
         card.setId(getNextId());
         card.setUpdateTime(new Date());
@@ -282,10 +285,9 @@ public class TangoCardDao {
         mRealm.copyToRealm(card);
         mRealm.commitTransaction();
 
-        if (addItemPos) {
-            TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, parentType, parentId);
-            card.setItemPos(itemPos);
-        }
+        TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, parentType,
+                parentId, addPos);
+        card.setItemPos(itemPos);
     }
 
     /**
@@ -574,7 +576,7 @@ public class TangoCardDao {
         for (TangoCard card : _cards) {
             card.setOriginalId(card.getId());
             RealmManager.getCardDao().addOne(card, TangoParentType.Book, TangoBookDao.NGBookId,
-                    true);
+                    -1);
         }
     }
 }

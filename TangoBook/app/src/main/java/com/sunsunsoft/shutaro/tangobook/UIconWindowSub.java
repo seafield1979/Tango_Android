@@ -33,22 +33,24 @@ public class UIconWindowSub extends UIconWindow {
      * Enum
      */
     enum ActionId {
-        Close(R.drawable.close, R.string.close, buttonIdClose),
-        Edit(R.drawable.edit, R.string.edit, buttonIdEdit),
-        Copy(R.drawable.copy, R.string.copy, buttonIdCopy),
-        Delete(R.drawable.trash, R.string.trash, buttonIdDelete),
-        Export(R.drawable.export, R.string.export, buttonIdExport),
-        Cleanup(R.drawable.trash2, R.string.clean_up, buttonIdCleanup)
+        Close(R.drawable.close, R.string.close, buttonIdClose, UColor.DarkRed),
+        Edit(R.drawable.edit, R.string.edit, buttonIdEdit, UColor.DarkGreen),
+        Copy(R.drawable.copy, R.string.copy, buttonIdCopy, UColor.DarkGreen),
+        Delete(R.drawable.trash, R.string.trash, buttonIdDelete, UColor.DarkGreen),
+        Export(R.drawable.export, R.string.export, buttonIdExport, UColor.DarkGreen),
+        Cleanup(R.drawable.trash2, R.string.clean_up, buttonIdCleanup, UColor.DarkGreen)
         ;
 
         private int imageId;
         private int buttonId;
         private String title;
+        private int color;
 
-        private ActionId(int imageId, int stringId, int buttonId) {
+        ActionId(int imageId, int stringId, int buttonId, int color) {
             this.imageId = imageId;
             this.buttonId = buttonId;
             this.title = UResourceManager.getStringById(stringId);
+            this.color = color;
         }
         public int getImageId() {
             return imageId;
@@ -59,6 +61,7 @@ public class UIconWindowSub extends UIconWindow {
         public String getTitle() {
             return title;
         }
+        public int getColor() { return color; }
 
         public static ActionId[] bookIds() {
             return new ActionId[]{Close, Edit, Copy, Export,
@@ -156,7 +159,7 @@ public class UIconWindowSub extends UIconWindow {
         // Bookを開いたときのアイコンを初期化
         int i = 0;
         for (ActionId id : ActionId.bookIds()) {
-            image = UResourceManager.getBitmapWithColor(id.getImageId(), UColor.DarkGreen);
+            image = UResourceManager.getBitmapWithColor(id.getImageId(), id.getColor());
             mBookButtons[i] = UButtonImage.createButton(this, id.getButtonId(), 0, x, y,
                     ACTION_ICON_W, ACTION_ICON_W, image, null);
             mBookButtons[i].setTitle(id.getTitle(), ICON_TEXT_SIZE, Color.BLACK);
@@ -169,7 +172,7 @@ public class UIconWindowSub extends UIconWindow {
         x = MARGIN_H;
         i = 0;
         for (ActionId id : ActionId.trashIds()) {
-            image = UResourceManager.getBitmapWithColor(id.getImageId(), UColor.DarkGreen);
+            image = UResourceManager.getBitmapWithColor(id.getImageId(), id.getColor());
             mTrashButtons[i] = UButtonImage.createButton(this, id.getButtonId(), 0, x, y,
                     ACTION_ICON_W, ACTION_ICON_W, image, null);
             mTrashButtons[i].setTitle(id.getTitle(), ICON_TEXT_SIZE, Color.BLACK);

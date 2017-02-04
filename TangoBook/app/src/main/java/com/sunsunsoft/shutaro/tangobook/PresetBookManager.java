@@ -24,6 +24,7 @@ public class PresetBookManager {
             R.raw.fruit,
             R.raw.week,
             R.raw.month,
+            R.raw.questions,
             R.raw.toeic1
     };
 
@@ -117,7 +118,7 @@ public class PresetBookManager {
         TangoBook book = TangoBook.createBook();
         book.setName(presetBook.mName);
         book.setComment(presetBook.mComment);
-        RealmManager.getBookDao().addOne(book, true);
+        RealmManager.getBookDao().addOne(book, -1);
 
         // 中のカードを作成する
         for (PresetCard presetCard : presetBook.getCards()) {
@@ -126,7 +127,7 @@ public class PresetBookManager {
             card.setWordB(presetCard.mWordB);
             card.setComment(presetCard.mComment);
             card.setNewFlag(false);
-            RealmManager.getCardDao().addOne(card, TangoParentType.Book, book.getId(), true);
+            RealmManager.getCardDao().addOne(card, TangoParentType.Book, book.getId(), -1);
         }
 
         return book;

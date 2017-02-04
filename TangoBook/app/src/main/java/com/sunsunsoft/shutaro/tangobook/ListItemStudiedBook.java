@@ -85,8 +85,8 @@ public class ListItemStudiedBook extends UListItem{
                 UUtil.convDateFormat(history.getStudiedDateTime(), ConvDateMode.DateTime));
         instance.mTextName = UResourceManager.getStringById(R.string.book) + ": " + book
                 .getName();
-        instance.mTextInfo = String.format("OK:%d  NG:%d    OK率:%.3f", history.getOkNum(), history
-                .getNgNum(), history.getCorrectRatio());
+        instance.mTextInfo = String.format("OK:%d  NG:%d", history.getOkNum(), history
+                .getNgNum());
 
         instance.size.height = ITEM_HISTORY_H;
 
