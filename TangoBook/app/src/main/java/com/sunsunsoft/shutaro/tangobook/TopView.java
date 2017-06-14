@@ -10,6 +10,13 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.sunsunsoft.shutaro.tangobook.icon.UIcon;
+import com.sunsunsoft.shutaro.tangobook.page.PageViewManager;
+import com.sunsunsoft.shutaro.tangobook.page.UPageViewManager;
+import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
+import com.sunsunsoft.shutaro.tangobook.uview.ViewTouchCallbacks;
+
 
 /**
  * 単語帳編集ページ

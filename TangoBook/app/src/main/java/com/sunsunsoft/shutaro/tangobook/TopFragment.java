@@ -2,40 +2,22 @@ package com.sunsunsoft.shutaro.tangobook;
 
 
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 
+import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 
-/**
- * エディットのコールバック
- */
-interface EditTextCallbacks {
-    /**
-     * 編集前イベント
-     */
-    void beforeTextChanged(String str, int start, int count, int after);
-    /**
-     * 編集後イベント
-     */
-    void onTextChanged(String str, int start, int before, int count);
-    /**
-     * 編集確定後イベント
-     */
-    void afterTextChanged(String str);
-}
+
 
 public class TopFragment extends Fragment implements OnClickListener, OnTouchListener{
 
