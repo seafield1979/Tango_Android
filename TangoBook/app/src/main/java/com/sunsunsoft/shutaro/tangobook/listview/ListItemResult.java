@@ -10,7 +10,7 @@ import android.graphics.Rect;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
-import com.sunsunsoft.shutaro.tangobook.app.StudyMode;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyMode;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.UButtonCallbacks;

@@ -7,8 +7,8 @@ import android.graphics.PointF;
 
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
-import com.sunsunsoft.shutaro.tangobook.app.StudyMode;
-import com.sunsunsoft.shutaro.tangobook.app.StudyType;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyMode;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyType;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.database.TangoStudiedCard;
 import com.sunsunsoft.shutaro.tangobook.uview.UButtonCallbacks;

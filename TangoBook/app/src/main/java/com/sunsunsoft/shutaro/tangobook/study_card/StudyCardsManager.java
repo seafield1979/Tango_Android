@@ -3,9 +3,6 @@ package com.sunsunsoft.shutaro.tangobook.study_card;
 import com.sunsunsoft.shutaro.tangobook.database.TangoBook;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
-import com.sunsunsoft.shutaro.tangobook.app.StudyFilter;
-import com.sunsunsoft.shutaro.tangobook.app.StudyMode;
-import com.sunsunsoft.shutaro.tangobook.app.StudyOrder;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 
 import java.util.Collections;

@@ -8,8 +8,6 @@ import android.graphics.PointF;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
-import com.sunsunsoft.shutaro.tangobook.app.StudyMode;
-import com.sunsunsoft.shutaro.tangobook.app.StudyType;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 
 import java.util.LinkedList;

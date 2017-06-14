@@ -1,4 +1,4 @@
-package com.sunsunsoft.shutaro.tangobook.app;
+package com.sunsunsoft.shutaro.tangobook.study_card;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;

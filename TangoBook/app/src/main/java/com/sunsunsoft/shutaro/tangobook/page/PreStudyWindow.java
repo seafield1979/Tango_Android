@@ -19,10 +19,10 @@ import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
-import com.sunsunsoft.shutaro.tangobook.app.StudyFilter;
-import com.sunsunsoft.shutaro.tangobook.app.StudyMode;
-import com.sunsunsoft.shutaro.tangobook.app.StudyOrder;
-import com.sunsunsoft.shutaro.tangobook.app.StudyType;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyFilter;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyMode;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyOrder;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyType;
 
 import java.util.Date;
 

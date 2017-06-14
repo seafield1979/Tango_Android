@@ -9,8 +9,6 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.uview.UDrawable;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
-import com.sunsunsoft.shutaro.tangobook.app.StudyMode;
-import com.sunsunsoft.shutaro.tangobook.app.StudyType;
 
 import java.util.LinkedList;
 

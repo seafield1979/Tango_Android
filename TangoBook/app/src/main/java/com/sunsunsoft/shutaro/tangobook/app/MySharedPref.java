@@ -3,6 +3,10 @@ package com.sunsunsoft.shutaro.tangobook.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyFilter;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyMode;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyOrder;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyType;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 
 import java.util.Map;

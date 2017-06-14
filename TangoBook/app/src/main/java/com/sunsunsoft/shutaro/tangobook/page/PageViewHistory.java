@@ -18,8 +18,8 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoStudiedCard;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
-import com.sunsunsoft.shutaro.tangobook.app.StudyMode;
-import com.sunsunsoft.shutaro.tangobook.app.StudyType;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyMode;
+import com.sunsunsoft.shutaro.tangobook.study_card.StudyType;
 import com.sunsunsoft.shutaro.tangobook.listview.*;
 
 import java.util.List;
