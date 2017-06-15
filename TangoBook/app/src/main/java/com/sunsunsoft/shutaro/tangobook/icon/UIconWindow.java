@@ -1332,7 +1332,7 @@ public class UIconWindow extends UWindow {
                 container.getParentType().ordinal(),
                 itemId);
 
-        sortIcons(true);
+        window1.sortIcons(true);
         if (window1 != window2) {
             window2.sortIcons(true);
         }
