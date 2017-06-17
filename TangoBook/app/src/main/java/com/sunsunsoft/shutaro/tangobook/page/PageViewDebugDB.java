@@ -27,8 +27,10 @@ public class PageViewDebugDB extends UPageView implements UListItemCallbacks {
         ShowTangoCard,
         ShowTangoBook,
         ShowItemPos,
+        ShowBackupFile,
         GetNoParentItems,
         RescureNoParentItems,
+        BackupFile,
         ClearAll        // 全てのDBを空にする
         ;
 
@@ -179,6 +181,9 @@ public class PageViewDebugDB extends UPageView implements UListItemCallbacks {
                 break;
             case ShowItemPos:
                 RealmManager.getItemPosDao().selectAll();
+                break;
+            case ShowBackupFile:
+                RealmManager.getBackupFileDao().selectAll();
                 break;
             case GetNoParentItems: {
                 List<TangoItem> items = RealmManager.getCheckDao().selectNoParentItems();

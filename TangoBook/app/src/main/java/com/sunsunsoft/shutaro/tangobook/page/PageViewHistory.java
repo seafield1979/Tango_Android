@@ -121,18 +121,30 @@ public class PageViewHistory extends UPageView
         int listViewH = height - (MARGIN_H * 3 + mTitleText.getSize().height);
         mListView = new ListViewStudyHistory(this, DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
-        mListView.setFrameColor(Color.BLACK);
-        mListView.addToDrawManager();
+        if (mListView.getItemNum() > 0) {
+            mListView.setFrameColor(Color.BLACK);
+            mListView.addToDrawManager();
+
+            // Clear button
+            mClearButton = new UButtonText(this, UButtonType.Press, ButtonIdClear,
+                    DRAW_PRIORITY, UResourceManager.getStringById(R.string.clear),
+                    width - BUTTON_W - MARGIN_H, 20,
+                    BUTTON_W, BUTTON_H,
+                    TEXT_SIZE, Color.WHITE, UColor.Salmon );
+            mClearButton.addToDrawManager();
+
+        } else {
+            mListView = null;
+            y += 200;
+            UTextView text = UTextView.createInstance(UResourceManager.getStringById(R.string.no_study_history),
+                    TEXT_SIZE, DRAW_PRIORITY - 1,
+                    UAlignment.CenterX, width, false, false,
+                    width / 2, y, width, Color.BLACK, 0);
+            text.addToDrawManager();
+        }
 
         y += listViewH + MARGIN_H;
 
-        // Clear button
-        mClearButton = new UButtonText(this, UButtonType.Press, ButtonIdClear,
-            DRAW_PRIORITY, UResourceManager.getStringById(R.string.clear),
-            width - BUTTON_W - MARGIN_H, 20,
-            BUTTON_W, BUTTON_H,
-            TEXT_SIZE, Color.WHITE, UColor.Salmon );
-        mClearButton.addToDrawManager();
     }
 
     /**

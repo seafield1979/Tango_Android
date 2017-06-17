@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.sunsunsoft.shutaro.tangobook.save.BackupFileInfo;
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 import com.sunsunsoft.shutaro.tangobook.page.PageViewManager;
@@ -98,17 +99,20 @@ public class MainActivity extends AppCompatActivity {
         // UResourceManager
         UResourceManager.createInstance(this);
 
+        // セーブデータを初期化
+        RealmManager.getBackupFileDao().createInitialRecords();
+
         // オートバックアップ
         if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
-            String filePath = XmlManager.saveXml(BackupFileType.AutoBackup);
-            if (filePath != null) {
+            BackupFileInfo backupInfo = XmlManager.saveAutoBackup();
+            if (backupInfo != null) {
                 String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
                 String info =  UResourceManager.getStringById(R.string.card_count) +
                         ":" + XmlManager.getInstance().getBackpuCardNum() +
                         "   " + UResourceManager.getStringById(R.string.book_count) +
                         ":" + XmlManager.getInstance().getBackupBookNum() + "\n" +
                         UResourceManager.getStringById(R.string.location) +
-                        filePath + "\n" +
+                        backupInfo.getFilePath() + "\n" +
                         UResourceManager.getStringById(R.string.datetime) +
                         " : " + dateTime;
                 MySharedPref.writeString(MySharedPref.AutoBackupInfoKey, info);

@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.os.Vibrator;
 
 import com.sunsunsoft.shutaro.tangobook.icon.UIcon;
 import com.sunsunsoft.shutaro.tangobook.page.PageViewManager;
@@ -16,6 +17,8 @@ import com.sunsunsoft.shutaro.tangobook.page.UPageViewManager;
 import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouchCallbacks;
+
+import static android.content.Context.VIBRATOR_SERVICE;
 
 
 /**
@@ -126,6 +129,12 @@ public class TopView extends View
      * ViewTouchCallbacks
      */
     public void longPressed() {
+        // Vibratorインスタンス取得
+        Vibrator vib = (Vibrator)mContext.getSystemService(VIBRATOR_SERVICE);
+
+        //100ミリ秒の振動
+        vib.vibrate(100);
+
         ((Activity)mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {

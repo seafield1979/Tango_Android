@@ -29,6 +29,7 @@ enum PageView {
     Settings,           // 設定
     Options,            // オプション設定
     BackupDB,           // バックアップ
+    RestoreDB,          // バックアップから復元
     PresetBook,         // プリセット単語帳選択
     CsvBook,            // Csv単語帳選択
     SearchCard,         // カード検索
@@ -109,8 +110,12 @@ public class PageViewManager extends UPageViewManager {
                         UResourceManager.getStringById(R.string.title_options));
                 break;
             case BackupDB:           // バックアップ
-                page = new PageViewBackupDB(mContext, mParentView,
-                        UResourceManager.getStringById(R.string.title_backup));
+                page = new PageViewBackup(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.backup));
+                break;
+            case RestoreDB:           // バックアップから復元
+                page = new PageViewRestore(mContext, mParentView,
+                        UResourceManager.getStringById(R.string.restore));
                 break;
             case PresetBook:         // プリセット単語帳選択
                 page = new PageViewPresetBook(mContext, mParentView,

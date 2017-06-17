@@ -36,6 +36,7 @@ public class PageViewSettingsTop extends UPageView
     // button ids
     private static final int ButtonIdOption = 99;
     private static final int ButtonIdBackup = 100;
+    private static final int ButtonIdRestore = 104;
     private static final int ButtonIdLicense = 101;
     private static final int ButtonIdContact = 102;
     private static final int ButtonIdContactOK = 103;
@@ -108,7 +109,7 @@ public class PageViewSettingsTop extends UPageView
         mWindow.addToDrawManager();
 
 
-        UButtonText button1;
+        UButtonText button1, button2;
         // 各種設定
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdOption ,
                 DRAW_PRIORITY,
@@ -119,9 +120,16 @@ public class PageViewSettingsTop extends UPageView
         // backup button
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup,
                 DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.backup_and_restore),
+                UResourceManager.getStringById(R.string.backup),
                 0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
         mWindow.addDrawable(button1, false);
+
+        // 復元ボタン
+        button2 = new UButtonText(this, UButtonType.Press, ButtonIdRestore,
+                DRAW_PRIORITY,
+                UResourceManager.getStringById(R.string.restore),
+                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
+        mWindow.addDrawable(button2, false);
 
         // ライセンス
         button1 = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
@@ -180,6 +188,11 @@ public class PageViewSettingsTop extends UPageView
             case ButtonIdBackup: {
                 // バックアップページに遷移
                 PageViewManager.getInstance().stackPage(PageView.BackupDB);
+            }
+            break;
+            case ButtonIdRestore: {
+                // バックアップページに遷移
+                PageViewManager.getInstance().stackPage(PageView.RestoreDB);
             }
             break;
             case ButtonIdLicense:

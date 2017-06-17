@@ -15,7 +15,8 @@ import java.util.Map;
  * Created by shutaro on 2016/12/07.
  *
  * Shared Preferencesのラッパークラス
- * 設定等の情報を保存する
+ * アプリの設定等の情報を保存する
+ * データベース(Realm)を使うまでもないものはこれを使用する
  */
 
 

@@ -41,6 +41,7 @@ public class RealmManager {
     private static TangoBookHistoryDao bookHistoryDao;
     private static TangoStudiedCardDao studiedCardDao;
     private static TangoItemsCheckDao itemsCheckDao;
+    private static BackupFileDao backupFileDao;
     private static boolean initFlag;
 
     /**
@@ -74,6 +75,7 @@ public class RealmManager {
             bookHistoryDao = new TangoBookHistoryDao(realm);
             studiedCardDao = new TangoStudiedCardDao(realm);
             itemsCheckDao = new TangoItemsCheckDao(realm);
+            backupFileDao = new BackupFileDao(realm);
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
         }
@@ -102,6 +104,8 @@ public class RealmManager {
     }
 
     public static TangoItemsCheckDao getCheckDao() { return itemsCheckDao; }
+
+    public static BackupFileDao getBackupFileDao() { return backupFileDao; }
 
     public static void closeRealm() {
         realm.close();

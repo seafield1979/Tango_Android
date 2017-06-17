@@ -45,8 +45,8 @@
     <string name="study_mode_3">４択</string>
     <string name="study_mode_4">単語入力</string>
 
-    <string name="study_type_1">英語 -> 日本語</string>
-    <string name="study_type_2">日本語 -> 英語</string>
+    <string name="study_type_1">英語 ➡︎ 日本語</string>
+    <string name="study_type_2">日本語 ➡︎ 英語</string>
 
     <string name="study_order_1">単語帳の並び順</string>
     <string name="study_order_2">ランダム</string>
@@ -118,6 +118,7 @@
     <string name="confirm_cleanup_trash">ゴミ箱を空にしますか？</string>
     <string name="confirm_clear_history">学習記録をクリアしますか？</string>
     <string name="confirm_export_csv">単語帳をcsvファイルに出力しますか？\n出力したファイルから単語帳を復元できます。</string>
+    <string name="no_study_history">学習履歴がありません</string>
 
     <string name="retry1">"すべて\nリトライ"</string>
     <string name="retry2">"NGのみ\nリトライ"</string>
@@ -127,19 +128,28 @@
     <string name="backup">バックアップ</string>
     <string name="backup_xml">バックアップ(xml)</string>
     <string name="backup_and_restore">バックアップと復元</string>
-    <string name="location">場所: </string>
+    <string name="location">場所</string>
+    <string name="backup_complete">バックアップが完了しました</string>
+    <string name="backup_failed">バックアップに失敗しました</string>
+    <string name="confirm_overwrite">バックアップが存在します。上書きしてもよろしいですか？</string>
+    <string name="filename">ファイル名</string>
     <string name="backup_path_title1">手動バックアップ</string>
     <string name="backup_path_title2">自動バックアップ</string>
     <string name="datetime">日時</string>
     <string name="restore">復元</string>
+    <string name="restore_from_file">選択したファイルから復元</string>
+    <string name="restore_confirm">選択したファイルから復元してもよろしいですか？</string>
     <string name="confirm_backup">バックアップしますか？\nバックアップを行うと、以前の\n状態に戻せるようになります。\n
         また、別の端末に状態を移動することができます。</string>
+    <string name="succeed_restore">復元に成功しました</string>
+    <string name="failed_restore">復元に失敗しました</string>
     <string name="failed_backup">バックアップに失敗しました</string>
     <string name="finish_backup">バックアップが完了しました</string>
     <string name="failed_export">CSVファイルへの出力に失敗しました</string>
     <string name="finish_export">への書き込みが完了しました</string>
     <string name="confirm_restore">バックアップから復元しますか？</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
+    <string name="confirm_cleanup">バックアップを空にしてもよろしいですか？</string>
     <string name="no_backup">バックアップはありません</string>
     <string name="finish_restore">復元が完了しました</string>
     <string name="confirm_add_book">%sを追加しますか？</string>
@@ -177,6 +187,7 @@
     <string name="disp_list">項目表示方法</string>
     <string name="list_type1">リスト</string>
     <string name="list_type_grid">グリッド</string>
+    <string name="empty">空</string>
     <string name="debug">デバッグ</string>
     <string name="debug1">デバッグ1</string>
     <string name="debug2">デバッグ2</string>

@@ -344,6 +344,9 @@ public class TangoCardDao {
     public void updateOne(int id, String wordA, String wordB) {
         mRealm.beginTransaction();
         TangoCard card = mRealm.where(TangoCard.class).equalTo("id", id).findFirst();
+
+        if (card == null) return;
+
         card.setWordA(wordA);
         card.setWordB(wordB);
 
@@ -360,6 +363,9 @@ public class TangoCardDao {
                 mRealm.where(TangoCard.class)
                         .equalTo("id", card.getId())
                         .findFirst();
+        if (newCard == null) {
+            return;
+        }
 
         mRealm.beginTransaction();
 
@@ -412,6 +418,9 @@ public class TangoCardDao {
                 mRealm.where(TangoCard.class)
                         .equalTo("id", card.getId())
                         .findFirst();
+        if (updateCard == null) {
+            return false;
+        }
 
         boolean newValue = updateCard.getStar() ? false : true;
         mRealm.beginTransaction();
@@ -429,6 +438,9 @@ public class TangoCardDao {
                 mRealm.where(TangoCard.class)
                         .equalTo("id", card.getId())
                         .findFirst();
+        if (updateCard == null) {
+            return;
+        }
 
         mRealm.beginTransaction();
         updateCard.setNewFlag(newFlag);

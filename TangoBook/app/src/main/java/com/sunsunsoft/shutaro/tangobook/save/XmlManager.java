@@ -3,6 +3,7 @@ package com.sunsunsoft.shutaro.tangobook.save;
 import android.content.Context;
 import android.util.Log;
 
+import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
 import com.sunsunsoft.shutaro.tangobook.R;
@@ -43,7 +44,7 @@ public class XmlManager {
     public static final String TAG = "XmlManager";
 
     // 手動バックアップファイル名
-    public static final String ManualBackupFile = "tango_m.xml";
+    public static final String ManualBackupFile = "tango_m%02d.xml";
 
     // 自動バックアップファイル名
     public static final String AutoBackupFile = "tango_a.xml";
@@ -93,21 +94,46 @@ public class XmlManager {
         return null;
     }
 
+    private static File getManualXmlFile(int slot) {
+        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
+        File file = new File(path, String.format(ManualBackupFile, slot));
+
+        return file;
+    }
+
+    private static File getAutoXmlFile() {
+        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
+        File file = new File(path, AutoBackupFile);
+
+        return file;
+    }
+
     /**
      * バックアップファイルの情報を取得
      * @return XMLファイル情報（ファイルパス、カード数、単語帳数、更新日）
+     *          null: 失敗
      */
-    public static String getXmlInfo(BackupFileType type) {
-        String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
+    public static String getManualXmlInfo(int slot) {
+        File file = getManualXmlFile(slot);
 
-        // 指定の場所にファイルがあるかをチェック
-        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
-        File source = new File(path, filename);
+        if (file == null) { return null; }
+
+        return getXmlInfo(file);
+    }
+    public static String getAutoXmlInfo() {
+        File file = getAutoXmlFile();
+
+        if (file == null) { return null; }
+
+        return getXmlInfo(file);
+    }
+
+    public static String getXmlInfo(File file) {
 
         XmlTangoTop tangoTop = null;
         try {
             Serializer serializer = new Persister();
-            tangoTop = serializer.read(XmlTangoTop.class, source);
+            tangoTop = serializer.read(XmlTangoTop.class, file);
 
             ULog.print(TAG, "ok");
         } catch (Exception e) {
@@ -115,25 +141,43 @@ public class XmlManager {
             return null;
         }
 
-        String str =  UResourceManager.getStringById(R.string.card_count) +
-                ":" + tangoTop.cardNum +
-                "   " + UResourceManager.getStringById(R.string.book_count) +
-                ":" + tangoTop.bookNum + "\n" +
-                UResourceManager.getStringById(R.string.location) +
-                source.toString() + "\n" +
-                UResourceManager.getStringById(R.string.datetime) +
-                " : " + UUtil.convDateFormat(tangoTop.updateDate, ConvDateMode.DateTime);
+        String str =  UResourceManager.getStringById(R.string.datetime) +
+                " :  " + UUtil.convDateFormat(tangoTop.updateDate, ConvDateMode.DateTime) + "\n" +
+                UResourceManager.getStringById(R.string.card_count) +
+                " :  " + tangoTop.cardNum + "\n" +
+                UResourceManager.getStringById(R.string.book_count) +
+                " :  " + tangoTop.bookNum + "\n" +
+                UResourceManager.getStringById(R.string.filename) +
+                " :  " + file.getName();
         return str;
     }
 
     /**
-     * 指定したファイルにデータベースの情報を保存する
-     * @param type
-     * @return ファイルのパス
+     * マニュアルファイルに保存する
+     * @param slot  xmlのスロット
+     * @return
      */
-    public static String saveXml(BackupFileType type) {
-        String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
+    public static BackupFileInfo saveManualBackup(int slot) {
+        File file = getManualXmlFile(slot);
 
+        if (file == null) { return null; }
+
+        return saveXml(file);
+    }
+    public static BackupFileInfo saveAutoBackup() {
+        File file = getAutoXmlFile();
+
+        if (file == null) { return null; }
+
+        return saveXml(file);
+    }
+
+    /**
+     * 指定したファイルにデータベースの情報を保存する
+     * @param file 保存ファイル
+     * @return バックアップ情報のBean
+     */
+    public static BackupFileInfo saveXml(File file) {
         XmlTangoTop tangoTop = new XmlTangoTop();
 
         // データベースから保存情報をかき集める
@@ -211,7 +255,7 @@ public class XmlManager {
 
         // ファイルに書き込む
         File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
-        File result = new File(path, filename);
+        File result = new File(path, file.getName());
         try {
             Serializer serializer = new Persister();
             serializer.write(tangoTop, result);
@@ -221,24 +265,50 @@ public class XmlManager {
             return null;
         }
 
-        return result.toString();
+        // バックアップテーブルに書き込む情報を設定する
+        BackupFileInfo backupInfo = new BackupFileInfo(file.getName(), result.toString(), tangoTop.cardNum, tangoTop.bookNum);
+
+        return backupInfo;
     }
 
     /**
-     * 指定したxmlファイルから情報を取得し、システム(Realmデータベース)に保存する
-     * @param type  バックアップファイルのタイプ(手動、自動)
+     * マニュアルバックアップファイルから復元する
+     * @param slot バックアップのスロット番号
      * @return
      */
-    public static boolean loadXml(BackupFileType type) {
-        String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
+    public static boolean loadManualXml(int slot) {
+        File file = getManualXmlFile(slot);
+        if (file == null) {
+            return false;
+        }
 
-        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
-        File source = new File(path, filename);
+        return loadXml(file);
+    }
+
+    /**
+     * 自動バックアップファイルから復元する
+     * @return
+     */
+    public static boolean loadAutoXml() {
+        File file = getAutoXmlFile();
+
+        if (file == null) {
+            return false;
+        }
+
+        return loadXml(file);
+    }
+    /**
+     * 指定したxmlファイルから情報を取得し、システム(Realmデータベース)に保存する
+     * @param file  復元元のバックアップファイル
+     * @return
+     */
+    public static boolean loadXml(File file) {
 
         XmlTangoTop tangoTop = null;
         try {
             Serializer serializer = new Persister();
-            tangoTop = serializer.read(XmlTangoTop.class, source);
+            tangoTop = serializer.read(XmlTangoTop.class, file);
 
             ULog.print(TAG, "ok");
 
