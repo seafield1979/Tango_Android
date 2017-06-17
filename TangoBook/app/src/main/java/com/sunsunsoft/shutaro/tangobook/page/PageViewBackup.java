@@ -11,13 +11,11 @@ import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemBackup;
-import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackupDB;
+import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
 import com.sunsunsoft.shutaro.tangobook.save.BackupFileInfo;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
-
-import java.util.List;
 
 /**
  * Created by shutaro on 2017/06/16.
@@ -48,7 +46,7 @@ public class PageViewBackup extends UPageView
      * Member variables
      */
     private UCheckBox mAutoBackupCheck;
-    private ListViewBackupDB mListView;
+    private ListViewBackup mListView;
     private UDialogWindow mDialog;          // バックアップをするかどうかの確認ダイアログ
     private ListItemBackup mBackupItem;     // リストで選択したアイテム
 
@@ -117,7 +115,7 @@ public class PageViewBackup extends UPageView
 
         // ListView
         int listViewH = height - (MARGIN_H * 3 + mAutoBackupCheck.getHeight());
-        mListView = new ListViewBackupDB(this, DRAW_PRIORITY, x, y,
+        mListView = new ListViewBackup(this, ListViewBackup.ListViewType.Backup, DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();

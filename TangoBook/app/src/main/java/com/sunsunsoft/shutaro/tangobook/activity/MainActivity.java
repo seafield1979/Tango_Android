@@ -104,19 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         // オートバックアップ
         if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
-            BackupFileInfo backupInfo = XmlManager.saveAutoBackup();
-            if (backupInfo != null) {
-                String dateTime = UUtil.convDateFormat(new Date(), ConvDateMode.DateTime);
-                String info =  UResourceManager.getStringById(R.string.card_count) +
-                        ":" + XmlManager.getInstance().getBackpuCardNum() +
-                        "   " + UResourceManager.getStringById(R.string.book_count) +
-                        ":" + XmlManager.getInstance().getBackupBookNum() + "\n" +
-                        UResourceManager.getStringById(R.string.location) +
-                        backupInfo.getFilePath() + "\n" +
-                        UResourceManager.getStringById(R.string.datetime) +
-                        " : " + dateTime;
-                MySharedPref.writeString(MySharedPref.AutoBackupInfoKey, info);
-            }
+            XmlManager.saveAutoBackup();
         }
 
         // PresetBookManager

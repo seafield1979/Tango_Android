@@ -5,6 +5,8 @@ import java.util.Date;
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
 
+import static com.sunsunsoft.shutaro.tangobook.database.BackupFileDao.AUTO_BACKUP_ID;
+
 /**
  * Created by shutaro on 2017/06/16.
  *
@@ -70,5 +72,20 @@ public class BackupFile extends RealmObject{
 
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+    }
+
+
+    /**
+     * Methods
+     */
+    /**
+     * 自動バックアップのレコードかどうかの判定
+     * @return
+     */
+    public boolean isAutoBackup() {
+        if (id == AUTO_BACKUP_ID) {
+            return true;
+        }
+        return false;
     }
 }

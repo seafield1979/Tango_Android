@@ -5,14 +5,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
-import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
-import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackupDB;
-import com.sunsunsoft.shutaro.tangobook.save.BackupFileType;
+import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
+import com.sunsunsoft.shutaro.tangobook.listview.ListItemBackup;
+import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.FileDialog;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
@@ -62,7 +60,8 @@ public class PageViewRestore extends UPageView
     private UTextView mAutoBackupTitle, mManualBackupTitle;
 
     private UButtonText mRestoreButton;     // xmlファイル選択で復元ボタン
-    private ListViewBackupDB mListView;
+    private ListViewBackup mListView;
+    private ListItemBackup mBackupItem;     // リストで選択したアイテム
 
     // Dialog
     private UDialogWindow mDialog;
@@ -138,7 +137,8 @@ public class PageViewRestore extends UPageView
 
         // ListView
         int listViewH = height - ((int)y + MARGIN_V);
-        mListView = new ListViewBackupDB(this, DRAW_PRIORITY, x, y,
+        mListView = new ListViewBackup(this, ListViewBackup.ListViewType.Restore,
+                DRAW_PRIORITY, x, y,
                 width - MARGIN_H * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
@@ -183,7 +183,7 @@ public class PageViewRestore extends UPageView
             mRestoreFile = file;
 
             // 復元確認ダイアログの表示
-            mDialog.setTitle(mContext.getString(R.string.restore_confirm));
+            mDialog.setTitle(mContext.getString(R.string.confirm_restore));
             mDialog.addTextView(xmlInfo + "\n\n", UAlignment.CenterX, true, false, TEXT_SIZE_S, TEXT_COLOR, 0);
             mDialog.addButton(ButtonIdRestoreFromFileOK, "OK", Color.BLACK, Color.WHITE);
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
@@ -196,11 +196,29 @@ public class PageViewRestore extends UPageView
     }
 
     /**
+     * 復元確認ダイアログを表示する（２回目の確認用)
+     */
+    private void confirmRestore() {
+        if (mDialog != null) {
+            mDialog.closeDialog();
+        }
+
+        // Dialog
+        mDialog = UDialogWindow.createInstance(this, this,
+                UDialogWindow.ButtonDir.Horizontal, mParentView.getWidth(), mParentView.getHeight());
+        mDialog.addToDrawManager();
+
+        // 復元確認ダイアログの表示
+        mDialog.setTitle(mContext.getString(R.string.confirm_restore2));
+        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+        mDialog.addButton(ButtonIdRestoreOK2, "OK", Color.BLACK, Color.WHITE);
+    }
+    /**
      * 復元を行う
      * @return 結果(成功/失敗)
      */
-    private boolean doRestore() {
-        boolean ret = XmlManager.getInstance().loadXml(mRestoreFile);
+    private boolean doRestore(File file) {
+        boolean ret = XmlManager.getInstance().loadXml(file);
 
         String title = UResourceManager.getStringById( ret ? R.string.succeed_restore : R.string.failed_restore);
 
@@ -239,15 +257,16 @@ public class PageViewRestore extends UPageView
             }
             break;
             case ButtonIdRestoreFromFileOK: {
-                doRestore();
+                doRestore(mRestoreFile);
             }
                 break;
             case ButtonIdRestoreOK1: {
-
+                confirmRestore();
             }
                 break;
             case ButtonIdRestoreOK2: {
-
+                File file = XmlManager.getManualXmlFile(mBackupItem.getBackup().getId());
+                doRestore(file);
             }
                 break;
         }
@@ -262,7 +281,27 @@ public class PageViewRestore extends UPageView
      * @param item
      */
     public void ListItemClicked(UListItem item) {
+        int width = mParentView.getWidth();
 
+        // リストの種類を判定
+        if (!(item instanceof ListItemBackup)) return;
+
+        ListItemBackup backupItem = (ListItemBackup)item;
+
+        BackupFile backup = backupItem.getBackup();
+        if (backup == null) return;
+
+        if (backup.isEnabled()) {
+            // show confirmation dialog 1
+            mBackupItem = backupItem;
+
+            mDialog = UDialogWindow.createInstance(this, this,
+                    UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
+            mDialog.addToDrawManager();
+            mDialog.setTitle(mContext.getString(R.string.confirm_restore));
+            mDialog.addButton(ButtonIdRestoreOK1, "OK", Color.BLACK, Color.WHITE);
+            mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+        }
     }
     /**
      * 項目のボタンがクリックされた

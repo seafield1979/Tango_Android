@@ -66,8 +66,12 @@ public class ListItemBackup extends UListItem {
 
         mBackup = backup;
 
-        mTitle = String.format("%s%02d", UResourceManager.getStringById(R.string
-                .backup), backup.getId());
+        // 自動バックアップと手動バックアップでタイトルの文字列が異なる
+        if (backup.isAutoBackup()) {
+            mTitle = UResourceManager.getStringById(R.string.backup_auto);
+        } else {
+            mTitle = String.format("%s%02d", UResourceManager.getStringById(R.string.backup), backup.getId());
+        }
 
         // mText
         if (backup.isEnabled()) {

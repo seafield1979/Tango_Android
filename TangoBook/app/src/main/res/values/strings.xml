@@ -126,6 +126,7 @@
     <string name="title_result2">"%sの学習結果"</string>
 
     <string name="backup">バックアップ</string>
+    <string name="backup_auto">自動バックアップ</string>
     <string name="backup_xml">バックアップ(xml)</string>
     <string name="backup_and_restore">バックアップと復元</string>
     <string name="location">場所</string>
@@ -137,8 +138,7 @@
     <string name="backup_path_title2">自動バックアップ</string>
     <string name="datetime">日時</string>
     <string name="restore">復元</string>
-    <string name="restore_from_file">選択したファイルから復元</string>
-    <string name="restore_confirm">選択したファイルから復元してもよろしいですか？</string>
+    <string name="restore_from_file">ファイルから復元</string>
     <string name="confirm_backup">バックアップしますか？\nバックアップを行うと、以前の\n状態に戻せるようになります。\n
         また、別の端末に状態を移動することができます。</string>
     <string name="succeed_restore">復元に成功しました</string>
@@ -147,7 +147,7 @@
     <string name="finish_backup">バックアップが完了しました</string>
     <string name="failed_export">CSVファイルへの出力に失敗しました</string>
     <string name="finish_export">への書き込みが完了しました</string>
-    <string name="confirm_restore">バックアップから復元しますか？</string>
+    <string name="confirm_restore">バックアップから復元しますか？\n復元を行うと現在の単語帳の情報は消去されます。</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
     <string name="confirm_cleanup">バックアップを空にしてもよろしいですか？</string>
     <string name="no_backup">バックアップはありません</string>

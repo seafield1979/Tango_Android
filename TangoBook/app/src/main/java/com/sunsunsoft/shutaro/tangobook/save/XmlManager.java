@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
+import com.sunsunsoft.shutaro.tangobook.database.BackupFileDao;
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
 import com.sunsunsoft.shutaro.tangobook.R;
@@ -45,9 +46,6 @@ public class XmlManager {
 
     // 手動バックアップファイル名
     public static final String ManualBackupFile = "tango_m%02d.xml";
-
-    // 自動バックアップファイル名
-    public static final String AutoBackupFile = "tango_a.xml";
 
     /**
      * Member variables
@@ -94,16 +92,16 @@ public class XmlManager {
         return null;
     }
 
-    private static File getManualXmlFile(int slot) {
+    public static File getManualXmlFile(int slot) {
         File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
         File file = new File(path, String.format(ManualBackupFile, slot));
 
         return file;
     }
 
-    private static File getAutoXmlFile() {
+    public static File getAutoXmlFile() {
         File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
-        File file = new File(path, AutoBackupFile);
+        File file = new File(path, String.format(ManualBackupFile, BackupFileDao.AUTO_BACKUP_ID));
 
         return file;
     }
@@ -169,7 +167,14 @@ public class XmlManager {
 
         if (file == null) { return null; }
 
-        return saveXml(file);
+        BackupFileInfo backup = saveXml(file);
+
+        // データベース更新(BackupFile)
+        RealmManager.getBackupFileDao().updateOne(BackupFileDao.AUTO_BACKUP_ID,
+                backup.getFilePath(), backup.getBookNum(), backup.getCardNum());
+
+
+        return backup;
     }
 
     /**
@@ -338,15 +343,22 @@ public class XmlManager {
 
     /**
      * xmlファイルを削除する
-     * @param type
+     * @param slot
      */
-    public static void removeXml(BackupFileType type) {
-        String filename = (type == BackupFileType.ManualBackup) ? ManualBackupFile : AutoBackupFile;
+    public static boolean removeManualXml(int slot) {
+        File file = getManualXmlFile(slot);
+        if (file == null) {return false;}
 
-        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
-        path = new File(path, filename);
-        path.delete();
+        return removeXml(file);
+    }
+    public static boolean removeAutoXml() {
+        File file = getAutoXmlFile();
+        if (file == null) {return false;}
+
+        return removeXml(file);
     }
 
-
+    public static boolean removeXml(File file) {
+        return file.delete();
+    }
 }

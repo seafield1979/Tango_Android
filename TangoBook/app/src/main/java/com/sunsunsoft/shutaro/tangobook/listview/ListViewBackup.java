@@ -17,10 +17,15 @@ import java.util.List;
  * Created by shutaro on 2017/06/16.
  */
 
-public class ListViewBackupDB extends UListView {
+public class ListViewBackup extends UListView {
     /**
      * Enums
      */
+    public enum ListViewType{
+        Backup,
+        Restore
+    }
+
     /**
      * Constants
      */
@@ -29,6 +34,7 @@ public class ListViewBackupDB extends UListView {
     /**
      * Member variables
      */
+    private ListViewType mLvType;
 
     /**
      * Get/Set
@@ -37,17 +43,23 @@ public class ListViewBackupDB extends UListView {
     /**
      * Constructor
      */
-    public ListViewBackupDB(UListItemCallbacks listItemCallbacks,
-                                int priority, float x, float y, int width, int
+    public ListViewBackup(UListItemCallbacks listItemCallbacks, ListViewType type,
+                          int priority, float x, float y, int width, int
                                         height, int color)
     {
         super(null, listItemCallbacks, priority, x, y, width, height, color);
 
+        mLvType = type;
         // add items
         List<BackupFile> backupFiles = RealmManager.getBackupFileDao().selectAll();
 
         for (BackupFile backup : backupFiles) {
             ListItemBackup item = new ListItemBackup(listItemCallbacks, backup, 0, width);
+            // バックアップリストでは自動バックアップは表示しない
+            // 自動バックアップのスロットに手動でバックアップするのはおかしいので
+            if (item.getBackup().isAutoBackup() && type == ListViewType.Backup) {
+                continue;
+            }
             if (item != null) {
                 add(item);
             }

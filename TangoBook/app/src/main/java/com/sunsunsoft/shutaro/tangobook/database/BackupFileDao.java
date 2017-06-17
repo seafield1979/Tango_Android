@@ -22,7 +22,8 @@ public class BackupFileDao {
      */
     public static final String TAG = "BackupFileDao";
 
-    public static final int MAX_BACKUP_NUM = 5;
+    public static final int AUTO_BACKUP_ID = 0;
+    public static final int MAX_BACKUP_NUM = 10;
 
     /**
      * Member variables
@@ -59,6 +60,7 @@ public class BackupFileDao {
 
     /**
      * アプリ初回起動時にレコードを作成する
+     * 実際にバックアップとして使用しているレコードは enabled が trueになる
      */
     public void createInitialRecords() {
         long count = mRealm.where(BackupFile.class).count();
@@ -66,8 +68,15 @@ public class BackupFileDao {
         if (count == 0) {
             mRealm.beginTransaction();
 
+            // 自動バックアップ用
+            BackupFile backup = new BackupFile();
+            backup.setId(AUTO_BACKUP_ID);
+            backup.setEnabled(false);
+            mRealm.copyToRealm(backup);
+
+            // マニュアルバックアップ用
             for (int i = 0; i < MAX_BACKUP_NUM; i++) {
-                BackupFile backup = new BackupFile();
+                backup = new BackupFile();
                 backup.setId(i+1);
                 backup.setEnabled(false);
 

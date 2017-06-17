@@ -44,8 +44,7 @@ public class MySharedPref {
     public static final String StudyFilterKey = "StudyFilter";
 
     // バックアップ情報
-    public static final String BackupInfoKey = "BackupInfo";
-    public static final String AutoBackupInfoKey = "AutoBackupInfo";
+//    public static final String BackupInfoKey = "BackupInfo";
 
     // 自動バックアップ
     public static final String AutoBackup = "AutoBackup";
