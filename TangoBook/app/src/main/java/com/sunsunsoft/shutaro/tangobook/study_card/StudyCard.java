@@ -14,6 +14,10 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonImage;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
 /**
  * Created by shutaro on 2016/12/07.
@@ -69,7 +73,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
 
     // スライド系
     // 左右にスライドできる距離。これ以上スライドするとOK/NGボックスに入る
-    protected static final int SLIDE_LEN = 250;
+    protected static final int SLIDE_LEN = 350;
 
     /**
      * Static Varialbes

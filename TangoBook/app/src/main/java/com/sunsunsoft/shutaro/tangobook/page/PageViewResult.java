@@ -15,6 +15,11 @@ import com.sunsunsoft.shutaro.tangobook.study_card.StudyType;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemResult;
 import com.sunsunsoft.shutaro.tangobook.listview.ListViewResult;
 import com.sunsunsoft.shutaro.tangobook.u_dialog.DialogCard;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
+import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 
 import java.util.List;
 

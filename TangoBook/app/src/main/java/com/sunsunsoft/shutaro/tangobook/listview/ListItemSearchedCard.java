@@ -15,6 +15,7 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 
 /**
  * Created by shutaro on 2016/12/22.

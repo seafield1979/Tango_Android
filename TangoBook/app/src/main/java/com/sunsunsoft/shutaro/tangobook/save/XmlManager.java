@@ -139,14 +139,13 @@ public class XmlManager {
             return null;
         }
 
-        String str =  UResourceManager.getStringById(R.string.datetime) +
-                " :  " + UUtil.convDateFormat(tangoTop.updateDate, ConvDateMode.DateTime) + "\n" +
+        String str =  UUtil.convDateFormat(tangoTop.updateDate, ConvDateMode.DateTime) + "\n" +
+                UResourceManager.getStringById(R.string.filename) +
+                " :  " + file.getName() + "\n" +
                 UResourceManager.getStringById(R.string.card_count) +
                 " :  " + tangoTop.cardNum + "\n" +
                 UResourceManager.getStringById(R.string.book_count) +
-                " :  " + tangoTop.bookNum + "\n" +
-                UResourceManager.getStringById(R.string.filename) +
-                " :  " + file.getName();
+                " :  " + tangoTop.bookNum + "\n";
         return str;
     }
 

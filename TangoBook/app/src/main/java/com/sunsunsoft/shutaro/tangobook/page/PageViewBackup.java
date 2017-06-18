@@ -16,6 +16,10 @@ import com.sunsunsoft.shutaro.tangobook.save.BackupFileInfo;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
 
 /**
  * Created by shutaro on 2017/06/16.

@@ -16,6 +16,12 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonImage;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
+import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
 
 import java.util.List;
 

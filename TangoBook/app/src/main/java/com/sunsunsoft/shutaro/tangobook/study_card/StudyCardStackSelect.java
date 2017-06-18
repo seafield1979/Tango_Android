@@ -9,6 +9,8 @@ import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
+import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
 import java.util.LinkedList;
 import java.util.List;

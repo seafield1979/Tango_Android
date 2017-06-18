@@ -5,9 +5,9 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
-import com.sunsunsoft.shutaro.tangobook.uview.UButtonCallbacks;
-import com.sunsunsoft.shutaro.tangobook.uview.UDialogCallbacks;
-import com.sunsunsoft.shutaro.tangobook.uview.UDialogWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 
 /**

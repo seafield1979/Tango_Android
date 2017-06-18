@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.tangobook.page;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,11 +10,19 @@ import android.net.Uri;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.Size;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.activity.LicensePageActivity;
 import com.sunsunsoft.shutaro.tangobook.app.AppInfo;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDrawItemsWindow;
 
 /**
  * Created by shutaro on 2016/12/05.
@@ -25,6 +34,48 @@ public class PageViewSettingsTop extends UPageView
         implements UButtonCallbacks, UDialogCallbacks {
 
     /**
+     * Enums
+     */
+    /**
+     * Enums
+     */
+    enum ButtonId {
+        Option(R.string.title_options, UColor.DarkBlue, UColor.DarkBlue,
+                Color.rgb(153,204,255), R.drawable.settings_1),
+        Backup(R.string.backup, UColor.DarkBlue, UColor.DarkBlue,
+                Color.rgb(153,204,255), R.drawable.backup),
+        Restore(R.string.restore, UColor.DarkBlue, UColor.DarkBlue,
+                Color.rgb(153,204,255), R.drawable.restore),
+        License(R.string.license, UColor.DarkBlue, UColor.DarkBlue,
+                Color.rgb(153,204,255), R.drawable.license),
+        Contact(R.string.contact_us, UColor.DarkBlue, UColor.DarkBlue,
+                Color.rgb(153,204,255), R.drawable.mail)
+        ;
+
+        private int textId;
+        private int textColor;
+        private int lineColor;
+        private int bgColor;
+        private int imageId;
+
+        ButtonId(int textId, int textColor, int lineColor, int bgColor, int imageId) {
+            this.textId = textId;
+            this.textColor = textColor;
+            this.lineColor = lineColor;
+            this.bgColor = bgColor;
+            this.imageId = imageId;
+        }
+        String getTitle(Context context) {
+            return context.getString(textId);
+        }
+
+        static ButtonId toEnum(int value) {
+            if (value >= values().length) return Option;
+            return values()[value];
+        }
+    }
+
+    /**
      * Constants
      */
     private static final int DRAW_PRIORITY = 100;
@@ -32,14 +83,10 @@ public class PageViewSettingsTop extends UPageView
     private static final int BUTTON2_H = 200;
     private static final int TEXT_SIZE = 50;
     private static final int BUTTON_COLOR = UColor.LightBlue;
+    private static final int IMAGE_W = 100;
 
     // button ids
-    private static final int ButtonIdOption = 99;
-    private static final int ButtonIdBackup = 100;
-    private static final int ButtonIdRestore = 104;
-    private static final int ButtonIdLicense = 101;
-    private static final int ButtonIdContact = 102;
-    private static final int ButtonIdContactOK = 103;
+    private static final int ButtonIdContactOK = 100;
 
     private static final int TEXT_COLOR = Color.BLACK;
 
@@ -47,6 +94,9 @@ public class PageViewSettingsTop extends UPageView
      * Member variables
      */
     private UDrawItemsWindow mWindow;
+
+    // Buttons
+    private UButtonText mButtons[] = new UButtonText[ButtonId.values().length];
 
     // Dialog
     private UDialogWindow mDialog;
@@ -109,39 +159,30 @@ public class PageViewSettingsTop extends UPageView
         mWindow.addToDrawManager();
 
 
-        UButtonText button1, button2;
-        // 各種設定
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdOption ,
-                DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.option),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
-        mWindow.addDrawable(button1, false);
+        float x = MARGIN_H;
+        float y = MARGIN_V + 100.f;
 
-        // backup button
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdBackup,
-                DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.backup),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
-        mWindow.addDrawable(button1, false);
+        int buttonW = width - MARGIN_H * 2;
+        int buttonH = BUTTON2_H;
 
-        // 復元ボタン
-        button2 = new UButtonText(this, UButtonType.Press, ButtonIdRestore,
-                DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.restore),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
-        mWindow.addDrawable(button2, false);
+        for (int i = 0; i < ButtonId.values().length; i++) {
+            // デバッグモードがONの場合のみDebugを表示
+            ButtonId id = ButtonId.values()[i];
 
-        // ライセンス
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdLicense, DRAW_PRIORITY,
-                 UResourceManager.getStringById(R.string.license),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
-        mWindow.addDrawable(button1, false);
+            mButtons[i] = new UButtonText(this, UButtonType.Press, id.ordinal(), DRAW_PRIORITY,
+                    id.getTitle(mContext), x, y,
+                    buttonW, buttonH,
+                    TEXT_SIZE, id.textColor, id.bgColor);
+            Bitmap image = UResourceManager.getBitmapWithColor(id.imageId, id.lineColor);
+            mButtons[i].setImage(image, new Size(IMAGE_W, IMAGE_W));
+            UDrawManager.getInstance().addDrawable(mButtons[i]);
 
-        // お問い合わせ（メール）
-        button1 = new UButtonText(this, UButtonType.Press, ButtonIdContact, DRAW_PRIORITY,
-                UResourceManager.getStringById(R.string.contact_us),
-                0, 0, width - MARGIN_H * 2, BUTTON2_H, TEXT_SIZE, UColor.BLACK, BUTTON_COLOR);
-        mWindow.addDrawable(button1, true);
+            // 表示座標を少し調整
+            mButtons[i].setImageOffset(-IMAGE_W - 200, 0);
+            mButtons[i].setTextOffset(MARGIN_H / 2, 0);
+
+            y += buttonH + MARGIN_V;
+        }
     }
 
     /**
@@ -179,33 +220,34 @@ public class PageViewSettingsTop extends UPageView
      * UButtonCallbacks
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
-        switch(id) {
-            case ButtonIdOption: {
+        if (id == ButtonIdContactOK) {
+            mDialog.closeDialog();
+            callMailer();
+            return true;
+        }
+
+        ButtonId buttonId = ButtonId.toEnum(id);
+        switch (buttonId) {
+            case Option:
                 // オプション設定ページに移動
                 PageViewManager.getInstance().stackPage(PageView.Options);
-            }
                 break;
-            case ButtonIdBackup: {
+            case Backup:
                 // バックアップページに遷移
                 PageViewManager.getInstance().stackPage(PageView.BackupDB);
-            }
-            break;
-            case ButtonIdRestore: {
+                break;
+            case Restore:
                 // バックアップページに遷移
                 PageViewManager.getInstance().stackPage(PageView.RestoreDB);
-            }
-            break;
-            case ButtonIdLicense:
-            {
+                break;
+            case License:
                 // ライセンスページに遷移
                 // Main2Activity アクティビティを呼び出す
                 Intent intent = new Intent(mContext, LicensePageActivity.class);
 
                 mContext.startActivity(intent);
-            }
                 break;
-            case ButtonIdContact:
-            {
+            case Contact:
                 // お問い合わせメールダイアログを表示
                 if (mDialog == null) {
                     mDialog = UDialogWindow.createInstance(this, this,
@@ -220,11 +262,6 @@ public class PageViewSettingsTop extends UPageView
                     mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
                     mDialog.addToDrawManager();
                 }
-            }
-                break;
-            case ButtonIdContactOK:
-                mDialog.closeDialog();
-                callMailer();
                 break;
         }
         return false;

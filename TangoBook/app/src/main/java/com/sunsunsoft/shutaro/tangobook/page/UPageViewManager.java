@@ -8,7 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 
 import java.util.LinkedList;
 

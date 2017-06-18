@@ -8,6 +8,8 @@ import android.graphics.Rect;
 import com.sunsunsoft.shutaro.tangobook.TouchType;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
 /**
  * Created by shutaro on 2016/12/23.

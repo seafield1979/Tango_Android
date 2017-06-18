@@ -5,6 +5,9 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
+import com.sunsunsoft.shutaro.tangobook.uview.scrollbar.UScrollWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
+
 import java.util.LinkedList;
 
 /**
@@ -67,14 +70,14 @@ public class UListView extends UScrollWindow
         item.setListItemCallbacks(mListItemCallbacks);
 
         mItems.add(item);
-        mBottomY += item.size.height;
+        mBottomY += item.getHeight();
 
         contentSize.setHeight((int)mBottomY);
     }
 
     public void update(UListItem oldItem, UListItem newItem) {
         int index = mItems.indexOf(oldItem);
-        newItem.setPos(oldItem.pos.x, oldItem.pos.y);
+        newItem.setPos(oldItem.getX(), oldItem.getY());
         mItems.set(index, newItem);
     }
 
@@ -97,13 +100,13 @@ public class UListView extends UScrollWindow
     protected void removeCore(UListItem item, int index) {
         if (index == -1 || item == null) return;
 
-        float y = item.pos.y;
+        float y = item.getY();
         mItems.remove(index);
         // 削除したアイテム以降のアイテムのIndexと座標を詰める
         for (int i = index; i< mItems.size(); i++) {
             UListItem _item = mItems.get(i);
             _item.setIndex(i);
-            _item.pos.y = y;
+            _item.setY(y);
             y = _item.getBottom();
         }
         mBottomY = y;
@@ -149,7 +152,7 @@ public class UListView extends UScrollWindow
 
             item.draw(canvas, paint, _offset);
 
-            if (item.pos.y + item.size.height > contentTop.y + size.height) {
+            if (item.getY() + item.getHeight() > contentTop.y + size.height) {
                 // アイテムの下端が画面外にきたので以降のアイテムは表示されない
                 break;
             }
@@ -179,7 +182,7 @@ public class UListView extends UScrollWindow
             if (item.touchEvent(vt, _offset)) {
                 isDraw = true;
             }
-            if (item.pos.y + item.size.height > contentTop.y + clientSize.height) {
+            if (item.getY() + item.getHeight() > contentTop.y + clientSize.height) {
                 // アイテムの下端が画面外にきたので以降のアイテムは表示されない
                 break;
             }

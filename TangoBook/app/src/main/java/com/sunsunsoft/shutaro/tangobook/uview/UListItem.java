@@ -4,6 +4,7 @@ package com.sunsunsoft.shutaro.tangobook.uview;
 import android.graphics.PointF;
 
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
 
 abstract public class UListItem extends UDrawable {

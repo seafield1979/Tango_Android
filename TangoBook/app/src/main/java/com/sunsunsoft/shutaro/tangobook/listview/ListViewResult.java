@@ -11,7 +11,7 @@ import com.sunsunsoft.shutaro.tangobook.study_card.StudyMode;
 import com.sunsunsoft.shutaro.tangobook.study_card.StudyType;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.database.TangoStudiedCard;
-import com.sunsunsoft.shutaro.tangobook.uview.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItemCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.UListView;

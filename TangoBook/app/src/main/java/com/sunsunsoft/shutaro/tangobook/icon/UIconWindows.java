@@ -1,8 +1,8 @@
 package com.sunsunsoft.shutaro.tangobook.icon;
 
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
-import com.sunsunsoft.shutaro.tangobook.uview.UWindow;
-import com.sunsunsoft.shutaro.tangobook.uview.UWindowCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
 
 import java.util.LinkedList;

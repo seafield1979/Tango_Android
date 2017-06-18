@@ -3,12 +3,12 @@ package com.sunsunsoft.shutaro.tangobook.debug;
 import android.graphics.Color;
 import android.view.View;
 
-import com.sunsunsoft.shutaro.tangobook.uview.DrawPriority;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.DrawPriority;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
-import com.sunsunsoft.shutaro.tangobook.uview.UButtonCallbacks;
-import com.sunsunsoft.shutaro.tangobook.uview.UDialogCallbacks;
-import com.sunsunsoft.shutaro.tangobook.uview.UDialogWindow;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.icon.UIconWindows;
 
 import java.util.LinkedList;

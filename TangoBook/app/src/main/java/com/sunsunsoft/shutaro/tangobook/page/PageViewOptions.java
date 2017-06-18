@@ -10,16 +10,16 @@ import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
-import com.sunsunsoft.shutaro.tangobook.uview.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
-import com.sunsunsoft.shutaro.tangobook.uview.UDialogCallbacks;
-import com.sunsunsoft.shutaro.tangobook.uview.UDialogWindow;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.uview.UListView;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
-import com.sunsunsoft.shutaro.tangobook.uview.UTextView;
+import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 import com.sunsunsoft.shutaro.tangobook.fragment.DefaultBookNameFragment;
@@ -272,8 +272,8 @@ public class PageViewOptions extends UPageView
                 Color.BLACK, Color.LTGRAY);
         mDialog.addToDrawManager();
         mDialog.setTitle(UResourceManager.getStringById(R.string.card_name_title));
-        mDialog.addButton(ButtonIdCardWordA, UResourceManager.getStringById(R.string.word_a), UColor.White, UColor.DarkBlue);
-        mDialog.addButton(ButtonIdCardWordB, UResourceManager.getStringById(R.string.word_b), Color.WHITE, UColor.LightRed);
+        mDialog.addButton(ButtonIdCardWordA, UResourceManager.getStringById(R.string.word_a), UColor.White, UColor.White);
+        mDialog.addButton(ButtonIdCardWordB, UResourceManager.getStringById(R.string.word_b), Color.WHITE, UColor.White);
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 

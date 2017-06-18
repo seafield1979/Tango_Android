@@ -8,16 +8,16 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.uview.UTextView;
+import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItem;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
-import com.sunsunsoft.shutaro.tangobook.uview.DrawList;
-import com.sunsunsoft.shutaro.tangobook.uview.DrawPriority;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.DrawList;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.DrawPriority;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
-import com.sunsunsoft.shutaro.tangobook.uview.UDraw;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawable;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
 import static com.sunsunsoft.shutaro.tangobook.util.UDebug.drawIconId;
 

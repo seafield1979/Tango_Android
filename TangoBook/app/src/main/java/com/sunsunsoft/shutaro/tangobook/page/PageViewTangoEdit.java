@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.icon.AddPos;
-import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.preset.PresetBookManager;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
@@ -30,6 +29,15 @@ import com.sunsunsoft.shutaro.tangobook.fragment.*;
 import com.sunsunsoft.shutaro.tangobook.icon.*;
 import com.sunsunsoft.shutaro.tangobook.icon_info.*;
 import com.sunsunsoft.shutaro.tangobook.tango_edit.MenuBarTangoEdit;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuItemCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.window.LogWindowType;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.ULogWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import android.graphics.Rect;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 import com.sunsunsoft.shutaro.tangobook.page.OptionItems;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
-import com.sunsunsoft.shutaro.tangobook.uview.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItemCallbacks;
 

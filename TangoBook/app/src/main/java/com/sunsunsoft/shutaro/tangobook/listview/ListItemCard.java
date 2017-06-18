@@ -9,7 +9,7 @@ import android.graphics.Rect;
 import com.sunsunsoft.shutaro.tangobook.preset.PresetCard;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
-import com.sunsunsoft.shutaro.tangobook.uview.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItemCallbacks;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;

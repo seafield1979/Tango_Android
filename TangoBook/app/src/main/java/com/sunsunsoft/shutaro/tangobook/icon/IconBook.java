@@ -14,8 +14,8 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItem;
 import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
-import com.sunsunsoft.shutaro.tangobook.uview.UDraw;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawable;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 
 import java.util.List;

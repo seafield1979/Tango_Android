@@ -8,6 +8,10 @@ import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
+import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuBar;
+import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuItem;
+import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuItemCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 
 /**
  * Created by shutaro on 2016/12/06.

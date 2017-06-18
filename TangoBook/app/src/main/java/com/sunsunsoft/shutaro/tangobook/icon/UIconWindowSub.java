@@ -9,13 +9,13 @@ import android.graphics.RectF;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
-import com.sunsunsoft.shutaro.tangobook.uview.UWindowCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
-import com.sunsunsoft.shutaro.tangobook.uview.UButtonImage;
-import com.sunsunsoft.shutaro.tangobook.uview.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonImage;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 
 /**
  * Created by shutaro on 2017/01/16.

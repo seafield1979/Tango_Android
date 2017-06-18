@@ -7,6 +7,8 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
 import java.util.LinkedList;
 

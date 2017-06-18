@@ -9,25 +9,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import com.sunsunsoft.shutaro.tangobook.save.BackupFileInfo;
-import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 import com.sunsunsoft.shutaro.tangobook.page.PageViewManager;
 import com.sunsunsoft.shutaro.tangobook.preset.PresetBookManager;
 import com.sunsunsoft.shutaro.tangobook.R;
-import com.sunsunsoft.shutaro.tangobook.save.BackupFileType;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.TopFragment;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
-import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.fragment.HelpFragment;
 import com.sunsunsoft.shutaro.tangobook.fragment.HelpPageId;
 import com.sunsunsoft.shutaro.tangobook.help.HelpPageFragment;
-
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     /**

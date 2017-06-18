@@ -6,12 +6,12 @@ import android.graphics.PointF;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
-import com.sunsunsoft.shutaro.tangobook.uview.DrawPriority;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.DrawPriority;
 import com.sunsunsoft.shutaro.tangobook.icon.UIcon;
-import com.sunsunsoft.shutaro.tangobook.uview.UWindow;
-import com.sunsunsoft.shutaro.tangobook.uview.UWindowCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
-import com.sunsunsoft.shutaro.tangobook.uview.UTextView;
+import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
 
 
 import java.util.LinkedList;

@@ -14,7 +14,7 @@ import android.os.Vibrator;
 import com.sunsunsoft.shutaro.tangobook.icon.UIcon;
 import com.sunsunsoft.shutaro.tangobook.page.PageViewManager;
 import com.sunsunsoft.shutaro.tangobook.page.UPageViewManager;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouchCallbacks;
 

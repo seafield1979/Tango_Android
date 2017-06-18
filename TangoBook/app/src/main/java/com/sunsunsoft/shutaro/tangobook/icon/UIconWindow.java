@@ -9,10 +9,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
-import com.sunsunsoft.shutaro.tangobook.uview.UMenuBar;
+import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuBar;
 import com.sunsunsoft.shutaro.tangobook.util.URect;
-import com.sunsunsoft.shutaro.tangobook.uview.UWindow;
-import com.sunsunsoft.shutaro.tangobook.uview.UWindowCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.activity.MainActivity;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
@@ -21,9 +21,9 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoItemPos;
 import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
-import com.sunsunsoft.shutaro.tangobook.uview.DrawPriority;
-import com.sunsunsoft.shutaro.tangobook.uview.UDraw;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.DrawPriority;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -207,6 +207,7 @@ public class UIconWindow extends UWindow {
             break;
             case icon_selecting:
             {
+                isDragMove = false;
                 // アイコンのチェック状態をクリア
                 if (state == WindowState.none) {
                     List<UIcon> icons = getIcons();
@@ -237,6 +238,7 @@ public class UIconWindow extends UWindow {
             }
                 break;
             case icon_selecting:
+                isDragMove = false;
                 // ゴミ箱の中のアイコンを選択状態にしてもゴミ箱メニューは表示しない(TangoEdit2に切り替えない)
                 if (getParentType() != TangoParentType.Trash) {
                     MainActivity.getInstance().setMenuType(MainActivity.MenuType.TangoEdit2);
@@ -586,6 +588,7 @@ public class UIconWindow extends UWindow {
                     setDragedIcon(icon);
                     ret = true;
                     isDragMove = true;
+                    System.out.println("isDragMove=true");
                     break;
                 }
             }
@@ -608,6 +611,7 @@ public class UIconWindow extends UWindow {
                 if (icon.getRect().contains((int) vt.touchX(offset.x), (int) vt.touchY(offset.y))) {
                     ret = true;
                     isDragMove = true;
+                    System.out.println("isDragMove=true2");
                     break;
                 }
             }
@@ -943,6 +947,7 @@ public class UIconWindow extends UWindow {
     private boolean dragEndChecked(ViewTouch vt) {
         // ドロップ処理
         // 他のアイコンの上にドロップされたらドロップ処理を呼び出す
+        boolean isDroped = false, isMoved = false;
 
         mIconManager.setDropedIcon(null);
 
@@ -963,11 +968,11 @@ public class UIconWindow extends UWindow {
             float winY = window.toWinY(vt.getY());
 
 
-            boolean isDroped = checkDropChecked(checkedIcons, dstIcons, winX, winY);
+            isDroped = checkDropChecked(checkedIcons, dstIcons, winX, winY);
 
             // その他の場所にドロップされた場合
             if (!isDroped && dstIcons != null ) {
-                boolean isMoved = false;
+                isMoved = false;
                 if (dstIcons.size() > 0) {
                     UIcon lastIcon = dstIcons.get(dstIcons.size() - 1);
                     if ((lastIcon.getY() <= winY &&
@@ -1018,7 +1023,6 @@ public class UIconWindow extends UWindow {
             // 再配置
             if (isDroped && srcIcons != dstIcons) {
                 // 座標系変換(移動元Windowから移動先Window)
-
                 for (UIcon icon : checkedIcons) {
                     icon.setPos(win1ToWin2X(icon.getPosX(), this, window), win1ToWin2Y(icon.getPosY(), this, window));
                 }
@@ -1026,9 +1030,12 @@ public class UIconWindow extends UWindow {
             }
             if (isDroped) break;
         }
-        this.sortIcons(true);
-
-        return true;
+        if ( isDragMove) {
+            System.out.println("sort!");
+            this.sortIcons(true);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -1150,6 +1157,7 @@ public class UIconWindow extends UWindow {
                         }
                         break;
                     case icon_selecting:
+                        // アイコン選択中は
                         if (dragEndChecked(vt)) {
                             done = true;
                         }
@@ -1182,7 +1190,9 @@ public class UIconWindow extends UWindow {
     private void endIconMoving() {
         setState(nextState);
         mIconManager.updateBlockRect();
-        changeIconCheckedAll(false);
+        if (nextState == WindowState.none) {
+            changeIconCheckedAll(false);
+        }
         setDragedIcon(null);
     }
 

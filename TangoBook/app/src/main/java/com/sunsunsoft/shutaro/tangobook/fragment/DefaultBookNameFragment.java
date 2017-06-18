@@ -89,7 +89,7 @@ public class DefaultBookNameFragment extends DialogFragment {
 
         // title
         String title = UResourceManager.getStringById(
-                R.string.default_name_book
+                R.string.default_name_book2
         );
         ((TextView)view.findViewById(R.id.textView)).setText(title);
 

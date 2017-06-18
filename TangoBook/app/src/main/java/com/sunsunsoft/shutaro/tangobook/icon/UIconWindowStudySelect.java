@@ -1,6 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook.icon;
 
-import com.sunsunsoft.shutaro.tangobook.uview.UWindowCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItem;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItemType;

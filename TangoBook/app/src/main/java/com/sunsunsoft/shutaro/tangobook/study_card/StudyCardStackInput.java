@@ -7,7 +7,7 @@ import android.graphics.PointF;
 
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawable;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 

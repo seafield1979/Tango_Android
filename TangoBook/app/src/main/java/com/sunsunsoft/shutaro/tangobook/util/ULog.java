@@ -2,14 +2,14 @@ package com.sunsunsoft.shutaro.tangobook.util;
 import android.graphics.Rect;
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.uview.ULogWindow;
-import com.sunsunsoft.shutaro.tangobook.uview.UMenuBar;
-import com.sunsunsoft.shutaro.tangobook.uview.UScrollBar;
-import com.sunsunsoft.shutaro.tangobook.uview.UWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.window.ULogWindow;
+import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuBar;
+import com.sunsunsoft.shutaro.tangobook.uview.scrollbar.UScrollBar;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UWindow;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.icon.UIconWindow;
-import com.sunsunsoft.shutaro.tangobook.uview.UButton;
-import com.sunsunsoft.shutaro.tangobook.uview.UDrawManager;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButton;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 
 import java.util.HashMap;
 
@@ -49,12 +49,12 @@ public class ULog {
      */
     // 初期化、アプリ起動時に１回だけ呼ぶ
     public static void init() {
-        setEnable(ViewTouch.TAG, true);
+        setEnable(ViewTouch.TAG, false);
         setEnable(UDrawManager.TAG, false);
         setEnable(UMenuBar.TAG, false);
         setEnable(UScrollBar.TAG, false);
         setEnable(UIconWindow.TAG, false);
-        setEnable(UButton.TAG, true);
+        setEnable(UButton.TAG, false);
         setEnable(UColor.TAG, false);
         setEnable(UResourceManager.TAG, false);
         setEnable(UWindow.TAG, false);
