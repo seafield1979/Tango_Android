@@ -32,12 +32,12 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="112dp"
+                android:layout_height="55dp"
                 app:srcCompat="@drawable/help_setting_button"
                 />
 
             <TextView
-                android:text="\n設定ページで「バックアップと復元」をタップします。\n"
+                android:text="\n設定ページで「バックアップ」ボタンをタップします。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -48,9 +48,10 @@
                 android:layout_height="54dp"
                 app:srcCompat="@drawable/help_backup_button"
                 />
+
             <TextView
-                android:text="\nバックアップページが表示されました。
-一番上にある「バックアップ」ボタンを押してみます。\n"
+                android:text="\nバックアップページが表示されました。このページでバックアップを行います。
+                バックアップは最大１０件まで保存できます。最初はバックアップがされていないので、「空」の項目をタップしてバックアップをしてみましょう。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -59,11 +60,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                app:srcCompat="@drawable/help_page_backup"
+                app:srcCompat="@drawable/backup_page_backup"
                 />
 
             <TextView
-                android:text="\nバックアップするか聞かれるので「OK」をタップします。\n"
+                android:text="\nバックアップが完了しました。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -71,16 +72,12 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                app:srcCompat="@drawable/help_confirm_backup"
+                android:layout_height="179dp"
+                app:srcCompat="@drawable/backup_complete_backup"
                 />
 
             <TextView
-                android:text="\nバックアップが作成されました。\n
-「手動バックアップファイル」の下にある復元ボタンに、バックアップファイルの情報が表示されます。\n
-この復元ボタンをタップするとバックアップファイルから復元することができます。\n
-\n
-復元ボタンを押すと\n"
+                android:text="\nリストにバックアップ情報が追加されているのが確認できます。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -88,30 +85,14 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="248dp"
-                app:srcCompat="@drawable/help_page_backup2"
+                android:layout_height="94dp"
+                app:srcCompat="@drawable/backup_list_item"
                 />
             <TextView
-                android:text="\nバックアップするかを聞かれるので、OKボタンをタップすると\n"
+                android:text="\nバックアップからの復元は復元ページから行います。
+\n\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:inputType="textMultiLine"/>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="123dp"
-                app:srcCompat="@drawable/help_confirm_restore"
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="122dp"
-                app:srcCompat="@drawable/help_finish_restore"
-                />
-            <TextView
-                android:text="\nバックアップから復元されます。\n"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
 

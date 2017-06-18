@@ -83,30 +83,7 @@ public class HelpFragment extends Fragment implements OnItemClickListener{
         HelpListItemData data = (HelpListItemData)lv.getItemAtPosition(position);
 
         HelpPageId _id = HelpPageId.toEnum((int)id);
-        switch(_id) {
-            case Info1:
-            case Info2:
-            case Edit0:
-            case Edit1:
-            case Edit2:
-            case Edit3:
-            case Edit4:
-            case Edit5:
-            case Edit6:
-            case Edit7:
-            case Edit8:
-            case Study1:
-            case Study2:
-            case Study3:
-            case Study4:
-            case Study5:
-            case Backup1:
-            case Backup2:
-            case Backup3:
-                MainActivity.getInstance().showHelpPage(_id);
-
-                break;
-        }
+        MainActivity.getInstance().showHelpPage(_id);
     }
 
 

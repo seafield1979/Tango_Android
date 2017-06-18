@@ -37,6 +37,7 @@ public enum HelpPageId {
             .WHITE),
     Backup2(R.string.help_title_backup2, false, R.layout.help_backup2, Color.BLACK, Color.WHITE),
     Backup3(R.string.help_title_backup3, false, R.layout.help_backup3, Color.BLACK, Color.WHITE),
+    Backup4(R.string.help_title_backup4, false, R.layout.help_backup4, Color.BLACK, Color.WHITE),
     ;
 
     private String text;

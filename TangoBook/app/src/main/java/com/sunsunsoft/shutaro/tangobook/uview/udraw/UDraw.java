@@ -30,12 +30,12 @@ public class UDraw {
     public static int getFontSize(FontSize size) {
         switch (size) {
             case S:
-                return 30;
-            case M:
                 return 40;
+            case M:
+                return 50;
             case L:
             default:
-                return 50;
+                return 60;
         }
     }
 

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="単語帳をバックアップ\n
+\n
+単語帳は個別にファイル(csv)に保存することができます。\n
+保存したcsvファイルからいつでも単語帳を復元できます。\n
+\n
+■単語帳のバックアップ\n
+\n
+単語帳をバックするには\n
+まず、単語編集ページでバックアップしたいファイルをタップします。\n
+単語帳のウィンドウが表示されるので「csv出力」アイコンをタップします。
+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="382dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                app:srcCompat="@drawable/help_csv_backup1"
+                />
+            <TextView
+                android:text="csv出力するか聞いてくるので「OK」をタップします。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                app:srcCompat="@drawable/help_csv_backup2"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="95dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                app:srcCompat="@drawable/help_csv_backup3"
+                />
+            <TextView
+                android:text="成功しました。端末の指定のフォルダ(/sdcard/Documents/)にcsvファイルが作成されました。このcsvファイルから単語帳を作成できるようになります。\n
+\n
+■バックアップファイル(CSV)から復元\n
+\n
+CSVファイルから単語帳を復元する方法を説明します。\n
+まずは、単語帳編集ページの追加ボタンから「CSVから追加」アイコンをタップします。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                app:srcCompat="@drawable/help_add_csv_book"
+                />
+            <TextView
+                android:text="CSVファイルの一覧が表示されます。このリストにはCSVファイル置き場(/sdcard/Documents/)以下にあるファイルが自動で表示されます。（上で出力した「動物」単語帳もリストに表示されています）\n
+\n
+このリストから追加したいCSV単語帳の「＋」ボタンをタップします。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="267dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                app:srcCompat="@drawable/help_csv_backup4"
+                />
+            <TextView
+                android:text="追加するか聞かれるので「OK」ボタンをタップします。すると完了メッセージが表示されます。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                app:srcCompat="@drawable/help_csv_backup5"
+                />
+            <TextView
+                android:text="ホームにCSVから作成した単語帳が追加されています。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                app:srcCompat="@drawable/help_csv_backup6"
+                />
+            <TextView
+                android:text="単語帳からCSVファイルに保存しておくと、PCにバックアップしたり他の端末に単語帳を移動できたりできるので便利です。\nぜひ有効活用してみてください。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

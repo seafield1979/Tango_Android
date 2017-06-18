@@ -167,6 +167,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
         List<ActionIcons> icons = ActionIcons.getCardIcons();
 
         int width = ICON_W * icons.size() + ICON_MARGIN_H * (icons.size() + 1) + 100;
+        int fontSizeS = UDraw.getFontSize(FontSize.S);
         int fontSize = UDraw.getFontSize(FontSize.M);
 
         // タイトル(カード)
@@ -219,7 +220,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
             // title
             mItems[item.ordinal()].title = UTextView.createInstance( titleStr ,
-                    fontSize, 0,
+                    fontSizeS, 0,
                     UAlignment.None, canvas.getWidth(), false, false,
                     MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
 

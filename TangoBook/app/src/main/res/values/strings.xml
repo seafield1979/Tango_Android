@@ -237,7 +237,8 @@
     <string name="help_title_backup">バックアップ（保存と復元）</string>
     <string name="help_title_backup1">バックアップについて</string>
     <string name="help_title_backup2">環境をバックアップ</string>
-    <string name="help_title_backup3">単語帳をバックアップ</string>
+    <string name="help_title_backup3">バックアップから復元</string>
+    <string name="help_title_backup4">単語帳をバックアップ</string>
 
     <!--オプションページ-->
     <string name="title_options2">アプリの各種オプションを設定します</string>

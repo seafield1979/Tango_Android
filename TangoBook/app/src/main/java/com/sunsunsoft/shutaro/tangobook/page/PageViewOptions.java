@@ -272,8 +272,8 @@ public class PageViewOptions extends UPageView
                 Color.BLACK, Color.LTGRAY);
         mDialog.addToDrawManager();
         mDialog.setTitle(UResourceManager.getStringById(R.string.card_name_title));
-        mDialog.addButton(ButtonIdCardWordA, UResourceManager.getStringById(R.string.word_a), UColor.White, UColor.White);
-        mDialog.addButton(ButtonIdCardWordB, UResourceManager.getStringById(R.string.word_b), Color.WHITE, UColor.White);
+        mDialog.addButton(ButtonIdCardWordA, UResourceManager.getStringById(R.string.word_a), UColor.BLACK, UColor.White);
+        mDialog.addButton(ButtonIdCardWordB, UResourceManager.getStringById(R.string.word_b), Color.BLACK, UColor.White);
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 

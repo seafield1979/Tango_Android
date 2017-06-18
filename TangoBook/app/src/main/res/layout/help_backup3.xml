@@ -17,17 +17,26 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="単語帳をバックアップ\n
+                android:text="バックアップからの復元\n
 \n
-単語帳は個別にファイル(csv)に保存することができます。\n
-保存したcsvファイルからいつでも単語帳を復元できます。\n
+バックアップのページで作成したバックアップから、環境の復元が行うことができます。復元できる情報は、作成したカード、単語帳、学習履歴等のデータです。\n復元を行うと以前のデータが全て消えてしまうため、今のデータを残したい場合は復元前にバックアップしておいてください。
 \n
-■単語帳のバックアップ\n
-\n
-単語帳をバックするには\n
-まず、単語編集ページでバックアップしたいファイルをタップします。\n
-単語帳のウィンドウが表示されるので「csv出力」アイコンをタップします。
-"
+■復元の手順\n
+ホームから「設定」ボタンをタップ。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:srcCompat="@drawable/help_setting_button"
+                />
+
+            <TextView
+                android:text="\n設定ページで「復元」ボタンをタップします。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -35,13 +44,13 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="382dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                app:srcCompat="@drawable/help_csv_backup1"
+                android:layout_height="54dp"
+                app:srcCompat="@drawable/backup_restore_button"
                 />
+
             <TextView
-                android:text="csv出力するか聞いてくるので「OK」をタップします。"
+                android:text="\n復元ページが表示されました。このページでバックアップからの復元を行います。
+                最初はバックアップがされていないので、バックアップを行うには先にバックアップページでバックアップを作成してください。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -49,25 +58,12 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="109dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                app:srcCompat="@drawable/help_csv_backup2"
+                android:layout_height="310dp"
+                app:srcCompat="@drawable/backup_page_restore"
                 />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="95dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                app:srcCompat="@drawable/help_csv_backup3"
-                />
+
             <TextView
-                android:text="成功しました。端末の指定のフォルダ(/sdcard/Documents/)にcsvファイルが作成されました。このcsvファイルから単語帳を作成できるようになります。\n
-\n
-■バックアップファイル(CSV)から復元\n
-\n
-CSVファイルから単語帳を復元する方法を説明します。\n
-まずは、単語帳編集ページの追加ボタンから「CSVから追加」アイコンをタップします。"
+                android:text="\nバックアップのリストから復元したいバックアップをタップします。すると、復元するかの確認ダイアログが表示されるので、２回OKをタップしてください。\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -75,59 +71,64 @@ CSVファイルから単語帳を復元する方法を説明します。\n
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                app:srcCompat="@drawable/help_add_csv_book"
+                android:layout_height="119dp"
+                app:srcCompat="@drawable/backup_confirm_restore1"
                 />
             <TextView
-                android:text="CSVファイルの一覧が表示されます。このリストにはCSVファイル置き場(/sdcard/Documents/)以下にあるファイルが自動で表示されます。（上で出力した「動物」単語帳もリストに表示されています）\n
-\n
-このリストから追加したいCSV単語帳の「＋」ボタンをタップします。"
+                android:text="\nもう一度OKボタンを押します。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="107dp"
+                app:srcCompat="@drawable/backup_confirm_restore"
+                />
+
+            <TextView
+                android:text="\n2回OKボタンを押すと、バックアップが完了します。\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textMultiLine"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="92dp"
+                app:srcCompat="@drawable/backup_complete_restore"
+                />
+            <TextView
+                android:text="\nXMLファイルから復元することも可能です。端末を変更した場合などは、以前の端末で作成したバックアップファイル(XMLファイル)を新しい端末にコピーしてから、この方法で復元してください。\n\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="267dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                app:srcCompat="@drawable/help_csv_backup4"
+                android:layout_height="200dp"
+                app:srcCompat="@drawable/backup_select_file"
                 />
             <TextView
-                android:text="追加するか聞かれるので「OK」ボタンをタップします。すると完了メッセージが表示されます。"
+                android:text="\nXMLファイルから復元ボタンを押すと、XMLファイルを選択するためのダイアログが立ち上げるので、ここからバックアップで作成されたXMLファイルを選択します。\n\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                app:srcCompat="@drawable/help_csv_backup5"
+                android:layout_height="204dp"
+                app:srcCompat="@drawable/backup_confirm_restore3"
                 />
             <TextView
-                android:text="ホームにCSVから作成した単語帳が追加されています。"
+                android:text="\n復元元の情報と確認のためのダイアログが表示されます。ここでOKボタンを押すと復元が行われます\n\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:inputType="textMultiLine"/>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="115dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                app:srcCompat="@drawable/help_csv_backup6"
-                />
-            <TextView
-                android:text="単語帳からCSVファイルに保存しておくと、PCにバックアップしたり他の端末に単語帳を移動できたりできるので便利です。\nぜひ有効活用してみてください。"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
-                android:textSize="18sp"
-                android:inputType="textMultiLine"/>
+
+
         </LinearLayout>
     </ScrollView>
 
