@@ -27,6 +27,9 @@ public class MySharedPref {
      */
     public static final String TAG = "MySharedPref";
 
+    // 初期化フラグ(初回起動時に１回だけ処理を行うために使用)
+    public static final String InitializeKey = "InitializeFlag";
+
     // option key
     // 単語編集ページのカードの名前表示 (false:英語 / true:日本語)
     public static final String EditCardNameKey = "EditCardName";

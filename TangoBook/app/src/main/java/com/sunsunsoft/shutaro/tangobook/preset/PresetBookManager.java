@@ -119,6 +119,21 @@ public class PresetBookManager {
     }
 
 
+
+    /**
+     * プリセット単語帳のリソースIDで単語帳を追加
+     * @param csvId  R.rawにあるリソース番号
+     * @return
+     */
+    public boolean addBookToDB(int csvId) {
+        PresetBook book = CsvParser.getPresetBook(mContext, csvId, true);
+        if (book == null) {
+            return false;
+        }
+        addBookToDB(book);
+        return true;
+    }
+
     /**
      * データベースにプリセット単語帳のデータを登録
      * @return 作成したBook
@@ -141,6 +156,16 @@ public class PresetBookManager {
         }
 
         return book;
+    }
+
+    /**
+     * アプリ起動時にデフォルトで用意される単語帳を追加する
+     */
+    public void addDefaultBooks() {
+        addBookToDB(R.raw.animal);
+        addBookToDB(R.raw.fruit);
+        addBookToDB(R.raw.week);
+        addBookToDB(R.raw.month);
     }
 
     /**

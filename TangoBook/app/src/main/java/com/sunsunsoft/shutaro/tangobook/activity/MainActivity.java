@@ -93,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
         // UResourceManager
         UResourceManager.createInstance(this);
 
-        // セーブデータを初期化
-        RealmManager.getBackupFileDao().createInitialRecords();
-
         // オートバックアップ
         if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
             XmlManager.saveAutoBackup();
@@ -103,6 +100,17 @@ public class MainActivity extends AppCompatActivity {
 
         // PresetBookManager
         PresetBookManager.createInstance(this);
+
+        // アプリ初期化処理
+        if (MySharedPref.getInstance().readBoolean(MySharedPref.InitializeKey) == false) {
+            // セーブデータを初期化
+            RealmManager.getBackupFileDao().createInitialRecords();
+            // デフォルト単語帳を追加
+            PresetBookManager.getInstance().addDefaultBooks();
+
+            MySharedPref.getInstance().writeBoolean(MySharedPref.InitializeKey, true);
+        }
+
         mShowMenu = true;
     }
 
