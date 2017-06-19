@@ -52,7 +52,7 @@ public class ULog {
         setEnable(ViewTouch.TAG, false);
         setEnable(UDrawManager.TAG, false);
         setEnable(UMenuBar.TAG, false);
-        setEnable(UScrollBar.TAG, false);
+        setEnable(UScrollBar.TAG, true);
         setEnable(UIconWindow.TAG, false);
         setEnable(UButton.TAG, false);
         setEnable(UColor.TAG, false);

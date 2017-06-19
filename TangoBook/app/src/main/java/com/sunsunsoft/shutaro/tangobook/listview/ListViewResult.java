@@ -113,6 +113,19 @@ public class ListViewResult extends UListView implements UButtonCallbacks {
                            StudyMode studyMode, StudyType studyType,
                            boolean star) {
         ListItemResult item = null;
+        // NG
+        if (ngCards != null && ngCards.size() > 0) {
+            // Title
+            item = ListItemResult.createTitle(false, size.width, TITLE_TEXT_COLOR, TITLE_NG_COLOR);
+            add(item);
+            // Items
+            for (TangoCard card : ngCards) {
+                item = ListItemResult.createNG(card, studyMode, (studyType == StudyType.EtoJ),
+                        size.width, ITEM_TEXT_COLOR, ITEM_BG_COLOR);
+                add(item);
+            }
+        }
+
         // OK
         if (okCards != null && okCards.size() > 0) {
             // Title
@@ -128,18 +141,6 @@ public class ListViewResult extends UListView implements UButtonCallbacks {
             }
         }
 
-        // NG
-        if (ngCards != null && ngCards.size() > 0) {
-            // Title
-            item = ListItemResult.createTitle(false, size.width, TITLE_TEXT_COLOR, TITLE_NG_COLOR);
-            add(item);
-            // Items
-            for (TangoCard card : ngCards) {
-                item = ListItemResult.createNG(card, studyMode, (studyType == StudyType.EtoJ),
-                        size.width, ITEM_TEXT_COLOR, ITEM_BG_COLOR);
-                add(item);
-            }
-        }
         updateWindow();
     }
 

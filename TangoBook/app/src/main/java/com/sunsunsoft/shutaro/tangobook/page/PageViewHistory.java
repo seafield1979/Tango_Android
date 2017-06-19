@@ -225,6 +225,7 @@ public class PageViewHistory extends UPageView
         if (!(item instanceof ListItemStudiedBook)) return;
 
         int width = mParentView.getWidth();
+        int height = mParentView.getHeight();
 
         ListItemStudiedBook studiedBook = (ListItemStudiedBook)item;
         if (studiedBook.getType() != ListItemStudiedBookType.History) return;
@@ -240,7 +241,7 @@ public class PageViewHistory extends UPageView
         ListViewResult listView = new ListViewResult(null, cards, StudyMode.SlideOne,
                 StudyType.EtoJ,
                 DRAW_PRIORYTY_DIALOG, 0, 0,
-                mDialog.getSize().width - MARGIN_H * 2, 700, Color.WHITE
+                mDialog.getSize().width - MARGIN_H * 2, height - 200 - MARGIN_H * 2, Color.WHITE
                 );
         mDialog.addDrawable(listView);
 
