@@ -113,7 +113,7 @@ public class PageViewStudySlide extends PageViewStudy
         mState = State.Main;
         if (mCards != null) {
             // リトライ時
-            mCardsManager = StudyCardsManager.createInstance(mCards);
+            mCardsManager = StudyCardsManager.createInstance(mBook.getId(), mCards);
         } else {
             // 通常時(選択された単語帳)
             mCardsManager = StudyCardsManager.createInstance(mBook);

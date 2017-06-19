@@ -76,7 +76,10 @@ public class MySharedPref {
     public static final String DefaultNameBookKey = "DefaultNameBook";
 
     // NGカードを自動的に単語帳に追加
-    public static final String AddNgCardToBookKey = "AddNgCardToBook";
+//    public static final String AddNgCardToBookKey = "AddNgCardToBook";
+
+    // ４択モードで正解以外のカードをどの範囲から取得するか
+    public static final String StudyMode3OptionKey = "StudyMode3Select";
 
     // 単語入力モードの文字並び
     public static final String StudyMode4OptionKey = "StudyMode4Seq";

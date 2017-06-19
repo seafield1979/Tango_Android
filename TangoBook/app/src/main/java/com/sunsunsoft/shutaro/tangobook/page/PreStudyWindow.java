@@ -428,6 +428,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                 TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
             button.setImage(UResourceManager.getBitmapById(R.drawable.study_mode1), new Size
                     (BUTTON_ICON_W,BUTTON_ICON_W));
+            button.setImageAlignment(UAlignment.Center);
             button.setImageOffset(-BUTTON_ICON_W - 50, 0);
             mDialog.addDrawable(button);
 
@@ -439,6 +440,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                     TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
             button.setImage(UResourceManager.getBitmapById(R.drawable.study_mode2), new Size
                     (BUTTON_ICON_W,BUTTON_ICON_W));
+            button.setImageAlignment(UAlignment.Center);
             button.setImageOffset(-BUTTON_ICON_W - 50, 0);
             mDialog.addDrawable(button);
 
@@ -450,6 +452,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                     TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
             button.setImage(UResourceManager.getBitmapById(R.drawable.study_mode3), new Size
                     (BUTTON_ICON_W,BUTTON_ICON_W));
+            button.setImageAlignment(UAlignment.Center);
             button.setImageOffset(-BUTTON_ICON_W - 50, 0);
             mDialog.addDrawable(button);
 
@@ -461,6 +464,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                     TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
             button.setImage(UResourceManager.getBitmapById(R.drawable.study_mode4), new Size
                     (BUTTON_ICON_W,BUTTON_ICON_W));
+            button.setImageAlignment(UAlignment.Center);
             button.setImageOffset(-BUTTON_ICON_W - 50, 0);
             mDialog.addDrawable(button);
 

@@ -20,6 +20,7 @@ import java.util.Random;
  * Created by shutaro on 2016/12/27.
  *
  * 4択学習用のカードスタック
+ * 正解を含む４枚のカードを表示して、ユーザーはそこから正解を選べる
  */
 
 public class StudyCardStackSelect extends UDrawable {
@@ -130,7 +131,15 @@ public class StudyCardStackSelect extends UDrawable {
         mQuestionView.setText(questionStr);
 
         // 不正解用のカードを取得
-        ngCards = RealmManager.getCardDao().selectAtRandom(STUDY_CARD_NUM - 1, okCard.getId());
+        int bookId;
+        if (MySharedPref.readBoolean(MySharedPref.StudyMode3OptionKey)) {
+            // 全てのカードから抽出
+            bookId = 0;
+        } else {
+            bookId = mCardManager.getBookId();
+        }
+        ngCards = RealmManager.getCardDao().selectAtRandom(STUDY_CARD_NUM - 1, okCard.getId(),
+                bookId);
 
         StudyCardSelect card;
         int height = (size.height - MARGIN_V - mQuestionView.getHeight()) / STUDY_CARD_NUM;

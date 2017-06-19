@@ -39,6 +39,7 @@ abstract public class UButton extends UDrawable {
     protected UButtonType type;
     protected UButtonCallbacks buttonCallback;
     protected boolean enabled;          // falseならdisableでボタンが押せなくなる
+    protected boolean checked;          // チェックアイコンを表示する
     protected boolean isPressed;
     protected boolean isClicked;        // クリックされた(クリックイベントを遅延発生させるために使用)
     protected int pressedColor;
@@ -61,6 +62,14 @@ abstract public class UButton extends UDrawable {
 
     public void setPressedOn(boolean pressedOn) {
         this.pressedOn = pressedOn;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public void setEnabled(boolean enabled) {

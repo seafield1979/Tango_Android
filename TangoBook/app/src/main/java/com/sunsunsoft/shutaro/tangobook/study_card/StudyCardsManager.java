@@ -34,6 +34,9 @@ public class StudyCardsManager {
     /**
      * Member Variables
      */
+    // 学習単語帳のId
+    private int mBookId;
+
     // 学習するカードのリスト
     private LinkedList<TangoCard> mCards = new LinkedList<>();
 
@@ -51,7 +54,7 @@ public class StudyCardsManager {
     public StudyMode getStudyMode() {
         return mStudyMode;
     }
-
+    public int getBookId() { return mBookId; }
     public int getCardCount() {
         if (mCards == null) return 0;
         return mCards.size();
@@ -71,8 +74,8 @@ public class StudyCardsManager {
     /**
      * Constructor
      */
-    public static StudyCardsManager createInstance(List<TangoCard> cards) {
-        StudyCardsManager instance = new StudyCardsManager(cards);
+    public static StudyCardsManager createInstance(int bookId, List<TangoCard> cards) {
+        StudyCardsManager instance = new StudyCardsManager(bookId, cards);
         return instance;
     }
 
@@ -82,11 +85,12 @@ public class StudyCardsManager {
 
         List<TangoCard> _cards = RealmManager.getItemPosDao()
                 .selectCardsByBookIdWithOption(book.getId(), notLearned);
-        StudyCardsManager instance = new StudyCardsManager(_cards);
+        StudyCardsManager instance = new StudyCardsManager(book.getId(), _cards);
         return instance;
     }
 
-    public StudyCardsManager(List<TangoCard> cards) {
+    public StudyCardsManager(int bookId, List<TangoCard> cards) {
+        mBookId = bookId;
         mStudyMode = StudyMode.toEnum(MySharedPref.readInt(MySharedPref.StudyModeKey));
         StudyOrder studyOrder = StudyOrder.toEnum(MySharedPref.readInt(MySharedPref
                 .StudyOrderKey));

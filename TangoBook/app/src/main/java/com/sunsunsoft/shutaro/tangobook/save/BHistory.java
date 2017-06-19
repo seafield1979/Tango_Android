@@ -13,7 +13,6 @@ import java.util.Date;
 public class BHistory {
     private int id;
     private int bId;        // bookId
-    private boolean learn;  // learned
     private int ok;         // okNum
     private int ng;         // ngNum
     private Date st;        // StudiedDateTime

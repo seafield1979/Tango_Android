@@ -267,10 +267,6 @@ public class StudyCardSelect extends UDrawable {
             case Touch:        // タッチ開始
                 break;
             case Click: {
-//                UDrawManager.setDebugPoint(100, vt.touchX(), vt.touchY(), UColor.DarkBlue, false);
-//                UDrawManager.setDebugPoint(mCard.getId(), pos.x + parentPos.x, pos.y + parentPos.y
-//                        , UColor.DarkBlue, false);
-
                 Rect rect = new Rect((int)(pos.x + parentPos.x),
                         (int)(pos.y + parentPos.y),
                         (int)(pos.x + parentPos.x + size.width),

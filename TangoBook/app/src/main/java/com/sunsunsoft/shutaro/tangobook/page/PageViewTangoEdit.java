@@ -461,6 +461,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
             case AddCsvBook:
                 addCsvBook();
                 break;
+            // メニュー系はタイトルバーに表示されるメニューに移動
 //            case ShowMenuName:
 //            {
 //                MenuHelpMode helpMode = MySharedPref.getMenuHelpMode();
@@ -982,7 +983,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 mDialog.addToDrawManager();
 
                 // 確認のダイアログを表示する
-                mDialog.setTitle(UResourceManager.getStringById(R.string.confirm_moveto_trash));
+                mDialog.setTitle(String.format(UResourceManager.getStringById(R.string.confirm_moveto_trash), icon.getTitle()));
 
                 // ボタンを追加
                 mDialog.addButton(TrashDialogButtonOK, "OK", Color.BLACK,

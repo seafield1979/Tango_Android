@@ -65,7 +65,8 @@ public class ListItemOption extends UListItem {
             case CardTitle:
             case DefaultNameBook:
             case DefaultNameCard:
-            case AddNgCard:
+//            case AddNgCard:
+            case StudyMode3:
             case StudyMode4:
                 size.height = 200;
                 break;

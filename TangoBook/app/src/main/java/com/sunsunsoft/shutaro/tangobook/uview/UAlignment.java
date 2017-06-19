@@ -9,6 +9,7 @@ public enum UAlignment {
     CenterX,
     CenterY,
     Center,
+    Left,
     Right,
     Right_CenterY
 }

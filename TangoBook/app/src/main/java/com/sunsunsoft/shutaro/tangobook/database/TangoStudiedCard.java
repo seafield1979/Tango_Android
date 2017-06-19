@@ -12,11 +12,11 @@ import io.realm.annotations.Index;
 
 public class TangoStudiedCard extends RealmObject {
     @Index
-    private int bookHistoryId;
+    private int bookHistoryId;      // TangoBookHistory の id
 
-    private int cardId;
+    private int cardId;             // TangoCard の id
 
-    private boolean okFlag;
+    private boolean okFlag;         // 単語を覚えたかどうか ★アイコンの色がついていたらtrue
 
     /**
      * Get/Set

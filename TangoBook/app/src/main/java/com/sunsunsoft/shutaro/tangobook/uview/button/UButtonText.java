@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
@@ -28,6 +29,7 @@ public class UButtonText extends UButton {
     public static final String TAG = "UButtonText";
 
     private static final int MARGIN_V = 30;
+    private static final int CHECKED_W = 70;
 
     protected static final int DEFAULT_TEXT_COLOR = Color.BLACK;
     protected static final int PULL_DOWN_COLOR = UColor.DarkGray;
@@ -39,6 +41,7 @@ public class UButtonText extends UButton {
     private int mTextColor;
     private int mTextSize;
     private Bitmap mImage;
+    private UAlignment mImageAlignment = UAlignment.Left;     // 画像の表示位置
     private PointF mTextOffset = new PointF();
     private PointF mImageOffset = new PointF();
     private Size mImageSize;
@@ -67,6 +70,10 @@ public class UButtonText extends UButton {
     public void setImage(Bitmap image, Size imageSize) {
         mImage = image;
         mImageSize = imageSize;
+    }
+
+    public void setImageAlignment(UAlignment alignment) {
+        mImageAlignment = alignment;
     }
 
     public void setTextOffset(float x, float y) {
@@ -104,6 +111,17 @@ public class UButtonText extends UButton {
     /**
      * Methods
      */
+    @Override
+    public void setChecked(boolean checked) {
+        super.setChecked(checked);
+
+        // ボタンの左側にチェックアイコンを表示
+        if (checked) {
+            setImage(UResourceManager.getBitmapById(R.drawable.checked2), new Size(CHECKED_W, CHECKED_W));
+        } else {
+            setImage(null, null);
+        }
+    }
 
     /**
      * 描画処理
@@ -159,9 +177,34 @@ public class UButtonText extends UButton {
 
         // 画像
         if (mImage != null) {
+            float baseX = 0, baseY = 0;
+
+            switch(mImageAlignment) {
+                case None:
+                    baseX = 0;
+                    baseY = (size.height - mImageSize.height) / 2;
+                    break;
+                case CenterX:
+                    break;
+                case CenterY:
+                    break;
+                case Center:
+                    baseX = (size.width - mImageSize.width) / 2;
+                    baseY = (size.height - mImageSize.height) / 2;
+                    break;
+                case Left:
+                    baseX = 50;
+                    baseY = (size.height - mImageSize.height) / 2;
+                    break;
+                case Right:
+                    break;
+                case Right_CenterY:
+                    break;
+            }
+
             UDraw.drawBitmap(canvas, paint, mImage,
-                    _pos.x + mImageOffset.x + (size.width - mImageSize.width) / 2,
-                    _pos.y + mImageOffset.y + (size.height - mImageSize.height) / 2,
+                    _pos.x + mImageOffset.x + baseX,
+                    _pos.y + mImageOffset.y + baseY,
                                         mImageSize.width, mImageSize.height);
         }
         // テキスト

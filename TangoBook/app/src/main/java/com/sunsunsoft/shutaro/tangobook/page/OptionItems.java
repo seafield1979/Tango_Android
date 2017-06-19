@@ -22,7 +22,8 @@ public enum OptionItems {
     DefaultNameBook(R.string.option_default_name_book, false, Color.BLACK, Color.WHITE),
     DefaultNameCard(R.string.option_default_name_card, false, Color.BLACK, Color.WHITE),
     TitleStudy(R.string.title_option_study, true, Color.BLACK, UColor.LightRed),
-    AddNgCard(R.string.option_add_ng_card, false, Color.BLACK, Color.WHITE),
+//    AddNgCard(R.string.option_add_ng_card, false, Color.BLACK, Color.WHITE),
+    StudyMode3(R.string.option_mode3_1, false, Color.BLACK, Color.WHITE),
     StudyMode4(R.string.option_mode4_1, false, Color.BLACK, Color.WHITE),
     ;
 
@@ -49,7 +50,7 @@ public enum OptionItems {
                 };
             case Study:
                 return new OptionItems[]{
-                        TitleStudy, AddNgCard, StudyMode4
+                        TitleStudy, StudyMode3, StudyMode4
                 };
             default:
                 return null;

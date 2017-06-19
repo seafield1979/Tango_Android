@@ -11,6 +11,7 @@ import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.activity.MainActivity;
+import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
@@ -147,6 +148,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
             UDrawManager.getInstance().addDrawable(mButtons[i]);
 
             // 表示座標を少し調整
+            mButtons[i].setImageAlignment(UAlignment.Center);
             mButtons[i].setImageOffset(0, -50f);
             mButtons[i].setTextOffset(0, 40f);
 
@@ -175,6 +177,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
             UDrawManager.getInstance().addDrawable(mButtons[i]);
 
             // 表示座標を少し調整
+            mButtons[i].setImageAlignment(UAlignment.Center);
             mButtons[i].setImageOffset(-IMAGE_W - 60 - MARGIN_H / 2, 0);
             mButtons[i].setTextOffset(MARGIN_H / 2, 0);
 

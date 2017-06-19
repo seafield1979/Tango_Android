@@ -64,12 +64,14 @@ public class PageViewOptions extends UPageView
 
     // button ids
     private static final int ButtonIdReturn = 100;
-    private static final int ButtonIdCardWordA = 101;
-    private static final int ButtonIdCardWordB = 102;
-    private static final int ButtonIdAddNgCardOk = 103;
-    private static final int ButtonIdAddNgCardNg = 104;
-    private static final int ButtonIdStudySorted = 105;
-    private static final int ButtonIdStudyRandom = 106;
+     private static final int ButtonIdCardWordA = 101;       // カードに表示する名前(A->英語)
+    private static final int ButtonIdCardWordB = 102;       // カードに表示する名前(B->日本語)
+//    private static final int ButtonIdAddNgCardOk = 103;
+//    private static final int ButtonIdAddNgCardNg = 104;
+    private static final int ButtonIdSelectFromAll = 103;   // ４択学習モードで不正解のカードをカード全体から取得
+    private static final int ButtonIdSelectFromOne = 104;   // ４択学習もーどで不正解のカードを同じ単語帳から取得
+    private static final int ButtonIdStudySorted = 105;     // 正解入力学習モードの文字並びをA-Zでソート
+    private static final int ButtonIdStudyRandom = 106;     // 正解入力学習モードの文字並びをランダムに表示
 
     /**
      * Member variables
@@ -214,11 +216,24 @@ public class PageViewOptions extends UPageView
                 title = buf.toString();
             }
             break;
-            case AddNgCard:
+//            case AddNgCard:
+//            {
+//                String str = UResourceManager.getStringById(
+//                        MySharedPref.readBoolean(MySharedPref.AddNgCardToBookKey) ?
+//                                R.string.option_add_ng_card1 : R.string.option_add_ng_card2);
+//
+//                if (str != null) {
+//                    title = option.title + "\n    " + str;
+//                } else {
+//                    title = option.title;
+//                }
+//            }
+//            break;
+            case StudyMode3:
             {
                 String str = UResourceManager.getStringById(
-                        MySharedPref.readBoolean(MySharedPref.AddNgCardToBookKey) ?
-                                R.string.option_add_ng_card1 : R.string.option_add_ng_card2);
+                        MySharedPref.readBoolean(MySharedPref.StudyMode3OptionKey) ?
+                                R.string.option_mode3_2 : R.string.option_mode3_3);
 
                 if (str != null) {
                     title = option.title + "\n    " + str;
@@ -226,7 +241,8 @@ public class PageViewOptions extends UPageView
                     title = option.title;
                 }
             }
-            break;
+                break;
+
             case StudyMode4:
             {
                 String str = UResourceManager.getStringById(
@@ -238,7 +254,9 @@ public class PageViewOptions extends UPageView
                 } else {
                     title = option.title;
                 }
-            }    break;
+            }
+                break;
+
             default:
                 title = option.title;
                 break;
@@ -280,17 +298,35 @@ public class PageViewOptions extends UPageView
     /**
      * NGカード自動追加ダイアログを表示
      */
-    private void showAddNgCardDialog() {
+//    private void showAddNgCardDialog() {
+//        mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+//                this, this,
+//                UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
+//                true, mParentView.getWidth(), mParentView.getHeight(),
+//                Color.BLACK, Color.LTGRAY);
+//        mDialog.addToDrawManager();
+//        mDialog.setTitle(UResourceManager.getStringById(R.string.option_add_ng_card_msg));
+//        mDialog.addButton(ButtonIdAddNgCardOk, UResourceManager.getStringById(R.string.option_add_ng_card1), UColor
+//                .BLACK, UColor.White);
+//        mDialog.addButton(ButtonIdAddNgCardNg, UResourceManager.getStringById(R.string.option_add_ng_card2), Color.BLACK, UColor.White);
+//        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+//    }
+
+    /**
+     * 学習モード3の不正解カードをどこから選択するかのダイアログを表示
+     */
+    private void showStudyMode3OptionDialog() {
         mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
                 this, this,
                 UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
                 true, mParentView.getWidth(), mParentView.getHeight(),
                 Color.BLACK, Color.LTGRAY);
         mDialog.addToDrawManager();
-        mDialog.setTitle(UResourceManager.getStringById(R.string.option_add_ng_card_msg));
-        mDialog.addButton(ButtonIdAddNgCardOk, UResourceManager.getStringById(R.string.option_add_ng_card1), UColor
-                .BLACK, UColor.White);
-        mDialog.addButton(ButtonIdAddNgCardNg, UResourceManager.getStringById(R.string.option_add_ng_card2), Color.BLACK, UColor.White);
+        mDialog.setTitle(UResourceManager.getStringById(R.string.option_mode3_1));
+        mDialog.addButton(ButtonIdSelectFromAll, UResourceManager.getStringById(R.string.option_mode3_2),
+                UColor.BLACK, UColor.White);
+        mDialog.addButton(ButtonIdSelectFromOne, UResourceManager.getStringById(R.string
+                .option_mode3_3), Color.BLACK, UColor.White);
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 
@@ -336,15 +372,31 @@ public class PageViewOptions extends UPageView
                 }
             }
             break;
-
-            case ButtonIdAddNgCardOk:
-            case ButtonIdAddNgCardNg: {
-                boolean flag = (id == ButtonIdAddNgCardOk) ? true : false;
-                MySharedPref.writeBoolean(MySharedPref.AddNgCardToBookKey, flag);
+            // NG単語帳に自動追加は未実装
+//            case ButtonIdAddNgCardOk:
+//            case ButtonIdAddNgCardNg: {
+//                boolean flag = (id == ButtonIdAddNgCardOk) ? true : false;
+//                MySharedPref.writeBoolean(MySharedPref.AddNgCardToBookKey, flag);
+//
+//                // アイテムのテキストを更新
+//                ListItemOption item = (ListItemOption) mListView.get(OptionItems.AddNgCard.ordinal());
+//                item.setTitle(getItemTitle(OptionItems.AddNgCard));
+//
+//                if (mDialog != null) {
+//                    mDialog.closeDialog();
+//                    mDialog = null;
+//                }
+//            }
+//                break;
+            case ButtonIdSelectFromAll:
+            case ButtonIdSelectFromOne: {
+                boolean flag = (id == ButtonIdSelectFromAll) ? true : false;
+                MySharedPref.writeBoolean(MySharedPref.StudyMode3OptionKey, flag);
 
                 // アイテムのテキストを更新
-                ListItemOption item = (ListItemOption) mListView.get(OptionItems.AddNgCard.ordinal());
-                item.setTitle(getItemTitle(OptionItems.AddNgCard));
+                ListItemOption item = (ListItemOption) mListView.get(OptionItems.StudyMode3
+                        .ordinal());
+                item.setTitle(getItemTitle(OptionItems.StudyMode3));
 
                 if (mDialog != null) {
                     mDialog.closeDialog();
@@ -424,12 +476,20 @@ public class PageViewOptions extends UPageView
                         "fragment_dialog");
             }
                 break;
-            case AddNgCard:
+            // NGカード自動追加は未実装
+//            case AddNgCard:
+//                if (mDialog != null) {
+//                    mDialog.closeDialog();
+//                    mDialog = null;
+//                }
+//                showAddNgCardDialog();
+//                break;
+            case StudyMode3:
                 if (mDialog != null) {
                     mDialog.closeDialog();
                     mDialog = null;
                 }
-                showAddNgCardDialog();
+                showStudyMode3OptionDialog();
                 break;
             case StudyMode4:
                 if (mDialog != null) {

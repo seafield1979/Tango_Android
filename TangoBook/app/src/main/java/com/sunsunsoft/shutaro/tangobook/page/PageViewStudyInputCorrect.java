@@ -16,6 +16,7 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButton;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonImage;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
@@ -81,7 +82,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
     private TangoBook mBook;
     private List<TangoCard> mCards;
 
-    // 終了確認ダイアログ
+    // 設定用のダイアログ
     private UDialogWindow mDialog;
 
 
@@ -116,7 +117,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
         mState = State.Main;
         if (mCards != null) {
             // リトライ時
-            mCardsManager = StudyCardsManager.createInstance(mCards);
+            mCardsManager = StudyCardsManager.createInstance(mBook.getId(), mCards);
         } else {
             // 通常時(選択された単語帳)
             mCardsManager = StudyCardsManager.createInstance(mBook);
@@ -151,13 +152,13 @@ public class PageViewStudyInputCorrect extends PageViewStudy
      * そのページで表示される描画オブジェクトを初期化する
      */
     public void initDrawables() {
-        int screenW = mParentView.getWidth();
-        int screenH = mParentView.getHeight();
+        int width = mParentView.getWidth();
+        int height = mParentView.getHeight();
 
         // カードスタック
         mCardsStack = new StudyCardStackInput(mCardsManager, this,
                 MARGIN_H, TOP_AREA_H,
-                screenW, mParentView.getWidth() - MARGIN_H * 2,
+                width, mParentView.getWidth() - MARGIN_H * 2,
                 mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
         );
         mCardsStack.addToDrawManager();
@@ -166,15 +167,15 @@ public class PageViewStudyInputCorrect extends PageViewStudy
         // あと〜枚
         String title = getCardsRemainText(mCardsStack.getCardCount());
         mTextCardCount = UTextView.createInstance( title, TEXT_SIZE, DRAW_PRIORITY,
-                UAlignment.CenterX, screenW, false, true,
-                screenW / 2, 50, 300, Color.rgb(100,50,50), 0);
+                UAlignment.CenterX, width, false, true,
+                width / 2, 50, 300, Color.rgb(100,50,50), 0);
         mTextCardCount.addToDrawManager();
 
         // 終了ボタン
         mExitButton = new UButtonText(this, UButtonType.Press,
                 ButtonIdExit,
                 DRAW_PRIORITY, mContext.getString(R.string.finish),
-                screenW / 2 - BUTTON_W - MARGIN_H / 2, screenH - 150,
+                width / 2 - BUTTON_W - MARGIN_H / 2, height - 150,
                 BUTTON_W, BUTTON_H,
                 TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
         mExitButton.addToDrawManager();
@@ -183,7 +184,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
         mSkipButton = new UButtonText(this, UButtonType.Press,
                 ButtonIdSkip,
                 DRAW_PRIORITY, mContext.getString(R.string.skip),
-                screenW / 2 + MARGIN_H / 2, screenH - 150,
+                width / 2 + MARGIN_H / 2, height - 150,
                 BUTTON_W, BUTTON_H,
                 TEXT_SIZE, Color.BLACK, UColor.LightPink);
         mSkipButton.addToDrawManager();
@@ -191,7 +192,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
         // 設定ボタン
         Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.settings_1, UColor.Green);
         mSettingButton = UButtonImage.createButton(this, ButtonIdSetting, DRAW_PRIORITY,
-                screenW - SETTING_BUTTON_W - MARGIN_H, screenH - 150,
+                width - SETTING_BUTTON_W - MARGIN_H, height - 150,
                 SETTING_BUTTON_W, SETTING_BUTTON_W,
                 image, null);
         mSettingButton.addToDrawManager();
@@ -250,9 +251,16 @@ public class PageViewStudyInputCorrect extends PageViewStudy
                 Color.BLACK, Color.LTGRAY);
         mDialog.addToDrawManager();
         mDialog.setTitle(UResourceManager.getStringById(R.string.option_mode4_22));
-        mDialog.addButton(ButtonIdStudySorted, UResourceManager.getStringById(R.string.option_mode4_3), UColor.BLACK, UColor.White);
-        mDialog.addButton(ButtonIdStudyRandom, UResourceManager.getStringById(R.string.option_mode4_4), Color.BLACK, UColor.White);
+        UButton button = mDialog.addButton(ButtonIdStudySorted, UResourceManager.getStringById
+                (R.string.option_mode4_3), UColor.BLACK, UColor.White);
+        UButton button2 = mDialog.addButton(ButtonIdStudyRandom, UResourceManager.getStringById(R.string.option_mode4_4), Color.BLACK, UColor.White);
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+        if (MySharedPref.readBoolean(MySharedPref.StudyMode4OptionKey)) {
+            button.setChecked(true);
+        } else {
+            button2.setChecked(true);
+        }
     }
 
     /**

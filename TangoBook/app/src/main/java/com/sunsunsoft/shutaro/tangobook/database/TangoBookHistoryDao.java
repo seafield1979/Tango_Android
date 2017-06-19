@@ -34,9 +34,6 @@ public class TangoBookHistoryDao {
     }
 
     /**
-     * Choice4
-     */
-    /**
      * 全て選択
      * @param reverse  並び順を逆順にする
      * @return

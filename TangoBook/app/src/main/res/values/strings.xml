@@ -113,7 +113,7 @@
     <string name="finish">終了</string>
     <string name="cards_remain">あと%d枚</string>
     <string name="confirm_exit">学習を終了しますか？</string>
-    <string name="confirm_moveto_trash">ゴミ箱に捨てますか？</string>
+    <string name="confirm_moveto_trash">「%s」をゴミ箱に捨てますか？</string>
     <string name="confirm_cleanup_trash">ゴミ箱を空にしますか？</string>
     <string name="confirm_clear_history">学習記録をクリアしますか？</string>
     <string name="confirm_export_csv">単語帳をcsvファイルに出力しますか？\n出力したファイルから単語帳を復元できます。</string>
@@ -254,6 +254,9 @@
     <string name="title_option_study">学習</string>
     <string name="option_add_ng_card">NGカードを自動追加</string>
     <string name="option_add_ng_card_msg">学習終了時にNGだったカードを自動でNG単語帳に追加するかどうか選んでください</string>
+    <string name="option_mode3_1">４択モードの不正解カード抽出範囲</string>
+    <string name="option_mode3_2">すべてのカード</string>
+    <string name="option_mode3_3">学習中の単語帳のカード</string>
     <string name="option_mode4_1">正解入力学習モードの文字並び順</string>
     <string name="option_mode4_2">正解入力学習モードの文字並び順を選んでください</string>
     <string name="option_mode4_22">正解入力用の文字の並び順を選んでください</string>
@@ -261,8 +264,8 @@
     <string name="option_mode4_4">ランダム</string>
 
     <string name="default_name_book">単語帳のデフォルト名</string>
-    <string name="default_name_book2">新しく作成した単語帳のデフォルト名</string>
-    <string name="default_name_card2">新しく作成したカードのデフォルト名</string>
+    <string name="default_name_book2">新しく作成した単語帳の名前</string>
+    <string name="default_name_card2">新しく作成したカードの名前</string>
 
     <string name="option_add_ng_card1">追加する</string>
     <string name="option_add_ng_card2">追加しない</string>

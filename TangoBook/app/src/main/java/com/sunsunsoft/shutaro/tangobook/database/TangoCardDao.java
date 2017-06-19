@@ -97,27 +97,56 @@ public class TangoCardDao {
      * アイテムをランダムで取得する
      * @param num 取得件数
      * @param exceptId 除外するID
+     * @param bookId 指定の単語帳から取得、0なら全てのカードから取得する
      * @return
      */
-    public List<TangoCard> selectAtRandom(int num, int exceptId) {
-        RealmResults<TangoCard> results = mRealm.where(TangoCard.class).findAll();
-
-        if (results == null || results.size() == 0) return null;
-
-        Random rand = new Random();
+    public List<TangoCard> selectAtRandom(int num, int exceptId, int bookId) {
+        RealmResults<TangoCard> results;
         ArrayList<TangoCard> cards = new ArrayList<>();
-        for (int i=0; i<num; i++) {
-            TangoCard card;
-            while (true) {
-                // ランダムのIDが除外IDとおなじならサイドランダム値を取得する
-                int randIndex = rand.nextInt(results.size());
-                card = results.get(randIndex);
-                if (card.getId() != exceptId) {
-                    break;
-                }
+
+        if (bookId == 0) {
+            // 全ての項目を取得しているがRealmは遅延ロードでそんなに時間がかからない。
+            results = mRealm.where(TangoCard.class).findAll();
+            // 最低２件以上のレコードがないと後の処理で無限ループにはまる
+            if (results == null || results.size() <= 2) {
+                return null;
             }
-            cards.add(card);
+
+            Random rand = new Random();
+            for (int i=0; i<num; i++) {
+                TangoCard card;
+                while (true) {
+                    // ランダムのIDが除外IDとおなじなら再度ランダム値を取得する
+                    int randIndex = rand.nextInt(results.size());
+                    card = results.get(randIndex);
+                    if (card.getId() != exceptId) {
+                        break;
+                    }
+                }
+                cards.add(card);
+            }
+
+        } else {
+            // 単語帳の中からランダム抽出
+            List<TangoCard> cardsInBook = RealmManager.getItemPosDao().selectCardsByBookId(bookId);
+            if (cardsInBook == null || cardsInBook.size() <= 2) return null;
+
+            Random rand = new Random();
+            for (int i=0; i<num; i++) {
+                TangoCard card;
+                while (true) {
+                    // ランダムのIDが除外IDとおなじなら再度ランダム値を取得する
+                    int randIndex = rand.nextInt(cardsInBook.size());
+                    card = cardsInBook.get(randIndex);
+                    if (card.getId() != exceptId) {
+                        cardsInBook.remove(randIndex);      // 同じカードが抽出されないように削除
+                        break;
+                    }
+                }
+                cards.add(card);
+            }
         }
+
         return cards;
     }
 

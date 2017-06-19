@@ -41,16 +41,16 @@ public class StudyUtil {
         cardHistoryDao.updateCards(okCards, ngCards);
 
         // NGカードを単語帳に追加
-        if (MySharedPref.readBoolean(MySharedPref.AddNgCardToBookKey)) {
-            // NG単語帳の有無をチェック
-            TangoBook ngBook = RealmManager.getBookDao().selectById(TangoBookDao.NGBookId);
-            if (ngBook == null) {
-                // なかったら作成
-                RealmManager.getBookDao().addNgBook();
-            }
-            // カードを追加
-            RealmManager.getCardDao().addNgCards(ngCards);
-        }
+//        if (MySharedPref.readBoolean(MySharedPref.AddNgCardToBookKey)) {
+//            // NG単語帳の有無をチェック
+//            TangoBook ngBook = RealmManager.getBookDao().selectById(TangoBookDao.NGBookId);
+//            if (ngBook == null) {
+//                // なかったら作成
+//                RealmManager.getBookDao().addNgBook();
+//            }
+//            // カードを追加
+//            RealmManager.getCardDao().addNgCards(ngCards);
+//        }
     }
 
 }
