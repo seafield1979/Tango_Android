@@ -73,7 +73,7 @@ public class PageViewRestore extends UPageView
     // Dialog
     private UDialogWindow mDialog;
 
-    private FileDialog fileDialog;      // ファイルを選択するモーダルダイアログ
+    private FileDialog mFileDialog;      // ファイルを選択するモーダルダイアログ
     private File mRestoreFile;          // 復元元のxmlファイル
 
     /**
@@ -157,11 +157,10 @@ public class PageViewRestore extends UPageView
      */
     private void getFilePath() {
         File mPath = UUtil.getPath(mContext, FilePathType.ExternalDocument);
-//        File mPath = new File(Environment.getExternalStorageDirectory() + "/");
-        fileDialog = new FileDialog((Activity)mContext, mPath, ".xml");
+        mFileDialog = new FileDialog((Activity)mContext, mPath, ".xml");
 
         // ファイルを選択
-        fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+        mFileDialog.addFileListener(new FileDialog.FileSelectedListener() {
             public void fileSelected(File file) {
                 if (file != null) {
                     showRestoreConfirmDialog(file);
@@ -169,7 +168,7 @@ public class PageViewRestore extends UPageView
             }
         });
 
-        fileDialog.showDialog();
+        mFileDialog.showDialog();
     }
 
     /**

@@ -6,6 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
+import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
+
 /**
  * Created by shutaro on 2016/12/05.
  *
@@ -84,7 +88,6 @@ abstract public class UPageView {
      * サブクラスでオーバーライドして使用する
      */
     public void setActionId(int id) {
-
     }
 
     /**

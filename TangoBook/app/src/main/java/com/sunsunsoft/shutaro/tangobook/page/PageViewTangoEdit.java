@@ -181,7 +181,6 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
     /**
      * アクションIDを処理する
-     * サブクラスでオーバーライドして使用する
      */
     public void setActionId(int id) {
         switch(id) {

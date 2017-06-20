@@ -1,13 +1,18 @@
 package com.sunsunsoft.shutaro.tangobook.page;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import com.sunsunsoft.shutaro.tangobook.csv.CsvParser;
 import com.sunsunsoft.shutaro.tangobook.preset.*;
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.FileDialog;
+import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
+import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemCard;
@@ -18,6 +23,7 @@ import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -53,6 +59,7 @@ public class PageViewCsvBook extends UPageView
     private UTextView mTitleText;
     private UListView mListView;
     private UDialogWindow mDialog;      // OK/NGのカード一覧を表示するダイアログ
+    private FileDialog mFileDialog;      // ファイルを選択するモーダルダイアログ
     private PresetBook mBook;
 
     // 終了確認ダイアログ
@@ -137,6 +144,7 @@ public class PageViewCsvBook extends UPageView
             ListItemPresetBook item = new ListItemPresetBook(this, csvBook, mListView.getClientSize().width);
             mListView.add(item);
         }
+        mListView.updateWindow();
 
         y += listViewH + MARGIN_H;
     }
@@ -174,7 +182,10 @@ public class PageViewCsvBook extends UPageView
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));
     }
 
-    private void showMessageDialog() {
+    /**
+     * csvファイルから単語帳を追加完了した時に表示するダイアログ
+     */
+    private void showMessageDialog(String title) {
         if (mMessageDialog == null) {
             mMessageDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
                     this, this,
@@ -182,10 +193,71 @@ public class PageViewCsvBook extends UPageView
                     true, mParentView.getWidth(), mParentView.getHeight(),
                     Color.BLACK, Color.LTGRAY);
             mMessageDialog.addToDrawManager();
-            String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book2), mBook.mName);
             mMessageDialog.setTitle(title);
             mMessageDialog.addButton(ButtonIdAddOk2, "OK", Color.BLACK, Color.WHITE);
         }
+    }
+
+    /**
+     * リストをクリックした後に、CSVファイルを追加するかの確認ダイアログを表示する
+     * @param book
+     */
+    private void showConfirmAddDialog(PresetBook book) {
+        // 追加するかを確認する
+        // 終了ボタンを押したら確認用のモーダルダイアログを表示
+        if (mConfirmDialog == null) {
+            mConfirmDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                    this, this,
+                    UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
+                    true, mParentView.getWidth(), mParentView.getHeight(),
+                    Color.BLACK, Color.LTGRAY);
+            mConfirmDialog.addToDrawManager();
+            String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book), book.mName);
+            mConfirmDialog.setTitle(title);
+            mConfirmDialog.addButton(ButtonIdAddOk, "OK", Color.BLACK, Color.WHITE);
+            mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+            // クリックされた項目のBookを記憶しておく
+            mBook = book;
+        }
+    }
+
+    /**
+     * xmlファイルを選択するためのダイアログを表示する
+     */
+    private void selectImportCsvFile() {
+        File mPath = UUtil.getPath(mContext, FilePathType.ExternalDocument);
+        mFileDialog = new FileDialog((Activity)mContext, mPath, ".csv");
+
+        // ファイルを選択
+        mFileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+            public void fileSelected(File file) {
+                if (file != null) {
+                    addBookFromCsvFile(file);
+                    mParentView.invalidate();
+                }
+            }
+        });
+
+        mFileDialog.showDialog();
+    }
+
+    /**
+     * CSVファイルから単語帳を追加する
+     * @param csvfile
+     * @return false:追加失敗 / true:追加成功
+     */
+    private boolean addBookFromCsvFile(File csvfile) {
+        PresetBook book = CsvParser.getFileBook(mContext, csvfile, true);
+        if (book == null) {
+            showMessageDialog(UResourceManager.getStringById(R.string.failed_import));
+            return false;
+        }
+        // データベースに追加
+        PresetBookManager.getInstance().addBookToDB(book);
+        showConfirmAddDialog(book);
+
+        return true;
     }
 
     /**
@@ -206,6 +278,19 @@ public class PageViewCsvBook extends UPageView
     }
 
     /**
+     * アクションIDを処理する
+     * サブクラスでオーバーライドして使用する
+     */
+    public void setActionId(int id) {
+        switch (id) {
+            case R.id.action_select_csv_file: {
+                selectImportCsvFile();
+            }
+            break;
+        }
+    }
+
+    /**
      * Callbacks
      */
 
@@ -223,7 +308,9 @@ public class PageViewCsvBook extends UPageView
                     PresetBookManager.getInstance().addBookToDB(mBook);
                 }
                 mConfirmDialog.closeDialog();
-                showMessageDialog();
+
+                String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book2), mBook.mName);
+                showMessageDialog(title);
             }
             break;
             case ButtonIdAddOk2:
@@ -263,19 +350,7 @@ public class PageViewCsvBook extends UPageView
                 // 追加するかを確認する
                 // 終了ボタンを押したら確認用のモーダルダイアログを表示
                 if (mConfirmDialog == null) {
-                    mConfirmDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
-                            this, this,
-                            UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
-                            true, mParentView.getWidth(), mParentView.getHeight(),
-                            Color.BLACK, Color.LTGRAY);
-                    mConfirmDialog.addToDrawManager();
-                    String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book), book.getBook().mName);
-                    mConfirmDialog.setTitle(title);
-                    mConfirmDialog.addButton(ButtonIdAddOk, "OK", Color.BLACK, Color.WHITE);
-                    mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-
-                    // クリックされた項目のBookを記憶しておく
-                    mBook = book.getBook();
+                    showConfirmAddDialog(book.getBook());
                 }
             }
             break;

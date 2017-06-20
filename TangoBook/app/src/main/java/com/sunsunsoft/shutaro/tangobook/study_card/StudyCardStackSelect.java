@@ -176,6 +176,7 @@ public class StudyCardStackSelect extends UDrawable {
         switch(mState) {
             case Main:
                 // カードがタッチされたら正解判定を行う
+                StudyCardSelect correctCard = null;     // 正解のカード
                 for (StudyCardSelect card : mStudyCards) {
                     if (card.getRequest() == StudyCardSelect.RequestToParent.Touch) {
                         mState = State.ShowCorrect;
@@ -191,8 +192,15 @@ public class StudyCardStackSelect extends UDrawable {
                             mCardManager.addOkCard(card.mCard);
                         } else {
                             // 不正解
-                            mCardManager.addNgCard(card.mCard);
+                            // 不正解でもNGリストに追加するのは正解のカード
+                            for (StudyCardSelect _card : mStudyCards) {
+                                if (_card.isCorrect) {
+                                    mCardManager.addNgCard(_card.mCard);
+                                    break;
+                                }
+                            }
                         }
+                        break;
                     }
                 }
                 break;

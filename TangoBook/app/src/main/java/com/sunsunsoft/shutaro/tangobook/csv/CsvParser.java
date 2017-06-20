@@ -141,7 +141,8 @@ public class CsvParser {
      * @param context
      * @param file
      * @param onlyBook  Book情報のみ取得、Card情報は取得しない
-     * @return
+     * @return csvファイルから読み込んで作成したPresetBook
+     *          null: 読み込み失敗
      */
     public static PresetBook getFileBook(Context context, File file, boolean onlyBook) {
         try {
@@ -166,12 +167,15 @@ public class CsvParser {
                         } else {
                             book = new PresetBook(context, file, words[0], null);
                         }
+                    } else {
+                        return null;
                     }
                     if (onlyBook) {
                         break;
                     }
                 }
                 else {
+                    // ２行目以降はカードデータ
                     if (words.length >= 2) {
                         PresetCard card;
                         if (words.length >= 3) {

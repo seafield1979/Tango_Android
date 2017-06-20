@@ -29,8 +29,7 @@ public class ListItemCard extends UListItem {
      */
     public static final String TAG = "ListItemCard";
 
-    private static final int TEXT_SIZE = 40;
-    private static final int TEXT_SIZE2 = 42;
+    private static final int TEXT_SIZE = 45;
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int BG_COLOR = Color.WHITE;
     private static final int ICON_W = 100;

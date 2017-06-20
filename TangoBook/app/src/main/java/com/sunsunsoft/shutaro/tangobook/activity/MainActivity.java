@@ -1,5 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook.activity;
 
+import android.os.Vibrator;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,10 +30,11 @@ public class MainActivity extends AppCompatActivity {
      */
     // アクションバーに表示するメニューの種類
     public enum MenuType {
-        None,           // 非表示
-        TangoEdit,      // 単語帳編集ページ
-        TangoEdit2,     // 単語帳編集ページ(アイコン選択時0
-        SelectStudyBook // 学習する単語帳選択ページ
+        None,            // 非表示
+        TangoEdit,       // 単語帳編集ページ
+        TangoEdit2,      // 単語帳編集ページ(アイコン選択時0
+        SelectStudyBook, // 学習する単語帳選択ページ
+        AddCsv,          // CSV追加
     }
 
     /**
@@ -167,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
 
+            // タイトルバーに表示されるメニューの項目
             case R.id.action_move_to_trash:
             case R.id.action_sort_none:
             case R.id.action_sort_word_asc:
@@ -179,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_card_name_b:
             case R.id.action_search_card:
             case R.id.action_settings:
+            case R.id.action_select_csv_file:
                 PageViewManager.getInstance().setActionId(itemId);
                 break;
         }
@@ -227,6 +231,9 @@ public class MainActivity extends AppCompatActivity {
             case SelectStudyBook:
                 getMenuInflater().inflate(R.menu.menu_select_study_book, menu);
                 break;
+            case AddCsv:
+                getMenuInflater().inflate(R.menu.menu_page_csv, menu);
+                break;
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -274,5 +281,17 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(show);
         actionBar.setDisplayHomeAsUpEnabled(show);
+    }
+
+    /**
+     * 端末を振動させる
+     * @param time  振動させる時間(mill second)
+     */
+    public void startVibration(int time) {
+        // Vibratorインスタンス取得
+        Vibrator vib = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+
+        //100ミリ秒の振動
+        vib.vibrate(100);
     }
 }

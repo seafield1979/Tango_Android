@@ -145,6 +145,7 @@
     <string name="failed_backup">バックアップに失敗しました</string>
     <string name="finish_backup">バックアップが完了しました</string>
     <string name="failed_export">CSVファイルへの出力に失敗しました</string>
+    <string name="failed_import">CSVファイルの読み込みに失敗しました</string>
     <string name="finish_export">への書き込みが完了しました</string>
     <string name="confirm_restore">バックアップから復元しますか？\n復元を行うと現在の単語帳の情報は消去されます。</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
@@ -163,6 +164,7 @@
     <string name="preset_title2">Addボタンをタップしてプリセットを\n追加します</string>
     <string name="csv_title2">指定のフォルダ(/sdcard/Documents/)\nにあるCSVファイルから単語帳を追加します。</string>
 
+    <!-- メニュー menu -->
     <string name="add_item">追加</string>
     <string name="add_card">単語カード</string>
     <string name="add_book">単語帳</string>
@@ -198,6 +200,7 @@
     <string name="disp_menu_name">メニュー名を表示</string>
     <string name="disp_menu_help">メニューの説明を表示</string>
     <string name="edit_page_word_type">カードの名前</string>
+    <string name="select_csv_file">CSVファイルを選択</string>
 
     <!-- error message -->
     <string name="not_exit_study_card">学習できるカードがありません</string>
