@@ -70,7 +70,9 @@ public class UListView extends UScrollWindow
         item.setListItemCallbacks(mListItemCallbacks);
 
         mItems.add(item);
+
         mBottomY += item.getHeight();
+        mBottomY -= item.mFrameW / 2;       // フレーム部分は重なってもOK
 
         contentSize.setHeight((int)mBottomY);
     }
@@ -127,7 +129,7 @@ public class UListView extends UScrollWindow
         return ret;
     }
 
-
+    @Override
     public void drawContent(Canvas canvas, Paint paint, PointF offset) {
         // クリッピング前の状態を保存
         canvas.save();

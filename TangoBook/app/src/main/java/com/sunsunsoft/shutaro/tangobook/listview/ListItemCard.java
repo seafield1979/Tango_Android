@@ -57,7 +57,7 @@ public class ListItemCard extends UListItem {
     public ListItemCard(UListItemCallbacks listItemCallbacks,
                              PresetCard card, int width)
     {
-        super(listItemCallbacks, true, 0, width, ITEM_H, BG_COLOR);
+        super(listItemCallbacks, true, 0, width, ITEM_H, BG_COLOR, FRAME_WIDTH, FRAME_COLOR);
         mPresetCard = card;
     }
 
@@ -77,14 +77,7 @@ public class ListItemCard extends UListItem {
             _pos.y += offset.y;
         }
 
-        // BG　タッチ中は色を変更
-        int _color = color;
-        if (isTouchable && isTouching) {
-            _color = pressedColor;
-        }
-        UDraw.drawRectFill(canvas, paint,
-                new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),
-                _color, FRAME_WIDTH, FRAME_COLOR);
+        super.draw(canvas, paint, _pos);
 
         float x = _pos.x + MARGIN_H;
         float marginV = (ITEM_H - TEXT_SIZE * 2) / 3;

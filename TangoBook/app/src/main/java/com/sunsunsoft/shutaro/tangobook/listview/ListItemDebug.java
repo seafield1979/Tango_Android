@@ -41,7 +41,7 @@ public class ListItemDebug extends UListItem {
                          String text, boolean isTouchable,
                          float x, int width)
     {
-        super(listItemCallbacks, isTouchable, x, width, ITEM_H, BG_COLOR);
+        super(listItemCallbacks, isTouchable, x, width, ITEM_H, BG_COLOR, FRAME_WIDTH, FRAME_COLOR);
 
         mText = text;
     }
@@ -62,14 +62,7 @@ public class ListItemDebug extends UListItem {
             _pos.y += offset.y;
         }
 
-        // BG　タッチ中は色を変更
-        int _color = color;
-        if (isTouchable && isTouching) {
-            _color = pressedColor;
-        }
-        UDraw.drawRectFill(canvas, paint,
-                new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),
-                _color, FRAME_WIDTH, FRAME_COLOR);
+        super.draw(canvas, paint, _pos);
 
         UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
                     _pos.x + size.width / 2, _pos.y + size.height / 2, Color.BLACK);

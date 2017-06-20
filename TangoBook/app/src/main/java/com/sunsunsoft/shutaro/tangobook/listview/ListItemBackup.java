@@ -62,7 +62,7 @@ public class ListItemBackup extends UListItem {
                           BackupFile backup,
                           float x, int width)
     {
-        super(listItemCallbacks, true, x, width, ITEM_H2, UColor.WHITE);
+        super(listItemCallbacks, true, x, width, ITEM_H2, UColor.WHITE, FRAME_WIDTH, FRAME_COLOR);
 
         mBackup = backup;
 
@@ -95,15 +95,7 @@ public class ListItemBackup extends UListItem {
         }
         float y = _pos.y + MARGIN_V;
 
-        // BG　タッチ中は色を変更
-        int _color = color;
-        if (isTouchable && isTouching) {
-            _color = pressedColor;
-        }
-        UDraw.drawRectFill(canvas, paint,
-           new Rect((int) _pos.x, (int) _pos.y,
-                (int) _pos.x + size.width, (int) _pos.y + size.height),
-        _color, FRAME_WIDTH, FRAME_COLOR);
+        super.draw(canvas, paint, _pos);
 
         // mTitle
         UDraw.drawTextOneLine(canvas, paint, mTitle, UAlignment.None, TEXT_SIZE_S,

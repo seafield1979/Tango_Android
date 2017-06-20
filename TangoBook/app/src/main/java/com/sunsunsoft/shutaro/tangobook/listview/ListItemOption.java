@@ -51,7 +51,7 @@ public class ListItemOption extends UListItem {
                           OptionItems itemType, String title, boolean isTitle, int color, int
                                   bgColor,
                           float x, int width) {
-        super(listItemCallbacks, !isTitle, x, width, TITLE_H, bgColor);
+        super(listItemCallbacks, !isTitle, x, width, TITLE_H, bgColor, FRAME_WIDTH, FRAME_COLOR);
         this.mItemType = itemType;
         this.mTitle = title;
         this.mColor = color;
@@ -91,15 +91,7 @@ public class ListItemOption extends UListItem {
             _pos.y += offset.y;
         }
 
-        // BG　タッチ中は色を変更
-        int _color = mBgColor;
-        if (isTouchable && isTouching) {
-            _color = pressedColor;
-        }
-        UDraw.drawRectFill(canvas, paint,
-                new Rect((int) _pos.x, (int) _pos.y,
-                        (int) _pos.x + size.width, (int) _pos.y + size.height),
-                _color, FRAME_WIDTH, FRAME_COLOR);
+        super.draw(canvas, paint, _pos);
 
         UDraw.drawText(canvas, mTitle, UAlignment.Center, TEXT_SIZE,
                 _pos.x + size.width / 2, _pos.y + size.height / 2, mColor);

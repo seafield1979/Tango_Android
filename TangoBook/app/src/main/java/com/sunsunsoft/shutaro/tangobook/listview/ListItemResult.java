@@ -86,7 +86,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     public ListItemResult(UListItemCallbacks listItemCallbacks,
                           ListItemResultType type, boolean isTouchable, TangoCard card,
                           float x, int width, int textColor, int color) {
-        super(listItemCallbacks, isTouchable, x, width, 0, color);
+        super(listItemCallbacks, isTouchable, x, width, 0, color, FRAME_WIDTH, FRAME_COLOR);
         mType = type;
         mTextColor = textColor;
         mCard = card;
@@ -172,15 +172,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
             _pos.y += offset.y;
         }
 
-        // BG　タッチ中は色を変更
-        int _color = color;
-        if (isTouchable && isTouching) {
-            _color = pressedColor;
-        }
-        UDraw.drawRectFill(canvas, paint,
-                    new Rect((int) _pos.x, (int) _pos.y,
-                            (int) _pos.x + size.width, (int) _pos.y + size.height),
-                    _color, FRAME_WIDTH, FRAME_COLOR);
+        super.draw(canvas, paint, _pos);
 
         switch(mType) {
             case Title:

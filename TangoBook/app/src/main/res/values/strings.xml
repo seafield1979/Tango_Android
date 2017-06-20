@@ -11,6 +11,11 @@
     <string name="date_format2">yyyy年MM月dd日</string>
     <string name="datetime_format">yyyy/MM/dd HH:mm</string>
     <string name="datetime_format2">yyyy年MM月dd日 HH:mm</string>
+    <string name="time_area_1">今日</string>
+    <string name="time_area_2">昨日</string>
+    <string name="time_area_3">今週</string>
+    <string name="time_area_4">今月</string>
+    <string name="time_area_5">１ヶ月より前</string>
 
     <string name="app_title">カラフル単語帳</string>
 

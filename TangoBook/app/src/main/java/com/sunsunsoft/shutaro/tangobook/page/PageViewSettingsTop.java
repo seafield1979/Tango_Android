@@ -166,7 +166,6 @@ public class PageViewSettingsTop extends UPageView
         int buttonH = BUTTON2_H;
 
         for (int i = 0; i < ButtonId.values().length; i++) {
-            // デバッグモードがONの場合のみDebugを表示
             ButtonId id = ButtonId.values()[i];
 
             mButtons[i] = new UButtonText(this, UButtonType.Press, id.ordinal(), DRAW_PRIORITY,
@@ -178,7 +177,8 @@ public class PageViewSettingsTop extends UPageView
             UDrawManager.getInstance().addDrawable(mButtons[i]);
 
             // 表示座標を少し調整
-            mButtons[i].setImageOffset(-IMAGE_W - 200, 0);
+            mButtons[i].setImageAlignment(UAlignment.Center);
+            mButtons[i].setImageOffset(-IMAGE_W - 150, 0);
             mButtons[i].setTextOffset(MARGIN_H / 2, 0);
 
             y += buttonH + MARGIN_V;

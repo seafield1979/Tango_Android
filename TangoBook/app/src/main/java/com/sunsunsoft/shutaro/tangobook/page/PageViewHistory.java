@@ -3,6 +3,7 @@ package com.sunsunsoft.shutaro.tangobook.page;
 /**
  * Created by shutaro on 2016/12/13.
  * 履歴ページ
+ * 過去に学習した単語帳のリストを表示する
  */
 
 import android.content.Context;

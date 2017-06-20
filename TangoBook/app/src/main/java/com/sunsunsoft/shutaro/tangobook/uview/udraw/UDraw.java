@@ -91,6 +91,9 @@ public class UDraw {
      * @param rect
      * @param color
      */
+    public static void drawRectFill(Canvas canvas, Paint paint, Rect rect, int color) {
+        drawRectFill(canvas, paint, rect, color, 0, 0);
+    }
     public static void drawRectFill(Canvas canvas, Paint paint, Rect rect, int color,
                                     int strokeWidth, int strokeColor) {
         paint.setStyle(Paint.Style.FILL);

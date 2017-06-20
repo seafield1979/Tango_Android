@@ -65,7 +65,7 @@ public class ListItemSearchedCard extends UListItem {
     public ListItemSearchedCard(UListItemCallbacks listItemCallbacks,
                              TangoCard card, int width, int color)
     {
-        super(listItemCallbacks, true, 0, width, ITEM_H, color);
+        super(listItemCallbacks, true, 0, width, ITEM_H, color, FRAME_WIDTH, FRAME_COLOR);
         mCard = card;
 
         mWordA = UResourceManager.getStringById(R.string.word_a) + " : " +
@@ -96,14 +96,7 @@ public class ListItemSearchedCard extends UListItem {
             _pos.y += offset.y;
         }
 
-        // BG　タッチ中は色を変更
-        int _color = color;
-        if (isTouchable && isTouching) {
-            _color = pressedColor;
-        }
-        UDraw.drawRectFill(canvas, paint,
-                new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + size.width, (int) _pos.y + size.height),
-                _color, FRAME_WIDTH, FRAME_COLOR);
+        super.draw(canvas, paint, _pos);
 
         float x = _pos.x + MARGIN_H;
         float y = _pos.y + MARGIN_V;
