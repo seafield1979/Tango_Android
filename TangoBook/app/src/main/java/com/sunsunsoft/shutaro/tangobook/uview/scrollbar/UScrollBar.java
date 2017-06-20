@@ -336,11 +336,10 @@ public class UScrollBar {
      */
     private boolean touchDown(ViewTouch vt, PointF offset) {
         // スペース部分をタッチしたら１画面分スクロール
-        float ex = vt.touchX() - parentPos.x - offset.x;
-        float ey = vt.touchY() - parentPos.y - offset.y;
+        float ex = vt.touchX() - offset.x;
+        float ey = vt.touchY() - offset.y;
 
         if (type == ScrollBarType.Vertical) {
-            System.out.println("ex:ey:" + ex + " " + ey + " posx:posy:" + pos.x + " " + pos.y);
             if (pos.x <= ex && ex < pos.x + bgWidth &&
                     pos.y <= ey && ey < pos.y + bgLength)
             {

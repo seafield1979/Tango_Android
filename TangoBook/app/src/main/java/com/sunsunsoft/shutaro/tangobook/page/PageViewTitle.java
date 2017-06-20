@@ -34,7 +34,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
                 .drawable.edit),
         Study(R.string.title_study, Color.WHITE, Color.WHITE, Color.rgb(200,100,100), R.drawable
                 .study),
-        History(R.string.title_history, UColor.DarkYellow, UColor.DarkYellow, Color.rgb(200,200,0), R.drawable
+        History(R.string.title_history, UColor.DarkYellow, UColor.DarkYellow, UColor.Yellow, R.drawable
                 .history),
         Settings(R.string.title_settings, UColor.DarkBlue, UColor.DarkBlue, Color.rgb(153,204,255), R.drawable
                 .settings_1),

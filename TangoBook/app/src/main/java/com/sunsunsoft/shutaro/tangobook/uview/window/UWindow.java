@@ -502,20 +502,27 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
         if (offset == null) {
             offset = new PointF(pos.x, pos.y);
         }
+
         if (closeIcon != null && closeIcon.isShow()) {
             if (closeIcon.touchEvent(vt, offset)) {
                 return true;
             }
         }
 
+        PointF offset2 = new PointF(offset.x + pos.x, offset.y + pos.y);
+
         // スクロールバーのタッチ処理
-        if (mScrollBarV.isShow() && mScrollBarV.touchEvent(vt, offset)) {
-            contentTop.y = mScrollBarV.getTopPos();
-            return true;
+        if (mScrollBarV.isShow()){
+            if ( mScrollBarV.touchEvent(vt, offset2)) {
+                contentTop.y = mScrollBarV.getTopPos();
+                return true;
+            }
         }
-        if (mScrollBarH.isShow() && mScrollBarH.touchEvent(vt, offset)) {
-            contentTop.x = mScrollBarH.getTopPos();
-            return true;
+        if (mScrollBarH.isShow()) {
+            if ( mScrollBarH.touchEvent(vt, offset2)) {
+                contentTop.x = mScrollBarH.getTopPos();
+                return true;
+            }
         }
         return false;
     }

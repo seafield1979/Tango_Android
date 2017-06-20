@@ -45,6 +45,7 @@ public class StudyCardStackSelect extends UDrawable {
     protected static final int MOVING_FRAME = 10;
     protected static final int STUDY_CARD_NUM = 4;
     protected static final int TEXT_SIZE = 50;
+    protected static final int TEXT_SIZE_L = 60;
     protected static final int DRAW_PRIORITY = 100;
     protected static final int CARD_MARGIN_V = 20;
 
@@ -103,7 +104,7 @@ public class StudyCardStackSelect extends UDrawable {
 
         // 出題 TextView
         mQuestionView = UTextView.createInstance(
-                "", TEXT_SIZE, DRAW_PRIORITY,
+                "", TEXT_SIZE_L, DRAW_PRIORITY,
                 UAlignment.CenterX, canvasW,
                 true, false, width / 2, 0,
                 width, TEXT_COLOR, 0);

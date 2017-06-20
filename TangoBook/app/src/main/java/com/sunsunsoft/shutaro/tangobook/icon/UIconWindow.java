@@ -1100,7 +1100,7 @@ public class UIconWindow extends UWindow {
         if (state == WindowState.icon_moving) return false;
 
         if (offset == null) {
-            offset = new PointF(pos.x, pos.y);
+            offset = new PointF();
         }
         if (super.touchEvent(vt, offset)) {
             return true;
