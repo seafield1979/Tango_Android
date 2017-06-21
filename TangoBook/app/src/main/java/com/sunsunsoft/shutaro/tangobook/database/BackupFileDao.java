@@ -134,6 +134,24 @@ public class BackupFileDao {
     }
 
     /**
+     * バックアップ情報をクリアする
+     * @param id
+     */
+    public boolean clearOne(int id) {
+        mRealm.beginTransaction();
+
+        BackupFile backup = mRealm.where(BackupFile.class).equalTo("id", id).findFirst();
+        if (backup == null) {
+            return false;
+        }
+        backup.setEnabled(false);
+
+        mRealm.commitTransaction();
+
+        return true;
+    }
+
+    /**
      * かぶらないプライマリIDを取得する
      * @return
      */

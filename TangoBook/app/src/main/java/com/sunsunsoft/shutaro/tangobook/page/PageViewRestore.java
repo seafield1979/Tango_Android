@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
+import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemBackup;
 import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
@@ -58,6 +59,7 @@ public class PageViewRestore extends UPageView
     private static final int ButtonIdRestoreFromFileOK = 101;   // 選択したファイルから復元するかどうかでOKを選択
     private static final int ButtonIdRestoreOK1 = 102;          // 復元確認1でOKを選択
     private static final int ButtonIdRestoreOK2 = 103;          // 復元確認2でOKを選択
+    private static final int ButtonIdNotFoundOK = 104;          // バックアップファイルが見つからなかった
 
     /**
      * Member variables
@@ -275,6 +277,13 @@ public class PageViewRestore extends UPageView
                 doRestore(file);
             }
                 break;
+            case ButtonIdNotFoundOK: {
+                mDialog.closeDialog();
+                // バックアップ情報を削除する
+                RealmManager.getBackupFileDao().clearOne(mBackupItem.getBackup().getId());
+                mBackupItem.setText( UResourceManager.getStringById(R.string.empty) );
+            }
+                break;
         }
         return false;
     }
@@ -299,14 +308,27 @@ public class PageViewRestore extends UPageView
 
         if (backup.isEnabled()) {
             // show confirmation dialog 1
+
             mBackupItem = backupItem;
 
-            mDialog = UDialogWindow.createInstance(this, this,
-                    UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
-            mDialog.addToDrawManager();
-            mDialog.setTitle(mContext.getString(R.string.confirm_restore));
-            mDialog.addButton(ButtonIdRestoreOK1, "OK", Color.BLACK, Color.WHITE);
-            mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+            // バックアップファイルの有無を確認（手動で消されていることもありえる）
+            File file = new File(backup.getFilePath());
+            if (file.exists() == false) {
+                // xmlファイルが見つからなかった
+                mDialog = UDialogWindow.createInstance(this, this,
+                        UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
+                mDialog.addToDrawManager();
+                mDialog.setTitle(mContext.getString(R.string.backup_not_found));
+                mDialog.addButton(ButtonIdNotFoundOK, "OK", Color.BLACK, Color.WHITE);
+            } else {
+                // ファイルがあるので復元確認ダイアログを表示する
+                mDialog = UDialogWindow.createInstance(this, this,
+                        UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
+                mDialog.addToDrawManager();
+                mDialog.setTitle(mContext.getString(R.string.confirm_restore));
+                mDialog.addButton(ButtonIdRestoreOK1, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+            }
         }
     }
     /**

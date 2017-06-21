@@ -152,6 +152,7 @@
     <string name="failed_export">CSVファイルへの出力に失敗しました</string>
     <string name="failed_import">CSVファイルの読み込みに失敗しました</string>
     <string name="finish_export">への書き込みが完了しました</string>
+    <string name="backup_not_found">バックアップファイルが見つかりませんでした。</string>
     <string name="confirm_restore">バックアップから復元しますか？\n復元を行うと現在の単語帳の情報は消去されます。</string>
     <string name="confirm_restore2">本当にバックアップから\n復元しますか？</string>
     <string name="confirm_cleanup">バックアップを空にしてもよろしいですか？</string>
