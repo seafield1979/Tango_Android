@@ -41,6 +41,7 @@ import java.util.Date;
  * Created by shutaro on 2016/12/06.
  *
  * Bookを学習する前に表示されるダイアログ
+ * 学習の方法のオプションを設定できる
  */
 
 public class PreStudyWindow extends UWindow implements UDialogCallbacks {
@@ -475,7 +476,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
     }
 
     /**
-     * 並び順を選択するダイアログを表示
+     * 出題方法を選択するダイアログを表示
      */
     private void showOption2Dialog() {
         if (mDialog == null) {
@@ -484,10 +485,16 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_type));
             mDialog.addTextView(UResourceManager.getStringById(R.string.study_type_exp),
                     UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
-            mDialog.addButton(ButtonIdOption2_1, UResourceManager.getStringById(R.string
+            UButton button = mDialog.addButton(ButtonIdOption2_1, UResourceManager.getStringById(R.string
                     .study_type_1), TEXT_COLOR, UColor.LightGreen);
-            mDialog.addButton(ButtonIdOption2_2, UResourceManager.getStringById(R.string
+            UButton button2 = mDialog.addButton(ButtonIdOption2_2, UResourceManager.getStringById(R.string
                     .study_type_2), TEXT_COLOR, UColor.LightGreen);
+
+            if (mStudyType == StudyType.EtoJ) {
+                button.setChecked(true);
+            } else {
+                button2.setChecked(true);
+            }
 
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
@@ -505,10 +512,18 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_order));
             mDialog.addTextView(UResourceManager.getStringById(R.string.study_order_exp),
                     UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
-            mDialog.addButton(ButtonIdOption3_1, UResourceManager.getStringById(R.string
+
+            // buttons
+            UButton button1 = mDialog.addButton(ButtonIdOption3_1, UResourceManager.getStringById(R.string
                     .study_order_1), TEXT_COLOR, UColor.Gold);
-            mDialog.addButton(ButtonIdOption3_2, UResourceManager.getStringById(R.string
+            UButton button2 = mDialog.addButton(ButtonIdOption3_2, UResourceManager.getStringById(R.string
                     .study_order_2), TEXT_COLOR, UColor.Gold);
+
+            if (mStudyOrder == StudyOrder.Normal) {
+                button1.setChecked(true);
+            } else {
+                button2.setChecked(true);
+            }
 
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
@@ -517,7 +532,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
     }
 
     /**
-     * 出題単語の絞り込み
+     * 出題単語の絞り込みを選択するダイアログ表示
      */
     private void showOption4Dialog() {
         if (mDialog == null) {
@@ -526,10 +541,17 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_filter));
             mDialog.addTextView(UResourceManager.getStringById(R.string.study_filter_exp),
                     UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
-            mDialog.addButton(ButtonIdOption4_1, UResourceManager.getStringById(R.string
+            // buttons
+            UButton button1 = mDialog.addButton(ButtonIdOption4_1, UResourceManager.getStringById(R.string
                     .study_filter_1), TEXT_COLOR, UColor.LightPink);
-            mDialog.addButton(ButtonIdOption4_2, UResourceManager.getStringById(R.string
+            UButton button2 = mDialog.addButton(ButtonIdOption4_2, UResourceManager.getStringById(R.string
                     .study_filter_2), TEXT_COLOR, UColor.LightPink);
+            if (mStudyFilter == StudyFilter.All) {
+                button1.setChecked(true);
+            } else {
+                button2.setChecked(true);
+            }
+
 
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 

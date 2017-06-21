@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButton;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
@@ -323,10 +324,18 @@ public class PageViewOptions extends UPageView
                 Color.BLACK, Color.LTGRAY);
         mDialog.addToDrawManager();
         mDialog.setTitle(UResourceManager.getStringById(R.string.option_mode3_1));
-        mDialog.addButton(ButtonIdSelectFromAll, UResourceManager.getStringById(R.string.option_mode3_2),
+
+        // buttons
+        UButton button1 = mDialog.addButton(ButtonIdSelectFromAll, UResourceManager.getStringById(R.string.option_mode3_2),
                 UColor.BLACK, UColor.White);
-        mDialog.addButton(ButtonIdSelectFromOne, UResourceManager.getStringById(R.string
+        UButton button2 = mDialog.addButton(ButtonIdSelectFromOne, UResourceManager.getStringById(R.string
                 .option_mode3_3), Color.BLACK, UColor.White);
+        if (MySharedPref.readBoolean(MySharedPref.StudyMode3OptionKey)) {
+            button1.setChecked(true);
+        } else {
+            button2.setChecked(true);
+        }
+
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 
@@ -341,8 +350,16 @@ public class PageViewOptions extends UPageView
                 Color.BLACK, Color.LTGRAY);
         mDialog.addToDrawManager();
         mDialog.setTitle(UResourceManager.getStringById(R.string.option_mode4_2));
-        mDialog.addButton(ButtonIdStudySorted, UResourceManager.getStringById(R.string.option_mode4_3), UColor.BLACK, UColor.White);
-        mDialog.addButton(ButtonIdStudyRandom, UResourceManager.getStringById(R.string.option_mode4_4), Color.BLACK, UColor.White);
+
+        // buttons
+        UButton button1 = mDialog.addButton(ButtonIdStudySorted, UResourceManager.getStringById(R.string.option_mode4_3), UColor.BLACK, UColor.White);
+        UButton button2 = mDialog.addButton(ButtonIdStudyRandom, UResourceManager.getStringById(R.string.option_mode4_4), Color.BLACK, UColor.White);
+        if (MySharedPref.readBoolean(MySharedPref.StudyMode4OptionKey)) {
+            button2.setChecked(true);
+        } else {
+            button1.setChecked(true);
+        }
+
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 

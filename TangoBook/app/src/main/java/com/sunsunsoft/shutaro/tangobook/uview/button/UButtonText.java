@@ -117,7 +117,7 @@ public class UButtonText extends UButton {
 
         // ボタンの左側にチェックアイコンを表示
         if (checked) {
-            setImage(UResourceManager.getBitmapById(R.drawable.checked2), new Size(CHECKED_W, CHECKED_W));
+            setImage(UResourceManager.getBitmapWithColor(R.drawable.checked2, UColor.BLACK), new Size(CHECKED_W, CHECKED_W));
         } else {
             setImage(null, null);
         }
