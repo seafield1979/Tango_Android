@@ -170,13 +170,13 @@ public class ViewTouch {
                 isMoveStart = false;
 
                 // 長押し時は何もしない
-                if (innerType == TouchType.LongPress) {
-                    type = TouchType.None;
-                    break;
-                }
+//                if (innerType == TouchType.LongPress) {
+//                    type = TouchType.None;
+//                    break;
+//                }
 
                 // クリックが判定できるようにタッチ時間が一定時間以上、かつ移動距離が一定時間以上で移動判定される
-                else if ( innerType != TouchType.Moving) {
+                if ( innerType != TouchType.Moving) {
                     float dx = (e.getX() - touchX);
                     float dy = (e.getY() - touchY);
                     float dist = (float) Math.sqrt(dx * dx + dy * dy);

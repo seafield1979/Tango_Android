@@ -35,6 +35,7 @@ public class ListViewStudyHistory extends UListView {
     /**
      * Member variables
      */
+    private Date[] beforeDate = new Date[5];
 
     /**
      * Get/Set
@@ -61,6 +62,7 @@ public class ListViewStudyHistory extends UListView {
                 R.string.time_area_5 };
 
         // add items
+        initTimeArea();
         for (TangoBookHistory history : histories) {
             int time = getTimeArea(history.getStudiedDateTime());
 
@@ -88,6 +90,37 @@ public class ListViewStudyHistory extends UListView {
     /**
      * Methods
      */
+    /**
+     * 現在の日時から指定の日数分前のDateを求める
+     */
+    private void initTimeArea() {
+        Date nowDate = new Date();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(nowDate);
+
+        // 1日前
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+        beforeDate[0]= cal.getTime();
+
+        // 2日前
+        cal.add(Calendar.DAY_OF_MONTH, -2);
+        beforeDate[1] = cal.getTime();
+
+        // １週間前まで
+        cal.add(Calendar.DAY_OF_MONTH, -7);
+        beforeDate[2] = cal.getTime();
+
+        // 1ヶ月前まで
+        cal.add(Calendar.DAY_OF_MONTH, -30);
+        beforeDate[3] = cal.getTime();
+
+    }
+    /**
+     * 日時のタイプを取得する
+     * @param date  判定元の日時
+     * @return  1:1日前 / 2:2日前 / 3:１週間前 / 4:１ヶ月前 : 5:１ヶ月以上前
+     */
     private int getTimeArea(Date date) {
         Date nowDate = new Date();
 
@@ -95,34 +128,25 @@ public class ListViewStudyHistory extends UListView {
         cal.setTime(nowDate);
 
         // 1日前まで
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-        Date beforeDate1 = cal.getTime();
-
-        if (date.after(beforeDate1)) {
+        if (date.after(beforeDate[0])) {
             // 今日(~24時間前)
             return 1;
         }
 
         // 2日前まで
-        cal.add(Calendar.DAY_OF_MONTH, -2);
-        Date beforeDate2 = cal.getTime();
-        if (date.before(beforeDate1) && date.after(beforeDate2)) {
+        if (date.before(beforeDate[0]) && date.after(beforeDate[1])) {
             // 昨日(24時間前 ~ 48時間前)
             return 2;
         }
 
         // １週間前まで
-        cal.add(Calendar.DAY_OF_MONTH, -7);
-        Date beforeDate3 = cal.getTime();
-        if (date.before(beforeDate2) && date.after(beforeDate3)) {
+        if (date.before(beforeDate[1]) && date.after(beforeDate[2])) {
             // 48時間前 ~ １週間前
             return 3;
         }
 
         // 1ヶ月前まで
-        cal.add(Calendar.DAY_OF_MONTH, -30);
-        Date beforeDate4 = cal.getTime();
-        if (date.before(beforeDate3) && date.after(beforeDate4)) {
+        if (date.before(beforeDate[2]) && date.after(beforeDate[3])) {
             // 48時間前 ~ １週間前
             return 4;
         }

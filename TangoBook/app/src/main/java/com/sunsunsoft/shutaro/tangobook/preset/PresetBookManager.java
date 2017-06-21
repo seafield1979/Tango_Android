@@ -99,7 +99,7 @@ public class PresetBookManager {
         File[] files = UUtil.getPath(mContext, FilePathType.ExternalDocument).listFiles();
         LinkedList<PresetBook> books = new LinkedList<>();
 
-        if (files.length <= 0) {
+        if (files == null || files.length <= 0) {
             return null;
         }
 

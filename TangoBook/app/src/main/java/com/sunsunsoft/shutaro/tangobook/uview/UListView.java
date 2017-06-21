@@ -179,6 +179,10 @@ public class UListView extends UScrollWindow
         PointF _offset = new PointF(pos.x + offset.x, pos.y - contentTop.y + offset.y);
         boolean isDraw = false;
 
+        if (super.touchEvent(vt, offset)) {
+            return true;
+        }
+
         for (UListItem item : mItems) {
             if (item.getBottom() < contentTop.y) continue;
             if (item.touchEvent(vt, _offset)) {
@@ -190,9 +194,6 @@ public class UListView extends UScrollWindow
             }
         }
 
-        if (super.touchEvent(vt, offset)) {
-            isDraw = true;
-        }
         return isDraw;
     }
 

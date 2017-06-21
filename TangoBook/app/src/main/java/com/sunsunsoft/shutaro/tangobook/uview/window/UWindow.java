@@ -54,6 +54,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
     protected static final int TOP_BAR_H = 50;
     protected static final int TOP_BAR_COLOR = Color.rgb(100,100,200);
     protected static final int FRAME_COLOR = 0;
+    private static final int TOUCH_MARGIN = 40;
 
     /**
      * Member Variables
@@ -97,8 +98,11 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
         return size;
     }
     public Rect getClientRect() {
-        return new Rect(frameSize.width, frameSize.height + topBarH,
-                frameSize.width + clientSize.width, frameSize.height + topBarH + clientSize.height);
+        // スクロールバーをタッチしやすいように少し領域を広げる
+        return new Rect(frameSize.width - TOUCH_MARGIN,
+                frameSize.height + topBarH - TOUCH_MARGIN,
+                frameSize.width + clientSize.width + TOUCH_MARGIN,
+                frameSize.height + topBarH + clientSize.height + TOUCH_MARGIN);
     }
 
     public PointF getContentTop() {

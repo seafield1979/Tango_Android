@@ -26,6 +26,8 @@ public class UScrollBar {
      */
     public static final String TAG = "UScrollBar";
 
+    private static final int TOUCH_MARGIN = 40;     // バーは細くてタッチしにくいので見た目よりもあたり判定を広くするためのマージンを設定する1
+
     // colors
     private static final int BAR_COLOR = Color.argb(160, 128,128,128);
     private static final int SHOW_BAR_COLOR = Color.argb(255, 255,128,0);
@@ -339,9 +341,12 @@ public class UScrollBar {
         float ex = vt.touchX() - offset.x;
         float ey = vt.touchY() - offset.y;
 
+        RectF rect;
         if (type == ScrollBarType.Vertical) {
-            if (pos.x <= ex && ex < pos.x + bgWidth &&
-                    pos.y <= ey && ey < pos.y + bgLength)
+            rect = new RectF(pos.x - TOUCH_MARGIN, pos.y,
+                        pos.x + bgWidth + TOUCH_MARGIN, pos.y + bgLength);
+            if (rect.left <= ex && ex < rect.right &&
+                    rect.top <= ey && ey < rect.bottom)
             {
                 if (ey < barPos) {
                     // 上にスクロール
@@ -361,8 +366,11 @@ public class UScrollBar {
                 }
             }
         } else {
-            if (pos.x <= ex && ex < pos.x + bgLength &&
-                    pos.y <= ey && ey < pos.y + bgWidth)
+            rect = new RectF(pos.x, pos.y - TOUCH_MARGIN,
+                    pos.x + bgLength, pos.y + bgWidth);
+
+            if (rect.left <= ex && ex < rect.right &&
+                    rect.top <= ey && ey < rect.bottom)
             {
                 if (ex < barPos) {
                     // 上にスクロール

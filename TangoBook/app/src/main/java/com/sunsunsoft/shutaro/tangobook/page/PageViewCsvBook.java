@@ -140,9 +140,11 @@ public class PageViewCsvBook extends UPageView
 
         // add items to ListView
         List<PresetBook> books = PresetBookManager.getInstance().getCsvBookList();
-        for (PresetBook csvBook : books) {
-            ListItemPresetBook item = new ListItemPresetBook(this, csvBook, mListView.getClientSize().width);
-            mListView.add(item);
+        if (books != null) {
+            for (PresetBook csvBook : books) {
+                ListItemPresetBook item = new ListItemPresetBook(this, csvBook, mListView.getClientSize().width);
+                mListView.add(item);
+            }
         }
         mListView.updateWindow();
 
