@@ -853,6 +853,34 @@ public class TangoItemPosDao {
         return itemPos;
     }
 
+    public TangoItemPos addOneTransaction(TangoItem item, TangoParentType parentType,
+                                          int parentId, int addPos, boolean transaction)
+    {
+        TangoItemPos itemPos = new TangoItemPos();
+        itemPos.setParentType(parentType.ordinal());
+        itemPos.setParentId(parentId);
+        itemPos.setItemType(item.getItemType().ordinal());
+        itemPos.setItemId(item.getId());
+        if (addPos == -1) {
+            itemPos.setPos(getNextPos(parentType.ordinal(), parentId));
+        } else {
+            itemPos.setPos(addPos + 1);
+            // 挿入位置以下の位置を１つづつずらす
+            slideItemPos(parentType, parentId, addPos);
+        }
+
+        if (transaction) {
+            mRealm.beginTransaction();
+        }
+        mRealm.copyToRealm(itemPos);
+
+        if (transaction) {
+            mRealm.commitTransaction();
+        }
+
+        return itemPos;
+    }
+
     /**
      * 指定位置以降のアイテムを１つづつスライドする
      * @param pos
@@ -1330,8 +1358,10 @@ public class TangoItemPosDao {
      * XMLファイルから読み込んだItemPosを追加する
      * @param poses
      */
-    public void addXmlPos(List<Pos> poses) {
-        mRealm.beginTransaction();
+    public void addXmlPos(List<Pos> poses, boolean transaction) {
+        if (transaction) {
+            mRealm.beginTransaction();
+        }
         for (Pos _pos : poses) {
             TangoItemPos pos = new TangoItemPos();
             pos.setParentType( _pos.getParentType());
@@ -1341,6 +1371,8 @@ public class TangoItemPosDao {
             pos.setItemId( _pos.getItemId());
             mRealm.copyToRealm(pos);
         }
-        mRealm.commitTransaction();
+        if (transaction) {
+            mRealm.commitTransaction();
+        }
     }
 }

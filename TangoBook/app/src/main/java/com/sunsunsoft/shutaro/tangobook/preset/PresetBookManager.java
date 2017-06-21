@@ -17,6 +17,8 @@ import java.io.FileWriter;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.realm.Realm;
+
 /**
  * Created by shutaro on 2016/12/18.
  *
@@ -146,14 +148,21 @@ public class PresetBookManager {
         RealmManager.getBookDao().addOne(book, -1);
 
         // 中のカードを作成する
+        Realm realm = Realm.getDefaultInstance();
+
+        // 大量のデータをまとめて追加するのでトランザクションは外で行う
+        realm.beginTransaction();
+
         for (PresetCard presetCard : presetBook.getCards()) {
             TangoCard card = TangoCard.createCard();
             card.setWordA(presetCard.mWordA);
             card.setWordB(presetCard.mWordB);
             card.setComment(presetCard.mComment);
             card.setNewFlag(false);
-            RealmManager.getCardDao().addOne(card, TangoParentType.Book, book.getId(), -1);
+            RealmManager.getCardDao().addOneTransaction(card, TangoParentType.Book, book.getId(), -1, false);
         }
+
+        realm.commitTransaction();
 
         return book;
     }

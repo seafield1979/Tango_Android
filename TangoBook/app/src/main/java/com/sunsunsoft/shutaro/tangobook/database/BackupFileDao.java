@@ -52,7 +52,9 @@ public class BackupFileDao {
             for (BackupFile backup : results) {
                 Log.d(TAG, "id:" + backup.getId() +
                         " enabled:" + backup.isEnabled() +
-                        " dateTime:" + backup.getDateTime());
+                        " dateTime:" + backup.getDateTime() +
+                        " cardNum:" + backup.getCardNum() +
+                        " bookNum:" + backup.getBookNum());
             }
         }
         return results;

@@ -316,16 +316,27 @@ public class TangoCardDao {
     public void addOne(TangoCard card, TangoParentType parentType, int parentId,
                        int addPos)
     {
+        addOneTransaction(card, parentType, parentId, addPos, true);
+    }
+
+    // トランザクションを行うかどうかをオプションで与えられるタイプ
+    public void addOneTransaction(TangoCard card, TangoParentType parentType, int parentId,
+                       int addPos, boolean transaction)
+    {
         card.setId(getNextId());
         card.setUpdateTime(new Date());
         card.setCreateTime(new Date());
 
-        mRealm.beginTransaction();
+        if (transaction) {
+            mRealm.beginTransaction();
+        }
         mRealm.copyToRealm(card);
-        mRealm.commitTransaction();
+        if (transaction) {
+            mRealm.commitTransaction();
+        }
 
-        TangoItemPos itemPos = RealmManager.getItemPosDao().addOne(card, parentType,
-                parentId, addPos);
+        TangoItemPos itemPos = RealmManager.getItemPosDao().addOneTransaction(card, parentType,
+                parentId, addPos, transaction);
         card.setItemPos(itemPos);
     }
 
@@ -579,10 +590,14 @@ public class TangoCardDao {
 
     /**
      * XMLファイルから読み込んだバックアップ用を追加する
+     * @param cards          カード
+     * @param transaction   トランザクションを行うかどうか
      */
-    public void addXmlCards(List<Card> cards) {
+    public void addXmlCards(List<Card> cards, boolean transaction) {
 
-        mRealm.beginTransaction();
+        if (transaction) {
+            mRealm.beginTransaction();
+        }
         for (Card _card : cards) {
             TangoCard card = new TangoCard();
             card.setId( _card.getId() );
@@ -592,10 +607,13 @@ public class TangoCardDao {
             card.setCreateTime( _card.getCreateTime());
             card.setColor( _card.getColor());
             card.setStar( _card.isStar());
+            card.setNewFlag( _card.isNewFlag());
 
             mRealm.copyToRealm(card);
         }
-        mRealm.commitTransaction();
+        if (transaction) {
+            mRealm.commitTransaction();
+        }
     }
 
     /**

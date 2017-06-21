@@ -25,6 +25,8 @@ public class ULog {
     public static final String TAG = "ULog";
     private static final boolean isCount = true;
 
+    private static final long NANO_TO_SEC = 1000000000;
+
     /**
      * Static variables
      */
@@ -32,6 +34,7 @@ public class ULog {
     private static HashMap<String,Boolean> enables = new HashMap<>();
     private static HashMap<String,Integer> counters = new HashMap<>();
     private static ULogWindow logWindow;
+    private static long startTime;      // 初期時間（システムの時間からこの時間を引いて表示する)
 
     /**
      * Get/Set
@@ -58,6 +61,16 @@ public class ULog {
         setEnable(UColor.TAG, false);
         setEnable(UResourceManager.TAG, false);
         setEnable(UWindow.TAG, false);
+
+        startTime = System.nanoTime();
+    }
+
+    /**
+     * 処理時間計測用のシステムの時間を初期化する
+     * 以後の時間はこの時間からのどれだけ経過したかで表示される
+     */
+    public static void initSystemTime() {
+        startTime = System.nanoTime();
     }
 
     // ログ出力
@@ -67,7 +80,10 @@ public class ULog {
         if (enable != null && !enable) {
             // 出力しない
         } else {
-            Log.v(tag, msg);
+            // 時間
+            long time = System.nanoTime();
+
+            Log.v(tag, ((double)(time - startTime) / NANO_TO_SEC) + ": " + msg);
             if (logWindow != null) {
                 logWindow.addLog(msg);
             }

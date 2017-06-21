@@ -70,6 +70,7 @@ public class TangoCard extends RealmObject implements TangoItem {
     public boolean getStar(){ return star; }
     public void setStar(boolean star) { this.star = star; }
 
+
     // createTime
     public Date getCreateTime() { return createTime; }
     public void setCreateTime(Date createTime) { this.createTime = createTime; }
@@ -112,11 +113,10 @@ public class TangoCard extends RealmObject implements TangoItem {
         return star;
     }
 
+    // New flag
     public boolean isNewFlag() {
         return newFlag;
     }
-
-    // New flag
     public void setNewFlag(boolean newFlag) {
         this.newFlag = newFlag;
     }

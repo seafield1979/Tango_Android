@@ -18,6 +18,7 @@ public class Card {
 
     private int cl;          // カードの色
     private boolean st;       // 覚えたフラグ
+    private boolean nfl;      // 新規作成フラグ
 
     /**
      * Get/Set
@@ -27,10 +28,12 @@ public class Card {
     }
 
     public String getWordA() {
+        if (wA == null) return "";
         return wA;
     }
 
     public String getWordB() {
+        if (wB == null) return "";
         return wB;
     }
 
@@ -50,10 +53,12 @@ public class Card {
         return st;
     }
 
+    public boolean isNewFlag() {return nfl; }
+
     // Simple XML がデシリアイズするときに呼ぶダミーのコントストラクタ
     public Card() {}
     public Card(int id, String wordA, String wordB, String comment, Date createTime,
-                int color, boolean star)
+                int color, boolean star, boolean newFlag)
     {
         this.id = id;
         this.wA = wordA;
@@ -62,5 +67,6 @@ public class Card {
         this.ct = createTime;
         this.cl = color;
         this.st = star;
+        this.nfl = newFlag;
     }
 }

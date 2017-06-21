@@ -141,8 +141,10 @@ public class TangoStudiedCardDao {
     /**
      * XMLファイルから読み込んだデータを追加する
      */
-    public void addXmlCard(List<StudiedC> studiedCard) {
-        mRealm.beginTransaction();
+    public void addXmlCard(List<StudiedC> studiedCard, boolean transaction) {
+        if (transaction) {
+            mRealm.beginTransaction();
+        }
         for (StudiedC _card : studiedCard) {
             TangoStudiedCard card = new TangoStudiedCard();
             card.setCardId( _card.getCardId());
@@ -151,6 +153,8 @@ public class TangoStudiedCardDao {
 
             mRealm.copyToRealm(card);
         }
-        mRealm.commitTransaction();
+        if (transaction) {
+            mRealm.commitTransaction();
+        }
     }
 }

@@ -136,6 +136,7 @@ public class UIconManager implements UIconCallbacks{
         switch (copySrc.getType()) {
             case Card: {
                 TangoCard card = TangoCard.copyCard((TangoCard)copySrc.getTangoItem());
+                card.setNewFlag(true);
                 RealmManager.getCardDao().addOne(card,
                         TangoParentType.toEnum(itemPos.getParentType()),
                         itemPos.getParentId(),itemPos.getPos());
@@ -145,7 +146,7 @@ public class UIconManager implements UIconCallbacks{
             case Book:
             {
                 TangoBook book = TangoBook.copyBook((TangoBook)copySrc.getTangoItem());
-
+                book.setNewFlag(true);
                 RealmManager.getBookDao().addOne(book, itemPos.getPos());
                 icon = new IconBook(book, mParentWindow, this);
 

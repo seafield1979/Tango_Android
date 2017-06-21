@@ -219,6 +219,63 @@ public class UIconWindowSub extends UIconWindow {
     }
 
     /**
+     * タッチ処理
+     * @param vt
+     * @return trueならViewを再描画
+     */
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
+        if (!isShow) return false;
+        if (state == WindowState.icon_moving) return false;
+
+        if (offset == null) {
+            offset = new PointF();
+        }
+
+        // アイコンのタッチ処理
+        PointF offset2 = new PointF(pos.x + offset.x, pos.y + offset.y + size.height);
+        for (UButtonImage button : getButtons()) {
+            if (button.touchEvent(vt, offset2)) {
+                return true;
+            }
+        }
+
+        return super.touchEvent(vt, offset);
+    }
+
+    /**
+     * 描画処理
+     * UIconManagerに登録されたIconを描画する
+     * @param canvas
+     * @param paint
+     * @return trueなら描画継続
+     */
+    public void drawContent(Canvas canvas, Paint paint, PointF offset)
+    {
+        super.drawContent(canvas, paint, offset);
+
+        if (isMoving) return;
+
+        // アイコンの背景
+        UButtonImage[] buttons = getButtons();
+
+        float width = buttons.length * (ACTION_ICON_W + MARGIN_H) + MARGIN_H;
+        final float height = ACTION_ICON_W + MARGIN_V + MARGIN_V2;
+        float x = pos.x;
+        float y = pos.y + size.height - MARGIN_V2 - MARGIN_V - ACTION_ICON_W;
+
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(x, y, x + width, y +
+                        height),
+                30, ICON_BG_COLOR, 0, 0);
+
+        // アイコンの描画
+        PointF _pos = new PointF(pos.x, pos.y + size.height);
+        for (UButtonImage button : buttons) {
+            button.draw(canvas, paint, _pos);
+        }
+
+    }
+
+    /**
      * UButtonCallbacks
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {

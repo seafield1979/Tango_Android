@@ -145,8 +145,10 @@ public class TangoCardHistoryDao {
     /**
      * XMLファイルから読み込んだデータを追加する
      */
-    public void addXmlCard(List<CHistory> cardHistory) {
-        mRealm.beginTransaction();
+    public void addXmlCard(List<CHistory> cardHistory, boolean transaction) {
+        if (transaction) {
+            mRealm.beginTransaction();
+        }
         for (CHistory _history : cardHistory) {
             TangoCardHistory history = new TangoCardHistory();
             history.setCardId( _history.getCardId());
@@ -155,6 +157,8 @@ public class TangoCardHistoryDao {
             history.setStudiedDate( _history.getStudiedDate());
             mRealm.insert(history);
         }
-        mRealm.commitTransaction();
+        if (transaction) {
+            mRealm.commitTransaction();
+        }
     }
 }

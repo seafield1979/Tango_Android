@@ -9,12 +9,17 @@ import android.graphics.Rect;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
+import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
+import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItemCallbacks;
+
+import java.io.File;
+import java.util.Date;
 
 /**
  * Created by shutaro on 2017/06/16.
@@ -75,7 +80,19 @@ public class ListItemBackup extends UListItem {
 
         // mText
         if (backup.isEnabled()) {
-            mText = XmlManager.getInstance().getManualXmlInfo(backup.getId());
+            File file = new File(backup.getFilePath());
+            String filename = "";
+            if (file != null) {
+                filename = file.getName();
+            }
+            mText =  UUtil.convDateFormat(backup.getDateTime(), ConvDateMode.DateTime) + "\n" +
+                    UResourceManager.getStringById(R.string.filename) +
+                    " :  " + filename + "\n" +
+                    UResourceManager.getStringById(R.string.card_count) +
+                    " :  " + backup.getCardNum() + "\n" +
+                    UResourceManager.getStringById(R.string.book_count) +
+                    " :  " + backup.getBookNum() + "\n";
+
         } else {
             mText = UResourceManager.getStringById(R.string.empty);
         }

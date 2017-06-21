@@ -174,8 +174,10 @@ public class TangoBookHistoryDao {
     /**
      * XMLファイルから読み込んだデータを追加する
      */
-    public void addXmlBook(List<BHistory> bookHistory) {
-        mRealm.beginTransaction();
+    public void addXmlBook(List<BHistory> bookHistory, boolean transaction) {
+        if (transaction) {
+            mRealm.beginTransaction();
+        }
         for (BHistory _history : bookHistory) {
             TangoBookHistory history = new TangoBookHistory();
             history.setId( _history.getId());
@@ -185,6 +187,8 @@ public class TangoBookHistoryDao {
             history.setStudiedDateTime( _history.getStudiedDateTime());
             mRealm.insert(history);
         }
-        mRealm.commitTransaction();
+        if (transaction) {
+            mRealm.commitTransaction();
+        }
     }
 }

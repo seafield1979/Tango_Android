@@ -3,7 +3,6 @@ package com.sunsunsoft.shutaro.tangobook.save;
 import android.content.Context;
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
 import com.sunsunsoft.shutaro.tangobook.database.BackupFileDao;
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
@@ -18,7 +17,6 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoCardHistory;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItemPos;
 import com.sunsunsoft.shutaro.tangobook.database.TangoStudiedCard;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
-import com.sunsunsoft.shutaro.tangobook.save.Card;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -27,6 +25,8 @@ import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * Created by shutaro on 2017/01/17.
@@ -159,14 +159,14 @@ public class XmlManager {
 
         if (file == null) { return null; }
 
-        return saveXml(file);
+        return saveToXml(file);
     }
     public static BackupFileInfo saveAutoBackup() {
         File file = getAutoXmlFile();
 
         if (file == null) { return null; }
 
-        BackupFileInfo backup = saveXml(file);
+        BackupFileInfo backup = saveToXml(file);
 
         // データベース更新(BackupFile)
         RealmManager.getBackupFileDao().updateOne(BackupFileDao.AUTO_BACKUP_ID,
@@ -181,8 +181,10 @@ public class XmlManager {
      * @param file 保存ファイル
      * @return バックアップ情報のBean
      */
-    public static BackupFileInfo saveXml(File file) {
+    public static BackupFileInfo saveToXml(File file) {
         XmlTangoTop tangoTop = new XmlTangoTop();
+
+        ULog.initSystemTime();
 
         // データベースから保存情報をかき集める
         // TangoCard
@@ -191,20 +193,24 @@ public class XmlManager {
         for (TangoCard card : cards) {
             Card saveCard = new Card(card.getId(),card.getWordA(), card.getWordB(),
                     card.getComment(), card.getCreateTime(), card.getColor(),
-                    card.getStar());
+                    card.getStar(), card.isNewFlag());
             cards2.add(saveCard);
         }
         tangoTop.card = cards2;
+
+        ULog.print(TAG, "point1");
 
         // TangoBook
         List<TangoBook> books = RealmManager.getBookDao().selectAll();
         LinkedList<Book> book2 = new LinkedList<>();
         for (TangoBook book : books) {
             Book saveBook = new Book(book.getId(), book.getName(), book.getComment(),
-                    book.getColor(), book.getCreateTime());
+                    book.getColor(), book.getCreateTime(), book.isNewFlag());
             book2.add(saveBook);
         }
         tangoTop.book = book2;
+
+        ULog.print(TAG, "point2");
 
         // ItemPos
         List<TangoItemPos> itemPos = RealmManager.getItemPosDao().selectAll();
@@ -217,6 +223,8 @@ public class XmlManager {
         }
         tangoTop.itemPos = itemPos2;
 
+        ULog.print(TAG, "point3");
+
         // TangoBookHistory
         List<TangoBookHistory> bookHistory = RealmManager.getBookHistoryDao().selectAll(false);
         LinkedList<BHistory> bookHistory2 = new LinkedList<>();
@@ -228,6 +236,8 @@ public class XmlManager {
         }
         tangoTop.bHistory = bookHistory2;
 
+        ULog.print(TAG, "point4");
+
         // TangoCardHistory
         List<TangoCardHistory> cardHistory = RealmManager.getCardHistoryDao().selectAll();
         LinkedList<CHistory> cardHistory2 = new LinkedList<>();
@@ -238,6 +248,8 @@ public class XmlManager {
         }
         tangoTop.cHistory = cardHistory2;
 
+        ULog.print(TAG, "point5");
+
         // TangoStudiedCard
         List<TangoStudiedCard> studiedCard = RealmManager.getStudiedCardDao().selectAll();
         LinkedList<StudiedC> studiedCard2 = new LinkedList<>();
@@ -247,6 +259,8 @@ public class XmlManager {
             studiedCard2.add(saveStudiedC);
         }
         tangoTop.studiedC = studiedCard2;
+
+        ULog.print(TAG, "point6");
 
         // カード数
         singleton.mBackupCardNum = tangoTop.cardNum = cards.size();
@@ -269,39 +283,15 @@ public class XmlManager {
             return null;
         }
 
-        // バックアップテーブルに書き込む情報を設定する
-        BackupFileInfo backupInfo = new BackupFileInfo(file.getName(), result.toString(), tangoTop.cardNum, tangoTop.bookNum);
+        ULog.print(TAG, "point7");
 
+        // バックアップテーブルに書き込む情報を設定する
+        BackupFileInfo backupInfo = new BackupFileInfo(file.getName(), result.toString(), tangoTop.bookNum, tangoTop.cardNum);
+
+        ULog.print(TAG, "point8");
         return backupInfo;
     }
 
-    /**
-     * マニュアルバックアップファイルから復元する
-     * @param slot バックアップのスロット番号
-     * @return
-     */
-    public static boolean loadManualXml(int slot) {
-        File file = getManualXmlFile(slot);
-        if (file == null) {
-            return false;
-        }
-
-        return loadXml(file);
-    }
-
-    /**
-     * 自動バックアップファイルから復元する
-     * @return
-     */
-    public static boolean loadAutoXml() {
-        File file = getAutoXmlFile();
-
-        if (file == null) {
-            return false;
-        }
-
-        return loadXml(file);
-    }
     /**
      * 指定したxmlファイルから情報を取得し、システム(Realmデータベース)に保存する
      * @param file  復元元のバックアップファイル
@@ -330,13 +320,17 @@ public class XmlManager {
         RealmManager.getStudiedCardDao().deleteAll();
 
         // データベースにxmlファイルから読み込んだデータを追加
-        RealmManager.getCardDao().addXmlCards(tangoTop.card);
-        RealmManager.getBookDao().addXmlBooks(tangoTop.book);
-        RealmManager.getItemPosDao().addXmlPos(tangoTop.itemPos);
-        RealmManager.getBookHistoryDao().addXmlBook(tangoTop.bHistory);
-        RealmManager.getCardHistoryDao().addXmlCard(tangoTop.cHistory);
-        RealmManager.getStudiedCardDao().addXmlCard(tangoTop.studiedC);
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
 
+        RealmManager.getCardDao().addXmlCards(tangoTop.card, false);
+        RealmManager.getBookDao().addXmlBooks(tangoTop.book, false);
+        RealmManager.getItemPosDao().addXmlPos(tangoTop.itemPos, false);
+        RealmManager.getBookHistoryDao().addXmlBook(tangoTop.bHistory, false);
+        RealmManager.getCardHistoryDao().addXmlCard(tangoTop.cHistory, false);
+        RealmManager.getStudiedCardDao().addXmlCard(tangoTop.studiedC, false);
+
+        realm.commitTransaction();
         return true;
     }
 
