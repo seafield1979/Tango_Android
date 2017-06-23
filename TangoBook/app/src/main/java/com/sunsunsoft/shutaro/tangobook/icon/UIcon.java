@@ -52,7 +52,7 @@ abstract public class UIcon extends UDrawable {
      * Class variables
      */
     // "New" バッジ用
-    protected static UTextView newTextView;
+    protected UTextView newTextView;
 
 
     /**

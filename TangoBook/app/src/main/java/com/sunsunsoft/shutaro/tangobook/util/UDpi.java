@@ -129,6 +129,10 @@ public class UDpi {
         setScale(mScale.scaleDown());
     }
 
+    public static String getScaleText() {
+        return String.format("Zoom %03d", (int)(mScale.getScale() * 100)) + "%";
+    }
+
     /**
      * DPI座標をピクセル座標に変換する
      * @param dpi

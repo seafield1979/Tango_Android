@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.Toast;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
@@ -89,6 +90,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
     /**
      * Member variables
      */
+    private Toast mToast;
     // Title
     private UTextView mTitleText;
 
@@ -253,14 +255,28 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
                     UDpi.scaleDown();
                     initDrawables();
                     mParentView.invalidate();
+                    showScaleToast();
                     break;
                 case ButtonIdZoomIn:
                     UDpi.scaleUp();
                     initDrawables();
                     mParentView.invalidate();
+
+                    showScaleToast();
                     break;
             }
         }
         return false;
+    }
+
+    /**
+     * スケール変更時のToastを表示する
+     */
+    private void showScaleToast() {
+        if (mToast != null) {
+            mToast.cancel();
+        }
+        mToast = Toast.makeText(mContext, UDpi.getScaleText(), Toast.LENGTH_LONG);
+        mToast.show();
     }
 }

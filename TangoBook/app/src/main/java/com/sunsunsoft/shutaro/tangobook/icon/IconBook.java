@@ -121,10 +121,10 @@ public class IconBook extends IconContainer {
 
         // New!
         if (book.isNewFlag()) {
-            if (UIcon.newTextView == null) {
+            if (newTextView == null) {
                 createNewBadge(canvas);
             }
-            UIcon.newTextView.draw(canvas, paint,
+            newTextView.draw(canvas, paint,
                     new PointF(drawPos.x + iconW / 2, drawPos.y + iconH - UDpi.toPixel(UIcon.NEW_TEXT_SIZE)));
         }
     }
