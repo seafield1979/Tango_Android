@@ -14,6 +14,7 @@ import com.sunsunsoft.shutaro.tangobook.listview.ListItemBackup;
 import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
 import com.sunsunsoft.shutaro.tangobook.save.BackupFileInfo;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
@@ -33,18 +34,17 @@ public class PageViewBackup extends UPageView
      */
     private static final int DRAW_PRIORITY = 100;
 
-    private static final int TOP_Y = 50;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
+    // layout
+    private static final int TOP_Y = 17;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 17;
+    private static final int BOX_WIDTH = 23;
+    private static final int TEXT_SIZE = 17;
 
     private static final int TEXT_COLOR = Color.BLACK;
-    private static final int BOX_WIDTH = 70;
-
-    private static final int TEXT_SIZE = 50;
 
     // button IDs
     private static final int ButtonIdOverWriteOK = 100;  // 上書き確認
-    private static final int ButtonIdDoneBackup = 101;   // バックアップ完了
 
     /**
      * Member variables
@@ -101,26 +101,26 @@ public class PageViewBackup extends UPageView
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
-        float y = TOP_Y;
+        float x = UDpi.toPixel(MARGIN_H);
+        float y = UDpi.toPixel(TOP_Y);
 
         UDrawManager.getInstance().init();
 
         // 自動バックアップ CheckBox
         mAutoBackupCheck = new UCheckBox(this, DRAW_PRIORITY, x, y,
-                mParentView.getWidth(), BOX_WIDTH, UResourceManager.getStringById(R.string
-                .auto_backup), TEXT_SIZE, TEXT_COLOR);
+                mParentView.getWidth(), UDpi.toPixel(BOX_WIDTH), UResourceManager.getStringById(R.string
+                .auto_backup), UDpi.toPixel(TEXT_SIZE), TEXT_COLOR);
         mAutoBackupCheck.addToDrawManager();
 
         if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
             mAutoBackupCheck.setChecked(true);
         }
-        y += mAutoBackupCheck.getHeight() + MARGIN_V;
+        y += mAutoBackupCheck.getHeight() + UDpi.toPixel(MARGIN_V);
 
         // ListView
-        int listViewH = height - (MARGIN_H * 3 + mAutoBackupCheck.getHeight());
+        int listViewH = height - (UDpi.toPixel(MARGIN_H) * 3 + mAutoBackupCheck.getHeight());
         mListView = new ListViewBackup(this, ListViewBackup.ListViewType.Backup, DRAW_PRIORITY, x, y,
-                width - MARGIN_H * 2, listViewH, 0);
+                width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
     }

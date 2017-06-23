@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
@@ -42,7 +43,7 @@ public class StudyCardSelect extends UDrawable {
     /**
      * Consts
      */
-    protected static final int TEXT_SIZE = 50;
+    protected static final int TEXT_SIZE = 17;
     protected static final int TEXT_COLOR = Color.BLACK;
     protected static final int FRAME_COLOR = Color.rgb(150,150,150);
 
@@ -53,7 +54,6 @@ public class StudyCardSelect extends UDrawable {
     protected State mState;
     protected String wordA, wordB;
     protected TangoCard mCard;
-    protected boolean isTouching;
     protected PointF basePos;
 
     // 正解のカードかどうか
@@ -109,7 +109,7 @@ public class StudyCardSelect extends UDrawable {
      */
     public StudyCardSelect(TangoCard card, boolean isCorrect, boolean isEnglish, int canvasW, int height)
     {
-        super(0, 0, 0, canvasW - 200, height);
+        super(0, 0, 0, canvasW - UDpi.toPixel(67), height);
         this.isCorrect = isCorrect;
 
         if (isEnglish) {
@@ -212,12 +212,12 @@ public class StudyCardSelect extends UDrawable {
 
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(x, y, x + size.width, y + size.height),
-                    10, color, 5, FRAME_COLOR);
+                    UDpi.toPixel(3), color, UDpi.toPixel(2), FRAME_COLOR);
         } else {
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(_pos.x, _pos.y,
                             _pos.x + size.width, _pos.y + size.height),
-                    10, color, 5, FRAME_COLOR);
+                    UDpi.toPixel(3), color, UDpi.toPixel(2), FRAME_COLOR);
         }
 
         // 正解中はマルバツを表示
@@ -225,10 +225,10 @@ public class StudyCardSelect extends UDrawable {
         if (mState == State.ShowAnswer && isShowCorrect) {
             if (isCorrect) {
                 UDraw.drawCircle(canvas, paint, new PointF(_pos2.x, _pos2.y),
-                        70, 20, UColor.Green);
+                        UDpi.toPixel(23), UDpi.toPixel(7), UColor.Green);
             } else {
                 UDraw.drawCross(canvas, paint, new PointF(_pos2.x, _pos2.y),
-                        70, 20, UColor.Red);
+                        UDpi.toPixel(23), UDpi.toPixel(7), UColor.Red);
             }
         }
 
@@ -240,7 +240,7 @@ public class StudyCardSelect extends UDrawable {
                 text.append("\n");
                 text.append(wordB);
             }
-            UDraw.drawText(canvas, text.toString(), UAlignment.Center, TEXT_SIZE,
+            UDraw.drawText(canvas, text.toString(), UAlignment.Center, UDpi.toPixel(TEXT_SIZE),
                 _pos2.x, _pos2.y, TEXT_COLOR);
         }
 

@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
@@ -33,7 +34,7 @@ public class StudyCardsStack extends UDrawable {
     public static final String TAG = "StudyCardsStack";
 
     // layout
-    public static final int MARGIN_V = 30;
+    public static final int MARGIN_V = 10;
     protected static final int MOVING_FRAME = 10;
 
 
@@ -152,12 +153,14 @@ public class StudyCardsStack extends UDrawable {
             if (card.getMoveRequest() == StudyCard.RequestToParent.MoveToOK ||
                     card.getMoveRequest() == StudyCard.RequestToParent.MoveToNG)
             {
+                int margin = UDpi.toPixel(17);
+
                 if (card.getMoveRequest() == StudyCard.RequestToParent.MoveToOK ) {
                     mCardManager.putCardIntoBox(card.getTangoCard(), StudyCardsManager.BoxType.OK);
-                    card.startMoveIntoBox(mOkBoxPos.x + 50, mOkBoxPos.y + 50);
+                    card.startMoveIntoBox(mOkBoxPos.x + margin, mOkBoxPos.y + margin);
                 } else {
                     mCardManager.putCardIntoBox(card.getTangoCard(), StudyCardsManager.BoxType.NG);
-                    card.startMoveIntoBox(mNgBoxPos.x + 50, mNgBoxPos.y + 50);
+                    card.startMoveIntoBox(mNgBoxPos.x + margin, mNgBoxPos.y + margin);
                 }
 
                 card.setMoveRequest(StudyCard.RequestToParent.None);
@@ -168,8 +171,8 @@ public class StudyCardsStack extends UDrawable {
                 for (int j=i+1; j<mCards.size(); j++) {
                     StudyCard card2 = mCards.get(j);
                     card2.startMoving(0, bottomY - card2.getHeight(),
-                            MOVING_FRAME + 5);
-                    bottomY -= card2.getHeight() + MARGIN_V;
+                            MOVING_FRAME + UDpi.toPixel(2));
+                    bottomY -= card2.getHeight() + UDpi.toPixel(MARGIN_V);
                 }
                 mCards.remove(card);
                 mToBoxCards.add(card);

@@ -8,6 +8,9 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
+import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.Size;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.icon.IconType;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
@@ -45,14 +48,15 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
      */
     private static final String TAG = "IconInfoDialogBook";
     private static final int BG_COLOR = Color.LTGRAY;
-    private static final int DLG_MARGIN = 100;
-    private static final int TOP_ITEM_Y = 100;
-    private static final int TEXT_VIEW_H = 100;
-    private static final int ICON_W = 120;
-    private static final int ICON_MARGIN_H = 30;
-    private static final int MARGIN_V = 40;
-    private static final int MARGIN_H = 40;
-    private static final int TEXT_SIZE = 50;
+    private static final int DLG_MARGIN = 35;
+    private static final int TOP_ITEM_Y = 35;
+    private static final int TEXT_VIEW_H = 35;
+    private static final int ICON_W = 40;
+    private static final int ICON_MARGIN_H = 10;
+    private static final int MARGIN_V = 13;
+    private static final int MARGIN_H = 13;
+    private static final int TEXT_SIZE = 17;
+    private static final int ICON_TEXT_SIZE = 10;
 
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
@@ -62,6 +66,7 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
      */
     protected boolean isUpdate = true;     // ボタンを追加するなどしてレイアウトが変更された
     private UTextView textTitle;
+    private UTextView textWord;
     private UTextView textCount;
     private LinkedList<UButtonImage> imageButtons = new LinkedList<>();
 
@@ -122,8 +127,8 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
         }
 
         // BG
-        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
-                bgColor, FRAME_WIDTH, FRAME_COLOR);
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), UDpi.toPixel(7),
+                bgColor, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
 
         textTitle.draw(canvas, paint, pos);
         if (textCount != null) {
@@ -141,60 +146,78 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
      * @param canvas
      */
     protected void updateLayout(Canvas canvas) {
-        int y = TOP_ITEM_Y;
+        int y = UDpi.toPixel(TOP_ITEM_Y);
+        int iconW = UDpi.toPixel(ICON_W);
+        int iconMargin = UDpi.toPixel(ICON_MARGIN_H);
+        int marginH = UDpi.toPixel(MARGIN_H);
+        int marginV = UDpi.toPixel(MARGIN_V);
+        int dlgMargin = UDpi.toPixel(DLG_MARGIN);
+        int textSize = UDpi.toPixel(TEXT_SIZE);
 
         List<ActionIcons> icons = ActionIcons.getInTrashIcons();
 
-        int width = ICON_W * icons.size() +
-                ICON_MARGIN_H * (icons.size() + 1);
+        int width = iconW * icons.size() +
+                iconMargin * (icons.size() + 1);
 
         // Action buttons
-        int x = ICON_MARGIN_H;
+        int x = iconMargin;
         for (ActionIcons icon : icons) {
             Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), UColor
                     .DarkOrange);
             UButtonImage imageButton = UButtonImage.createButton( this,
                     icon.ordinal(), 0,
                     x, y,
-                    ICON_W, ICON_W, image, null);
+                    iconW, iconW, image, null);
 
             // アイコンの下に表示するテキストを設定
-            imageButton.setTitle(icon.getTitle(mParentView.getContext()), 30, Color.BLACK);
+            imageButton.setTitle(icon.getTitle(mParentView.getContext()), UDpi.toPixel(ICON_TEXT_SIZE), Color.BLACK);
 
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
 
-            x += ICON_W + ICON_MARGIN_H;
+            x += iconW + iconMargin;
         }
-        y += ICON_W + MARGIN_V + 50;
+        y += iconW + UDpi.toPixel(MARGIN_V + 17);
 
         // Title
-        textTitle = UTextView.createInstance( mIcon.getTitle(), TEXT_SIZE, 0,
+        textTitle = UTextView.createInstance( mIcon.getTitle(), textSize, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+                marginH, y, width - marginH * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
-        y += TEXT_VIEW_H + MARGIN_V;
+        y += UDpi.toPixel(TEXT_VIEW_H) + marginV;
+
+        // テキストの幅に合わせてダイアログのサイズ更新
+        Size size = UDraw.getOneLineTextSize(new Paint(), mIcon.getTitle(), textSize);
+        if (size.width + marginH * 4 > width) {
+            width = size.width + marginH * 4;
+        }
 
         // Count(Bookの場合のみ)
         if (mIcon.getType() == IconType.Book) {
             long count = RealmManager.getItemPosDao().countInParentType(
                     TangoParentType.Book, mIcon.getTangoItem().getId()
             );
-            textCount = UTextView.createInstance("Count:" + count, TEXT_SIZE, 0,
+            textCount = UTextView.createInstance( UResourceManager.getStringById(R.string.book_count) + ":" + count, textSize, 0,
                     UAlignment.None, canvas.getWidth(), false, true,
-                    MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
+                    marginH, y, width - marginH * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
-            y += TEXT_VIEW_H + MARGIN_V;
+            // テキストの幅に合わせてダイアログのサイズ更新
+            size = UDraw.getOneLineTextSize(new Paint(), textCount.getText(), textSize);
+            if (size.width + marginH * 4 > width) {
+                width = size.width + marginH * 4;
+            }
+
+            y += UDpi.toPixel(TEXT_VIEW_H) + marginV;
         }
 
         setSize(width, y);
 
         // Correct position
-        if ( pos.x + size.width > mParentView.getWidth() - DLG_MARGIN) {
-            pos.x = mParentView.getWidth() - size.width - DLG_MARGIN;
+        if ( pos.x + size.width > mParentView.getWidth() - dlgMargin) {
+            pos.x = mParentView.getWidth() - size.width - dlgMargin;
         }
-        if (pos.y + size.height > mParentView.getHeight() - DLG_MARGIN) {
-            pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
+        if (pos.y + size.height > mParentView.getHeight() - dlgMargin) {
+            pos.y = mParentView.getHeight() - size.height - dlgMargin;
         }
         updateRect();
     }

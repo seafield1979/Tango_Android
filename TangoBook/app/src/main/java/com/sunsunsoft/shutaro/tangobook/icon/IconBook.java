@@ -13,6 +13,7 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoBook;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItem;
 import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
@@ -29,16 +30,20 @@ public class IconBook extends IconContainer {
      * Constant
      */
     public static final String TAG = "UIconRect";
-    private static final int ICON_W = 120;
-    private static final int ICON_H = 120;
+    private static final int ICON_W = 40;
+    private static final int ICON_H = 40;
 
-    private static final int TEXT_SIZE = 40;
+    private static final int TEXT_SIZE = 17;
     private static final int ICON_COLOR = Color.rgb(100,200,100);
 
     /**
      * Member variable
      */
     protected TangoBook book;
+
+    // Dpi補正済みのサイズ
+    private int iconW, iconH;
+    private int textSize;
 
     /**
      * Get/Set
@@ -61,11 +66,14 @@ public class IconBook extends IconContainer {
      */
     public IconBook(TangoBook book, UIconWindow parentWindow, UIconCallbacks
             iconCallbacks) {
-        super(parentWindow, iconCallbacks, IconType.Book, 0, 0, ICON_W, ICON_H);
+        super(parentWindow, iconCallbacks, IconType.Book, 0, 0, UDpi.toPixel(ICON_W), UDpi.toPixel(ICON_H));
 
         this.book = book;
         updateTitle();
         setColor(ICON_COLOR);
+        iconW = UDpi.toPixel(ICON_W);
+        iconH = UDpi.toPixel(ICON_H);
+        textSize = UDpi.toPixel(TEXT_SIZE);
 
         UIconWindows windows = parentWindow.getWindows();
         subWindow = windows.getSubWindow();
@@ -90,7 +98,7 @@ public class IconBook extends IconContainer {
         if (isLongTouched || isTouched || isDroped) {
             // 長押し、タッチ、ドロップ中はBGを表示
             UDraw.drawRoundRectFill(canvas, paint,
-                    new RectF(drawPos.x, drawPos.y, drawPos.x + ICON_W, drawPos.y + ICON_H),
+                    new RectF(drawPos.x, drawPos.y, drawPos.x + iconW, drawPos.y + iconH),
                     10, touchedColor, 0, 0);
         } else if (isAnimating) {
             // 点滅
@@ -104,12 +112,12 @@ public class IconBook extends IconContainer {
         // 領域の幅に合わせて伸縮
         canvas.drawBitmap(image, new Rect(0,0,image.getWidth(), image.getHeight()),
                 new Rect((int)drawPos.x, (int)drawPos.y,
-                        (int)drawPos.x + ICON_W,(int)drawPos.y + ICON_H),
+                        (int)drawPos.x + iconW,(int)drawPos.y + iconH),
                 paint);
 
         // Text
-        UDraw.drawTextOneLine(canvas, paint, title, UAlignment.CenterX, TEXT_SIZE,
-                drawPos.x + ICON_W / 2, drawPos.y + ICON_H + UIcon.TEXT_MARGIN, Color.BLACK);
+        UDraw.drawTextOneLine(canvas, paint, title, UAlignment.CenterX, textSize,
+                drawPos.x + iconW / 2, drawPos.y + iconH + UIcon.TEXT_MARGIN, Color.BLACK);
 
         // New!
         if (book.isNewFlag()) {
@@ -117,7 +125,7 @@ public class IconBook extends IconContainer {
                 createNewBadge(canvas);
             }
             UIcon.newTextView.draw(canvas, paint,
-                    new PointF(drawPos.x + ICON_W / 2, drawPos.y + ICON_H - UIcon.NEW_TEXT_SIZE));
+                    new PointF(drawPos.x + iconW / 2, drawPos.y + iconH - UDpi.toPixel(UIcon.NEW_TEXT_SIZE)));
         }
     }
 

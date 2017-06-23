@@ -9,6 +9,7 @@ import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.activity.MainActivity;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
@@ -71,15 +72,12 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
     public static final String TAG = "PageViewTitle";
     private static final int DRAW_PRIORITY = 100;
 
-    private static final int TOP_Y = 50;
-    private static final int BUTTON_W = 400;
-    private static final int BUTTON_H = 200;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 30;
+    private static final int BUTTON_H = 65;
+    private static final int MARGIN_H = 18;
+    private static final int MARGIN_V = 10;
 
-    private static final int TITLE_TEXT_SIZE = 80;
-    private static final int TEXT_SIZE = 50;
-    private static final int IMAGE_W = 100;
+    private static final int TEXT_SIZE = 17;
+    private static final int IMAGE_W = 35;
 
 
 
@@ -117,7 +115,6 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
      */
     public void initDrawables() {
         int width = mParentView.getWidth();
-        int height = mParentView.getHeight();
 
         UButtonType buttonType;
 
@@ -130,10 +127,10 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
         columnNum = 2;
 
         // 単語帳作成＆学習ボタンは正方形
-        int buttonW = (width - (columnNum + 1) * MARGIN_H) / columnNum;
+        int buttonW = (width - (columnNum + 1) * UDpi.toPixel(MARGIN_H)) / columnNum;
 
-        float x = MARGIN_H;
-        float y = MARGIN_V + 100.f;
+        float x = UDpi.toPixel(MARGIN_H);
+        float y = UDpi.toPixel(MARGIN_V + 35);
         buttonType = UButtonType.Press;
 
         for (int i = 0; i < 2; i++) {
@@ -142,24 +139,24 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
             mButtons[i] = new UButtonText(this, buttonType, id.ordinal(), DRAW_PRIORITY,
                     id.getTitle(mContext), x, y,
                     buttonW, buttonW,
-                    TEXT_SIZE, id.textColor, id.bgColor);
+                    UDpi.toPixel(TEXT_SIZE), id.textColor, id.bgColor);
             Bitmap image = UResourceManager.getBitmapWithColor(id.imageId, id.lineColor);
-            mButtons[i].setImage(image, new Size(IMAGE_W, IMAGE_W));
+            mButtons[i].setImage(image, new Size(UDpi.toPixel(IMAGE_W), UDpi.toPixel(IMAGE_W)));
             UDrawManager.getInstance().addDrawable(mButtons[i]);
 
             // 表示座標を少し調整
             mButtons[i].setImageAlignment(UAlignment.Center);
-            mButtons[i].setImageOffset(0, -50f);
-            mButtons[i].setTextOffset(0, 40f);
+            mButtons[i].setImageOffset(0, UDpi.toPixel(-20));
+            mButtons[i].setTextOffset(0, UDpi.toPixel(16));
 
-            x += buttonW + MARGIN_H;
+            x += buttonW + UDpi.toPixel(MARGIN_H);
         }
-        y += buttonW + MARGIN_V;
+        y += buttonW + UDpi.toPixel(MARGIN_V);
 
         // 下の段は横長ボタン
-        buttonW = width - MARGIN_H * 2;
-        int buttonH = BUTTON_H;
-        x = MARGIN_H;
+        buttonW = width - UDpi.toPixel(MARGIN_H) * 2;
+        int buttonH = UDpi.toPixel(BUTTON_H);
+        x = UDpi.toPixel(MARGIN_H);
         for (int i = 2; i < ButtonId.values().length; i++) {
             // デバッグモードがONの場合のみDebugを表示
             ButtonId id = ButtonId.values()[i];
@@ -171,17 +168,17 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
             mButtons[i] = new UButtonText(this, buttonType, id.ordinal(), DRAW_PRIORITY,
                     id.getTitle(mContext), x, y,
                     buttonW, buttonH,
-                    TEXT_SIZE, id.textColor, id.bgColor);
+                    UDpi.toPixel(TEXT_SIZE), id.textColor, id.bgColor);
             Bitmap image = UResourceManager.getBitmapWithColor(id.imageId, id.lineColor);
-            mButtons[i].setImage(image, new Size(IMAGE_W, IMAGE_W));
+            mButtons[i].setImage(image, new Size(UDpi.toPixel(IMAGE_W), UDpi.toPixel(IMAGE_W)));
             UDrawManager.getInstance().addDrawable(mButtons[i]);
 
             // 表示座標を少し調整
             mButtons[i].setImageAlignment(UAlignment.Center);
-            mButtons[i].setImageOffset(-IMAGE_W - 60 - MARGIN_H / 2, 0);
-            mButtons[i].setTextOffset(MARGIN_H / 2, 0);
+            mButtons[i].setImageOffset(UDpi.toPixel(-IMAGE_W - 20 - MARGIN_H / 2), 0);
+            mButtons[i].setTextOffset(UDpi.toPixel(MARGIN_H) / 2, 0);
 
-            y += buttonH + MARGIN_V;
+            y += buttonH + UDpi.toPixel(MARGIN_V);
         }
     }
 
@@ -215,9 +212,15 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
                 break;
             case Settings:
                 PageViewManager.getInstance().stackPage(PageView.Settings);
+//                UDpi.scaleDown();
+//                initDrawables();
+//                mParentView.invalidate();
                 break;
             case Help:
                 MainActivity.getInstance().showHelpTopPage();
+//                UDpi.scaleUp();
+//                initDrawables();
+//                mParentView.invalidate();
                 break;
             case Debug:
                 PageViewManager.getInstance().stackPage(PageView.Debug);

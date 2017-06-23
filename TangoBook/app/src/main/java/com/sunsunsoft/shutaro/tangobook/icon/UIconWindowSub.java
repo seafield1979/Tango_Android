@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
@@ -80,11 +81,11 @@ public class UIconWindowSub extends UIconWindow {
     /**
      * Consts
      */
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 20;
-    private static final int MARGIN_V2 = 50;
-    private static final int ICON_TEXT_SIZE = 30;
-    private static final int ACTION_ICON_W = 100;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 7;
+    private static final int MARGIN_V2 = 17;
+    private static final int ICON_TEXT_SIZE = 10;
+    private static final int ACTION_ICON_W = 34;
 
     /**
      * Member variables
@@ -158,31 +159,32 @@ public class UIconWindowSub extends UIconWindow {
 
         // アイコンボタンの初期化
         Bitmap image;
-        float x = MARGIN_H;
-        float y = - ACTION_ICON_W - MARGIN_V2;
+        int marginH = UDpi.toPixel(MARGIN_H);
+        float x = marginH;
+        float y = UDpi.toPixel(- ACTION_ICON_W - MARGIN_V2);
 
         // Bookを開いたときのアイコンを初期化
         int i = 0;
         for (ActionId id : ActionId.bookIds()) {
             image = UResourceManager.getBitmapWithColor(id.getImageId(), id.getColor());
             mBookButtons[i] = UButtonImage.createButton(this, id.getButtonId(), 0, x, y,
-                    ACTION_ICON_W, ACTION_ICON_W, image, null);
-            mBookButtons[i].setTitle(id.getTitle(), ICON_TEXT_SIZE, Color.BLACK);
+                    UDpi.toPixel(ACTION_ICON_W), UDpi.toPixel(ACTION_ICON_W), image, null);
+            mBookButtons[i].setTitle(id.getTitle(), UDpi.toPixel(ICON_TEXT_SIZE), Color.BLACK);
 
-            x += ACTION_ICON_W + MARGIN_H;
+            x += UDpi.toPixel(ACTION_ICON_W + MARGIN_H);
             i++;
         }
 
         // ゴミ箱を開いたときのアイコンを初期化
-        x = MARGIN_H;
+        x = marginH;
         i = 0;
         for (ActionId id : ActionId.trashIds()) {
             image = UResourceManager.getBitmapWithColor(id.getImageId(), id.getColor());
             mTrashButtons[i] = UButtonImage.createButton(this, id.getButtonId(), 0, x, y,
-                    ACTION_ICON_W, ACTION_ICON_W, image, null);
-            mTrashButtons[i].setTitle(id.getTitle(), ICON_TEXT_SIZE, Color.BLACK);
+                    UDpi.toPixel(ACTION_ICON_W), UDpi.toPixel(ACTION_ICON_W), image, null);
+            mTrashButtons[i].setTitle(id.getTitle(), UDpi.toPixel(ICON_TEXT_SIZE), Color.BLACK);
 
-            x += ACTION_ICON_W + MARGIN_H;
+            x += UDpi.toPixel(ACTION_ICON_W + MARGIN_H);
             i++;
         }
 
@@ -255,17 +257,21 @@ public class UIconWindowSub extends UIconWindow {
 
         if (isMoving) return;
 
+        int marginH = UDpi.toPixel(MARGIN_H);
+        int marginV = UDpi.toPixel(MARGIN_V);
+
         // アイコンの背景
         UButtonImage[] buttons = getButtons();
 
-        float width = buttons.length * (ACTION_ICON_W + MARGIN_H) + MARGIN_H;
-        final float height = ACTION_ICON_W + MARGIN_V + MARGIN_V2;
+        float width = buttons.length * (UDpi.toPixel(ACTION_ICON_W) + marginH) + marginH;
+        final float height = UDpi.toPixel(ACTION_ICON_W + MARGIN_V + MARGIN_V2);
         float x = pos.x;
-        float y = pos.y + size.height - MARGIN_V2 - MARGIN_V - ACTION_ICON_W;
+        float y = pos.y + size.height + UDpi.toPixel( -MARGIN_V2 - MARGIN_V - ACTION_ICON_W);
 
+        // BG
         UDraw.drawRoundRectFill(canvas, paint, new RectF(x, y, x + width, y +
                         height),
-                30, ICON_BG_COLOR, 0, 0);
+                UDpi.toPixel(10), ICON_BG_COLOR, 0, 0);
 
         // アイコンの描画
         PointF _pos = new PointF(pos.x, pos.y + size.height);

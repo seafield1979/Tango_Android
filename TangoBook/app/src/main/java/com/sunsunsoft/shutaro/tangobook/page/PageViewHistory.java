@@ -16,6 +16,7 @@ import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.database.TangoBookHistory;
 import com.sunsunsoft.shutaro.tangobook.database.TangoStudiedCard;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
@@ -40,11 +41,11 @@ public class PageViewHistory extends UPageView
     private static final int DRAW_PRIORITY = 100;
     private static final int DRAW_PRIORYTY_DIALOG = 50;
 
-    private static final int TOP_Y = 50;
-    private static final int BUTTON_W = 300;
-    private static final int BUTTON_H = 120;
-
-    private static final int TEXT_SIZE = 50;
+    // layout
+    private static final int TOP_Y = 17;
+    private static final int BUTTON_W = 100;
+    private static final int BUTTON_H = 40;
+    private static final int TEXT_SIZE = 17;
 
     // button ids
     private static final int ButtonIdReturn = 100;
@@ -113,22 +114,22 @@ public class PageViewHistory extends UPageView
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
-        float y = TOP_Y;
+        float x = UDpi.toPixel(MARGIN_H);
+        float y = UDpi.toPixel(TOP_Y);
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
                 .history_book),
-                TEXT_SIZE, DRAW_PRIORITY,
+                UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.getSize().height + MARGIN_V;
+        y += mTitleText.getSize().height + UDpi.toPixel(MARGIN_V);
 
         // ListView
-        int listViewH = height - (MARGIN_H * 3 + mTitleText.getSize().height);
+        int listViewH = height - (UDpi.toPixel(MARGIN_H) * 3 + mTitleText.getSize().height);
         mListView = new ListViewStudyHistory(this, DRAW_PRIORITY, x, y,
-                width - MARGIN_H * 2, listViewH, 0);
+                width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
         if (mListView.getItemNum() > 0) {
             mListView.setFrameColor(Color.BLACK);
             mListView.addToDrawManager();
@@ -136,22 +137,22 @@ public class PageViewHistory extends UPageView
             // Clear button
             mClearButton = new UButtonText(this, UButtonType.Press, ButtonIdClear,
                     DRAW_PRIORITY, UResourceManager.getStringById(R.string.clear),
-                    width - BUTTON_W - MARGIN_H, 20,
-                    BUTTON_W, BUTTON_H,
-                    TEXT_SIZE, Color.WHITE, UColor.Salmon );
+                    width - UDpi.toPixel(BUTTON_W) - MARGIN_H, UDpi.toPixel(7),
+                    UDpi.toPixel(BUTTON_W), UDpi.toPixel(BUTTON_H),
+                    UDpi.toPixel(TEXT_SIZE), Color.WHITE, UColor.Salmon );
             mClearButton.addToDrawManager();
 
         } else {
             mListView = null;
-            y += 200;
+            y += UDpi.toPixel(67);
             UTextView text = UTextView.createInstance(UResourceManager.getStringById(R.string.no_study_history),
-                    TEXT_SIZE, DRAW_PRIORITY - 1,
+                    UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY - 1,
                     UAlignment.CenterX, width, false, false,
                     width / 2, y, width, Color.BLACK, 0);
             text.addToDrawManager();
         }
 
-        y += listViewH + MARGIN_H;
+        y += listViewH + UDpi.toPixel(MARGIN_H);
 
     }
 
@@ -193,7 +194,7 @@ public class PageViewHistory extends UPageView
                     mDialog.setTitle(UResourceManager.getStringById(R.string.confirm));
                     mDialog.addTextView(UResourceManager.getStringById(R.string
                             .confirm_clear_history),
-                            UAlignment.CenterX, true, false, TEXT_SIZE, TEXT_COLOR, 0);
+                            UAlignment.CenterX, true, false, UDpi.toPixel(TEXT_SIZE), TEXT_COLOR, 0);
                     mDialog.addButton(ButtonIdClearOK,
                             "OK",TEXT_COLOR,
                             Color.WHITE);
@@ -242,7 +243,7 @@ public class PageViewHistory extends UPageView
         ListViewResult listView = new ListViewResult(null, cards, StudyMode.SlideOne,
                 StudyType.EtoJ,
                 DRAW_PRIORYTY_DIALOG, 0, 0,
-                mDialog.getSize().width - MARGIN_H * 2, height - 200 - MARGIN_H * 2, Color.WHITE
+                mDialog.getSize().width - UDpi.toPixel(MARGIN_H) * 2, height - UDpi.toPixel(67 + MARGIN_H) * 2, Color.WHITE
                 );
         mDialog.addDrawable(listView);
 

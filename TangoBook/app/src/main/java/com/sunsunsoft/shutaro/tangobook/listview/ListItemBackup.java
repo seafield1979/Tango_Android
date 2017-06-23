@@ -11,6 +11,7 @@ import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
@@ -36,13 +37,15 @@ public class ListItemBackup extends UListItem {
     /**
      * Consts
      */
-    private static final int ITEM_H2 = 350;
-    private static final int MARGIN_H = 30;
-    private static final int MARGIN_V = 20;
-    private static final int FRAME_WIDTH = 4;
+    // layout
+    private static final int ITEM_H2 = 117;
+    private static final int MARGIN_H = 10;
+    private static final int MARGIN_V = 7;
+    private static final int FRAME_WIDTH = 1;
+    private static final int TEXT_SIZE = 17;
+    private static final int TEXT_SIZE_S = 13;
+
     private static final int FRAME_COLOR = Color.BLACK;
-    private static final int TEXT_SIZE = 50;
-    private static final int TEXT_SIZE_S = 40;
     private static final int TEXT_COLOR = Color.BLACK;
 
     /**
@@ -67,7 +70,7 @@ public class ListItemBackup extends UListItem {
                           BackupFile backup,
                           float x, int width)
     {
-        super(listItemCallbacks, true, x, width, ITEM_H2, UColor.WHITE, FRAME_WIDTH, FRAME_COLOR);
+        super(listItemCallbacks, true, x, width, UDpi.toPixel(ITEM_H2), UColor.WHITE, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
 
         mBackup = backup;
 
@@ -110,17 +113,18 @@ public class ListItemBackup extends UListItem {
             _pos.x += offset.x;
             _pos.y += offset.y;
         }
-        float y = _pos.y + MARGIN_V;
+        float y = _pos.y + UDpi.toPixel(MARGIN_V);
 
         super.draw(canvas, paint, _pos);
 
         // mTitle
-        UDraw.drawTextOneLine(canvas, paint, mTitle, UAlignment.None, TEXT_SIZE_S,
-                _pos.x + MARGIN_H, y, UColor.DarkBlue);
-        y += TEXT_SIZE_S + MARGIN_V;
+        UDraw.drawTextOneLine(canvas, paint, mTitle, UAlignment.None, UDpi.toPixel(TEXT_SIZE_S),
+                _pos.x + UDpi.toPixel(MARGIN_H), y, UColor.DarkBlue);
+        y += UDpi.toPixel(TEXT_SIZE_S + MARGIN_V);
 
         // mText
-        UDraw.drawText(canvas, mText, UAlignment.Center, TEXT_SIZE,
-                _pos.x + size.width / 2, y + (size.height - TEXT_SIZE_S - MARGIN_V * 2) / 2, TEXT_COLOR);
+        UDraw.drawText(canvas, mText, UAlignment.Center, UDpi.toPixel(TEXT_SIZE),
+                _pos.x + size.width / 2,
+                y + (size.height - UDpi.toPixel(TEXT_SIZE_S + MARGIN_V * 2)) / 2, TEXT_COLOR);
     }
 }

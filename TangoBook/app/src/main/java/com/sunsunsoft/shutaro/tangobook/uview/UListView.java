@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.scrollbar.UScrollWindow;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UWindowCallbacks;
 
@@ -25,7 +26,7 @@ public class UListView extends UScrollWindow
     /**
      * Constants
      */
-    public static final int MARGIN_V = 20;
+    public static final int MARGIN_V = 7;
 
     /**
      * Member variables
@@ -50,7 +51,7 @@ public class UListView extends UScrollWindow
                      int priority, float x, float y, int width, int
                              height, int color)
     {
-        super(callbacks, priority, x, y, width, height, color, 0, 0, 30);
+        super(callbacks, priority, x, y, width, height, color, 0, 0, UDpi.toPixel(10));
         mListItemCallbacks = listItemCallbacks;
         mClipRect = new Rect();
     }

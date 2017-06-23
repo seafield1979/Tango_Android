@@ -11,6 +11,7 @@ import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItem;
 import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
@@ -27,14 +28,18 @@ public class IconTrash extends IconContainer {
     /**
      * Consts
      */
-    private static final int ICON_W = 120;
-    private static final int ICON_H = 120;
+    private static final int ICON_W = 40;
+    private static final int ICON_H = 40;
     private static final int ICON_COLOR = Color.rgb(100,100,200);
 
     /**
      * Member Variables
      */
     protected TangoCard card;
+    // Dpi補正済みのサイズ
+    private int iconW, iconH;
+    private int textSize;
+
 
     /**
      * Get/Set
@@ -54,10 +59,13 @@ public class IconTrash extends IconContainer {
     public IconTrash(UIconWindow parentWindow, UIconCallbacks iconCallbacks) {
         // 自動整列するので座標は設定しない
         super( parentWindow, iconCallbacks, IconType.Trash,
-                0, 0, ICON_W, ICON_H);
+                0, 0, UDpi.toPixel(ICON_W), UDpi.toPixel(ICON_H));
 
         title = UResourceManager.getStringById(R.string.trash);
         setColor(ICON_COLOR);
+        iconW = UDpi.toPixel(ICON_W);
+        iconH = UDpi.toPixel(ICON_H);
+        textSize = UDpi.toPixel(TEXT_SIZE);
 
         // 中のアイコンを表示するためのSubWindow
         UIconWindows windows = parentWindow.getWindows();
@@ -89,7 +97,7 @@ public class IconTrash extends IconContainer {
         if (isLongTouched || isTouched || isDroped) {
             // 長押し、タッチ、ドロップ中はBGを表示
             UDraw.drawRoundRectFill(canvas, paint,
-                    new RectF(drawPos.x, drawPos.y, drawPos.x + ICON_W, drawPos.y + ICON_H),
+                    new RectF(drawPos.x, drawPos.y, drawPos.x + iconW, drawPos.y + iconH),
                     10, touchedColor, 0, 0);
         } else if (isAnimating) {
             // 点滅
@@ -104,12 +112,12 @@ public class IconTrash extends IconContainer {
         // 領域の幅に合わせて伸縮
         canvas.drawBitmap(image, new Rect(0,0,image.getWidth(), image.getHeight()),
                 new Rect((int)drawPos.x, (int)drawPos.y,
-                        (int)drawPos.x + ICON_W,(int)drawPos.y + ICON_H),
+                        (int)drawPos.x + iconW,(int)drawPos.y + iconH),
                 paint);
 
         // Text
-        UDraw.drawTextOneLine(canvas, paint, title, UAlignment.CenterX, TEXT_SIZE,
-                drawPos.x + ICON_W / 2, drawPos.y + ICON_H + TEXT_MARGIN, Color.BLACK);
+        UDraw.drawTextOneLine(canvas, paint, title, UAlignment.CenterX, textSize,
+                drawPos.x + iconW / 2, drawPos.y + iconH + UDpi.toPixel(TEXT_MARGIN), Color.BLACK);
     }
 
     /**

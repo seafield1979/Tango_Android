@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
@@ -41,13 +42,14 @@ public class StudyCardStackSelect extends UDrawable {
     public static final String TAG = "StudyCardStackSelect";
 
     // layout
-    public static final int MARGIN_V = 30;
+    public static final int MARGIN_V = 10;
     protected static final int MOVING_FRAME = 10;
     protected static final int STUDY_CARD_NUM = 4;
-    protected static final int TEXT_SIZE = 50;
-    protected static final int TEXT_SIZE_L = 60;
+    protected static final int TEXT_SIZE = 17;
+    protected static final int TEXT_SIZE_L = 20;
+    protected static final int CARD_MARGIN_V = 7;
+
     protected static final int DRAW_PRIORITY = 100;
-    protected static final int CARD_MARGIN_V = 20;
 
     // color
     protected static final int TEXT_COLOR = Color.BLACK;
@@ -104,7 +106,7 @@ public class StudyCardStackSelect extends UDrawable {
 
         // 出題 TextView
         mQuestionView = UTextView.createInstance(
-                "", TEXT_SIZE_L, DRAW_PRIORITY,
+                "", UDpi.toPixel(TEXT_SIZE_L), DRAW_PRIORITY,
                 UAlignment.CenterX, canvasW,
                 true, false, width / 2, 0,
                 width, TEXT_COLOR, 0);
@@ -143,20 +145,20 @@ public class StudyCardStackSelect extends UDrawable {
                 bookId);
 
         StudyCardSelect card;
-        int height = (size.height - MARGIN_V - mQuestionView.getHeight()) / STUDY_CARD_NUM;
+        int height = (size.height - UDpi.toPixel(MARGIN_V) - mQuestionView.getHeight()) / STUDY_CARD_NUM;
 
         // 出題カードの配置
-        float y = mQuestionView.getHeight() + MARGIN_V;
+        float y = mQuestionView.getHeight() + UDpi.toPixel(MARGIN_V);
 
         int correctIndex = new Random().nextInt(STUDY_CARD_NUM);
         int ngIndex = 0;
         for (int i=0; i<STUDY_CARD_NUM; i++) {
             if (i == correctIndex) {
-                card = new StudyCardSelect(okCard, true, !isEnglish, mCanvasW, height - CARD_MARGIN_V);
+                card = new StudyCardSelect(okCard, true, !isEnglish, mCanvasW, height - UDpi.toPixel(CARD_MARGIN_V));
             } else {
                 card = new StudyCardSelect(ngCards.get(ngIndex), false, !isEnglish, mCanvasW,
                         height -
-                        CARD_MARGIN_V);
+                                UDpi.toPixel(CARD_MARGIN_V));
                 ngIndex++;
             }
             mStudyCards[i] = card;

@@ -184,6 +184,13 @@ public class PresetBookManager {
     public String exportToCsvFile(TangoBook book, List<TangoCard> cards) {
         File path = UUtil.getPath(mContext, FilePathType.ExternalDocument);
         try {
+            if (path.exists() == false) {
+                // フォルダがなかったら作成する
+                if (path.mkdir() == false) {
+                    throw new Exception("Couldn't create external document directory.");
+                }
+            }
+
             String filePath = path.toString() + "/" + book.getName() + ".csv";
             FileWriter fw = new FileWriter(filePath);
 

@@ -12,6 +12,7 @@ import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItem;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
@@ -24,14 +25,16 @@ public class IconCard extends UIcon {
     /**
      * Consts
      */
-    private static final int ICON_W = 120;
-    private static final int ICON_H = 120;
-    private static final int ICON_COLOR = Color.rgb(100,100,200);
+    private static final int ICON_W = 40;
+    private static final int ICON_H = 40;
 
     /**
      * Member Variables
      */
     protected TangoCard card;
+
+    // Dpi補正済みのサイズ
+    private int iconW, iconH;
 
     /**
      * Get/Set
@@ -56,11 +59,13 @@ public class IconCard extends UIcon {
             iconCallbacks, int x, int y)
     {
         super(parentWindow, iconCallbacks, IconType.Card,
-                x, y, ICON_W, ICON_H);
+                x, y, UDpi.toPixel(ICON_W), UDpi.toPixel(ICON_H));
 
         this.card = card;
         updateTitle();
         setColor(card.getColor());
+        iconW = UDpi.toPixel(ICON_W);
+        iconH = UDpi.toPixel(ICON_H);
 
         // アイコン画像の読み込み
         image = UResourceManager.getBitmapWithColor(R.drawable.card, card.getColor());
@@ -88,7 +93,7 @@ public class IconCard extends UIcon {
         if (isLongTouched || isTouched || isDroped) {
             // 長押し、タッチ、ドロップ中はBGを表示
             UDraw.drawRoundRectFill(canvas, paint,
-                    new RectF(drawPos.x, drawPos.y, drawPos.x + ICON_W, drawPos.y + ICON_H),
+                    new RectF(drawPos.x, drawPos.y, drawPos.x + iconW, drawPos.y + iconH),
                     10, touchedColor, 0, 0);
         } else if (isAnimating) {
             // 点滅
@@ -102,19 +107,19 @@ public class IconCard extends UIcon {
         // 領域の幅に合わせて伸縮
         canvas.drawBitmap(image, new Rect(0,0,image.getWidth(), image.getHeight()),
                 new Rect((int)drawPos.x, (int)drawPos.y,
-                        (int)drawPos.x + ICON_W,(int)drawPos.y + ICON_H),
+                        (int)drawPos.x + iconW,(int)drawPos.y + iconH),
                 paint);
 
         // Text
-        UDraw.drawTextOneLine(canvas, paint, title, UAlignment.Center, TEXT_SIZE,
-                drawPos.x + ICON_W / 2, drawPos.y + ICON_H + TEXT_MARGIN, Color.BLACK);
+        UDraw.drawTextOneLine(canvas, paint, title, UAlignment.Center, UDpi.toPixel(TEXT_SIZE),
+                drawPos.x + iconW / 2, drawPos.y + iconH + UDpi.toPixel(TEXT_MARGIN), Color.BLACK);
         // New!
         if (card.isNewFlag()) {
             if (newTextView == null) {
                 createNewBadge(canvas);
             }
             newTextView.draw(canvas, paint,
-                    new PointF(drawPos.x + ICON_W / 2, drawPos.y + ICON_W / 2));
+                    new PointF(drawPos.x + iconW / 2, drawPos.y + iconW / 2));
         }
     }
 

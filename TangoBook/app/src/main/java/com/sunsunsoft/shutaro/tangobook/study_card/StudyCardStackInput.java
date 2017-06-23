@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
@@ -36,8 +37,10 @@ public class StudyCardStackInput extends UDrawable {
     public static final String TAG = "StudyCardStackSelect";
 
     // layout
-    public static final int MARGIN_V = 30;
-    protected static final int TEXT_SIZE = 50;
+    public static final int MARGIN_V = 10;
+    protected static final int TEXT_SIZE = 17;
+
+
     protected static final int DRAW_PRIORITY = 100;
 
     // color
@@ -105,7 +108,7 @@ public class StudyCardStackInput extends UDrawable {
     protected void setStudyCard() {
         if (mCards.size() > 0) {
             TangoCard card = mCards.pop();
-            mStudyCard = new StudyCardInput(card, mCanvasW, size.height - MARGIN_V);
+            mStudyCard = new StudyCardInput(card, mCanvasW, size.height - UDpi.toPixel(MARGIN_V));
         } else {
             // 終了
             mState = State.End;

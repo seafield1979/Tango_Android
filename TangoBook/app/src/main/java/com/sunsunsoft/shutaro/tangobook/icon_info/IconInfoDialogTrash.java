@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
@@ -49,16 +50,16 @@ public class IconInfoDialogTrash extends IconInfoDialog {
      */
     private static final String TAG = "IconInfoDialogTrash";
     private static final int BG_COLOR = Color.LTGRAY;
-    private static final int DLG_MARGIN = 100;
-    private static final int TEXT_VIEW_H = 100;
-    private static final int ICON_W = 120;
-    private static final int ICON_MARGIN_H = 30;
-    private static final int TEXT_SIZE = 50;
+    private static final int DLG_MARGIN = 35;
+    private static final int TEXT_VIEW_H = 35;
+    private static final int ICON_W = 40;
+    private static final int ICON_MARGIN_H = 10;
+    private static final int TEXT_SIZE = 17;
 
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
 
-    private static final int MIN_WIDTH = 700;
+    private static final int MIN_WIDTH = 235;
 
     /**
      * Member Variables
@@ -148,8 +149,13 @@ public class IconInfoDialogTrash extends IconInfoDialog {
      * @param canvas
      */
     protected void updateLayout(Canvas canvas) {
-        int x = MARGIN_H;
-        int y = TOP_ITEM_Y;
+        int marginH = UDpi.toPixel(MARGIN_H);
+        int marginV = UDpi.toPixel(MARGIN_V);
+        int x = marginH;
+        int y = UDpi.toPixel(TOP_ITEM_Y);
+        int textSize = UDpi.toPixel(TEXT_SIZE);
+        int iconW = UDpi.toPixel(ICON_W);
+        int dlgMargin = UDpi.toPixel(DLG_MARGIN);
 
         List<ActionIcons> icons = ActionIcons.getTrashIcons();
 
@@ -160,60 +166,62 @@ public class IconInfoDialogTrash extends IconInfoDialog {
                 TangoParentType.Trash, 0, TangoItemType.Card
         );
 
-        int width = ICON_W * icons.size() +
-                ICON_MARGIN_H * (icons.size() + 1);
-        if (width < MIN_WIDTH) width = MIN_WIDTH;
+        int width = iconW * icons.size() +
+                UDpi.toPixel(ICON_MARGIN_H) * (icons.size() + 1);
+        if (width < UDpi.toPixel(MIN_WIDTH)) {
+            width = UDpi.toPixel(MIN_WIDTH);
+        }
 
         // 種別(ゴミ箱)
         textTitle = UTextView.createInstance( mParentView.getContext().getString(R.string.trash),
-                TEXT_SIZE, 0,
+                textSize, 0,
                 UAlignment.None, canvas.getWidth(), false, false,
-                x, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
-        y += TEXT_SIZE + MARGIN_V;
+                x, y, width - marginH * 2, TEXT_COLOR, TEXT_BG_COLOR);
+        y += textSize + marginV;
 
         // Book count
         titleBoxNum = UTextView.createInstance( UResourceManager
-                .getStringById(R.string.book_count), TEXT_SIZE, 0,
+                .getStringById(R.string.book_count), textSize, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
-                x, y, width - MARGIN_H * 2,
+                x, y, width - marginH * 2,
                 TEXT_COLOR, 0);
-        x += titleBoxNum.getWidth() + MARGIN_H;
+        x += titleBoxNum.getWidth() + marginH;
 
         textBoxNum = UTextView.createInstance( "" + boxCount,
-                TEXT_SIZE, 0,
+                textSize, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
-                x, y, 300,
+                x, y, UDpi.toPixel(100),
                 TEXT_COLOR, Color.WHITE);
 
-        y += TEXT_VIEW_H + MARGIN_V_S;
+        y += UDpi.toPixel(TEXT_VIEW_H + MARGIN_V_S);
 
         // Card count
-        x = MARGIN_H;
+        x = marginH;
         titleCardNum = UTextView.createInstance( UResourceManager
-                        .getStringById(R.string.card_count), TEXT_SIZE, 0,
+                        .getStringById(R.string.card_count), textSize, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
-                x, y, width - MARGIN_H * 2,
+                x, y, width - marginH * 2,
                 TEXT_COLOR, 0);
-        x += titleCardNum.getWidth() + MARGIN_H;
+        x += titleCardNum.getWidth() + marginH;
 
         textCardNum = UTextView.createInstance( "" + cardCount,
-                TEXT_SIZE, 0,
+                textSize, 0,
                 UAlignment.None, canvas.getWidth(), false, true,
                 x, y, 300,
                 TEXT_COLOR, Color.WHITE);
 
-        y += TEXT_VIEW_H + MARGIN_V;
+        y += UDpi.toPixel(TEXT_VIEW_H) + marginV;
 
 
         // Action buttons
-        x = (width - ICON_W * 2 - MARGIN_H) / 2;
+        x = (width - iconW * 2 - marginH) / 2;
         for (ActionIcons icon : icons) {
             Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), UColor
                     .DarkOrange);
             UButtonImage imageButton = UButtonImage.createButton( this,
                     icon.ordinal(), 0,
                     x, y,
-                    ICON_W, ICON_W, image, null);
+                    iconW, iconW, image, null);
 
             // アイコンの下に表示するテキストを設定
             imageButton.setTitle(icon.getTitle(mParentView.getContext()), 30, Color.BLACK);
@@ -221,23 +229,23 @@ public class IconInfoDialogTrash extends IconInfoDialog {
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
 
-            x += ICON_W + ICON_MARGIN_H;
+            x += iconW + UDpi.toPixel(ICON_MARGIN_H);
         }
         // ゴミ箱を空にするアイコンはアイテム数が０ならDisable
         if (cardCount + boxCount == 0) {
             imageButtons.get(ButtonIndex.EmptyTrash.ordinal()).setEnabled(false);
         }
 
-        y += ICON_W + MARGIN_V + 50;
+        y += iconW + marginV + UDpi.toPixel(17);
 
         setSize(width, y);
 
         // Correct position
-        if ( pos.x + size.width > mParentView.getWidth() - DLG_MARGIN) {
-            pos.x = mParentView.getWidth() - size.width - DLG_MARGIN;
+        if ( pos.x + size.width > mParentView.getWidth() - dlgMargin) {
+            pos.x = mParentView.getWidth() - size.width - dlgMargin;
         }
-        if (pos.y + size.height > mParentView.getHeight() - DLG_MARGIN) {
-            pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
+        if (pos.y + size.height > mParentView.getHeight() - dlgMargin) {
+            pos.y = mParentView.getHeight() - size.height - dlgMargin;
         }
         updateRect();
     }

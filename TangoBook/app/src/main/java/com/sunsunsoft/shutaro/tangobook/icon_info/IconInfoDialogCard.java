@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.uview.FontSize;
 import com.sunsunsoft.shutaro.tangobook.R;
@@ -57,10 +58,11 @@ public class IconInfoDialogCard extends IconInfoDialog {
      * Consts
      */
     private static final String TAG = "IconInfoDialogCard";
-    private static final int DLG_MARGIN = 100;
-    private static final int ICON_W = 120;
-    private static final int ICON_MARGIN_H = 30;
-    private static final int TEXT_SIZE = 50;
+    private static final int DLG_MARGIN = 35;
+    private static final int ICON_W = 40;
+    private static final int ICON_MARGIN_H = 10;
+    private static final int TEXT_SIZE = 17;
+    private static final int ICON_TEXT_SIZE = 10;
 
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
@@ -140,8 +142,8 @@ public class IconInfoDialogCard extends IconInfoDialog {
         }
 
         // BG
-        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
-                bgColor, FRAME_WIDTH, frameColor);
+//        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), UDpi.toPixel(7),
+//                bgColor, UDpi.toPixel(FRAME_WIDTH), frameColor);
 
         textTitle.draw(canvas, paint, pos);
         for (IconInfoItem item : mItems) {
@@ -166,16 +168,16 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         List<ActionIcons> icons = ActionIcons.getCardIcons();
 
-        int width = ICON_W * icons.size() + ICON_MARGIN_H * (icons.size() + 1) + 100;
+        int width = UDpi.toPixel(ICON_W) * icons.size() + UDpi.toPixel(ICON_MARGIN_H) * (icons.size() + 1) + UDpi.toPixel(DLG_MARGIN);
         int fontSizeS = UDraw.getFontSize(FontSize.S);
         int fontSize = UDraw.getFontSize(FontSize.M);
 
         // タイトル(カード)
         textTitle = UTextView.createInstance( mContext.getString(R.string.card),
-                TEXT_SIZE, 0,
+                UDpi.toPixel(TEXT_SIZE), 0,
                 UAlignment.None, canvas.getWidth(), false, false,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
-        y += TEXT_SIZE + MARGIN_V_S;
+                UDpi.toPixel(MARGIN_H), y, width - UDpi.toPixel(MARGIN_H) * 2, TEXT_COLOR, TEXT_BG_COLOR);
+        y += UDpi.toPixel(TEXT_SIZE + MARGIN_V_S);
 
         String titleStr = null;
         String bodyStr = null;
@@ -222,19 +224,19 @@ public class IconInfoDialogCard extends IconInfoDialog {
             mItems[item.ordinal()].title = UTextView.createInstance( titleStr ,
                     fontSizeS, 0,
                     UAlignment.None, canvas.getWidth(), false, false,
-                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
+                    UDpi.toPixel(MARGIN_H), y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, 0);
 
-            y += mItems[item.ordinal()].title.getHeight() + 10;
+            y += mItems[item.ordinal()].title.getHeight() + UDpi.toPixel(3);
 
             // body
             mItems[item.ordinal()].body = UTextView.createInstance( bodyStr,
                     fontSize, 0,
                     UAlignment.None, canvas.getWidth(), true, true,
-                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, bgColor);
-            y += mItems[item.ordinal()].body.getHeight() + MARGIN_V_S;
+                    UDpi.toPixel(MARGIN_H), y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, bgColor);
+            y += mItems[item.ordinal()].body.getHeight() + UDpi.toPixel(MARGIN_V_S);
 
             // 幅は最大サイズに合わせる
-            int _width = mItems[item.ordinal()].body.getWidth() + MARGIN_H * 2;
+            int _width = mItems[item.ordinal()].body.getWidth() + UDpi.toPixel(MARGIN_H) * 2;
             if (_width > width) {
                 width = _width;
             }
@@ -244,11 +246,11 @@ public class IconInfoDialogCard extends IconInfoDialog {
         // タイトルのwidthを揃える
         for (IconInfoItem item : mItems) {
             if (item == null) continue;
-            item.title.setWidth(width - MARGIN_H * 2);
+            item.title.setWidth(width - UDpi.toPixel(MARGIN_H) * 2);
         }
 
         // アクションボタン
-        int x = (width - (ICON_W * icons.size() + MARGIN_H * (icons.size() - 1))) / 2;
+        int x = (width - (UDpi.toPixel(ICON_W) * icons.size() + UDpi.toPixel(MARGIN_H) * (icons.size() - 1))) / 2;
         for (ActionIcons icon : icons) {
             int color = (icon == ActionIcons.Favorite) ? UColor.LightYellow : frameColor;
 
@@ -263,7 +265,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
                 imageButton = UButtonImage.createButton( this,
                         icon.ordinal(), 0,
                         x, y,
-                        ICON_W, ICON_W, image, null);
+                        UDpi.toPixel(ICON_W), UDpi.toPixel(ICON_W), image, null);
 
                 imageButton.addState(image2);
                 if (mCard.getStar()) {
@@ -274,27 +276,27 @@ public class IconInfoDialogCard extends IconInfoDialog {
                 imageButton = UButtonImage.createButton( this,
                         icon.ordinal(), 0,
                         x, y,
-                        ICON_W, ICON_W, image, null);
+                        UDpi.toPixel(ICON_W), UDpi.toPixel(ICON_W), image, null);
             }
 
             // アイコンの下に表示するテキストを設定
-            imageButton.setTitle(icon.getTitle(mContext), 30, Color.BLACK);
+            imageButton.setTitle(icon.getTitle(mContext), UDpi.toPixel(ICON_TEXT_SIZE), Color.BLACK);
 
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
 
-            x += ICON_W + ICON_MARGIN_H;
+            x += UDpi.toPixel(ICON_W + ICON_MARGIN_H);
         }
-        y += ICON_W + MARGIN_V + 50;
+        y += UDpi.toPixel(ICON_W + MARGIN_V + 17);
 
         setSize(width, y);
 
         // 座標補正
-        if ( pos.x + size.width > mParentView.getWidth() - DLG_MARGIN) {
-            pos.x = mParentView.getWidth() - size.width - DLG_MARGIN;
+        if ( pos.x + size.width > mParentView.getWidth() - UDpi.toPixel(DLG_MARGIN)) {
+            pos.x = mParentView.getWidth() - size.width - UDpi.toPixel(DLG_MARGIN);
         }
-        if (pos.y + size.height > mParentView.getHeight() - DLG_MARGIN) {
-            pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
+        if (pos.y + size.height > mParentView.getHeight() - UDpi.toPixel(DLG_MARGIN)) {
+            pos.y = mParentView.getHeight() - size.height - UDpi.toPixel(DLG_MARGIN);
         }
         updateRect();
     }

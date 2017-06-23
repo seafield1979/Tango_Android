@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
@@ -47,16 +48,20 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
     /**
      * Consts
      */
-    public static final int WIDTH = 500;
-    public static final int MIN_HEIGHT = 150;
+    public static final int WIDTH = 170;
+    public static final int MIN_HEIGHT = 50;
 
     protected static final int MOVE_FRAME = 10;
     protected static final int MOVE_IN_FRAME = 30;
 
-    protected static final int TEXT_SIZE = 50;
-    protected static final int TEXT_SIZE_L = 70;
-    protected static final int MARGIN_TEXT_H = 40;
-    protected static final int MARGIN_TEXT_V = 20;
+    protected static final int TEXT_SIZE = 17;
+    protected static final int TEXT_SIZE_L = 23;
+    protected static final int MARGIN_TEXT_H = 13;
+    protected static final int MARGIN_TEXT_V = 7;
+
+    protected static final int ARROW_W = 50;
+    protected static final int ARROW_H = 50;
+    protected static final int ARROW_MARGIN = 7;
 
     protected static final int TEXT_COLOR = Color.BLACK;
     protected static final int BG_COLOR = Color.WHITE;
@@ -64,16 +69,12 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
     protected static final int OK_BG_COLOR = Color.rgb(100,200,100);
     protected static final int NG_BG_COLOR = Color.rgb(200,100,100);
 
-    protected static final int ARROW_W = 150;
-    protected static final int ARROW_H = 150;
-    protected static final int ARROW_MARGIN = 20;
-
     protected static final int ButtonIdArrowL = 200;
     protected static final int ButtonIdArrowR = 201;
 
     // スライド系
     // 左右にスライドできる距離。これ以上スライドするとOK/NGボックスに入る
-    protected static final int SLIDE_LEN = 350;
+    protected static final int SLIDE_LEN = 117;
 
     /**
      * Static Varialbes
@@ -131,7 +132,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
     public StudyCard(TangoCard card, boolean isMultiCard, boolean isEnglish,
                      int canvasW, int maxHeight)
     {
-        super(0, 0, 0, WIDTH, 0);
+        super(0, 0, 0, UDpi.toPixel(WIDTH), 0);
         if (isEnglish) {
             wordA = card.getWordA();
             wordB = card.getWordB();
@@ -143,15 +144,15 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
         mCard = card;
 
         // カードのサイズを計算する
-        int maxWidth = canvasW - (ARROW_W * 2 + ARROW_MARGIN * 4);
+        int maxWidth = canvasW - UDpi.toPixel(ARROW_W * 2 + ARROW_MARGIN * 4);
         if (isMultiCard) {
             // WordA,WordBの大きい方の高さに合わせる
-            Size sizeA = UDraw.getTextSize(canvasW, wordA, TEXT_SIZE);
-            Size sizeB = UDraw.getTextSize(canvasW, wordB, TEXT_SIZE);
+            Size sizeA = UDraw.getTextSize(canvasW, wordA, UDpi.toPixel(TEXT_SIZE));
+            Size sizeB = UDraw.getTextSize(canvasW, wordB, UDpi.toPixel(TEXT_SIZE));
 
             // width
             int width =  (sizeA.width > sizeB.width) ? sizeA.width : sizeB.width;
-            width += MARGIN_TEXT_H * 2;
+            width += UDpi.toPixel(MARGIN_TEXT_H) * 2;
             if (width > maxWidth) {
                 width = maxWidth;
             } else if (width < size.width) {
@@ -162,15 +163,15 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
 
             // height
             int height = (sizeA.height > sizeB.height) ? sizeA.height : sizeB.height;
-            height += MARGIN_TEXT_V * 2;
-            if (height < MIN_HEIGHT) height = MIN_HEIGHT;
+            height += UDpi.toPixel(MARGIN_TEXT_V) * 2;
+            if (height < UDpi.toPixel(MIN_HEIGHT)) height = UDpi.toPixel(MIN_HEIGHT);
             else if (height > maxHeight) height = maxHeight;
             size.height = height;
-            mTextSize = TEXT_SIZE;
+            mTextSize = UDpi.toPixel(TEXT_SIZE);
         } else {
             size.width = maxWidth;
             size.height = maxHeight;
-            mTextSize = TEXT_SIZE_L;
+            mTextSize = UDpi.toPixel(TEXT_SIZE_L);
         }
 
 
@@ -178,15 +179,15 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
             arrowLImage = UResourceManager.getBitmapWithColor(R.drawable.arrow_l, UColor.DarkRed);
         }
         mArrowL = UButtonImage.createButton(this, ButtonIdArrowL, 0,
-                - (size.width / 2 + ARROW_MARGIN + ARROW_W), (size.height - ARROW_H) / 2,
-                ARROW_W, ARROW_H, arrowLImage, null);
+                - (size.width / 2 + UDpi.toPixel(ARROW_MARGIN + ARROW_W)), (size.height - ARROW_H) / 2,
+                UDpi.toPixel(ARROW_W), UDpi.toPixel(ARROW_H), arrowLImage, null);
 
         if (arrowRImage == null) {
             arrowRImage = UResourceManager.getBitmapWithColor(R.drawable.arrow_r, UColor.DarkGreen);
         }
         mArrowR = UButtonImage.createButton(this, ButtonIdArrowR, 0,
-                size.width / 2 + ARROW_MARGIN, (size.height - ARROW_H) / 2,
-                ARROW_W, ARROW_H, arrowRImage, null);
+                size.width / 2 + UDpi.toPixel(ARROW_MARGIN), (size.height - UDpi.toPixel(ARROW_H)) / 2,
+                UDpi.toPixel(ARROW_W), UDpi.toPixel(ARROW_H), arrowRImage, null);
     }
 
     /**
@@ -297,9 +298,9 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
         else if (slideX == 0) {
             color = BG_COLOR;
         } else if (slideX < 0) {
-            color = UColor.mixRGBColor(BG_COLOR, NG_BG_COLOR, -slideX / (float)SLIDE_LEN);
+            color = UColor.mixRGBColor(BG_COLOR, NG_BG_COLOR, -slideX / UDpi.toPixel(SLIDE_LEN));
         } else {
-            color = UColor.mixRGBColor(BG_COLOR, OK_BG_COLOR, slideX / (float)SLIDE_LEN);
+            color = UColor.mixRGBColor(BG_COLOR, OK_BG_COLOR, slideX / UDpi.toPixel(SLIDE_LEN));
         }
         UDraw.drawRoundRectFill(canvas, paint,
                 new RectF(_pos.x - size.width / 2 , _pos.y,
@@ -370,12 +371,12 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
                     // 左右にスライド
                     slideX += vt.getMoveX();
                     // 一定ラインを超えたらボックスに移動
-                    if (slideX <= -SLIDE_LEN) {
+                    if (slideX <= UDpi.toPixel(-SLIDE_LEN)) {
                         // NG
                         pos.x += slideX;
                         slideX = 0;
                         moveRequest = lastRequest = RequestToParent.MoveToNG;
-                    } else if (slideX >= SLIDE_LEN) {
+                    } else if (slideX >= UDpi.toPixel(SLIDE_LEN)) {
                         // OK
                         pos.x += slideX;
                         slideX = 0;

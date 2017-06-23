@@ -8,6 +8,7 @@ import android.graphics.Rect;
 
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 import com.sunsunsoft.shutaro.tangobook.page.OptionItems;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
@@ -23,10 +24,9 @@ public class ListItemOption extends UListItem {
      * Constants
      */
     public static final String TAG = "ListItemOption";
-    private static final int TITLE_H = 80;
-    private static final int TITLE_H2 = 150;
-    private static final int TEXT_SIZE = 50;
-    private static final int FRAME_WIDTH = 4;
+    private static final int TITLE_H = 27;
+    private static final int TEXT_SIZE = 17;
+    private static final int FRAME_WIDTH = 1;
     private static final int FRAME_COLOR = Color.BLACK;
 
     /**
@@ -51,7 +51,7 @@ public class ListItemOption extends UListItem {
                           OptionItems itemType, String title, boolean isTitle, int color, int
                                   bgColor,
                           float x, int width) {
-        super(listItemCallbacks, !isTitle, x, width, TITLE_H, bgColor, FRAME_WIDTH, FRAME_COLOR);
+        super(listItemCallbacks, !isTitle, x, width, TITLE_H, bgColor, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
         this.mItemType = itemType;
         this.mTitle = title;
         this.mColor = color;
@@ -60,7 +60,7 @@ public class ListItemOption extends UListItem {
         switch(mItemType) {
             case ColorBook:
             case ColorCard:
-                size.height = 150;
+                size.height = UDpi.toPixel(50);
                 break;
             case CardTitle:
             case DefaultNameBook:
@@ -68,7 +68,7 @@ public class ListItemOption extends UListItem {
 //            case AddNgCard:
             case StudyMode3:
             case StudyMode4:
-                size.height = 200;
+                size.height = UDpi.toPixel(67);
                 break;
         }
 
@@ -93,7 +93,7 @@ public class ListItemOption extends UListItem {
 
         super.draw(canvas, paint, _pos);
 
-        UDraw.drawText(canvas, mTitle, UAlignment.Center, TEXT_SIZE,
+        UDraw.drawText(canvas, mTitle, UAlignment.Center, UDpi.toPixel(TEXT_SIZE),
                 _pos.x + size.width / 2, _pos.y + size.height / 2, mColor);
 
         switch(mItemType) {
@@ -104,11 +104,12 @@ public class ListItemOption extends UListItem {
                                 MySharedPref.DefaultColorBookKey :
                                 MySharedPref.DefaultColorCardKey);
                 if (color != 0) {
-                    _pos.x += size.width - 150;
-                    _pos.y += 20;
+                    _pos.x += size.width - UDpi.toPixel(50);
+                    _pos.y += UDpi.toPixel(7);
                     UDraw.drawRectFill(canvas, paint,
-                            new Rect((int) _pos.x, (int) _pos.y, (int) _pos.x + 100, (int) _pos.y +
-                                    size.height - 40),
+                            new Rect((int) _pos.x, (int) _pos.y,
+                                    (int) _pos.x + UDpi.toPixel(34),
+                                    (int) _pos.y + size.height - UDpi.toPixel(13)),
                             color, 0, 0);
                 }
             }

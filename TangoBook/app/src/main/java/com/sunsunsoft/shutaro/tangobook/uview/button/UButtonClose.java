@@ -5,13 +5,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
 /**
- * 閉じるボタン(というかアイコン)
- *
- * 閉じるボタンはウィンドウの特定位置に付属するので自分で座標を持たない
+ * 閉じるボタン
  */
 
 public class UButtonClose extends UButton {
@@ -19,8 +19,8 @@ public class UButtonClose extends UButton {
     /**
      * Consts
      */
-    private static final int X_LINE_WIDTH = 15;
-    private static final int RADIUS = 50;
+    private static final int X_LINE_WIDTH = 5;
+    private static final int RADIUS = 17;
 
     /**
      * Member Variables
@@ -37,14 +37,13 @@ public class UButtonClose extends UButton {
     public UButtonClose(UButtonCallbacks callbacks, UButtonType type, int id, int priority,
                         float x, float y, int color)
     {
-        super(callbacks, type, id, priority, x, y, RADIUS * 2, RADIUS * 2, color);
+        super(callbacks, type, id, priority, x, y, UDpi.toPixel(RADIUS) * 2, UDpi.toPixel(RADIUS) * 2, color);
 
         this.buttonCallback = callbacks;
         this.type = type;
         this.id = id;
         this.color = color;
-        this.radius = RADIUS;
-        scaleRect(1.3f, 1.3f);
+        this.radius = UDpi.toPixel(RADIUS);
     }
 
     /**
@@ -84,8 +83,8 @@ public class UButtonClose extends UButton {
 
         // x
         paint.setColor(Color.WHITE);
-        paint.setStrokeWidth(X_LINE_WIDTH);
-        float x = (float)Math.cos(45 * RAD) * radius * 0.8f;
+        paint.setStrokeWidth( UDpi.toPixel(X_LINE_WIDTH) );
+        float x = (float)Math.cos(45 * UDrawable.RAD) * radius * 0.8f;
         float y = (float)Math.sin(45 * RAD) * radius * 0.8f;
         canvas.drawLine(_pos.x - x, _pos.y - y,
                 _pos.x + x, _pos.y + y, paint);

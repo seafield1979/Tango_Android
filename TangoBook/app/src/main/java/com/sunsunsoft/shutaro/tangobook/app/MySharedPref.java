@@ -27,6 +27,9 @@ public class MySharedPref {
      */
     public static final String TAG = "MySharedPref";
 
+    // 画面のズーム
+    public static final String ScaleKey = "ScreenScale";
+
     // 初期化フラグ(初回起動時に１回だけ処理を行うために使用)
     public static final String InitializeKey = "InitializeFlag";
 

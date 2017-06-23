@@ -16,6 +16,7 @@ import com.sunsunsoft.shutaro.tangobook.preset.PresetBookManager;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.TopFragment;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
@@ -85,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         // SharedPreferencesの初期化
         MySharedPref.init(this);
+
+        // UDpi
+        UDpi.init(this);
 
         // Realmの初期化
         RealmManager.initRealm(this, false);

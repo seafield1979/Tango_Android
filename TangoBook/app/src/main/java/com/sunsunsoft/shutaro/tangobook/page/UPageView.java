@@ -23,8 +23,8 @@ abstract public class UPageView {
     public static final String TAG = "UPagaView";
 
     protected static final int TEXT_COLOR = Color.BLACK;
-    protected static final int MARGIN_H = 50;
-    protected static final int MARGIN_V = 50;
+    protected static final int MARGIN_H = 17;
+    protected static final int MARGIN_V = 17;
 
     /**
      * Member Variables

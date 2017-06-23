@@ -21,6 +21,7 @@ import com.sunsunsoft.shutaro.tangobook.icon.UIconManager;
 import com.sunsunsoft.shutaro.tangobook.icon.UIconWindow;
 import com.sunsunsoft.shutaro.tangobook.icon.UIconWindowSub;
 import com.sunsunsoft.shutaro.tangobook.icon.UIconWindows;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
@@ -521,7 +522,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
         }
         PointF winPos = icon.getParentWindow().getPos();
         float x = winPos.x + icon.getX();
-        float y = winPos.y + icon.getY() + UIconWindow.ICON_H;  // ちょい下
+        float y = winPos.y + icon.getY() + UDpi.toPixel(UIconWindow.ICON_H);  // ちょい下
 
         // ゴミ箱のWindow内なら別のダイアログを表示
         if (icon.getParentWindow().getParentType() == TangoParentType.Trash) {

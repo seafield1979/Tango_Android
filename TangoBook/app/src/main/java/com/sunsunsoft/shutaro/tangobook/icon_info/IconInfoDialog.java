@@ -114,13 +114,13 @@ abstract public class IconInfoDialog extends UWindow {
     /**
      * Consts
      */
-    protected static final int FRAME_WIDTH = 4;
+    protected static final int FRAME_WIDTH = 2;
     protected static final int FRAME_COLOR = Color.rgb(120,120,120);
-    protected static final int TOP_ITEM_Y = 20;
+    protected static final int TOP_ITEM_Y = 7;
 
-    protected static final int MARGIN_H = 50;
-    protected static final int MARGIN_V = 50;
-    protected static final int MARGIN_V_S = 20;
+    protected static final int MARGIN_H = 17;
+    protected static final int MARGIN_V = 17;
+    protected static final int MARGIN_V_S = 7;
 
     /**
      * Member Variables

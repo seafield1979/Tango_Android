@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButton;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
@@ -58,10 +59,10 @@ public class PageViewOptions extends UPageView
      */
     private static final int DRAW_PRIORITY = 100;
 
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V_S = 30;
-
-    private static final int TEXT_SIZE = 50;
+    // layout
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V_S = 10;
+    private static final int TEXT_SIZE = 17;
 
     // button ids
     private static final int ButtonIdReturn = 100;
@@ -149,16 +150,16 @@ public class PageViewOptions extends UPageView
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
                         .title_options2),
-                TEXT_SIZE, DRAW_PRIORITY,
+                UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.getSize().height + MARGIN_V_S;
+        y += mTitleText.getSize().height + UDpi.toPixel(MARGIN_V_S);
 
         // ListView
-        int listViewH = height - (MARGIN_V_S * 3 + mTitleText.getSize().height);
+        int listViewH = height - (UDpi.toPixel(MARGIN_V_S) * 3 + mTitleText.getSize().height);
         mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
-                width - MARGIN_H * 2, listViewH, 0);
+                width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
 
@@ -289,6 +290,7 @@ public class PageViewOptions extends UPageView
                 UDialogWindow.ButtonDir.Vertical, UDialogWindow.DialogPosType.Center,
                 true, mParentView.getWidth(), mParentView.getHeight(),
                 Color.BLACK, Color.LTGRAY);
+
         mDialog.addToDrawManager();
         mDialog.setTitle(UResourceManager.getStringById(R.string.card_name_title));
         mDialog.addButton(ButtonIdCardWordA, UResourceManager.getStringById(R.string.word_a), UColor.BLACK, UColor.White);

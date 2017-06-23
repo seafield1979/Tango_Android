@@ -9,9 +9,11 @@ import android.graphics.RectF;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.TouchType;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
+import com.sunsunsoft.shutaro.tangobook.uview.FontSize;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButton;
@@ -63,17 +65,15 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
 
     public static final int CloseDialogId = 10000123;
 
-    protected static final int MARGIN_H = 50;
-    protected static final int MARGIN_V = 15;
+    protected static final int MARGIN_H = 17;
+    protected static final int MARGIN_V = 5;
     protected static final int ANIMATION_FRAME = 10;
 
-    protected static final int MESSAGE_TEXT_SIZE = 50;
-    protected static final int TEXT_MARGIN_V = 50;
-    protected static final int BUTTON_H = 140;
-    protected static final int BUTTON_MARGIN_H = 50;
-    protected static final int BUTTON_MARGIN_V = 30;
-    protected static final int TITLE_TEXT_SIZE = 50;
-
+    protected static final int TEXT_MARGIN_V = 17;
+    protected static final int BUTTON_H = 47;
+    protected static final int BUTTON_MARGIN_H = 17;
+    protected static final int BUTTON_MARGIN_V = 10;
+//
     /**
      * Member variables
      */
@@ -108,6 +108,9 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
 
     // Drawable(複数)
     protected LinkedList<UDrawable> mDrawables = new LinkedList<>();
+
+    // Dpi計算済み
+    private int marginH, buttonMarginH, buttonMarginV, buttonH;
 
     /**
      * Get/Set
@@ -144,7 +147,12 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
                          int textColor, int dialogColor)
     {
         super(null, DrawPriority.Dialog.p(), x, y, screenW, screenH, dialogColor);
-        size = new Size(screenW - MARGIN_H * 2, screenH - MARGIN_H * 2);
+        marginH = UDpi.toPixel(MARGIN_H);
+        buttonMarginH = UDpi.toPixel(BUTTON_MARGIN_H);
+        buttonMarginV = UDpi.toPixel(BUTTON_MARGIN_V);
+        buttonH = UDpi.toPixel(BUTTON_H);
+
+        size = new Size(screenW - marginH * 2, screenH - marginH * 2);
         this.type = type;
         this.posType = posType;
         this.buttonDir = dir;
@@ -157,6 +165,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
 
         screenSize.width = screenW;
         screenSize.height = screenH;
+
 
         if (isAnimation) {
             updateBasePos();
@@ -302,12 +311,12 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
                 break;
             case CenterY:
             case None:
-                x = MARGIN_H;
+                x = marginH;
                 break;
         }
         UTextView textView = UTextView.createInstance(text, textSize, 0,
                 alignment, screenSize.width,
-                multiLine, isDrawBG, x, 0, size.width - MARGIN_H * 2, textColor, bgColor);
+                multiLine, isDrawBG, x, 0, size.width - marginH * 2, textColor, bgColor);
         mTextViews.add(textView);
         isUpdate = true;
         return textView;
@@ -323,7 +332,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
         UButtonText button = new UButtonText(buttonCallbacks, UButtonType.Press,
                 id, 0, text, 0, 0,
                 0, 0,
-                50, textColor, color);
+                UDraw.getFontSize(FontSize.M), textColor, color);
         mButtons.add(button);
         isUpdate = true;
         return button;
@@ -350,7 +359,7 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
         UButtonText button = new UButtonText(this, UButtonType.Press, CloseDialogId,
                 0, text, 0, 0,
                 0, 0,
-                50, textColor, bgColor);
+                UDraw.getFontSize(FontSize.M), textColor, bgColor);
         mButtons.add(button);
         isUpdate = true;
     }
@@ -386,20 +395,20 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
      */
     protected void updateLayout(Canvas canvas) {
         // タイトル、メッセージ
-        int y = TEXT_MARGIN_V;
+        int y = UDpi.toPixel(TEXT_MARGIN_V);
         if (title != null && mTitleView == null) {
-            mTitleView = UTextView.createInstance(title, TITLE_TEXT_SIZE, 0, UAlignment.CenterX,
+            mTitleView = UTextView.createInstance(title, UDraw.getFontSize(FontSize.L), 0, UAlignment.CenterX,
                     canvas.getWidth(), true, true,
                     size.width / 2, y,
                     size.width, color, 0);
-            y += mTitleView.getHeight() + MARGIN_V;
+            y += mTitleView.getHeight() + UDpi.toPixel(MARGIN_V);
         }
 
         // テキスト
         for (UTextView textView : mTextViews) {
             textView.setY(y);
             textView.updateRect();
-            y += textView.getHeight() + MARGIN_V;
+            y += textView.getHeight() + UDpi.toPixel(MARGIN_V);
         }
 
         // Drawables
@@ -427,28 +436,28 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
             }
             int buttonW = 0;
             if (num > imageNum) {
-                buttonW = (size.width - (((num + 1) * BUTTON_MARGIN_H) + imagesWidth)) / (num - imageNum);
+                buttonW = (size.width - (((num + 1) * buttonMarginH) + imagesWidth)) / (num - imageNum);
             }
-            float x = BUTTON_MARGIN_H;
+            float x = buttonMarginH;
             int heightMax = 0;
             int _height;
             for (int i=0; i<num; i++) {
                 UButton button = mButtons.get(i);
                 if (button instanceof UButtonImage) {
                     button.setPos(x, y);
-                    x += button.getWidth() + BUTTON_MARGIN_H;
+                    x += button.getWidth() + buttonMarginH;
                     _height = button.getHeight();
                 } else {
                     button.setPos(x, y);
-                    button.setSize(buttonW, BUTTON_H);
-                    x += buttonW + BUTTON_MARGIN_H;
-                    _height = BUTTON_H;
+                    button.setSize(buttonW, buttonH);
+                    x += buttonW + buttonMarginH;
+                    _height = buttonH;
                 }
                 if (_height > heightMax) {
                     heightMax = _height;
                 }
             }
-            y += heightMax + BUTTON_MARGIN_H;
+            y += heightMax + buttonMarginH;
         }
         else {
             // ボタンを縦に並べる
@@ -458,11 +467,11 @@ public class UDialogWindow extends UWindow implements UButtonCallbacks {
                 UButton button = mButtons.get(i);
                 if (button instanceof UButtonImage) {
                     button.setPos((size.width - button.getWidth()) / 2, y);
-                    y += button.getHeight() + BUTTON_MARGIN_V;
+                    y += button.getHeight() + buttonMarginV;
                 } else {
-                    button.setPos(BUTTON_MARGIN_H, y);
-                    button.setSize(size.width - BUTTON_MARGIN_H * 2, BUTTON_H);
-                    y += BUTTON_H + BUTTON_MARGIN_V;
+                    button.setPos(buttonMarginH, y);
+                    button.setSize(size.width - buttonMarginH * 2, buttonH);
+                    y += buttonH + buttonMarginV;
                 }
             }
         }

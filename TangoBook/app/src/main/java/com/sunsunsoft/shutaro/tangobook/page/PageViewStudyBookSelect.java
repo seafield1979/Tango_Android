@@ -9,13 +9,13 @@ import android.view.View;
 import com.sunsunsoft.shutaro.tangobook.icon.IconSortMode;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.*;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemStudyBook;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
-import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
 import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UWindow;
@@ -40,12 +40,12 @@ public class PageViewStudyBookSelect extends UPageView
      */
     private static final int DRAW_PRIORITY = 100;
 
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V_S = 30;
-    private static final int BUTTON_W = 300;
-    private static final int BUTTON_H = 120;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V_S = 10;
 
-    private static final int TEXT_SIZE = 50;
+    private static final int TEXT_SIZE = 17;
+
+    // Button Ids
     private static final int ButtonIdReturn = 100;
 
     // 開始ダイアログ(PreStudyWindow)でボタンが押されたときに使用する
@@ -57,7 +57,6 @@ public class PageViewStudyBookSelect extends UPageView
      */
     private UTextView mTitleText;
     private UListView mListView;
-    private UButtonText mReturnButton;
     private TangoBook mBook;
     private IconSortMode mSortMode;
 
@@ -120,22 +119,22 @@ public class PageViewStudyBookSelect extends UPageView
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
-        float y = MARGIN_V_S;
+        float x = UDpi.toPixel(MARGIN_H);
+        float y = UDpi.toPixel(MARGIN_V_S);
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
                         .title_study2),
-                TEXT_SIZE, DRAW_PRIORITY,
+                UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.getHeight() + MARGIN_V_S;
+        y += mTitleText.getHeight() + UDpi.toPixel(MARGIN_V_S);
 
         // ListView
-        int listViewH = height - (MARGIN_V_S * 3 + mTitleText.getHeight());
+        int listViewH = height - (UDpi.toPixel(MARGIN_V_S) * 3 + mTitleText.getHeight());
         mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
-                width - MARGIN_H * 2, listViewH, 0);
+                width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
 
@@ -152,16 +151,8 @@ public class PageViewStudyBookSelect extends UPageView
         // スクロールバー等のサイズを更新
         mListView.updateWindow();
 
-        y += listViewH + MARGIN_V_S;
+        y += listViewH + UDpi.toPixel(MARGIN_V_S);
 
-        // Button
-        if (false) {
-            mReturnButton = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
-                    DRAW_PRIORITY, UResourceManager.getStringById(R.string.return1),
-                    (width - BUTTON_W) / 2, y, BUTTON_W, BUTTON_H, 50, Color.WHITE, Color.rgb(200, 100,
-                    100));
-            mReturnButton.addToDrawManager();
-        }
         // PreStudyWindow 学習開始前に設定を行うウィンドウ
         mPreStudyWindow = new PreStudyWindow(this, this, mParentView);
         mPreStudyWindow.addToDrawManager();

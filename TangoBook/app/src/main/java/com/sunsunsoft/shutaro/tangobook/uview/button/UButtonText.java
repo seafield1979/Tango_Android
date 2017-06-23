@@ -9,6 +9,7 @@ import android.graphics.RectF;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
@@ -28,8 +29,8 @@ public class UButtonText extends UButton {
      */
     public static final String TAG = "UButtonText";
 
-    private static final int MARGIN_V = 30;
-    private static final int CHECKED_W = 70;
+    private static final int MARGIN_V = 10;
+    private static final int CHECKED_W = 23;
 
     protected static final int DEFAULT_TEXT_COLOR = Color.BLACK;
     protected static final int PULL_DOWN_COLOR = UColor.DarkGray;
@@ -104,7 +105,7 @@ public class UButtonText extends UButton {
 
         if (height == 0) {
             Size size = UDraw.getTextSize( width, text, textSize);
-            setSize(width, size.height + MARGIN_V * 2);
+            setSize(width, size.height + UDpi.toPixel(MARGIN_V) * 2);
         }
     }
 
@@ -117,7 +118,7 @@ public class UButtonText extends UButton {
 
         // ボタンの左側にチェックアイコンを表示
         if (checked) {
-            setImage(UResourceManager.getBitmapWithColor(R.drawable.checked2, UColor.BLACK), new Size(CHECKED_W, CHECKED_W));
+            setImage(UResourceManager.getBitmapWithColor(R.drawable.checked2, UColor.BLACK), new Size(UDpi.toPixel(CHECKED_W), UDpi.toPixel(CHECKED_W)));
         } else {
             setImage(null, null);
         }
@@ -159,21 +160,21 @@ public class UButtonText extends UButton {
                 _pressedColor = disabledColor2;
             }
             if (isPressed || pressedOn) {
-                _pos.y += PRESS_Y;
+                _pos.y += UDpi.toPixel(PRESS_Y);
             } else {
                 // ボタンの影用に下に矩形を描画
-                int height = PRESS_Y + 40;
+                int height = UDpi.toPixel(PRESS_Y + 13);
                 UDraw.drawRoundRectFill(canvas, paint,
                         new RectF(_pos.x, _pos.y + size.height - height,
                                 _pos.x + size.width, _pos.y + size.height),
-                        BUTTON_RADIUS, _pressedColor, 0, 0);
+                        UDpi.toPixel(BUTTON_RADIUS), _pressedColor, 0, 0);
             }
-            _height -= PRESS_Y;
+            _height -= UDpi.toPixel(PRESS_Y);
 
         }
         UDraw.drawRoundRectFill(canvas, paint,
                 new RectF(_pos.x, _pos.y, _pos.x + size.width, _pos.y + _height),
-                BUTTON_RADIUS, _color, 0, 0);
+                UDpi.toPixel(BUTTON_RADIUS), _color, 0, 0);
 
         // 画像
         if (mImage != null) {
@@ -211,7 +212,7 @@ public class UButtonText extends UButton {
         if (mText != null) {
             float y = _pos.y + mTextOffset.y + size.height / 2;
             if (isPressButton()) {
-                y -= PRESS_Y / 2;
+                y -= UDpi.toPixel(PRESS_Y) / 2;
             }
             UDraw.drawText(canvas, mText, UAlignment.Center, mTextSize,
                     _pos.x + mTextOffset.x + size.width / 2,
@@ -220,8 +221,8 @@ public class UButtonText extends UButton {
         // プルダウン
         if (pullDownIcon) {
             UDraw.drawTriangleFill(canvas, paint,
-                    new PointF(_pos.x + size.width - 50 , _pos.y + size.height / 2),
-                    30, 180, PULL_DOWN_COLOR);
+                    new PointF(_pos.x + size.width - UDpi.toPixel(13) , _pos.y + size.height / 2),
+                    UDpi.toPixel(10), 180, PULL_DOWN_COLOR);
         }
     }
 }

@@ -15,6 +15,7 @@ import android.text.TextPaint;
 
 import com.sunsunsoft.shutaro.tangobook.util.Size;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.FontSize;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 
@@ -28,15 +29,17 @@ public class UDraw {
 
     // フォントのサイズ
     public static int getFontSize(FontSize size) {
+        int _size;
         switch (size) {
             case S:
-                return 40;
+                _size = 10;
             case M:
-                return 50;
+                _size = 15;
             case L:
             default:
-                return 60;
+                _size = 20;
         }
+        return UDpi.toPixel(_size);
     }
 
     // ラジアン角度
@@ -270,7 +273,7 @@ public class UDraw {
 
         if (isChecked) {
             // 枠
-            drawRoundRectFill(canvas, paint, rect, 10, color, 0, 0);
+            drawRoundRectFill(canvas, paint, rect, UDpi.toPixel(3), color, 0, 0);
 
             // チェック
             Path path = new Path();
@@ -279,12 +282,12 @@ public class UDraw {
             path.lineTo(x + width * 0.4f, y + width * 0.7f);
             path.lineTo(x + width * 0.75f, y + width * 0.25f);
             paint.setColor(Color.WHITE);
-            paint.setStrokeWidth(6);
+            paint.setStrokeWidth(UDpi.toPixel(2));
             canvas.drawPath(path, paint);
 
         } else {
             // 枠
-            drawRoundRect(canvas, paint, rect, 10, 15, Color.rgb(140, 140, 140));
+            drawRoundRect(canvas, paint, rect, UDpi.toPixel(3), UDpi.toPixel(5), Color.rgb(140, 140, 140));
         }
     }
 
@@ -317,8 +320,8 @@ public class UDraw {
 
         // x,yにラインを表示 for Debug
         if (UDebug.drawTextBaseLine) {
-            drawLine(canvas, paint, x - 50, y, x + 50, y, 3, Color.YELLOW);
-            drawLine(canvas, paint, x, y - 50, x, y + 50, 3, Color.YELLOW);
+            drawLine(canvas, paint, x - UDpi.toPixel(17), y, x + UDpi.toPixel(17), y, UDpi.toPixel(1), Color.YELLOW);
+            drawLine(canvas, paint, x, y - UDpi.toPixel(17), x, y + UDpi.toPixel(17), UDpi.toPixel(1), Color.YELLOW);
         }
 
         int pos = text.indexOf("\n");

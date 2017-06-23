@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
@@ -57,20 +58,20 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
      */
     public static final int ANIME_FRAME = 10;
 
-    protected static final int MARGIN_H = 50;
-    protected static final int MARGIN_V = 50;
-    protected static final int QBUTTON_W = 120;
-    protected static final int QBUTTON_H = 120;
-    protected static final int TEXT_SIZE = 50;
-    protected static final int TEXT_SIZE_L = 70;
+    // layout
+    protected static final int MARGIN_H = 17;
+    protected static final int MARGIN_V = 17;
+    protected static final int QBUTTON_W = 40;
+    protected static final int QBUTTON_H = 40;
+    protected static final int TEXT_SIZE = 17;
+    protected static final int TEXT_SIZE_L = 23;
     protected static final int TEXT_COLOR = Color.BLACK;
     protected static final int FRAME_COLOR = Color.rgb(150,150,150);
 
-    protected static final int TEXT_MARGIN_H = 10;
-    protected static final int TEXT_MARGIN_H2 = 30;
-    protected static final int TEXT_MARGIN_V = 30;
-    protected static final int ONE_TEXT_WIDTH = TEXT_SIZE + 20;
-    protected static final int ONE_TEXT_HEIGHT = TEXT_SIZE + 20;
+    protected static final int TEXT_MARGIN_H2 = 10;
+    protected static final int TEXT_MARGIN_V = 10;
+    protected static final int ONE_TEXT_WIDTH = TEXT_SIZE + 7;
+    protected static final int ONE_TEXT_HEIGHT = TEXT_SIZE + 7;
 
     // color
     protected static final int BUTTON_COLOR = UColor.LTGRAY;
@@ -130,7 +131,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
      */
     public StudyCardInput(TangoCard card, int canvasW, int height)
     {
-        super(0, 0, 0, canvasW - MARGIN_H * 2, height);
+        super(0, 0, 0, canvasW - UDpi.toPixel(MARGIN_H) * 2, height);
 
         mState = State.None;
         mCard = card;
@@ -178,7 +179,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
         int i=0;
         for (String str : _questions) {
             UButtonText button = new UButtonText(this, UButtonType.BGColor, i, 0, str,
-                    0, 0, QBUTTON_W, QBUTTON_H, TEXT_SIZE_L, TEXT_COLOR, BUTTON_COLOR);
+                    0, 0, UDpi.toPixel(QBUTTON_W), UDpi.toPixel(QBUTTON_H), UDpi.toPixel(TEXT_SIZE_L), TEXT_COLOR, BUTTON_COLOR);
             mQuestionButtons.add(button);
             i++;
         }
@@ -307,12 +308,12 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
 
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(x, y, x + size.width, y + size.height),
-                    10, color, 5, FRAME_COLOR);
+                    UDpi.toPixel(3), color, UDpi.toPixel(2), FRAME_COLOR);
         } else {
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(_pos.x, _pos.y,
                             _pos.x + size.width, _pos.y + size.height),
-                    10, color, 5, FRAME_COLOR);
+                    UDpi.toPixel(3), color, UDpi.toPixel(2), FRAME_COLOR);
         }
 
         // 正解中はマルバツを表示
@@ -320,11 +321,11 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
 
         // Text
         if (mState == State.None || mState == State.ShowAnswer) {
-            float x, y = _pos.y + MARGIN_V;
+            float x, y = _pos.y + UDpi.toPixel(MARGIN_V);
             // 出題単語(日本語)
-            Size _size = UDraw.drawText(canvas, mCard.getWordB(), UAlignment.CenterX, TEXT_SIZE,
+            Size _size = UDraw.drawText(canvas, mCard.getWordB(), UAlignment.CenterX, UDpi.toPixel(TEXT_SIZE),
                     _pos2.x, y, TEXT_COLOR);
-            y += _size.height + MARGIN_V;
+            y += _size.height + UDpi.toPixel(MARGIN_V);
 
             // 正解文字列
             y = drawInputTexts(canvas, paint, _pos.x, y);
@@ -336,10 +337,10 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
         if (mState == State.ShowAnswer) {
             if (isMistaken) {
                 UDraw.drawCross(canvas, paint, new PointF(_pos2.x, _pos2.y),
-                        70, 20, UColor.Red);
+                        UDpi.toPixel(23), UDpi.toPixel(7), UColor.Red);
             } else {
                 UDraw.drawCircle(canvas, paint, new PointF(_pos2.x, _pos2.y),
-                        70, 20, UColor.Green);
+                        UDpi.toPixel(23), UDpi.toPixel(7), UColor.Green);
             }
         }
     }
@@ -355,19 +356,21 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
         float _x;
         int width;
         // 一行に表示できる文字数
-        int lineTexts = (size.width - MARGIN_H * 2) / ONE_TEXT_WIDTH;
+        int lineTexts = (size.width - UDpi.toPixel(MARGIN_H) * 2) / UDpi.toPixel(ONE_TEXT_WIDTH);
         int lineTextCnt = 0;
 
         if (lineTexts < mCorrectWords.size()) {
             // １行に収まりきらない場合
-            width = size.width - MARGIN_H * 2;
+            width = size.width - UDpi.toPixel(MARGIN_H) * 2;
         } else {
-            width = mCorrectWords.size() * ONE_TEXT_WIDTH;
+            width = mCorrectWords.size() * UDpi.toPixel(ONE_TEXT_WIDTH);
         }
 
         _x = (size.width - width) / 2 + x;
         float topX = _x;
         String text;
+
+        int textW = UDpi.toPixel(ONE_TEXT_WIDTH);
 
         for (int i = 0; i < mCorrectWords.size(); i++) {
             text = mCorrectWords.get(i);
@@ -376,7 +379,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
             } else if(text.equals("\n")) {
                 // 改行
                 _x = topX;
-                y += ONE_TEXT_HEIGHT;
+                y += textW;
                 lineTextCnt = 0;
                 continue;
             } else if (i >= inputPos ) {
@@ -391,14 +394,14 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
                 bgColor = UColor.LightGreen;
             }
 
-            UDraw.drawTextOneLine(canvas, paint, text, UAlignment.None, TEXT_SIZE,
-                    _x, y, TEXT_COLOR, bgColor, 20);
+            UDraw.drawTextOneLine(canvas, paint, text, UAlignment.None, textW,
+                    _x, y, TEXT_COLOR, bgColor, UDpi.toPixel(7));
 
-            _x += ONE_TEXT_WIDTH;
+            _x += textW;
             lineTextCnt++;
             if (lineTextCnt > lineTexts) {
                 _x = topX;
-                y += ONE_TEXT_HEIGHT;
+                y += textW;
                 lineTextCnt = 0;
             }
         }
@@ -415,24 +418,24 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
      */
     private float drawQuestionTexts(Canvas canvas, Paint paint, PointF offset, float y) {
 
-        int lineButtons = (size.width - TEXT_MARGIN_H2) / (QBUTTON_W + TEXT_MARGIN_H2);
+        int lineButtons = (size.width - UDpi.toPixel(TEXT_MARGIN_H2)) / UDpi.toPixel(QBUTTON_W + TEXT_MARGIN_H2);
         int width;
         if (lineButtons > mWord.length()) {
             lineButtons = mWord.length();
         }
-        width = lineButtons * (QBUTTON_W + TEXT_MARGIN_H2) - TEXT_MARGIN_H2;
+        width = lineButtons * UDpi.toPixel(QBUTTON_W + TEXT_MARGIN_H2) - UDpi.toPixel(TEXT_MARGIN_H2);
         float topX = (size.width - width) / 2;
         float x = topX;
 
         for (UButtonText button : mQuestionButtons) {
             button.setPos(x, y);
             button.draw(canvas, paint, offset);
-            x += QBUTTON_H + TEXT_MARGIN_H2;
+            x += UDpi.toPixel(QBUTTON_H + TEXT_MARGIN_H2);
 
             // 改行判定
-            if (x + button.getWidth() + TEXT_MARGIN_H2 > size.width) {
+            if (x + button.getWidth() + UDpi.toPixel(TEXT_MARGIN_H2) > size.width) {
                 x = topX;
-                y += button.getHeight() + TEXT_MARGIN_V;
+                y += button.getHeight() + UDpi.toPixel(TEXT_MARGIN_V);
             }
         }
         return y;

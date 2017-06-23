@@ -12,6 +12,7 @@ import com.sunsunsoft.shutaro.tangobook.preset.*;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.FileDialog;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
@@ -19,6 +20,7 @@ import com.sunsunsoft.shutaro.tangobook.listview.ListItemCard;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemPresetBook;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
@@ -42,11 +44,9 @@ public class PageViewCsvBook extends UPageView
     private static final int DRAW_PRIORITY = 100;
     private static final int DRAW_PRIORYTY_DIALOG = 50;
 
-    private static final int TOP_Y = 50;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
-
-    private static final int TEXT_SIZE = 50;
+    private static final int TOP_Y = 17;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 17;
 
     // button id
     private static final int ButtonIdReturn = 100;
@@ -66,11 +66,16 @@ public class PageViewCsvBook extends UPageView
     private UDialogWindow mConfirmDialog;
     private UDialogWindow mMessageDialog;
 
+    // Dpi計算済み
+    private int marginH;
+
     /**
      * Constructor
      */
     public PageViewCsvBook(Context context, View parentView, String title) {
         super(context, parentView, title);
+
+        marginH = UDpi.toPixel(MARGIN_H);
     }
 
     /**
@@ -119,22 +124,22 @@ public class PageViewCsvBook extends UPageView
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
-        float y = TOP_Y;
+        float x = marginH;
+        float y = UDpi.toPixel(TOP_Y);
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
                         .csv_title2),
-                TEXT_SIZE, DRAW_PRIORITY,
+                UDraw.getFontSize(FontSize.L), DRAW_PRIORITY,
                 UAlignment.CenterX, width, true, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
         y += mTitleText.getHeight() + MARGIN_V;
 
         // ListView
-        int listViewH = height - (MARGIN_H * 3 + mTitleText.getSize().height);
+        int listViewH = height - (marginH * 3 + mTitleText.getSize().height);
         mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
-                width - MARGIN_H * 2, listViewH, 0);
+                width - marginH * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
 
@@ -148,7 +153,7 @@ public class PageViewCsvBook extends UPageView
         }
         mListView.updateWindow();
 
-        y += listViewH + MARGIN_H;
+        y += listViewH + marginH;
     }
 
     /**
@@ -170,7 +175,7 @@ public class PageViewCsvBook extends UPageView
         // ListView
         UListView listView = new UListView(null, this,
                 DRAW_PRIORYTY_DIALOG, 0, 0,
-                mDialog.getSize().width, mParentView.getHeight() - 350, Color.LTGRAY
+                mDialog.getSize().width, mParentView.getHeight() - UDpi.toPixel(117), Color.LTGRAY
         );
         mDialog.addDrawable(listView);
 

@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import com.sunsunsoft.shutaro.tangobook.TouchType;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
 import com.sunsunsoft.shutaro.tangobook.util.SizeL;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
@@ -50,11 +51,12 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
     public static final String TAG = "UWindow";
     public static final int CloseButtonId = 1000123;
 
-    protected static final int SCROLL_BAR_W = 50;
-    protected static final int TOP_BAR_H = 50;
+    protected static final int SCROLL_BAR_W = 17;
     protected static final int TOP_BAR_COLOR = Color.rgb(100,100,200);
     protected static final int FRAME_COLOR = 0;
-    private static final int TOUCH_MARGIN = 40;
+    private static final int TOUCH_MARGIN = 13;
+    private static final int BG_RADIUS = 7;
+    private static final int BG_FRAME_W = 1;
 
     /**
      * Member Variables
@@ -229,17 +231,19 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
         }
 
         if (mSBType != WindowSBShowType.Hidden) {
+            int scrollBarW = UDpi.toPixel(SCROLL_BAR_W);
+
             mScrollBarV = new UScrollBar(ScrollBarType.Vertical, showType, pos,
-                    size.width - frameSize.width - SCROLL_BAR_W,
+                    size.width - frameSize.width - scrollBarW,
                     frameSize.height + topBarH,
-                    clientSize.height, SCROLL_BAR_W,
-                    height - SCROLL_BAR_W, contentSize.height);
+                    clientSize.height, scrollBarW,
+                    height - scrollBarW, contentSize.height);
 
             mScrollBarH = new UScrollBar( ScrollBarType.Horizontal, showType, pos,
                     frameSize.width,
-                    size.height - frameSize.height - SCROLL_BAR_W,
+                    size.height - frameSize.height - scrollBarW,
                     clientSize.width,
-                    SCROLL_BAR_W, width - SCROLL_BAR_W, contentSize.width);
+                    scrollBarW, width - scrollBarW, contentSize.width);
         }
 
         // 描画オブジェクトに登録する
@@ -363,13 +367,14 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
      * @param rect
      */
     protected void drawBG(Canvas canvas, Paint paint, RectF rect) {
-        int frameWidth = (frameColor == 0) ? 0 : 5;
-        UDraw.drawRoundRectFill(canvas, paint, rect, 20, bgColor, frameWidth, frameColor);
+        int frameWidth = (frameColor == 0) ? 0 : UDpi.toPixel(BG_FRAME_W);
+        UDraw.drawRoundRectFill(canvas, paint, rect, UDpi.toPixel(BG_RADIUS), bgColor, frameWidth, frameColor);
     }
+
     protected void drawBG(Canvas canvas, Paint paint, Rect rect) {
         // BG,Frame
-        int frameWidth = (frameColor == 0) ? 0 : 5;
-        UDraw.drawRoundRectFill(canvas, paint, new RectF(rect), 20, bgColor, frameWidth, frameColor);
+        int frameWidth = (frameColor == 0) ? 0 : UDpi.toPixel(BG_FRAME_W);
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(rect), UDpi.toPixel(BG_RADIUS), bgColor, frameWidth, frameColor);
     }
     protected void drawBG(Canvas canvas, Paint paint) {
         this.drawBG(canvas, paint, rect);

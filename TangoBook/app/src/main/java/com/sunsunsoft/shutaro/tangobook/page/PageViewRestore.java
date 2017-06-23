@@ -16,6 +16,7 @@ import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.FileDialog;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
@@ -41,18 +42,14 @@ public class PageViewRestore extends UPageView
      */
     private static final int DRAW_PRIORITY = 100;
 
-    private static final int TOP_Y = 50;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
-    private static final int MARGIN_V_S = 20;
-    private static final int BUTTON2_W = 350;
-    private static final int BUTTON2_H = 200;
+    // layout
+    private static final int TOP_Y = 17;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 17;
+    private static final int TEXT_SIZE_S = 13;
+    private static final int TEXT_SIZE = 17;
 
     private static final int TEXT_COLOR = Color.BLACK;
-    private static final int BOX_WIDTH = 70;
-
-    private static final int TEXT_SIZE_S = 40;
-    private static final int TEXT_SIZE = 50;
 
     // button Ids
     private static final int ButtonIdRestoreFromFile = 100;     // 選択したファイルから復元ボタンを押した
@@ -65,8 +62,6 @@ public class PageViewRestore extends UPageView
      * Member variables
      */
     private Context mContext;
-    // バックアップタイトル
-    private UTextView mAutoBackupTitle, mManualBackupTitle;
 
     private UButtonText mRestoreButton;     // xmlファイル選択で復元ボタン
     private ListViewBackup mListView;
@@ -127,8 +122,8 @@ public class PageViewRestore extends UPageView
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
-        float y = TOP_Y;
+        float x = UDpi.toPixel(MARGIN_H);
+        float y = UDpi.toPixel(TOP_Y);
 
         UDrawManager.getInstance().init();
 
@@ -138,20 +133,20 @@ public class PageViewRestore extends UPageView
         String title = UResourceManager.getStringById(R.string.restore_from_file);
         mRestoreButton = new UButtonText(this, UButtonType.Press, ButtonIdRestoreFromFile,
                 DRAW_PRIORITY, title,
-                MARGIN_H, y, width - MARGIN_H * 2, 0, TEXT_SIZE, UColor.BLACK, Color.LTGRAY);
+                UDpi.toPixel(MARGIN_H), y, width - UDpi.toPixel(MARGIN_H) * 2, 0,
+                UDpi.toPixel(TEXT_SIZE), UColor.BLACK, Color.LTGRAY);
         mRestoreButton.setEnabled(enableFlag);
         mRestoreButton.addToDrawManager();
 
-        y += mRestoreButton.getHeight() + MARGIN_V;
+        y += mRestoreButton.getHeight() + UDpi.toPixel(MARGIN_V);
 
         // ListView
-        int listViewH = height - ((int)y + MARGIN_V);
+        int listViewH = height - ((int)y + UDpi.toPixel(MARGIN_V));
         mListView = new ListViewBackup(this, ListViewBackup.ListViewType.Restore,
                 DRAW_PRIORITY, x, y,
-                width - MARGIN_H * 2, listViewH, 0);
+                width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
-
     }
 
     /**
@@ -192,7 +187,7 @@ public class PageViewRestore extends UPageView
 
             // 復元確認ダイアログの表示
             mDialog.setTitle(mContext.getString(R.string.confirm_restore));
-            mDialog.addTextView(xmlInfo + "\n\n", UAlignment.CenterX, true, false, TEXT_SIZE_S, TEXT_COLOR, 0);
+            mDialog.addTextView(xmlInfo + "\n\n", UAlignment.CenterX, true, false, UDpi.toPixel(TEXT_SIZE_S), TEXT_COLOR, 0);
             mDialog.addButton(ButtonIdRestoreFromFileOK, "OK", Color.BLACK, Color.WHITE);
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
         } else {

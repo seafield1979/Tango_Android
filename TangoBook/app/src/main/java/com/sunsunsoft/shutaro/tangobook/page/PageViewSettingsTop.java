@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
@@ -80,10 +81,9 @@ public class PageViewSettingsTop extends UPageView
      */
     private static final int DRAW_PRIORITY = 100;
 
-    private static final int BUTTON2_H = 200;
-    private static final int TEXT_SIZE = 50;
-    private static final int BUTTON_COLOR = UColor.LightBlue;
-    private static final int IMAGE_W = 100;
+    private static final int BUTTON2_H = 67;
+    private static final int TEXT_SIZE = 17;
+    private static final int IMAGE_W = 35;
 
     // button ids
     private static final int ButtonIdContactOK = 100;
@@ -163,7 +163,7 @@ public class PageViewSettingsTop extends UPageView
         float y = MARGIN_V + 100.f;
 
         int buttonW = width - MARGIN_H * 2;
-        int buttonH = BUTTON2_H;
+        int buttonH = UDpi.toPixel(BUTTON2_H);
 
         for (int i = 0; i < ButtonId.values().length; i++) {
             ButtonId id = ButtonId.values()[i];
@@ -171,14 +171,14 @@ public class PageViewSettingsTop extends UPageView
             mButtons[i] = new UButtonText(this, UButtonType.Press, id.ordinal(), DRAW_PRIORITY,
                     id.getTitle(mContext), x, y,
                     buttonW, buttonH,
-                    TEXT_SIZE, id.textColor, id.bgColor);
+                    UDpi.toPixel(TEXT_SIZE), id.textColor, id.bgColor);
             Bitmap image = UResourceManager.getBitmapWithColor(id.imageId, id.lineColor);
-            mButtons[i].setImage(image, new Size(IMAGE_W, IMAGE_W));
+            mButtons[i].setImage(image, new Size(UDpi.toPixel(IMAGE_W), UDpi.toPixel(IMAGE_W)));
             UDrawManager.getInstance().addDrawable(mButtons[i]);
 
             // 表示座標を少し調整
             mButtons[i].setImageAlignment(UAlignment.Center);
-            mButtons[i].setImageOffset(-IMAGE_W - 150, 0);
+            mButtons[i].setImageOffset(UDpi.toPixel(-IMAGE_W - 50), 0);
             mButtons[i].setTextOffset(MARGIN_H / 2, 0);
 
             y += buttonH + MARGIN_V;
@@ -256,7 +256,7 @@ public class PageViewSettingsTop extends UPageView
                             mParentView.getHeight());
                     mDialog.setTitle(UResourceManager.getStringById(R.string.contact_us));
                     mDialog.addTextView(UResourceManager.getStringById(R.string.contact_message),
-                            UAlignment.CenterX, true, false, TEXT_SIZE, TEXT_COLOR, 0);
+                            UAlignment.CenterX, true, false, UDpi.toPixel(TEXT_SIZE), TEXT_COLOR, 0);
                     mDialog.addButton(ButtonIdContactOK,
                             UResourceManager.getStringById(R.string.send_mail), 0, Color.WHITE);
                     mDialog.addCloseButton(UResourceManager.getStringById(R.string.close));

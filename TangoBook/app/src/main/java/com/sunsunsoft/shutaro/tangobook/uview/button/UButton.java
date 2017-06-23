@@ -27,8 +27,8 @@ abstract public class UButton extends UDrawable {
      * Consts
      */
     public static final String TAG = "UButton";
-    public static final int PRESS_Y = 16;
-    public static final int BUTTON_RADIUS = 16;
+    public static final int PRESS_Y = 6;
+    public static final int BUTTON_RADIUS = 6;
     public static final int DISABLED_COLOR = Color.rgb(160,160,160);
     public static final int DEFAULT_BG_COLOR = Color.LTGRAY;
 

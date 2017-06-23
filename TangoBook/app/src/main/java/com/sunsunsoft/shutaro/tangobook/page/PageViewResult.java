@@ -7,6 +7,7 @@ import android.view.View;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.TangoBook;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
@@ -39,19 +40,24 @@ public class PageViewResult extends UPageView
     private static final int ButtonIdRetry2 = 201;
     private static final int ButtonIdReturn = 202;
 
-    private static final int TOP_Y = 30;
-    private static final int PRIORITY_LV = 100;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
-    private static final int MARGIN_V_S = 20;
+    // 座標系
+    private static final int TOP_Y = 10;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 17;
+    private static final int MARGIN_V_S = 7;
 
-    private static final int TITLE_TEXT_SIZE = 70;
+    private static final int TITLE_TEXT_SIZE = 23;
+    private static final int TEXT_SIZE = 17;
+    private static final int BUTTON_TEXT_SIZE = 17;
+    private static final int BUTTON_H = 67;
+
+    // 優先順位系
+    private static final int PRIORITY_LV = 100;
     private static final int DRAW_PRIORITY = 100;
-    private static final int TEXT_SIZE = 50;
-    private static final int BUTTON_TEXT_SIZE = 50;
+
+    // color
     private static final int TEXT_COLOR = Color.BLACK;
 
-    private static final int BUTTON_H = 200;
     private static final int TITLE_BG_COLOR = Color.rgb(100,100,200);
     private static final int BUTTON_TEXT_COLOR = Color.WHITE;
     private static final int BUTTON1_BG_COLOR = Color.rgb(100,200,100);
@@ -115,61 +121,65 @@ public class PageViewResult extends UPageView
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float y = TOP_Y;
+        float y = UDpi.toPixel(TOP_Y);
+        int buttonH = UDpi.toPixel(BUTTON_H);
+        int marginH = UDpi.toPixel(MARGIN_H);
+        int marginV = UDpi.toPixel(MARGIN_V);
+
         // Title
         String title = String.format(UResourceManager.getStringById(R.string
                 .title_result2), mBook.getName());
         mTitleText = UTextView.createInstance(title,
-                TITLE_TEXT_SIZE,
+                UDpi.toPixel(TITLE_TEXT_SIZE),
                 DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false, width / 2, y, width,
                 TEXT_COLOR, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.getHeight() + MARGIN_V_S;
+        y += mTitleText.getHeight() + UDpi.toPixel(MARGIN_V_S);
 
         // Result
         String text = "OK: " + mOkCards.size() + "  NG: " + mNgCards.size();
-        mResultText = UTextView.createInstance(text, TEXT_SIZE, DRAW_PRIORITY,
+        mResultText = UTextView.createInstance(text, UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, false, width / 2, y, width,
                 TEXT_COLOR, 0);
         mResultText.addToDrawManager();
-        y += mResultText.getHeight() + MARGIN_V_S;
+        y += mResultText.getHeight() + UDpi.toPixel(MARGIN_V_S);
 
         // Buttons
-        int buttonW = (width - MARGIN_H * 4) / 3;
-        float x = MARGIN_H;
+        int buttonW = (width - marginH * 4) / 3;
+        float x = UDpi.toPixel(MARGIN_H);
         // Retury1
         mButtonRetry1 = new UButtonText(this, UButtonType.Press, ButtonIdRetry1,
                 DRAW_PRIORITY,UResourceManager.getStringById(R.string.retry1),
-                x, y, buttonW, BUTTON_H,
-                BUTTON_TEXT_SIZE, BUTTON_TEXT_COLOR, BUTTON1_BG_COLOR);
+                x, y, buttonW, buttonH,
+                UDpi.toPixel(BUTTON_TEXT_SIZE), BUTTON_TEXT_COLOR, BUTTON1_BG_COLOR);
         mButtonRetry1.addToDrawManager();
-        x += buttonW + MARGIN_H;
+        x += buttonW + marginH;
 
         // Retry2
         mButtonRetry2 = new UButtonText(this, UButtonType.Press, ButtonIdRetry2,
                 DRAW_PRIORITY, UResourceManager.getStringById(R.string.retry2),
-                x, y, buttonW, BUTTON_H,
-                BUTTON_TEXT_SIZE, BUTTON_TEXT_COLOR, BUTTON1_BG_COLOR);
+                x, y, buttonW, buttonH,
+                UDpi.toPixel(BUTTON_TEXT_SIZE), BUTTON_TEXT_COLOR, BUTTON1_BG_COLOR);
         mButtonRetry2.addToDrawManager();
         if (mNgCards.size() == 0) {
             mButtonRetry2.setEnabled(false);
         }
-        x += buttonW + MARGIN_H;
+        x += buttonW + marginH;
 
         // Exit
         mButtonExit = new UButtonText(this, UButtonType.Press, ButtonIdReturn,
                 DRAW_PRIORITY, UResourceManager.getStringById(R.string.finish),
-                x, y, buttonW, BUTTON_H,
-                BUTTON_TEXT_SIZE, BUTTON_TEXT_COLOR, BUTTON2_BG_COLOR);
+                x, y, buttonW, buttonH,
+                UDpi.toPixel(BUTTON_TEXT_SIZE), BUTTON_TEXT_COLOR, BUTTON2_BG_COLOR);
         mButtonExit.addToDrawManager();
 
-        y += BUTTON_H + MARGIN_V;
+        y += buttonH + marginV;
 
         // ListView
         mListView = new ListViewResult(this, mOkCards, mNgCards, mStudyMode, mStudyType,
-                PRIORITY_LV, MARGIN_H, y,
-                width - MARGIN_H * 2, height - (int)y - MARGIN_V, Color.WHITE);
+                PRIORITY_LV, marginH, y,
+                width - marginH * 2, height - (int)y - marginV, Color.WHITE);
         mListView.addToDrawManager();
         mListView.setFrameColor(Color.BLACK);
     }

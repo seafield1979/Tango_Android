@@ -4,9 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RectF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UColor;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.DrawList;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UWindow;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 
@@ -20,10 +24,9 @@ import java.util.LinkedList;
 abstract public class UMenuBar extends UWindow {
 
     public static final int DRAW_PRIORITY = 90;
-    public static final int MENU_BAR_H = 180;
-    protected static final int MARGIN_L = 30;
-    protected static final int MARGIN_H = 50;
-    protected static final int MARGIN_TOP = 15;
+    public static final int MENU_BAR_H = 60;
+    protected static final int MARGIN_L = 10;
+    protected static final int MARGIN_H = 27;
 
 
     protected UMenuItemCallbacks mMenuItemCallbacks;
@@ -46,7 +49,7 @@ abstract public class UMenuBar extends UWindow {
                     int parentW, int parentH,
                     int bgColor)
     {
-        super(null, DRAW_PRIORITY, 0, parentH - MENU_BAR_H, parentW, MENU_BAR_H, bgColor);
+        super(null, DRAW_PRIORITY, 0, parentH - UDpi.toPixel(MENU_BAR_H), parentW, UDpi.toPixel(MENU_BAR_H), bgColor);
         mMenuItemCallbacks = callbackClass;
         topItems = new LinkedList<>();
         items = new LinkedList<>();
@@ -61,7 +64,7 @@ abstract public class UMenuBar extends UWindow {
     abstract protected void initMenuBar();
 
     protected void updateBGSize() {
-        size.width = MARGIN_L + topItems.size() * (UMenuItem.ITEM_W + MARGIN_H);
+        size.width = UDpi.toPixel(MARGIN_L + topItems.size() * (UMenuItem.ITEM_W + MARGIN_H));
     }
 
     /**
@@ -78,7 +81,7 @@ abstract public class UMenuBar extends UWindow {
         items.add(item);
 
         // 座標設定
-        item.setPos(MARGIN_H + (UMenuItem.TOP_ITEM_W + MARGIN_H) * (topItems.size() - 1), MARGIN_TOP);
+//        item.setPos( UDpi.toPixel(MARGIN_H + (UMenuItem.TOP_ITEM_W + MARGIN_H)) * (topItems.size() - 1), UDpi.toPixel(MARGIN_TOP));
         return item;
     }
 
@@ -205,11 +208,6 @@ abstract public class UMenuBar extends UWindow {
      */
     public void drawContent(Canvas canvas, Paint paint, PointF offset ) {
         if (!isShow) return;
-
-        // 背景描画
-//        UDraw.drawRoundRectFill(canvas, paint, new RectF(pos.x, pos.y, pos.x + getWidth() + 30,
-//                pos.y + getHeight()),
-//                30, UColor.LightGreen, 0, 0);
 
         // トップのアイテムから描画
         for (UMenuItem item : topItems) {

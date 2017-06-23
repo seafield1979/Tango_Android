@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
@@ -46,15 +47,15 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     private static final int MAX_TEXT = 20;
 
     private static final int ButtonIdStar = 100100;
-    private static final int TITLE_H = 80;
-    private static final int CARD_H = 120;
 
-    private static final int TEXT_SIZE = 50;
-    private static final int TEXT_COLOR = Color.WHITE;
+    // 座標系
+    private static final int TITLE_H = 27;
+    private static final int CARD_H = 40;
+    private static final int TEXT_SIZE = 17;
+    private static final int STAR_ICON_W = 34;
+    private static final int FRAME_WIDTH = 1;
 
-    private static final int STAR_ICON_W = 100;
-
-    private static final int FRAME_WIDTH = 4;
+    // color
     private static final int FRAME_COLOR = Color.BLACK;
 
     /**
@@ -66,7 +67,6 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     private TangoCard mCard;
     private int mTextColor;
     private UButtonImage mStarButton;
-    private StudyMode mStudyMode;      // 学習モード
     private int mLearnedTextW;        // "覚えた"のテキストの幅
 
     /**
@@ -86,7 +86,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
     public ListItemResult(UListItemCallbacks listItemCallbacks,
                           ListItemResultType type, boolean isTouchable, TangoCard card,
                           float x, int width, int textColor, int color) {
-        super(listItemCallbacks, isTouchable, x, width, 0, color, FRAME_WIDTH, FRAME_COLOR);
+        super(listItemCallbacks, isTouchable, x, width, 0, color, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
         mType = type;
         mTextColor = textColor;
         mCard = card;
@@ -101,7 +101,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                 false, null, 0, width, textColor, bgColor);
         instance.isOK = isOK;
         instance.mText = text;
-        instance.size.height = TITLE_H;
+        instance.size.height = UDpi.toPixel(TITLE_H);
         return instance;
     }
 
@@ -116,8 +116,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
 
         instance.mText = convString(isEnglish ? card.getWordA() : card.getWordB());
         instance.mText2 = convString(isEnglish ? card.getWordB() : card.getWordA());
-        instance.size.height = CARD_H;
-        instance.mStudyMode = studyMode;
+        instance.size.height = UDpi.toPixel(CARD_H);
         // Starボタンを追加(On/Offあり)
         if (star) {
             Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.favorites, UColor
@@ -125,11 +124,11 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
             Bitmap image2 = UResourceManager.getBitmapWithColor(R.drawable.favorites2, UColor
                     .OrangeRed);
             instance.mStarButton = UButtonImage.createButton(instance, ButtonIdStar, 100,
-                    instance.size.width - 200, (instance.size.height - STAR_ICON_W) / 2,
-                    STAR_ICON_W, STAR_ICON_W, image, null);
+                    instance.size.width - UDpi.toPixel(67), (instance.size.height - UDpi.toPixel(STAR_ICON_W)) / 2,
+                    UDpi.toPixel(STAR_ICON_W), UDpi.toPixel(STAR_ICON_W), image, null);
             instance.mStarButton.addState(image2);
             instance.mStarButton.setState(card.getStar() ? 1 : 0);
-            instance.mStarButton.scaleRect(1.3f, 1.0f);
+//            instance.mStarButton.scaleRect(1.3f, 1.0f);
         }
         return instance;
     }
@@ -143,7 +142,6 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                 0, width, textColor, bgColor);
         instance.mText = convString(isEnglish ? card.getWordA() : card.getWordB());
         instance.mText2 = convString(isEnglish ? card.getWordB() : card.getWordA());
-        instance.mStudyMode = studyMode;
         instance.size.height = CARD_H;
         return instance;
     }
@@ -174,32 +172,34 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
 
         super.draw(canvas, paint, _pos);
 
+        int fontSize = UDpi.toPixel(TEXT_SIZE);
+
         switch(mType) {
             case Title:
-                UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, TEXT_SIZE,
+                UDraw.drawTextOneLine(canvas, paint, mText, UAlignment.Center, fontSize,
                         _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
                 // 覚えた
                 if (isOK) {
                     if (mLearnedTextW == 0) {
                         mLearnedTextW = UDraw.getTextSize(canvas.getWidth(),
-                                UResourceManager.getStringById(R.string.learned), TEXT_SIZE).width;
+                                UResourceManager.getStringById(R.string.learned), fontSize).width;
                     }
                     UDraw.drawTextOneLine(canvas, paint,
                             UResourceManager.getStringById(R.string.learned),
-                            UAlignment.Center, TEXT_SIZE,
-                            _pos.x + size.width - mLearnedTextW / 2 - 70, _pos.y + size.height / 2,
+                            UAlignment.Center, fontSize,
+                            _pos.x + size.width - mLearnedTextW / 2 - UDpi.toPixel(23), _pos.y + size.height / 2,
                             mTextColor);
                 }
                 break;
             case OK: {
                 String text = isTouching ? mText2 : mText;
-                UDraw.drawTextOneLine(canvas, paint, text, UAlignment.Center, TEXT_SIZE,
+                UDraw.drawTextOneLine(canvas, paint, text, UAlignment.Center, fontSize,
                         _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
             }
                 break;
             case NG: {
                 String text = isTouching ? mText2 : mText;
-                UDraw.drawTextOneLine(canvas, paint, text, UAlignment.Center, TEXT_SIZE,
+                UDraw.drawTextOneLine(canvas, paint, text, UAlignment.Center, fontSize,
                         _pos.x + size.width / 2, _pos.y + size.height / 2, mTextColor);
             }
                 break;

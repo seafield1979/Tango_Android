@@ -13,6 +13,7 @@ import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.database.TangoBook;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItemPosDao;
 import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
@@ -40,16 +41,15 @@ public class ListItemStudyBook extends UListItem {
      */
     public static final String TAG = "ListItemStudiedBook";
 
-    private static final int TEXT_SIZE = 50;
-    private static final int TEXT_SIZE2 = 42;
+    private static final int TEXT_SIZE = 17;
+    private static final int TEXT_SIZE2 = 14;
     private static final int TEXT_COLOR = Color.BLACK;
-    private static final int ICON_W = 100;
+    private static final int ICON_W = 45;
 
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 15;
-    private static final int ITEM_H = TEXT_SIZE * 3 + MARGIN_V * 4;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 5;
 
-    private static final int FRAME_WIDTH = 4;
+    private static final int FRAME_WIDTH = 1;
     private static final int FRAME_COLOR = Color.BLACK;
 
     /**
@@ -60,6 +60,9 @@ public class ListItemStudyBook extends UListItem {
     private String mCardCount;
     private TangoBook mBook;
     private Bitmap mIcon;
+
+    // Dpi計算結果
+    private int itemH;
 
     /**
      * Get/Set
@@ -74,8 +77,9 @@ public class ListItemStudyBook extends UListItem {
     public ListItemStudyBook(UListItemCallbacks listItemCallbacks,
                              TangoBook book, int width, int color)
     {
-        super(listItemCallbacks, true, 0, width, ITEM_H, color, FRAME_WIDTH, FRAME_COLOR);
+        super(listItemCallbacks, true, 0, width, UDpi.toPixel(TEXT_SIZE) * 3 + UDpi.toPixel(MARGIN_V) * 4, color, FRAME_WIDTH, FRAME_COLOR);
         mBook = book;
+        itemH = UDpi.toPixel(TEXT_SIZE) * 3 + UDpi.toPixel(MARGIN_V) * 4;
 
         // 単語帳名
         mTextName = UResourceManager.getStringById(R.string.book_name2) + " : " + book.getName();
@@ -117,24 +121,26 @@ public class ListItemStudyBook extends UListItem {
 
         super.draw(canvas, paint, _pos);
 
-        float x = _pos.x + MARGIN_H;
-        float y = _pos.y + MARGIN_V;
+        float x = _pos.x + UDpi.toPixel(MARGIN_H);
+        float y = _pos.y + UDpi.toPixel(MARGIN_V);
+        int margin = UDpi.toPixel(TEXT_SIZE + MARGIN_V);
+
         // Icon image
         UDraw.drawBitmap(canvas, paint, mIcon, x,
-                _pos.y + (ITEM_H - ICON_W) / 2,
-                ICON_W, ICON_W );
-        x += ICON_W + MARGIN_H;
+                _pos.y + (itemH - UDpi.toPixel(ICON_W)) / 2,
+                UDpi.toPixel(ICON_W), UDpi.toPixel(ICON_W) );
+        x += UDpi.toPixel(ICON_W + MARGIN_H);
         // Book名
-        UDraw.drawTextOneLine(canvas, paint, mTextName, UAlignment.None, TEXT_SIZE, x, y, Color
+        UDraw.drawTextOneLine(canvas, paint, mTextName, UAlignment.None, UDpi.toPixel(TEXT_SIZE), x, y, Color
                 .rgb(50,150,50));
-        y += TEXT_SIZE + MARGIN_V;
+        y += margin;
         // 学習日時
-        UDraw.drawTextOneLine(canvas, paint, mStudiedDate, UAlignment.None, TEXT_SIZE2, x, y,
+        UDraw.drawTextOneLine(canvas, paint, mStudiedDate, UAlignment.None, UDpi.toPixel(TEXT_SIZE2), x, y,
                 TEXT_COLOR);
-        y += TEXT_SIZE + MARGIN_V;
+        y += margin;
 
         // カード数
-        UDraw.drawTextOneLine(canvas, paint, mCardCount , UAlignment.None, TEXT_SIZE2,
+        UDraw.drawTextOneLine(canvas, paint, mCardCount , UAlignment.None, UDpi.toPixel(TEXT_SIZE2),
                 x, y, UColor.DarkGray);
     }
 

@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.sunsunsoft.shutaro.tangobook.TouchType;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
@@ -26,14 +27,13 @@ public class UMenuItem extends UDrawable {
     public static final String TAG = "UMenuItem";
 
     public static final int DRAW_PRIORITY = 200;
-    public static final int TOP_ITEM_W = 150;
-    public static final int ITEM_W = 120;
     public static final int ANIME_FRAME = 10;
 
-
-    private static final int CHILD_MARGIN_V = 30;
-    private static final int CHILD_MARGIN_H = 30;
-    private static final int TEXT_SIZE = 40;
+    public static final int TOP_ITEM_W = 50;
+    public static final int ITEM_W = 40;
+    private static final int CHILD_MARGIN_V = 10;
+    private static final int CHILD_MARGIN_H = 10;
+    private static final int TEXT_SIZE = 13;
 
     /**
      * メンバ変数
@@ -61,6 +61,9 @@ public class UMenuItem extends UDrawable {
 
     // 閉じている移動中かどうか
     protected boolean isClosing;
+
+    // Dpi補正計算済みの値
+    private int mItemW;
 
     /**
      * Get/Set
@@ -96,7 +99,8 @@ public class UMenuItem extends UDrawable {
     }
 
     public UMenuItem(UMenuBar menuBar, int id, boolean isTop, Bitmap icon) {
-        super(DRAW_PRIORITY, 0,0, isTop ? TOP_ITEM_W : ITEM_W, isTop ? TOP_ITEM_W : ITEM_W);
+        super(DRAW_PRIORITY, 0,0, UDpi.toPixel(isTop ? TOP_ITEM_W : ITEM_W),
+                UDpi.toPixel(isTop ? TOP_ITEM_W : ITEM_W));
         this.mMenuBar = menuBar;
         this.mItemId = id;
         this.mStateId = 0;
@@ -104,6 +108,7 @@ public class UMenuItem extends UDrawable {
         if (icon != null) {
             this.icons.add(icon);
         }
+        this.mItemW = UDpi.toPixel(ITEM_W);
     }
 
     public void setmParentItem(UMenuItem mParentItem) {
@@ -115,10 +120,10 @@ public class UMenuItem extends UDrawable {
      */
     public void addTitle(String title, UAlignment alignment, float x, float y, int
             color, int bgColor) {
-        mTextTitle = UTextView.createInstance(title, TEXT_SIZE, 0, alignment,
+        mTextTitle = UTextView.createInstance(title, UDpi.toPixel(TEXT_SIZE), 0, alignment,
                 0, false, true, x, y, 0, color, bgColor);
         mShowTitle = true;
-        mTextTitle.setMargin(15, 15);
+        mTextTitle.setMargin(UDpi.toPixel(7), UDpi.toPixel(7));
     }
 
     /**
@@ -268,7 +273,7 @@ public class UMenuItem extends UDrawable {
      * @return
      */
     public boolean checkTouch(ViewTouch vt, float touchX, float touchY) {
-        if (vt.checkInsideCircle(touchX, touchY, pos.x + ITEM_W / 2, pos.y + ITEM_W / 2, ITEM_W / 2))
+        if (vt.checkInsideCircle(touchX, touchY, pos.x + mItemW / 2, pos.y + mItemW / 2, mItemW / 2))
         {
             if (vt.type != TouchType.Touch) return false;
 
@@ -325,10 +330,10 @@ public class UMenuItem extends UDrawable {
 
             if (mNestCount == 0) {
                 // 縦方向
-                item.startMoving(0, -count * (ITEM_W + CHILD_MARGIN_V), ANIME_FRAME);
+                item.startMoving(0, -count * (mItemW + UDpi.toPixel(CHILD_MARGIN_V)), ANIME_FRAME);
             } else if (mNestCount == 1) {
                 // 横方向
-                item.startMoving(count * (ITEM_W + CHILD_MARGIN_H), 0, ANIME_FRAME);
+                item.startMoving(count * (mItemW + UDpi.toPixel(CHILD_MARGIN_H)), 0, ANIME_FRAME);
             }
             count++;
         }

@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
@@ -56,11 +57,11 @@ public class IconInfoDialogBook extends IconInfoDialog {
      */
     private static final String TAG = "IconInfoDialogBook";
     private static final int BG_COLOR = Color.LTGRAY;
-    private static final int DLG_MARGIN = 100;
-    private static final int ICON_W = 120;
-    private static final int ICON_MARGIN_H = 30;
-    private static final int TEXT_SIZE = 50;
-    private static final int TEXT_SIZE_S = 40;
+    private static final int DLG_MARGIN = 35;
+    private static final int ICON_W = 40;
+    private static final int ICON_MARGIN_H = 10;
+    private static final int TEXT_SIZE = 17;
+    private static final int TEXT_SIZE_S = 13;
 
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
@@ -142,7 +143,7 @@ public class IconInfoDialogBook extends IconInfoDialog {
         }
 
         // BG
-        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
+        UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), UDpi.toPixel(7),
                 bgColor, FRAME_WIDTH, frameColor);
 
         // Buttons
@@ -162,18 +163,18 @@ public class IconInfoDialogBook extends IconInfoDialog {
      * @param canvas
      */
     protected void updateLayout(Canvas canvas) {
-        int y = TOP_ITEM_Y;
+        int y = UDpi.toPixel(TOP_ITEM_Y);
 
         List<ActionIcons> icons = getBookIcons();
 
-        int width = ICON_W * icons.size() +
-                ICON_MARGIN_H * (icons.size() + 1);
+        int width = UDpi.toPixel(ICON_W) * icons.size() +
+                UDpi.toPixel(ICON_MARGIN_H) * (icons.size() + 1);
         // 単語帳
         textTitle = UTextView.createInstance( mContext.getString(R.string.book),
-                TEXT_SIZE, 0,
+                UDpi.toPixel(TEXT_SIZE), 0,
                 UAlignment.None, canvas.getWidth(), false, false,
-                MARGIN_H, y, width - MARGIN_H * 2, TEXT_COLOR, TEXT_BG_COLOR);
-        y += TEXT_SIZE + 30;
+                UDpi.toPixel(MARGIN_H), y, width - UDpi.toPixel(MARGIN_H) * 2, TEXT_COLOR, TEXT_BG_COLOR);
+        y += UDpi.toPixel(TEXT_SIZE + 10);
 
         String titleStr = null;
         String bodyStr = null;
@@ -216,21 +217,20 @@ public class IconInfoDialogBook extends IconInfoDialog {
             mItems[item.ordinal()] = new IconInfoItem();
             // title
             mItems[item.ordinal()].title = UTextView.createInstance( titleStr ,
-                    TEXT_SIZE_S, 0,
+                    UDpi.toPixel(TEXT_SIZE_S), 0,
                     UAlignment.None, canvas.getWidth(), false, false,
-                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, 0);
-
-            y += mItems[item.ordinal()].title.getHeight() + 10;
+                    UDpi.toPixel(MARGIN_H), y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, 0);
+            y += mItems[item.ordinal()].title.getHeight() + UDpi.toPixel(3);
 
             // body
             mItems[item.ordinal()].body = UTextView.createInstance( bodyStr,
-                    TEXT_SIZE_S, 0,
+                    UDpi.toPixel(TEXT_SIZE_S), 0,
                     UAlignment.None, canvas.getWidth(), true, true,
-                    MARGIN_H, y, size.width - MARGIN_H, TEXT_COLOR, bgColor);
-            y += mItems[item.ordinal()].body.getHeight() + MARGIN_V_S;
+                    UDpi.toPixel(MARGIN_H), y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, bgColor);
+            y += mItems[item.ordinal()].body.getHeight() + UDpi.toPixel(MARGIN_V_S);
 
             // 幅は最大サイズに合わせる
-            int _width = mItems[item.ordinal()].body.getWidth() + MARGIN_H * 2;
+            int _width = mItems[item.ordinal()].body.getWidth() + UDpi.toPixel(MARGIN_H) * 2;
             if (_width > width) {
                 width = _width;
             }
@@ -239,35 +239,35 @@ public class IconInfoDialogBook extends IconInfoDialog {
 
         // タイトルのwidthを揃える
         for (IconInfoItem item : mItems) {
-            item.title.setWidth(width - MARGIN_H * 2);
+            item.title.setWidth(width - UDpi.toPixel(MARGIN_H) * 2);
         }
 
         // Action buttons
-        int x = ICON_MARGIN_H;
+        int x = UDpi.toPixel(ICON_MARGIN_H);
         for (ActionIcons icon : icons) {
             Bitmap image = UResourceManager.getBitmapWithColor(icon.getImageId(), frameColor);
             UButtonImage imageButton = UButtonImage.createButton( this,
                     icon.ordinal(), 0,
                     x, y,
-                    ICON_W, ICON_W, image, null);
+                    UDpi.toPixel(ICON_W), UDpi.toPixel(ICON_W), image, null);
             // アイコンの下に表示するテキストを設定
             imageButton.setTitle(icon.getTitle(mContext), 30, Color.BLACK);
 
             imageButtons.add(imageButton);
             ULog.showRect(imageButton.getRect());
 
-            x += ICON_W + ICON_MARGIN_H;
+            x += UDpi.toPixel(ICON_W + ICON_MARGIN_H);
         }
-        y += ICON_W + MARGIN_V + 30;
+        y += UDpi.toPixel(ICON_W + MARGIN_V + 10);
 
         setSize(width, y);
 
         // Correct position
-        if ( pos.x + size.width > mParentView.getWidth() - DLG_MARGIN) {
-            pos.x = mParentView.getWidth() - size.width - DLG_MARGIN;
+        if ( pos.x + size.width > mParentView.getWidth() - UDpi.toPixel(DLG_MARGIN)) {
+            pos.x = mParentView.getWidth() - size.width - UDpi.toPixel(DLG_MARGIN);
         }
-        if (pos.y + size.height > mParentView.getHeight() - DLG_MARGIN) {
-            pos.y = mParentView.getHeight() - size.height - DLG_MARGIN;
+        if (pos.y + size.height > mParentView.getHeight() - UDpi.toPixel(DLG_MARGIN)) {
+            pos.y = mParentView.getHeight() - size.height - UDpi.toPixel(DLG_MARGIN);
         }
         updateRect();
     }

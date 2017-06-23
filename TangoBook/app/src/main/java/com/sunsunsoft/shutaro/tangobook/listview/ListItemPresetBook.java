@@ -7,9 +7,11 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.DoActionRet;
 import com.sunsunsoft.shutaro.tangobook.preset.PresetBook;
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.uview.FontSize;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonImage;
@@ -19,6 +21,8 @@ import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItemCallbacks;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
+
+import static com.sunsunsoft.shutaro.tangobook.icon.UIconWindow.ICON_W;
 
 /**
  * Created by shutaro on 2016/12/18.
@@ -38,18 +42,16 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
     public static final String TAG = "ListItemOption";
 
     public static final int ButtonIdAdd = 100100;
-    private static final int ITEM_H = 200;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 15;
-    private static final int ICON_W = 100;
+    private static final int ITEM_H = 67;
+    private static final int MARGIN_H = 17;
+    private static final int ICON_W = 34;
 
-    private static final int TEXT_SIZE = 50;
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int BG_COLOR = Color.WHITE;
 
-    private static final int STAR_ICON_W = 100;
+    private static final int STAR_ICON_W = 34;
 
-    private static final int FRAME_WIDTH = 4;
+    private static final int FRAME_WIDTH = 2;
     private static final int FRAME_COLOR = Color.BLACK;
 
     /**
@@ -57,6 +59,9 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
      */
     private PresetBook mBook;
     private UButtonImage mAddButton;
+
+    // Dpi計算済み
+    private int iconW, marginH;
 
     /**
      * Get/Set
@@ -71,15 +76,20 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
     public ListItemPresetBook(UListItemCallbacks listItemCallbacks,
                           PresetBook book, int width)
     {
-        super(listItemCallbacks, true, 0, width, ITEM_H, BG_COLOR, FRAME_WIDTH, FRAME_COLOR);
+        super(listItemCallbacks, true, 0, width, UDpi.toPixel(ITEM_H), BG_COLOR, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
         mBook = book;
 
+        iconW = UDpi.toPixel(ICON_W);
+        marginH = UDpi.toPixel(MARGIN_H);
+
+        int starIconW = UDpi.toPixel(STAR_ICON_W);
         // Add Button
         Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.add, UColor.Green);
         mAddButton = UButtonImage.createButton(this, ButtonIdAdd, 0,
-                size.width - 150, (size.height - STAR_ICON_W) / 2,
-                STAR_ICON_W, STAR_ICON_W, image, null);
+                size.width - UDpi.toPixel(50), (size.height - starIconW) / 2,
+                starIconW, starIconW, image, null);
         mAddButton.scaleRect(2.0f, 1.5f);
+
 
     }
 
@@ -101,23 +111,25 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
         }
 
         super.draw(canvas, paint, _pos);
-        float x = _pos.x + MARGIN_H;
-        float marginV = (ITEM_H - TEXT_SIZE * 2) / 3;
+
+        int fontSize = UDraw.getFontSize(FontSize.M);
+        float x = _pos.x + marginH;
+        float marginV = (UDpi.toPixel(ITEM_H) - fontSize * 2) / 3;
         float y = _pos.y + marginV;
         // Icon image
         UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.cards), x,
-                _pos.y + (ITEM_H - ICON_W) / 2,
-                ICON_W, ICON_W );
-        x += ICON_W + MARGIN_H;
+                _pos.y + (size.height - iconW) / 2,
+                iconW, iconW );
+        x += iconW + marginH;
 
         // Name
         UDraw.drawTextOneLine(canvas, paint, mBook.mName + " " + mBook.getFileName(), UAlignment
-                .None, TEXT_SIZE,
+                .None, fontSize,
                 x, y, TEXT_COLOR);
-        y += TEXT_SIZE + marginV;
+        y += UDraw.getFontSize(FontSize.M) + marginV;
 
         // Comment
-        UDraw.drawTextOneLine(canvas, paint, mBook.mComment, UAlignment.None, TEXT_SIZE,
+        UDraw.drawTextOneLine(canvas, paint, mBook.mComment, UAlignment.None, fontSize,
                 x, y, TEXT_COLOR);
 
         // Add Button

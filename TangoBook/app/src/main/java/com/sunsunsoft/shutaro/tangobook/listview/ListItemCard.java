@@ -8,6 +8,8 @@ import android.graphics.Rect;
 
 import com.sunsunsoft.shutaro.tangobook.preset.PresetCard;
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
+import com.sunsunsoft.shutaro.tangobook.uview.FontSize;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
@@ -29,22 +31,23 @@ public class ListItemCard extends UListItem {
      */
     public static final String TAG = "ListItemCard";
 
-    private static final int TEXT_SIZE = 45;
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int BG_COLOR = Color.WHITE;
-    private static final int ICON_W = 100;
+    private static final int ICON_W = 35;
 
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 15;
-    private static final int ITEM_H = TEXT_SIZE * 3 + MARGIN_V * 4;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 5;
 
-    private static final int FRAME_WIDTH = 4;
+    private static final int FRAME_WIDTH = 2;
     private static final int FRAME_COLOR = Color.BLACK;
 
     /**
      * Member variables
      */
     private PresetCard mPresetCard;
+
+    // Dpi計算済み
+    private int itemH, iconW;
 
     /**
      * Get/Set
@@ -57,8 +60,10 @@ public class ListItemCard extends UListItem {
     public ListItemCard(UListItemCallbacks listItemCallbacks,
                              PresetCard card, int width)
     {
-        super(listItemCallbacks, true, 0, width, ITEM_H, BG_COLOR, FRAME_WIDTH, FRAME_COLOR);
+        super(listItemCallbacks, true, 0, width, UDraw.getFontSize(FontSize.M) * 3 + UDpi.toPixel(MARGIN_V) * 4, BG_COLOR, FRAME_WIDTH, FRAME_COLOR);
         mPresetCard = card;
+        itemH = UDraw.getFontSize(FontSize.M) * 3 + UDpi.toPixel(MARGIN_V) * 4;
+        iconW = UDpi.toPixel(ICON_W);
     }
 
     /**
@@ -80,33 +85,27 @@ public class ListItemCard extends UListItem {
         super.draw(canvas, paint, _pos);
 
         float x = _pos.x + MARGIN_H;
-        float marginV = (ITEM_H - TEXT_SIZE * 2) / 3;
+        float marginV = (itemH - UDraw.getFontSize(FontSize.M) * 2) / 3;
         float y = _pos.y + marginV;
+        int fontSize = UDraw.getFontSize(FontSize.M);
+
         // Icon image
         UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.card), x,
-                _pos.y + (ITEM_H - ICON_W) / 2,
-                ICON_W, ICON_W );
-        x += ICON_W + MARGIN_H;
+                _pos.y + (itemH - iconW) / 2,
+                iconW, iconW );
+        x += iconW + UDpi.toPixel(MARGIN_H);
 
         // WordA
         UDraw.drawTextOneLine(canvas, paint,
                 UResourceManager.getStringById(R.string.word_a) + ": " + mPresetCard.mWordA,
-                UAlignment.None, TEXT_SIZE,
+                UAlignment.None, fontSize,
                 x, y, TEXT_COLOR);
-        y += TEXT_SIZE + marginV;
+        y += fontSize + marginV;
 
         // WordB
         UDraw.drawTextOneLine(canvas, paint,
                 UResourceManager.getStringById(R.string.word_b) + ": " + mPresetCard.mWordB,
-                UAlignment.None, TEXT_SIZE,
+                UAlignment.None, fontSize,
                 x, y, TEXT_COLOR);
-
-        // Comment
-//        if (mPresetCard.mComment != null) {
-//            UDraw.drawTextOneLine(canvas, paint,
-//                    UResourceManager.getStringById(R.string.comment) + ": " + mPresetCard.mComment,
-//                    UAlignment.None, TEXT_SIZE,
-//                    x, y, TEXT_COLOR);
-//        }
     }
 }

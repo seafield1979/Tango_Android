@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
@@ -81,7 +82,7 @@ public class MenuBarTangoEdit extends UMenuBar {
         super(callbackClass, parentW, parentH, bgColor);
 
         // 画面右端に寄せる
-        pos.x = parentW - UMenuItem.ITEM_W - MARGIN_H * 2;
+        pos.x = parentW - UDpi.toPixel(UMenuItem.ITEM_W + MARGIN_H);
     }
 
     /**
@@ -101,7 +102,10 @@ public class MenuBarTangoEdit extends UMenuBar {
         return instance;
     }
 
-
+    /**
+     * メニューバーを初期化
+     * バーに表示する項目を追加する
+     */
     protected void initMenuBar() {
         UMenuItem item = null;
         UMenuItem itemTop = null;
@@ -122,7 +126,7 @@ public class MenuBarTangoEdit extends UMenuBar {
                     // アイコンの左側に表示
                     item.addTitle(UResourceManager.getStringById(itemId.getStringId()),
                             UAlignment.Right_CenterY,
-                            -20, item.getHeight() / 2, TEXT_COLOR, TEXT_BG_COLOR);
+                            UDpi.toPixel(-8), item.getHeight() / 2, TEXT_COLOR, TEXT_BG_COLOR);
                     break;
                 case State:
                     item.addState(image);

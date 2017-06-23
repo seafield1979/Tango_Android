@@ -12,6 +12,7 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoBook;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.database.TangoItemPos;
 import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
@@ -31,16 +32,14 @@ public class ListItemSearchedCard extends UListItem {
 
     private static final int MAX_TEXT_LEN = 20;
 
-    private static final int TEXT_SIZE = 50;
-    private static final int TEXT_SIZE2 = 42;
+    private static final int TEXT_SIZE = 17;
+    private static final int TEXT_SIZE2 = 14;
     private static final int TEXT_COLOR = Color.BLACK;
-    private static final int ICON_W = 100;
 
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 15;
-    private static final int ITEM_H = TEXT_SIZE * 3 + MARGIN_V * 4;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 5;
 
-    private static final int FRAME_WIDTH = 4;
+    private static final int FRAME_WIDTH = 1;
     private static final int FRAME_COLOR = Color.BLACK;
 
     /**
@@ -65,12 +64,11 @@ public class ListItemSearchedCard extends UListItem {
     public ListItemSearchedCard(UListItemCallbacks listItemCallbacks,
                              TangoCard card, int width, int color)
     {
-        super(listItemCallbacks, true, 0, width, ITEM_H, color, FRAME_WIDTH, FRAME_COLOR);
+        super(listItemCallbacks, true, 0, width, UDpi.toPixel(TEXT_SIZE) * 3 + UDpi.toPixel(MARGIN_V) * 4, color, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
         mCard = card;
 
         mWordA = UResourceManager.getStringById(R.string.word_a) + " : " +
-                UUtil.convString(card.getWordA(), true, 0, MAX_TEXT_LEN) +
-                " (id:" + card.getId() + ")";
+                UUtil.convString(card.getWordA(), true, 0, MAX_TEXT_LEN);
         mWordB = UResourceManager.getStringById(R.string.word_b) + " : " +
                 UUtil.convString(card.getWordB(), true, 0, MAX_TEXT_LEN);
 
@@ -98,24 +96,23 @@ public class ListItemSearchedCard extends UListItem {
 
         super.draw(canvas, paint, _pos);
 
-        float x = _pos.x + MARGIN_H;
-        float y = _pos.y + MARGIN_V;
+        float x = _pos.x + UDpi.toPixel(MARGIN_H);
+        float y = _pos.y + UDpi.toPixel(MARGIN_V);
 
         // WordA
-        UDraw.drawTextOneLine(canvas, paint, mWordA, UAlignment.None, TEXT_SIZE2, x, y, TEXT_COLOR);
-        y += TEXT_SIZE + MARGIN_V;
+        UDraw.drawTextOneLine(canvas, paint, mWordA, UAlignment.None, UDpi.toPixel(TEXT_SIZE2), x, y, TEXT_COLOR);
+        y += UDpi.toPixel(TEXT_SIZE + MARGIN_V);
 
         // WordB
-        UDraw.drawTextOneLine(canvas, paint, mWordB, UAlignment.None, TEXT_SIZE2, x, y, TEXT_COLOR);
-        y += TEXT_SIZE + MARGIN_V;
+        UDraw.drawTextOneLine(canvas, paint, mWordB, UAlignment.None, UDpi.toPixel(TEXT_SIZE2), x, y, TEXT_COLOR);
+        y += UDpi.toPixel(TEXT_SIZE + MARGIN_V);
 
         // parent book
         String location = null;
         if (mParentBook != null) {
             location = UResourceManager.getStringById(R.string.where_card) +
                     " : " + UResourceManager.getStringById(R.string.book) + " " +
-                    mParentBook.getName() +
-                    " (id:" + mParentBook.getId() + ")";
+                    mParentBook.getName();
 
         } else if (mItemPos != null)  {
             // ホームかゴミ箱の中
@@ -126,7 +123,7 @@ public class ListItemSearchedCard extends UListItem {
                             : R.string.trash);
 
         }
-        UDraw.drawTextOneLine(canvas, paint, location, UAlignment.None, TEXT_SIZE2, x,
+        UDraw.drawTextOneLine(canvas, paint, location, UAlignment.None, UDpi.toPixel(TEXT_SIZE2), x,
                 y, TEXT_COLOR);
     }
 

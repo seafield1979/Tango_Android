@@ -10,6 +10,7 @@ import android.graphics.RectF;
 
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
@@ -29,9 +30,9 @@ public class UButtonImage extends UButton {
     /**
      * Consts
      */
-    public static final int TEXT_MARGIN = 10;
+    public static final int TEXT_MARGIN = 4;
 
-    private static final int TEXT_SIZE = 30;
+    private static final int TEXT_SIZE = 10;
 
     /**
      * Member Variables
@@ -155,7 +156,7 @@ public class UButtonImage extends UButton {
      */
     public void addTitle(String title, UAlignment alignment, float x, float y, int
             color, int bgColor) {
-        mTextTitle = UTextView.createInstance(title, TEXT_SIZE, 0, alignment,
+        mTextTitle = UTextView.createInstance(title, UDpi.toPixel(TEXT_SIZE), 0, alignment,
                 0, false, true, x, y, 0, color, bgColor);
         mTextTitle.setMargin(10, 10);
     }
@@ -230,7 +231,7 @@ public class UButtonImage extends UButton {
         // 下にテキストを表示
         if (title != null) {
             UDraw.drawTextOneLine(canvas, paint, title, UAlignment.CenterX, titleSize,
-                    _rect.centerX(), _rect.bottom + TEXT_MARGIN, titleColor);
+                    _rect.centerX(), _rect.bottom + UDpi.toPixel(TEXT_MARGIN), titleColor);
         }
     }
 }

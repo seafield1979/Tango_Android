@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
@@ -32,16 +33,19 @@ abstract public class UIcon extends UDrawable {
     private static final String TAG = "UIcon";
     private static final int DRAW_PRIORITY = 200;
 
-    protected static final int TEXT_SIZE = 40;
-    protected static final int TEXT_MARGIN = 10;
+    protected static final int TEXT_SIZE = 13;
+    protected static final int TEXT_MARGIN = 4;
 
     // タッチ領域の拡張幅
-    protected static final int TOUCH_MARGIN = 30;
+    protected static final int TOUCH_MARGIN = 10;
 
     public static final int DISP_TITLE_LEN = 8;
 
-    protected static final int NEW_TEXT_SIZE = 30;
-    protected static final int NEW_TEXT_MARGIN = 15;
+    private static final int CHECKED_WIDTH = 24;    // 選択中のアイコンのチェックの幅
+    private static final int CHECKED_FRAME = 3;    // 選択中のアイコンのチェックの枠
+
+    protected static final int NEW_TEXT_SIZE = 10;
+    protected static final int NEW_TEXT_MARGIN = 5;
     protected static final int NEW_TEXT_COLOR = Color.argb(200, 255, 80, 80);
 
     /**
@@ -98,8 +102,10 @@ abstract public class UIcon extends UDrawable {
     abstract public void updateTitle();
 
     public Rect getRect() {
-        return new Rect(rect.left - TOUCH_MARGIN, rect.top - TOUCH_MARGIN,
-                rect.right + TOUCH_MARGIN, rect.bottom + TOUCH_MARGIN);
+        return new Rect(rect.left - UDpi.toPixel(TOUCH_MARGIN),
+                rect.top - UDpi.toPixel(TOUCH_MARGIN),
+                rect.right + UDpi.toPixel(TOUCH_MARGIN),
+                rect.bottom + UDpi.toPixel(TOUCH_MARGIN));
     }
 
     /**
@@ -171,10 +177,10 @@ abstract public class UIcon extends UDrawable {
      * Newバッジ作成
      */
     protected void createNewBadge(Canvas canvas) {
-        newTextView = UTextView.createInstance("New", NEW_TEXT_SIZE, 0, UAlignment.Center,
+        newTextView = UTextView.createInstance("New", UDpi.toPixel(NEW_TEXT_SIZE), 0, UAlignment.Center,
                 canvas.getWidth(), false, true, 0, 0, 100, Color.WHITE, NEW_TEXT_COLOR);
         // 文字の周りのマージン
-        newTextView.setMargin(NEW_TEXT_MARGIN, NEW_TEXT_MARGIN);
+        newTextView.setMargin(UDpi.toPixel(NEW_TEXT_MARGIN), UDpi.toPixel(NEW_TEXT_MARGIN));
     }
 
     /**
@@ -232,8 +238,8 @@ abstract public class UIcon extends UDrawable {
         if (isChecking) {
             float _x = pos.x + offset.x;
             float _y = pos.y + offset.y;
-            int width = 70;
-            UDraw.drawCheckbox(canvas, paint, isChecked, _x + 10, _y + size.height - width - 10, width,
+            int width = UDpi.toPixel(CHECKED_WIDTH);
+            UDraw.drawCheckbox(canvas, paint, isChecked, _x + UDpi.toPixel(CHECKED_FRAME), _y + size.height - width - UDpi.toPixel(CHECKED_FRAME), width,
                     Color.rgb
                             (100,100,200));
         }
@@ -243,21 +249,6 @@ abstract public class UIcon extends UDrawable {
      * アイコンを描画する
      */
     abstract protected void drawIcon(Canvas canvas, Paint paint, PointF offset);
-
-    /**
-     * アイコンにIDを表示する
-     * @param canvas
-     * @param paint
-     */
-    protected void drawId(Canvas canvas, Paint paint) {
-        // idを表示
-        if (drawIconId) {
-            paint.setColor(Color.WHITE);
-            paint.setTextSize(30);
-            canvas.drawText("" + id, pos.x+10, pos.y + size.height - 30, paint);
-        }
-    }
-
 
     /*
         Drawableインターフェース

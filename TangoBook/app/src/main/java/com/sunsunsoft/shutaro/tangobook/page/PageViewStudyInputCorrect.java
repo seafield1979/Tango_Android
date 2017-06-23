@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.study_card.CardsStackCallbacks;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.study_card.StudyCardStackInput;
@@ -50,13 +51,14 @@ public class PageViewStudyInputCorrect extends PageViewStudy
      */
     public static final String TAG = "PageViewStudySlide";
 
-    private static final int TOP_AREA_H = 150;
-    private static final int BOTTOM_AREA_H = 150;
-    private static final int TEXT_SIZE = 50;
-    private static final int BUTTON_W = 300;
-    private static final int BUTTON_H = 120;
+    private static final int TOP_AREA_H = 50;
+    private static final int BOTTOM_AREA_H = 50;
+    private static final int TEXT_SIZE = 17;
+    private static final int BUTTON_W = 100;
+    private static final int BUTTON_H = 40;
+    private static final int SETTING_BUTTON_W = 40;
+
     private static final int DRAW_PRIORITY = 100;
-    private static final int SETTING_BUTTON_W = 120;
 
     // button ids
     private static final int ButtonIdSkip = 101;
@@ -157,9 +159,9 @@ public class PageViewStudyInputCorrect extends PageViewStudy
 
         // カードスタック
         mCardsStack = new StudyCardStackInput(mCardsManager, this,
-                MARGIN_H, TOP_AREA_H,
+                MARGIN_H, UDpi.toPixel(TOP_AREA_H),
                 width, mParentView.getWidth() - MARGIN_H * 2,
-                mParentView.getHeight() - (TOP_AREA_H + BOTTOM_AREA_H)
+                mParentView.getHeight() - UDpi.toPixel(TOP_AREA_H + BOTTOM_AREA_H)
         );
         mCardsStack.addToDrawManager();
 
@@ -168,32 +170,34 @@ public class PageViewStudyInputCorrect extends PageViewStudy
         String title = getCardsRemainText(mCardsStack.getCardCount());
         mTextCardCount = UTextView.createInstance( title, TEXT_SIZE, DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, true,
-                width / 2, 50, 300, Color.rgb(100,50,50), 0);
+                width / 2, UDpi.toPixel(17), UDpi.toPixel(100), Color.rgb(100,50,50), 0);
         mTextCardCount.addToDrawManager();
+
+        int buttonW = UDpi.toPixel(BUTTON_W);
 
         // 終了ボタン
         mExitButton = new UButtonText(this, UButtonType.Press,
                 ButtonIdExit,
                 DRAW_PRIORITY, mContext.getString(R.string.finish),
-                width / 2 - BUTTON_W - MARGIN_H / 2, height - 150,
-                BUTTON_W, BUTTON_H,
-                TEXT_SIZE, Color.BLACK, Color.rgb(100,200,100));
+                width / 2 - buttonW - UDpi.toPixel(MARGIN_H) / 2, height - UDpi.toPixel(50),
+                buttonW, UDpi.toPixel(BUTTON_H),
+                UDpi.toPixel(TEXT_SIZE), Color.BLACK, Color.rgb(100,200,100));
         mExitButton.addToDrawManager();
 
         // 現在のカードをスキップボタン
         mSkipButton = new UButtonText(this, UButtonType.Press,
                 ButtonIdSkip,
                 DRAW_PRIORITY, mContext.getString(R.string.skip),
-                width / 2 + MARGIN_H / 2, height - 150,
-                BUTTON_W, BUTTON_H,
-                TEXT_SIZE, Color.BLACK, UColor.LightPink);
+                width / 2 + UDpi.toPixel(MARGIN_H) / 2, height - UDpi.toPixel(50),
+                buttonW, UDpi.toPixel(BUTTON_H),
+                UDpi.toPixel(TEXT_SIZE), Color.BLACK, UColor.LightPink);
         mSkipButton.addToDrawManager();
 
         // 設定ボタン
         Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.settings_1, UColor.Green);
         mSettingButton = UButtonImage.createButton(this, ButtonIdSetting, DRAW_PRIORITY,
-                width - SETTING_BUTTON_W - MARGIN_H, height - 150,
-                SETTING_BUTTON_W, SETTING_BUTTON_W,
+                width - UDpi.toPixel(SETTING_BUTTON_W) - MARGIN_H, height - UDpi.toPixel(50),
+                UDpi.toPixel(SETTING_BUTTON_W), UDpi.toPixel(SETTING_BUTTON_W),
                 image, null);
         mSettingButton.addToDrawManager();
     }

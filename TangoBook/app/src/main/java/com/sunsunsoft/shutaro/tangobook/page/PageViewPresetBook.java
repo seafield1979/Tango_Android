@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.preset.*;
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.uview.UListView;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
@@ -16,6 +17,7 @@ import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemCard;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemPresetBook;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
@@ -36,11 +38,9 @@ public class PageViewPresetBook extends UPageView
     private static final int DRAW_PRIORITY = 100;
     private static final int DRAW_PRIORYTY_DIALOG = 50;
 
-    private static final int TOP_Y = 50;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
-
-    private static final int TEXT_SIZE = 50;
+    private static final int TOP_Y = 17;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 17;
 
     // button id
     private static final int ButtonIdReturn = 100;
@@ -115,21 +115,21 @@ public class PageViewPresetBook extends UPageView
         int height = mParentView.getHeight();
 
         float x = MARGIN_H;
-        float y = TOP_Y;
+        float y = UDpi.toPixel(TOP_Y);
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
                         .preset_title2),
-                TEXT_SIZE, DRAW_PRIORITY,
+                UDraw.getFontSize(FontSize.L), DRAW_PRIORITY,
                 UAlignment.CenterX, width, true, false,
                 width / 2, y, width, Color.BLACK, 0);
         mTitleText.addToDrawManager();
-        y += mTitleText.getSize().height + MARGIN_V;
+        y += mTitleText.getSize().height + UDpi.toPixel(MARGIN_V);
 
         // ListView
-        int listViewH = height - (MARGIN_H * 3 + mTitleText.getSize().height);
+        int listViewH = height - (UDpi.toPixel(MARGIN_H) * 3 + mTitleText.getSize().height);
         mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
-                width - MARGIN_H * 2, listViewH, 0);
+                width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
 
@@ -140,7 +140,7 @@ public class PageViewPresetBook extends UPageView
             mListView.add(item);
         }
 
-        y += listViewH + MARGIN_H;
+        y += listViewH + UDpi.toPixel(MARGIN_H);
     }
 
     /**
@@ -162,7 +162,7 @@ public class PageViewPresetBook extends UPageView
         // ListView
         UListView listView = new UListView(null, this,
                 DRAW_PRIORYTY_DIALOG, 0, 0,
-                mDialog.getSize().width, mParentView.getHeight() - 350, Color.LTGRAY
+                mDialog.getSize().width, mParentView.getHeight() - UDpi.toPixel(117), Color.LTGRAY
         );
         mDialog.addDrawable(listView);
 

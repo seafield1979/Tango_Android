@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Vibrator;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuBar;
 import com.sunsunsoft.shutaro.tangobook.util.URect;
@@ -87,10 +88,10 @@ public class UIconWindow extends UWindow {
     public static final int DRAW_PRIORITY = 100;
     public static final int DRAG_ICON_PRIORITY = 11;
 
-    public static final int ICON_MARGIN = 30;
+    public static final int ICON_MARGIN = 10;
 
-    public static final int ICON_W = 180;
-    public static final int ICON_H = 150;
+    public static final int ICON_W = 60;
+    public static final int ICON_H = 50;
     protected static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 
     protected static final int MOVING_TIME = 10;
@@ -123,6 +124,10 @@ public class UIconWindow extends UWindow {
     protected boolean isDropInBox;
     protected boolean isAnimating;
     protected boolean isAppearance = true;       // true:出現中 / false:退出中
+
+    // DPI補正の計算結果を保持するヘンス
+    protected int iconMargin;               // アイコン間のマージン
+    protected int iconW, iconH;             // アイコンサイズ
 
     /**
      * Get/Set
@@ -301,6 +306,9 @@ public class UIconWindow extends UWindow {
         mIconManager = UIconManager.createInstance(this, iconCallbacks);
         this.windowCallbacks = windowCallbacks;
         this.dir = dir;
+        iconMargin = UDpi.toPixel(ICON_MARGIN);
+        iconW = UDpi.toPixel(ICON_W);
+        iconH = UDpi.toPixel(ICON_H);
     }
 
     /**
@@ -449,15 +457,15 @@ public class UIconWindow extends UWindow {
 
         int i=0;
         if (dir == WindowDir.Vertical) {
-            int column = (clientSize.width - ICON_MARGIN) / (ICON_W + ICON_MARGIN);
+            int column = (clientSize.width - iconMargin) / (iconW + iconMargin);
             if (column <= 0) {
                 return;
             }
-            int margin = (clientSize.width - ICON_W * column) / (column + 1);
+            int margin = (clientSize.width - iconW * column) / (column + 1);
             for (UIcon icon : icons) {
-                int x = margin + (i % column) * (ICON_W + margin);
-                int y = margin + (i / column) * (ICON_H + margin);
-                int height = y + (ICON_H + margin) * 2;
+                int x = margin + (i % column) * (iconW + margin);
+                int y = margin + (i / column) * (iconH + margin);
+                int height = y + (iconH + margin) * 2;
                 if (height >= maxSize) {
                     maxSize = height;
                 }
@@ -474,15 +482,15 @@ public class UIconWindow extends UWindow {
                 i++;
             }
         } else {
-            int column = (clientSize.height - ICON_MARGIN) / (ICON_H + ICON_MARGIN);
+            int column = (clientSize.height - iconMargin) / (iconH + iconMargin);
             if (column <= 0) {
                 return;
             }
-            int margin = (clientSize.height - ICON_H * column) / (column + 1);
+            int margin = (clientSize.height - iconH * column) / (column + 1);
             for (UIcon icon : icons) {
-                int x = margin + (i / column) * (ICON_W + margin);
-                int y = margin + (i % column) * (ICON_H + margin);
-                int width = x + (ICON_W + margin);
+                int x = margin + (i / column) * (iconW + margin);
+                int y = margin + (i % column) * (iconH + margin);
+                int width = x + (iconW + margin);
                 if (width >= maxSize) {
                     maxSize = width;
                 }
@@ -894,16 +902,16 @@ public class UIconWindow extends UWindow {
                 // アイコンのマージン部分にドロップされたかのチェック
                 if (dir == WindowDir.Vertical) {
                     // 縦画面
-                    if (dropIcon.getPosX() - ICON_MARGIN*2 <= winX &&
-                            winX <= dropIcon.getPosX() + ICON_MARGIN &&
+                    if (dropIcon.getPosX() - iconMargin * 2 <= winX &&
+                            winX <= dropIcon.getPosX() + iconMargin &&
                             dropIcon.getPosY() <= winY &&
-                            winY <= dropIcon.getPosY() + UIconWindow.ICON_H )
+                            winY <= dropIcon.getPosY() + iconH )
                     {
                         // ドラッグ位置（アイコンの左側)にアイコンを挿入する
                         ret.dropedIcon = dropIcon;
                         ret.isDroped = true;
                         break;
-                    } else if (dropIcon.getPosX() + (ICON_MARGIN + ICON_W) * 2 > size.width ) {
+                    } else if (dropIcon.getPosX() + (iconMargin + iconW) * 2 > size.width ) {
                         // 右端のアイコンは右側に挿入できる
                         if (winX > dropIcon.getRight() &&
                                 dropIcon.getPosY() <= winY &&
@@ -920,15 +928,15 @@ public class UIconWindow extends UWindow {
                     }
                 } else {
                     // 横画面
-                    if (dropIcon.getPosY() - ICON_MARGIN * 2 <= winY &&
-                            winY <= dropIcon.getPosY() + ICON_MARGIN &&
+                    if (dropIcon.getPosY() - iconMargin * 2 <= winY &&
+                            winY <= dropIcon.getPosY() + iconMargin &&
                             dropIcon.getPosX() <= winX && winX <= dropIcon.getPosX() + dropIcon.getSize()
                             .width )
                     {
                         ret.dropedIcon = dropIcon;
                         ret.isDroped = true;
                         break;
-                    } else if (dropIcon.getPosY() + (ICON_MARGIN + ICON_H) * 2 > size.height ) {
+                    } else if (dropIcon.getPosY() + (iconMargin + iconH) * 2 > size.height ) {
                         // 下端のアイコンは下側に挿入できる
                         if (winY > dropIcon.getBottom() &&
                                 dropIcon.getPosX() <= winX &&

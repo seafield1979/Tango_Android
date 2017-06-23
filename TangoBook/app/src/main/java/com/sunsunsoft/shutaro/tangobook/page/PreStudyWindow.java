@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
@@ -61,23 +62,22 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
      * Consts
      */
     public static final String TAG = "PreStudyWindow";
-    private static final int FRAME_WIDTH = 4;
-    private static final int TOP_ITEM_Y = 30;
-    private static final int TEXT_VIEW_H = 100;
-    private static final int MARGIN_V = 40;
-    private static final int MARGIN_H = 40;
-    private static final int TEXT_SIZE = 50;
-    private static final int TEXT_SIZE_2 = 40;
-    private static final int TEXT_SIZE_3 = 70;
-    private static final int BUTTON_TEXT_SIZE = 50;
+    private static final int FRAME_WIDTH = 1;
+    private static final int TOP_ITEM_Y = 10;
+    private static final int MARGIN_V = 13;
+    private static final int MARGIN_H = 13;
+    private static final int TEXT_SIZE = 17;
+    private static final int TEXT_SIZE_2 = 13;
+    private static final int TEXT_SIZE_3 = 23;
+    private static final int BUTTON_TEXT_SIZE = 17;
     private static final int TITLE_WIDTH = 0;
 
-    private static final int BUTTON_W = 600;
-    private static final int BUTTON_H = 120;
-    private static final int BUTTON2_W = 400;
-    private static final int BUTTON2_H = 200;
+    private static final int BUTTON_W = 200;
+    private static final int BUTTON_H = 40;
+    private static final int BUTTON2_W = 134;
+    private static final int BUTTON2_H = 67;
 
-    private static final int BUTTON_ICON_W = 200;
+    private static final int BUTTON_ICON_W = 67;
 
     private static final int BG_COLOR = Color.WHITE;
     private static final int FRAME_COLOR = Color.rgb(120,120,120);
@@ -133,6 +133,9 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
     // オプション選択ダイアログ
     protected UDialogWindow mDialog;
 
+    // Dpi計算済みの座標
+    private int marginH, fontSize, buttonIconW;
+
     /**
      * Get/Set
      */
@@ -156,6 +159,10 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
         mStudyType = MySharedPref.getStudyType();
         mStudyOrder = MySharedPref.getStudyOrder();
         mStudyFilter = MySharedPref.getStudyFilter();
+
+        marginH = UDpi.toPixel(MARGIN_H);
+        fontSize = UDpi.toPixel(TEXT_SIZE);
+        buttonIconW = UDpi.toPixel(BUTTON_ICON_W);
     }
 
     /**
@@ -236,7 +243,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
     public void drawContent(Canvas canvas, Paint paint, PointF offset) {
         // BG
         UDraw.drawRoundRectFill(canvas, paint, new RectF(getRect()), 20,
-                bgColor, FRAME_WIDTH, FRAME_COLOR);
+                bgColor, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
 
         // textViews
         textTitle.draw(canvas, paint, pos);
@@ -260,7 +267,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
      */
     protected void updateLayout() {
 
-        int y = TOP_ITEM_Y;
+        int y = UDpi.toPixel(TOP_ITEM_Y);
         int screenW = mParentView.getWidth();
         int screenH = mParentView.getHeight();
         int width = screenW;
@@ -275,10 +282,10 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
         // タイトル(単語帳の名前)
         String title = UResourceManager.getInstance().getStringById(R.string.book) + " : " + mBook
                 .getName();
-        textTitle = UTextView.createInstance( title, TEXT_SIZE_3, 0,
+        textTitle = UTextView.createInstance( title, UDpi.toPixel(TEXT_SIZE_3), 0,
                 UAlignment.CenterX, screenW, false, false,
-                width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += textTitle.getHeight() + MARGIN_V;
+                width / 2, y, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
+        y += textTitle.getHeight() + UDpi.toPixel(MARGIN_V);
 
         // カード数
         String cardCount = UResourceManager.getStringById(R.string.card_count) + ": " + mCardCount +
@@ -286,10 +293,10 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
 
         textCount = UTextView.createInstance(
                 cardCount,
-                TEXT_SIZE, 0,
+                fontSize, 0,
                 UAlignment.CenterX, screenW, false, false,
-                width / 2, y, TITLE_WIDTH, TEXT_COLOR, 0);
-        y += textCount.getHeight() + MARGIN_V;
+                width / 2, y, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
+        y += textCount.getHeight() + UDpi.toPixel(MARGIN_V);
 
         // 最終学習日時
         Date date = RealmManager.getBookHistoryDao().selectMaxDateByBook(mBook.getId());
@@ -297,10 +304,10 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
             textLastStudied = UTextView.createInstance(
                     UResourceManager.getStringById(R.string
                             .last_studied_date) + ": " + UUtil.convDateFormat(date, ConvDateMode.DateTime),
-                    TEXT_SIZE, 0,
+                    fontSize, 0,
                     UAlignment.CenterX, screenW, false, false,
-                    width / 2, y, TITLE_WIDTH, TEXT_DATE_COLOR, 0);
-            y += textLastStudied.getHeight() + MARGIN_V * 2;
+                    width / 2, y, UDpi.toPixel(TITLE_WIDTH), TEXT_DATE_COLOR, 0);
+            y += textLastStudied.getHeight() + UDpi.toPixel(MARGIN_V) * 2;
         } else {
             textLastStudied = null;
         }
@@ -308,71 +315,71 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
         /**
          * Buttons
          */
-        float titleX = (width - (TITLE_WIDTH + BUTTON_W)) / 2 + TITLE_WIDTH;
-        float buttonX = titleX + MARGIN_H;
+        float titleX = (width - UDpi.toPixel(TITLE_WIDTH + BUTTON_W)) / 2 + UDpi.toPixel(TITLE_WIDTH);
+        float buttonX = titleX + marginH;
 
         // 出題方法（出題モード)
         // タイトル
         textStudyMode = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.study_mode),
-                TEXT_SIZE_2, 0,
+                UDpi.toPixel(TEXT_SIZE_2), 0,
                 UAlignment.Right_CenterY, screenW, false, false,
-                titleX, y + BUTTON_H / 2, TITLE_WIDTH, TEXT_COLOR, 0);
+                titleX, y + UDpi.toPixel(BUTTON_H) / 2, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
 
         // Button
         buttons[ButtonId.Option1.ordinal()] = new UButtonText(this, UButtonType.BGColor,
                 ButtonIdOption1,
                 0, mStudyMode.getString(),
-                buttonX, y, BUTTON_W, BUTTON_H,
-                BUTTON_TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
+                buttonX, y, UDpi.toPixel(BUTTON_W), UDpi.toPixel(BUTTON_H),
+                UDpi.toPixel(BUTTON_TEXT_SIZE), TEXT_COLOR, UColor.LightBlue);
         buttons[ButtonId.Option1.ordinal()].setPullDownIcon(true);
 
-        y += BUTTON_H + MARGIN_V;
+        y += UDpi.toPixel(BUTTON_H) + UDpi.toPixel(MARGIN_V);
 
         // 出題タイプ(英日)
         textStudyType = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.study_type),
-                TEXT_SIZE_2, 0,
+                UDpi.toPixel(TEXT_SIZE_2), 0,
                 UAlignment.Right_CenterY, screenW, false, false,
-                titleX, y + BUTTON_H / 2, TITLE_WIDTH, TEXT_COLOR, 0);
+                titleX, y + UDpi.toPixel(BUTTON_H) / 2, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
 
         // Button
         buttons[ButtonId.Option2.ordinal()] = new UButtonText(this, UButtonType.BGColor,
                 ButtonIdOption2,
                 0, mStudyType.getString(),
-                buttonX, y, BUTTON_W, BUTTON_H,
-                BUTTON_TEXT_SIZE, TEXT_COLOR, UColor.LightGreen);
+                buttonX, y, UDpi.toPixel(BUTTON_W), UDpi.toPixel(BUTTON_H),
+                UDpi.toPixel(BUTTON_TEXT_SIZE), TEXT_COLOR, UColor.LightGreen);
         buttons[ButtonId.Option2.ordinal()].setPullDownIcon(true);
 
-        y += BUTTON_H + MARGIN_V;
+        y += UDpi.toPixel(BUTTON_H + MARGIN_V);
 
         // 順番
         // タイトル
         textStudyOrder = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.study_order),
-                TEXT_SIZE_2, 0,
+                UDpi.toPixel(TEXT_SIZE_2), 0,
                 UAlignment.Right_CenterY, screenW, false, false,
-                titleX, y + BUTTON_H / 2, TITLE_WIDTH, TEXT_COLOR, Color.argb(1,0,0,0));
+                titleX, y + UDpi.toPixel(BUTTON_H) / 2, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, Color.argb(1,0,0,0));
 
         // Button
         StudyOrder studyOrder = StudyOrder.toEnum(MySharedPref.readInt(MySharedPref.StudyOrderKey));
         buttons[ButtonId.Option3.ordinal()] = new UButtonText(this, UButtonType.BGColor,
                 ButtonIdOption3,
                 0, studyOrder.getString(),
-                buttonX, y, BUTTON_W, BUTTON_H,
-                BUTTON_TEXT_SIZE, TEXT_COLOR, UColor.Gold);
+                buttonX, y, UDpi.toPixel(BUTTON_W), UDpi.toPixel(BUTTON_H),
+                UDpi.toPixel(BUTTON_TEXT_SIZE), TEXT_COLOR, UColor.Gold);
         buttons[ButtonId.Option3.ordinal()].setPullDownIcon(true);
 
-        y += BUTTON_H + MARGIN_V;
+        y += UDpi.toPixel(BUTTON_H + MARGIN_V);
 
 
         // 学習単語
         // タイトル
         textStudyFilter = UTextView.createInstance(
                 UResourceManager.getStringById(R.string.study_filter),
-                TEXT_SIZE_2, 0,
+                UDpi.toPixel(TEXT_SIZE_2), 0,
                 UAlignment.Right_CenterY, screenW, false, false,
-                titleX, y + BUTTON_H / 2, TITLE_WIDTH, TEXT_COLOR, 0);
+                titleX, y + UDpi.toPixel(BUTTON_H) / 2, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
 
         // Button
         StudyFilter studyFilter = StudyFilter.toEnum(MySharedPref.readInt(MySharedPref
@@ -380,11 +387,11 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
         buttons[ButtonId.Option4.ordinal()] = new UButtonText(this, UButtonType.BGColor,
                 ButtonIdOption4,
                 0, studyFilter.getString(),
-                buttonX, y, BUTTON_W, BUTTON_H,
-                BUTTON_TEXT_SIZE, TEXT_COLOR, UColor.LightPink);
+                buttonX, y, UDpi.toPixel(BUTTON_W), UDpi.toPixel(BUTTON_H),
+                UDpi.toPixel(BUTTON_TEXT_SIZE), TEXT_COLOR, UColor.LightPink);
         buttons[ButtonId.Option4.ordinal()].setPullDownIcon(true);
 
-        y += BUTTON_H + MARGIN_V;
+        y += UDpi.toPixel(BUTTON_H + MARGIN_V);
 
         // センタリング
         pos.x = (screenW - size.width) / 2;
@@ -394,9 +401,10 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
         buttons[ButtonId.Start.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudyBookSelect.ButtonIdStartStudy,
                 0, UResourceManager.getStringById(R.string.start),
-                width / 2 - BUTTON2_W - MARGIN_H / 2, size.height - BUTTON2_H - MARGIN_V,
-                BUTTON2_W, BUTTON2_H,
-                TEXT_SIZE, TEXT_COLOR, Color.rgb(100,200,100));
+                width / 2 - UDpi.toPixel(BUTTON2_W) - marginH / 2,
+                size.height - UDpi.toPixel(BUTTON2_H) - UDpi.toPixel(MARGIN_V),
+                UDpi.toPixel(BUTTON2_W), UDpi.toPixel(BUTTON2_H),
+                fontSize, TEXT_COLOR, Color.rgb(100,200,100));
         if (mCardCount == 0) {
             buttons[ButtonId.Start.ordinal()].setEnabled(false);
         }
@@ -405,9 +413,10 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
         buttons[ButtonId.Cancel.ordinal()] = new UButtonText(this, UButtonType.Press,
                 PageViewStudyBookSelect.ButtonIdCancel,
                 0, UResourceManager.getStringById(R.string.cancel),
-                width / 2 + MARGIN_H / 2, size.height - BUTTON2_H - MARGIN_V,
-                BUTTON2_W, BUTTON2_H,
-                TEXT_SIZE, Color.WHITE, Color.rgb(200,100,100));
+                width / 2 + marginH / 2,
+                size.height - UDpi.toPixel(BUTTON2_H) - UDpi.toPixel(MARGIN_V),
+                UDpi.toPixel(BUTTON2_W), UDpi.toPixel(BUTTON2_H),
+                fontSize, Color.WHITE, Color.rgb(200,100,100));
 
         updateRect();
     }
@@ -421,52 +430,53 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                     mParentView.getWidth(), mParentView.getHeight());
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_mode));
 
+            int margin = UDpi.toPixel(17);
             // Slide one
             UButtonText button = new UButtonText(
             this, UButtonType.Press, ButtonIdOption1_1,
             0, UResourceManager.getStringById(R.string.study_mode_1),
-                MARGIN_H, 0, mDialog.getWidth() - MARGIN_H * 2, BUTTON_ICON_W + 50,
-                TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
+                    marginH, 0, mDialog.getWidth() - marginH * 2, buttonIconW + margin,
+                    fontSize, TEXT_COLOR, UColor.LightBlue);
             button.setImage(UResourceManager.getBitmapById(R.drawable.study_mode1), new Size
-                    (BUTTON_ICON_W,BUTTON_ICON_W));
+                    (buttonIconW,buttonIconW));
             button.setImageAlignment(UAlignment.Center);
-            button.setImageOffset(-BUTTON_ICON_W - 50, 0);
+            button.setImageOffset(-buttonIconW - margin, 0);
             mDialog.addDrawable(button);
 
             // Slide multi
             button = new UButtonText(
                     this, UButtonType.Press, ButtonIdOption1_2,
                     0, UResourceManager.getStringById(R.string.study_mode_2),
-                    MARGIN_H, 0, mDialog.getWidth() - MARGIN_H * 2, BUTTON_ICON_W + 50,
-                    TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
+                    marginH, 0, mDialog.getWidth() - marginH * 2, buttonIconW + margin,
+                    fontSize, TEXT_COLOR, UColor.LightBlue);
             button.setImage(UResourceManager.getBitmapById(R.drawable.study_mode2), new Size
-                    (BUTTON_ICON_W,BUTTON_ICON_W));
+                    (buttonIconW,buttonIconW));
             button.setImageAlignment(UAlignment.Center);
-            button.setImageOffset(-BUTTON_ICON_W - 50, 0);
+            button.setImageOffset(-buttonIconW - margin, 0);
             mDialog.addDrawable(button);
 
             // 4 choice
             button = new UButtonText(
                     this, UButtonType.Press, ButtonIdOption1_3,
                     0, UResourceManager.getStringById(R.string.study_mode_3),
-                    MARGIN_H, 0, mDialog.getWidth() - MARGIN_H * 2, BUTTON_ICON_W + 50,
-                    TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
+                    marginH, 0, mDialog.getWidth() - marginH * 2, buttonIconW + margin,
+                    fontSize, TEXT_COLOR, UColor.LightBlue);
             button.setImage(UResourceManager.getBitmapById(R.drawable.study_mode3), new Size
-                    (BUTTON_ICON_W,BUTTON_ICON_W));
+                    (buttonIconW,buttonIconW));
             button.setImageAlignment(UAlignment.Center);
-            button.setImageOffset(-BUTTON_ICON_W - 50, 0);
+            button.setImageOffset(-buttonIconW - margin, 0);
             mDialog.addDrawable(button);
 
             // input correct
             button = new UButtonText(
                     this, UButtonType.Press, ButtonIdOption1_4,
                     0, UResourceManager.getStringById(R.string.study_mode_4),
-                    MARGIN_H, 0, mDialog.getWidth() - MARGIN_H * 2, BUTTON_ICON_W + 50,
-                    TEXT_SIZE, TEXT_COLOR, UColor.LightBlue);
+                    marginH, 0, mDialog.getWidth() - marginH * 2, buttonIconW + margin,
+                    fontSize, TEXT_COLOR, UColor.LightBlue);
             button.setImage(UResourceManager.getBitmapById(R.drawable.study_mode4), new Size
-                    (BUTTON_ICON_W,BUTTON_ICON_W));
+                    (buttonIconW,buttonIconW));
             button.setImageAlignment(UAlignment.Center);
-            button.setImageOffset(-BUTTON_ICON_W - 50, 0);
+            button.setImageOffset(-buttonIconW - margin, 0);
             mDialog.addDrawable(button);
 
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
@@ -484,7 +494,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                     mParentView.getWidth(), mParentView.getHeight());
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_type));
             mDialog.addTextView(UResourceManager.getStringById(R.string.study_type_exp),
-                    UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
+                    UAlignment.Center, false, false, UDpi.toPixel(TEXT_SIZE_2), TEXT_COLOR, 0);
             UButton button = mDialog.addButton(ButtonIdOption2_1, UResourceManager.getStringById(R.string
                     .study_type_1), TEXT_COLOR, UColor.LightGreen);
             UButton button2 = mDialog.addButton(ButtonIdOption2_2, UResourceManager.getStringById(R.string
@@ -511,7 +521,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                     mParentView.getWidth(), mParentView.getHeight());
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_order));
             mDialog.addTextView(UResourceManager.getStringById(R.string.study_order_exp),
-                    UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
+                    UAlignment.Center, false, false, UDpi.toPixel(TEXT_SIZE_2), TEXT_COLOR, 0);
 
             // buttons
             UButton button1 = mDialog.addButton(ButtonIdOption3_1, UResourceManager.getStringById(R.string
@@ -540,7 +550,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                     mParentView.getWidth(), mParentView.getHeight());
             mDialog.setTitle(UResourceManager.getStringById(R.string.study_filter));
             mDialog.addTextView(UResourceManager.getStringById(R.string.study_filter_exp),
-                    UAlignment.Center, false, false, TEXT_SIZE_2, TEXT_COLOR, 0);
+                    UAlignment.Center, false, false, UDpi.toPixel(TEXT_SIZE_2), TEXT_COLOR, 0);
             // buttons
             UButton button1 = mDialog.addButton(ButtonIdOption4_1, UResourceManager.getStringById(R.string
                     .study_filter_1), TEXT_COLOR, UColor.LightPink);

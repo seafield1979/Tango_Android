@@ -77,6 +77,7 @@ public class ListViewStudyHistory extends UListView {
                 add(title);
             }
 
+            // 学習した単語帳
             ListItemStudiedBook item = ListItemStudiedBook.createHistory( history,
                 width, Color.BLACK, Color.WHITE);
             if (item != null) {

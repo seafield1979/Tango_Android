@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import com.sunsunsoft.shutaro.tangobook.TouchType;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
@@ -23,10 +24,10 @@ public class UTextView extends UDrawable {
      * Constracts
      */
     // BGを描画する際の上下左右のマージン
-    protected static final int MARGIN_H = 30;
-    protected static final int MARGIN_V = 15;
+    protected static final int MARGIN_H = 10;
+    protected static final int MARGIN_V = 5;
 
-    protected static final int DEFAULT_TEXT_SIZE = 50;
+    protected static final int DEFAULT_TEXT_SIZE = 17;
     protected static final int DEFAULT_COLOR = Color.BLACK;
     protected static final int DEFAULT_BG_COLOR = Color.WHITE;
 
@@ -35,7 +36,7 @@ public class UTextView extends UDrawable {
      */
     protected String text;
     protected UAlignment alignment;
-    protected Size mMargin = new Size(MARGIN_H, MARGIN_V);
+    protected Size mMargin;
     protected int textSize;
     protected int bgColor;
     protected int canvasW;
@@ -94,6 +95,8 @@ public class UTextView extends UDrawable {
         if (width == 0) {
             size = getTextSize(canvasW);
         }
+        mMargin = new Size(UDpi.toPixel(MARGIN_H), UDpi.toPixel(MARGIN_V));
+
         updateSize();
     }
 
@@ -252,11 +255,11 @@ public class UTextView extends UDrawable {
             paint.setColor(bgColor);
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(pos.x, pos.y, pos.x + size.width, pos.y + size.height),
-                    20, bgColor, 0, 0);
+                    UDpi.toPixel(7), bgColor, 0, 0);
         } else {
             UDraw.drawRoundRectFill(canvas, paint,
                     new RectF(pos.x, pos.y, pos.x + size.width, pos.y + size.height),
-                    20, bgColor, 0, 0);
+                    UDpi.toPixel(7), bgColor, 0, 0);
         }
     }
 

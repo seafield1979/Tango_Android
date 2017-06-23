@@ -10,6 +10,7 @@ import com.sunsunsoft.shutaro.tangobook.EditTextCallbacks;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.TopFragment;
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemSearchedCard;
@@ -32,8 +33,8 @@ public class PageViewSearchCard extends UPageView
     public static final String TAG = "PageViewSearchCard";
 
     private static final int LIST_ITEM_MAX = 20;
-    private static final int MARGIN_H = 50;
-    private static final int MARGIN_V = 50;
+    private static final int MARGIN_H = 17;
+    private static final int MARGIN_V = 17;
 
     /**
      * Members
@@ -98,10 +99,10 @@ public class PageViewSearchCard extends UPageView
 
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
-        float y = MARGIN_V;
+        float y = UDpi.toPixel(MARGIN_V);
 
-        mListView = new UListView(null, this, 100, MARGIN_H, y, width - MARGIN_H * 2, height -
-                MARGIN_V * 2,
+        mListView = new UListView(null, this, 100, UDpi.toPixel(MARGIN_H), y, width - UDpi.toPixel(MARGIN_H) * 2, height -
+                UDpi.toPixel(MARGIN_V) * 2,
                 Color.WHITE);
         mListView.setFrameColor(Color.BLACK);
         mListView.addToDrawManager();
