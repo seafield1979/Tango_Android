@@ -14,6 +14,7 @@ import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.activity.MainActivity;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
+import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonImage;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
 import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
@@ -73,12 +74,16 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
     private static final int DRAW_PRIORITY = 100;
 
     private static final int BUTTON_H = 65;
+    private static final int ZOOM_BUTTON_W = 40;
     private static final int MARGIN_H = 18;
     private static final int MARGIN_V = 10;
 
     private static final int TEXT_SIZE = 17;
     private static final int IMAGE_W = 35;
 
+    // button Ids
+    private static final int ButtonIdZoomIn = 100;
+    private static final int ButtonIdZoomOut = 101;
 
 
     /**
@@ -129,9 +134,28 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
         // 単語帳作成＆学習ボタンは正方形
         int buttonW = (width - (columnNum + 1) * UDpi.toPixel(MARGIN_H)) / columnNum;
 
-        float x = UDpi.toPixel(MARGIN_H);
-        float y = UDpi.toPixel(MARGIN_V + 35);
         buttonType = UButtonType.Press;
+
+        // ズームボタン
+        int zoomButtonW = UDpi.toPixel(ZOOM_BUTTON_W);
+        if (zoomButtonW < ZOOM_BUTTON_W) {
+            zoomButtonW = ZOOM_BUTTON_W;
+        }
+
+        UButtonImage button = new UButtonImage(this, ButtonIdZoomIn, DRAW_PRIORITY,
+                width - zoomButtonW * 2 - UDpi.toPixel(20), UDpi.toPixel(10),
+                zoomButtonW, zoomButtonW,
+                R.drawable.zoom_in, 0);
+        button.addToDrawManager();
+
+        button = new UButtonImage(this, ButtonIdZoomOut, DRAW_PRIORITY,
+                width - zoomButtonW - UDpi.toPixel(10), UDpi.toPixel(10),
+                zoomButtonW, zoomButtonW,
+                R.drawable.zoom_out, 0);
+        button.addToDrawManager();
+
+        float x = UDpi.toPixel(MARGIN_H);
+        float y = UDpi.toPixel(MARGIN_V + 10) + zoomButtonW;
 
         for (int i = 0; i < 2; i++) {
             ButtonId id = ButtonId.values()[i];
@@ -199,32 +223,43 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
      * UButtonCallbacks
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
-        ButtonId buttonId = ButtonId.toEnum(id);
-        switch(buttonId) {
-            case Edit:
-                PageViewManager.getInstance().stackPage(PageView.Edit);
-                break;
-            case Study:
-                PageViewManager.getInstance().stackPage(PageView.StudyBookSelect);
-                break;
-            case History:
-                PageViewManager.getInstance().stackPage(PageView.History);
-                break;
-            case Settings:
-                PageViewManager.getInstance().stackPage(PageView.Settings);
-//                UDpi.scaleDown();
-//                initDrawables();
-//                mParentView.invalidate();
-                break;
-            case Help:
-                MainActivity.getInstance().showHelpTopPage();
-//                UDpi.scaleUp();
-//                initDrawables();
-//                mParentView.invalidate();
-                break;
-            case Debug:
-                PageViewManager.getInstance().stackPage(PageView.Debug);
-                break;
+        if ( id < ButtonId.values().length ) {
+
+            ButtonId buttonId = ButtonId.toEnum(id);
+            switch (buttonId) {
+                case Edit:
+                    PageViewManager.getInstance().stackPage(PageView.Edit);
+                    break;
+                case Study:
+                    PageViewManager.getInstance().stackPage(PageView.StudyBookSelect);
+                    break;
+                case History:
+                    PageViewManager.getInstance().stackPage(PageView.History);
+                    break;
+                case Settings:
+                    PageViewManager.getInstance().stackPage(PageView.Settings);
+                    break;
+                case Help:
+                    MainActivity.getInstance().showHelpTopPage();
+                    break;
+                case Debug:
+                    PageViewManager.getInstance().stackPage(PageView.Debug);
+                    break;
+            }
+        } else {
+            // ズームボタン
+            switch (id) {
+                case ButtonIdZoomOut:
+                    UDpi.scaleDown();
+                    initDrawables();
+                    mParentView.invalidate();
+                    break;
+                case ButtonIdZoomIn:
+                    UDpi.scaleUp();
+                    initDrawables();
+                    mParentView.invalidate();
+                    break;
+            }
         }
         return false;
     }

@@ -48,7 +48,7 @@ public class UDpi {
         }
         // スケールアップ
         public Scale scaleUp() {
-            if (ordinal() < values().length) {
+            if (ordinal() < values().length - 1) {
                 return toEnum(ordinal() + 1);
             }
             return this;
