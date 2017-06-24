@@ -34,10 +34,16 @@ import io.realm.Realm;
  * Xmlファイルに書き込み、読み込みを行うクラス
  */
 
-public class XmlManager {
+public class XmlManager implements Runnable{
     /**
      * enum
      */
+    // スレッド処理モード
+    public enum RunMode {
+        None,
+        BackupAuto,
+        BackupManual
+    }
 
     /**
      * Consts
@@ -51,6 +57,10 @@ public class XmlManager {
      * Member variables
      */
     private Context mContext;
+
+    private RunMode mRunMode;               // スレッド実行モード
+    private XmlBackupCallbacks mCallbacks;  // バックアップ完了のコールバック
+    private int mSaveSlot;                  // マニュアルバックアップのスロット番号
 
     // バックアップ情報
     private int mBackupCardNum;
@@ -88,6 +98,55 @@ public class XmlManager {
     /**
      * Methods
      */
+    /**
+     * オートバックアップをスレッドで実行
+     * @param callbacks
+     * @param context
+     */
+    public static void startBackupAuto(XmlBackupCallbacks callbacks, Context context) {
+        XmlManager runable = new XmlManager(context);
+        runable.mCallbacks = callbacks;
+        runable.mRunMode = RunMode.BackupAuto;
+        Thread thread = new Thread(runable);
+        thread.start();
+    }
+
+    /**
+     * マニュアルバックアップをスレッドで実行
+     * @param callbacks
+     * @param context
+     */
+    public static void startBackupManual(XmlBackupCallbacks callbacks, Context context, int slot) {
+        XmlManager runable = new XmlManager(context);
+        runable.mCallbacks = callbacks;
+        runable.mRunMode = RunMode.BackupAuto;
+        runable.mSaveSlot = slot;
+        Thread thread = new Thread(runable);
+        thread.start();
+    }
+
+    /**
+     * スレッド処理
+     */
+    public void run() {
+        switch(mRunMode) {
+            case BackupAuto: {
+                BackupFileInfo fileInfo = saveAutoBackup();
+                if (mCallbacks != null) {
+                    mCallbacks.finishBackup(fileInfo);
+                }
+            }
+                break;
+            case BackupManual: {
+                BackupFileInfo fileInfo = saveManualBackup(mSaveSlot);
+                if (mCallbacks != null) {
+                    mCallbacks.finishBackup(fileInfo);
+                }
+            }
+                break;
+        }
+    }
+
     public String[] getXmlFileList() {
         return null;
     }
@@ -126,6 +185,11 @@ public class XmlManager {
         return getXmlInfo(file);
     }
 
+    /**
+     * バックアップの情報を取得する
+     * @param file バックアップファイルから情報を取得
+     * @return
+     */
     public static String getXmlInfo(File file) {
 
         XmlTangoTop tangoTop = null;
@@ -146,6 +210,26 @@ public class XmlManager {
                 " :  " + tangoTop.cardNum + "\n" +
                 UResourceManager.getStringById(R.string.book_count) +
                 " :  " + tangoTop.bookNum + "\n";
+        return str;
+    }
+
+    /**
+     * バックアップの情報を取得する
+     * BackupFileInfoからバックアップ情報を取得
+     * @param backupInfo
+     * @return
+     */
+    public static String getXmlInfo(BackupFileInfo backupInfo) {
+        if (backupInfo == null) {
+            return null;
+        }
+        String str =  UUtil.convDateFormat(new Date(), ConvDateMode.DateTime) + "\n" +
+                UResourceManager.getStringById(R.string.filename) +
+                " :  " + backupInfo.getFileName() + "\n" +
+                UResourceManager.getStringById(R.string.card_count) +
+                " :  " + backupInfo.getCardNum() + "\n" +
+                UResourceManager.getStringById(R.string.book_count) +
+                " :  " + backupInfo.getBookNum() + "\n";
         return str;
     }
 

@@ -142,7 +142,7 @@ public class ListItemResult extends UListItem implements UButtonCallbacks {
                 0, width, textColor, bgColor);
         instance.mText = convString(isEnglish ? card.getWordA() : card.getWordB());
         instance.mText2 = convString(isEnglish ? card.getWordB() : card.getWordA());
-        instance.size.height = CARD_H;
+        instance.size.height = UDpi.toPixel(CARD_H);
         return instance;
     }
 

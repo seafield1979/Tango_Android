@@ -13,6 +13,7 @@ import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemBackup;
 import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
 import com.sunsunsoft.shutaro.tangobook.save.BackupFileInfo;
+import com.sunsunsoft.shutaro.tangobook.save.XmlBackupCallbacks;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
@@ -27,7 +28,9 @@ import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
  */
 
 public class PageViewBackup extends UPageView
-        implements UDialogCallbacks, UButtonCallbacks, UCheckBoxCallbacks, UListItemCallbacks {
+        implements UDialogCallbacks, UButtonCallbacks, UCheckBoxCallbacks,
+        UListItemCallbacks, XmlBackupCallbacks
+{
 
     /**
      * Constants
@@ -45,6 +48,7 @@ public class PageViewBackup extends UPageView
 
     // button IDs
     private static final int ButtonIdOverWriteOK = 100;  // 上書き確認
+    private static final int ButtonIdBackupOK = 101;      // バックアップOK
 
     /**
      * Member variables
@@ -164,20 +168,27 @@ public class PageViewBackup extends UPageView
         BackupFile backup = backupItem.getBackup();
         if (backup == null) return;
 
+        String title;
+        int buttonId;
+
         if (backup.isEnabled() == false) {
-            boolean ret = doBackup(backupItem, backup);
-            showDoneDialog(ret);
+            // バックアップ確認
+            title = mContext.getString(R.string.confirm_backup);
+            buttonId = ButtonIdBackupOK;
         } else {
             // バックアップファイルがあったら上書き確認
-            mBackupItem = backupItem;
-            // Dialog
-            mDialog = UDialogWindow.createInstance(this, this,
-                    UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
-            mDialog.addToDrawManager();
-            mDialog.setTitle(mContext.getString(R.string.confirm_overwrite));
-            mDialog.addButton(ButtonIdOverWriteOK, "OK", Color.BLACK, Color.WHITE);
-            mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+            title = mContext.getString(R.string.confirm_overwrite);
+            buttonId = ButtonIdOverWriteOK;
         }
+
+        mBackupItem = backupItem;
+        // Dialog
+        mDialog = UDialogWindow.createInstance(this, this,
+                UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
+        mDialog.addToDrawManager();
+        mDialog.setTitle(title);
+        mDialog.addButton(buttonId, "OK", Color.BLACK, Color.WHITE);
+        mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 
     /**
@@ -191,15 +202,19 @@ public class PageViewBackup extends UPageView
 
         // バックアップファイルがなければそのまま保存
         // xmlに保存
-        BackupFileInfo backupInfo = XmlManager.getInstance().saveManualBackup(backup.getId());
-        String newText = XmlManager.getInstance().getManualXmlInfo(backup.getId());
-        if (newText == null) {
-            return false;
-        }
-        backupItem.setText(newText);
+        if (false) {
+            XmlManager.startBackupManual(this, mContext, backup.getId());
+        } else {
+            BackupFileInfo backupInfo = XmlManager.getInstance().saveManualBackup(backup.getId());
+            String newText = XmlManager.getInstance().getManualXmlInfo(backup.getId());
+            if (newText == null) {
+                return false;
+            }
+            backupItem.setText(newText);
 
-        // データベース更新(BackupFile)
-        RealmManager.getBackupFileDao().updateOne(backup.getId(), backupInfo.getFilePath(), backupInfo.getBookNum(), backupInfo.getCardNum());
+            // データベース更新(BackupFile)
+            RealmManager.getBackupFileDao().updateOne(backup.getId(), backupInfo.getFilePath(), backupInfo.getBookNum(), backupInfo.getCardNum());
+        }
         return true;
     }
 
@@ -236,9 +251,11 @@ public class PageViewBackup extends UPageView
      */
     public boolean UButtonClicked(int id, boolean pressedOn) {
         switch (id) {
-            case ButtonIdOverWriteOK:
+            case ButtonIdBackupOK:
+            case ButtonIdOverWriteOK: {
                 boolean ret = doBackup(mBackupItem, mBackupItem.getBackup());
                 showDoneDialog(ret);
+            }
                 break;
         }
         return false;
@@ -251,5 +268,29 @@ public class PageViewBackup extends UPageView
         if (mDialog == dialog) {
             mDialog = null;
         }
+    }
+
+    /**
+     * XmlBackupCallbacks
+     */
+    /**
+     * スレッドで実行していたバックアップ完了
+     * @param backupInfo
+     */
+    public void finishBackup(BackupFileInfo backupInfo) {
+        String newText = XmlManager.getInstance().getXmlInfo(backupInfo);
+        if (newText == null) {
+            showDoneDialog(false);
+            return;
+        }
+        mBackupItem.setText(newText);
+        BackupFile backup = mBackupItem.getBackup();
+
+        // データベース更新(BackupFile)
+        RealmManager.getBackupFileDao().updateOne(backup.getId(),
+                backupInfo.getFilePath(), backupInfo.getBookNum(),
+                backupInfo.getCardNum());
+
+        showDoneDialog(true);
     }
 }

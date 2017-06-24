@@ -51,7 +51,7 @@ public class ListItemOption extends UListItem {
                           OptionItems itemType, String title, boolean isTitle, int color, int
                                   bgColor,
                           float x, int width) {
-        super(listItemCallbacks, !isTitle, x, width, TITLE_H, bgColor, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
+        super(listItemCallbacks, !isTitle, x, width, UDpi.toPixel(TITLE_H), bgColor, UDpi.toPixel(FRAME_WIDTH), FRAME_COLOR);
         this.mItemType = itemType;
         this.mTitle = title;
         this.mColor = color;
