@@ -84,7 +84,7 @@ public class MySharedPref {
     // ４択モードで正解以外のカードをどの範囲から取得するか
     public static final String StudyMode3OptionKey = "StudyMode3Select";
 
-    // 単語入力モードの文字並び
+    // 単語入力モードの文字並び (false:アルファベット順 / true:ランダム)
     public static final String StudyMode4OptionKey = "StudyMode4Seq";
 
 

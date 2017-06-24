@@ -159,8 +159,8 @@ public class PageViewStudyInputCorrect extends PageViewStudy
 
         // カードスタック
         mCardsStack = new StudyCardStackInput(mCardsManager, this,
-                MARGIN_H, UDpi.toPixel(TOP_AREA_H),
-                width, mParentView.getWidth() - MARGIN_H * 2,
+                UDpi.toPixel(MARGIN_H), UDpi.toPixel(TOP_AREA_H),
+                width, mParentView.getWidth() - UDpi.toPixel(MARGIN_H) * 2,
                 mParentView.getHeight() - UDpi.toPixel(TOP_AREA_H + BOTTOM_AREA_H)
         );
         mCardsStack.addToDrawManager();
@@ -168,7 +168,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
 
         // あと〜枚
         String title = getCardsRemainText(mCardsStack.getCardCount());
-        mTextCardCount = UTextView.createInstance( title, TEXT_SIZE, DRAW_PRIORITY,
+        mTextCardCount = UTextView.createInstance( title, UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, true,
                 width / 2, UDpi.toPixel(17), UDpi.toPixel(100), Color.rgb(100,50,50), 0);
         mTextCardCount.addToDrawManager();
@@ -196,7 +196,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
         // 設定ボタン
         Bitmap image = UResourceManager.getBitmapWithColor(R.drawable.settings_1, UColor.Green);
         mSettingButton = UButtonImage.createButton(this, ButtonIdSetting, DRAW_PRIORITY,
-                width - UDpi.toPixel(SETTING_BUTTON_W) - MARGIN_H, height - UDpi.toPixel(50),
+                width - UDpi.toPixel(SETTING_BUTTON_W + MARGIN_H), height - UDpi.toPixel(50),
                 UDpi.toPixel(SETTING_BUTTON_W), UDpi.toPixel(SETTING_BUTTON_W),
                 image, null);
         mSettingButton.addToDrawManager();
@@ -255,28 +255,18 @@ public class PageViewStudyInputCorrect extends PageViewStudy
                 Color.BLACK, Color.LTGRAY);
         mDialog.addToDrawManager();
         mDialog.setTitle(UResourceManager.getStringById(R.string.option_mode4_22));
-        UButton button = mDialog.addButton(ButtonIdStudySorted, UResourceManager.getStringById
+        UButton button1 = mDialog.addButton(ButtonIdStudySorted, UResourceManager.getStringById
                 (R.string.option_mode4_3), UColor.BLACK, UColor.White);
         UButton button2 = mDialog.addButton(ButtonIdStudyRandom, UResourceManager.getStringById(R.string.option_mode4_4), Color.BLACK, UColor.White);
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
         if (MySharedPref.readBoolean(MySharedPref.StudyMode4OptionKey)) {
-            button.setChecked(true);
-        } else {
             button2.setChecked(true);
+        } else {
+            button1.setChecked(true);
         }
     }
 
-    /**
-     * UDialogCallbacks
-     */
-    public void dialogClosed(UDialogWindow dialog) {
-        super.dialogClosed(dialog);
-
-        if (dialog == mDialog) {
-            mDialog = null;
-        }
-    }
 
     /**
      * CardsStackCallbacks

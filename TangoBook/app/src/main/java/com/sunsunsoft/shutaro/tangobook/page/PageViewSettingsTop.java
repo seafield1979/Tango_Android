@@ -160,7 +160,7 @@ public class PageViewSettingsTop extends UPageView
 
 
         float x = MARGIN_H;
-        float y = MARGIN_V + 100.f;
+        float y = MARGIN_V;
 
         int buttonW = width - MARGIN_H * 2;
         int buttonH = UDpi.toPixel(BUTTON2_H);

@@ -60,7 +60,7 @@ public class PageViewOptions extends UPageView
     private static final int DRAW_PRIORITY = 100;
 
     // layout
-    private static final int MARGIN_H = 17;
+    private static final int MARGIN_H = 10;
     private static final int MARGIN_V_S = 10;
     private static final int TEXT_SIZE = 17;
 
@@ -144,8 +144,8 @@ public class PageViewOptions extends UPageView
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
-        float y = MARGIN_V_S;
+        float x = UDpi.toPixel(MARGIN_H);
+        float y = UDpi.toPixel(MARGIN_V_S);
 
         // Title
         mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
@@ -181,7 +181,7 @@ public class PageViewOptions extends UPageView
      * @return
      */
     private String getItemTitle(OptionItems option) {
-        String title = null;
+        String title;
 
         switch (option) {
             case CardTitle: {
@@ -293,8 +293,15 @@ public class PageViewOptions extends UPageView
 
         mDialog.addToDrawManager();
         mDialog.setTitle(UResourceManager.getStringById(R.string.card_name_title));
-        mDialog.addButton(ButtonIdCardWordA, UResourceManager.getStringById(R.string.word_a), UColor.BLACK, UColor.White);
-        mDialog.addButton(ButtonIdCardWordB, UResourceManager.getStringById(R.string.word_b), Color.BLACK, UColor.White);
+        UButton button1 = mDialog.addButton(ButtonIdCardWordA, UResourceManager.getStringById(R.string.word_a), UColor.BLACK, UColor.White);
+        UButton button2 = mDialog.addButton(ButtonIdCardWordB, UResourceManager.getStringById(R.string.word_b), Color.BLACK, UColor.White);
+
+        if (MySharedPref.getInstance().readBoolean(EditCardNameKey)) {
+            button2.setChecked(true);
+        } else {
+            button1.setChecked(true);
+        }
+
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 

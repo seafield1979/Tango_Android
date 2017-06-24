@@ -34,10 +34,10 @@ public class UDraw {
             case S:
                 _size = 10;
             case M:
-                _size = 15;
+                _size = 13;
             case L:
             default:
-                _size = 20;
+                _size = 17;
         }
         return UDpi.toPixel(_size);
     }

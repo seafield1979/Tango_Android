@@ -401,7 +401,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                 PageViewStudyBookSelect.ButtonIdStartStudy,
                 0, UResourceManager.getStringById(R.string.start),
                 width / 2 - UDpi.toPixel(BUTTON2_W) - marginH / 2,
-                size.height - UDpi.toPixel(BUTTON2_H) - UDpi.toPixel(MARGIN_V),
+                size.height - UDpi.toPixel(BUTTON2_H + MARGIN_V),
                 UDpi.toPixel(BUTTON2_W), UDpi.toPixel(BUTTON2_H),
                 fontSize, TEXT_COLOR, Color.rgb(100,200,100));
         if (mCardCount == 0) {
