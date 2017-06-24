@@ -90,9 +90,6 @@ public class UDpi {
     public static void init(Context context) {
         // リソースから取得する (要 Context)
         float dpi = context.getResources().getDisplayMetrics().densityDpi;
-//        if (dpi <= 240) {
-//            dpi = 240;
-//        }
 
         dpiToPixelBase = dpi / BASE_DPI;    // 例: 480 / 160 = 3.0f
 
@@ -100,10 +97,10 @@ public class UDpi {
         int scaleInt = MySharedPref.getInstance().readInt(MySharedPref.ScaleKey);
         if (scaleInt != 0) {
             mScale = Scale.toEnum(scaleInt);
-            dpiToPixel = dpiToPixelBase * mScale.getScale();
         } else {
             mScale = Scale.S100;
         }
+        dpiToPixel = dpiToPixelBase * mScale.getScale();
     }
 
     /**
@@ -130,7 +127,7 @@ public class UDpi {
     }
 
     public static String getScaleText() {
-        return String.format("Zoom %03d", (int)(mScale.getScale() * 100)) + "%";
+        return String.format("Zoom %3d", (int)(mScale.getScale() * 100)) + "%";
     }
 
     /**
