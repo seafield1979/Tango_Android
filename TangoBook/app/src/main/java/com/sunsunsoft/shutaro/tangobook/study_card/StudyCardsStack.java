@@ -171,7 +171,7 @@ public class StudyCardsStack extends UDrawable {
                 for (int j=i+1; j<mCards.size(); j++) {
                     StudyCard card2 = mCards.get(j);
                     card2.startMoving(0, bottomY - card2.getHeight(),
-                            MOVING_FRAME + UDpi.toPixel(2));
+                            MOVING_FRAME + 5);
                     bottomY -= card2.getHeight() + UDpi.toPixel(MARGIN_V);
                 }
                 mCards.remove(card);
@@ -240,7 +240,7 @@ public class StudyCardsStack extends UDrawable {
             // スタックの最後のカードの上に配置
             int height = 0;
             for (StudyCard _card : mCards) {
-                height += _card.getHeight() + MARGIN_V;
+                height += _card.getHeight() + UDpi.toPixel(MARGIN_V);
             }
             dstY = size.height - height - card.getHeight();
         } else {

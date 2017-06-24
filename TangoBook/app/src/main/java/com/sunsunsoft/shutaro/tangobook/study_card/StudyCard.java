@@ -175,19 +175,22 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
         }
 
 
+        int arrowW = UDpi.toPixel(ARROW_W);
+        int arrowH = UDpi.toPixel(ARROW_H);
+
         if (arrowLImage == null) {
             arrowLImage = UResourceManager.getBitmapWithColor(R.drawable.arrow_l, UColor.DarkRed);
         }
         mArrowL = UButtonImage.createButton(this, ButtonIdArrowL, 0,
-                - (size.width / 2 + UDpi.toPixel(ARROW_MARGIN + ARROW_W)), (size.height - ARROW_H) / 2,
-                UDpi.toPixel(ARROW_W), UDpi.toPixel(ARROW_H), arrowLImage, null);
+                - (size.width / 2 + UDpi.toPixel(ARROW_MARGIN + ARROW_W)), (size.height - arrowH) / 2,
+                arrowW, arrowH, arrowLImage, null);
 
         if (arrowRImage == null) {
             arrowRImage = UResourceManager.getBitmapWithColor(R.drawable.arrow_r, UColor.DarkGreen);
         }
         mArrowR = UButtonImage.createButton(this, ButtonIdArrowR, 0,
-                size.width / 2 + UDpi.toPixel(ARROW_MARGIN), (size.height - UDpi.toPixel(ARROW_H)) / 2,
-                UDpi.toPixel(ARROW_W), UDpi.toPixel(ARROW_H), arrowRImage, null);
+                size.width / 2 + UDpi.toPixel(ARROW_MARGIN), (size.height - arrowH) / 2,
+                arrowW, UDpi.toPixel(ARROW_H), arrowRImage, null);
     }
 
     /**
@@ -206,7 +209,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
     public void startMoveIntoBox(float dstX, float dstY)
     {
         int width, height;
-        final int dstWidth = 50;
+        final int dstWidth = UDpi.toPixel(17);
         if (size.width > size.height) {
             width = dstWidth;
             height = (int)(dstWidth * ((float)size.height / (float)size.width));
@@ -305,7 +308,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
         UDraw.drawRoundRectFill(canvas, paint,
                 new RectF(_pos.x - size.width / 2 , _pos.y,
                         _pos.x + size.width / 2, _pos.y + size.height),
-                10, color, 5, FRAME_COLOR);
+                UDpi.toPixel(3), color, UDpi.toPixel(2), FRAME_COLOR);
 
         // Text
         if (!isMoveToBox) {
