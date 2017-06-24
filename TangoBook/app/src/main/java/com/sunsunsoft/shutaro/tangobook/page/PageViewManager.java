@@ -166,6 +166,9 @@ public class PageViewManager extends UPageViewManager {
             case CsvBook:
                 MainActivity.getInstance().setMenuType(MainActivity.MenuType.AddCsv);
                 break;
+            case History:
+                MainActivity.getInstance().setMenuType(MainActivity.MenuType.StudiedHistory);
+                break;
             default:
                 MainActivity.getInstance().setMenuType(MainActivity.MenuType.None);
         }

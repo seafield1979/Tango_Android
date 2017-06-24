@@ -90,7 +90,7 @@ public class UIconWindow extends UWindow {
 
     public static final int ICON_MARGIN = 10;
 
-    public static final int ICON_W = 60;
+    public static final int ICON_W = 45;
     public static final int ICON_H = 50;
     protected static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 

@@ -122,40 +122,53 @@ public class PageViewStudyBookSelect extends UPageView
         float x = UDpi.toPixel(MARGIN_H);
         float y = UDpi.toPixel(MARGIN_V_S);
 
-        // Title
-        mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
-                        .title_study2),
-                UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
-                UAlignment.CenterX, width, false, false,
-                width / 2, y, width, Color.BLACK, 0);
-        mTitleText.addToDrawManager();
-        y += mTitleText.getHeight() + UDpi.toPixel(MARGIN_V_S);
-
-        // ListView
-        int listViewH = height - (UDpi.toPixel(MARGIN_V_S) * 3 + mTitleText.getHeight());
-        mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
-                width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
-        mListView.setFrameColor(Color.BLACK);
-        mListView.addToDrawManager();
-
         // ListViewにアイテムを追加
         List<TangoItem> books = RealmManager.getItemPosDao().selectItemsByParentTypeWithSort(
                 TangoParentType.Home, 0, TangoItemType.Book,
                 mSortMode, true);
-        for (TangoItem book : books) {
-            TangoBook _book = (TangoBook)book;
-            ListItemStudyBook listItem = new ListItemStudyBook(this, _book, mListView.getWidth(),
-                    Color.WHITE);
-            mListView.add(listItem);
+
+        if (books == null || books.size() == 0) {
+            // リストが空
+            mListView = null;
+            y += UDpi.toPixel(67);
+            UTextView text = UTextView.createInstance(UResourceManager.getStringById(R.string.no_study_history),
+                    UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY - 1,
+                    UAlignment.CenterX, width, false, false,
+                    width / 2, y, width, Color.BLACK, 0);
+            text.addToDrawManager();
+
+        } else {
+            // Title
+            mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
+                            .title_study2),
+                    UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
+                    UAlignment.CenterX, width, false, false,
+                    width / 2, y, width, Color.BLACK, 0);
+            mTitleText.addToDrawManager();
+            y += mTitleText.getHeight() + UDpi.toPixel(MARGIN_V_S);
+
+            // ListView
+            int listViewH = height - (UDpi.toPixel(MARGIN_V_S) * 3 + mTitleText.getHeight());
+            mListView = new UListView(null, this, DRAW_PRIORITY, x, y,
+                    width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
+            mListView.setFrameColor(Color.BLACK);
+            mListView.addToDrawManager();
+
+            for (TangoItem book : books) {
+                TangoBook _book = (TangoBook) book;
+                ListItemStudyBook listItem = new ListItemStudyBook(this, _book, mListView.getWidth(),
+                        Color.WHITE);
+                mListView.add(listItem);
+            }
+            // スクロールバー等のサイズを更新
+            mListView.updateWindow();
+
+            y += listViewH + UDpi.toPixel(MARGIN_V_S);
+
+            // PreStudyWindow 学習開始前に設定を行うウィンドウ
+            mPreStudyWindow = new PreStudyWindow(this, this, mParentView);
+            mPreStudyWindow.addToDrawManager();
         }
-        // スクロールバー等のサイズを更新
-        mListView.updateWindow();
-
-        y += listViewH + UDpi.toPixel(MARGIN_V_S);
-
-        // PreStudyWindow 学習開始前に設定を行うウィンドウ
-        mPreStudyWindow = new PreStudyWindow(this, this, mParentView);
-        mPreStudyWindow.addToDrawManager();
     }
 
     /**

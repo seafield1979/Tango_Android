@@ -33,7 +33,7 @@ public class IconBook extends IconContainer {
     private static final int ICON_W = 40;
     private static final int ICON_H = 40;
 
-    private static final int TEXT_SIZE = 17;
+    private static final int TEXT_SIZE = 14;
     private static final int ICON_COLOR = Color.rgb(100,200,100);
 
     /**

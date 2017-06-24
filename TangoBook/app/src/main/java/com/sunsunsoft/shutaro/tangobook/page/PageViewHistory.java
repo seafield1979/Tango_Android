@@ -49,7 +49,6 @@ public class PageViewHistory extends UPageView
 
     // button ids
     private static final int ButtonIdReturn = 100;
-    private static final int ButtonIdClear = 101;
     private static final int ButtonIdClearOK = 102;
 
     /**
@@ -133,15 +132,6 @@ public class PageViewHistory extends UPageView
         if (mListView.getItemNum() > 0) {
             mListView.setFrameColor(Color.BLACK);
             mListView.addToDrawManager();
-
-            // Clear button
-            mClearButton = new UButtonText(this, UButtonType.Press, ButtonIdClear,
-                    DRAW_PRIORITY, UResourceManager.getStringById(R.string.clear),
-                    width - UDpi.toPixel(BUTTON_W) - MARGIN_H, UDpi.toPixel(7),
-                    UDpi.toPixel(BUTTON_W), UDpi.toPixel(BUTTON_H),
-                    UDpi.toPixel(TEXT_SIZE), Color.WHITE, UColor.Salmon );
-            mClearButton.addToDrawManager();
-
         } else {
             mListView = null;
             y += UDpi.toPixel(67);
@@ -171,6 +161,61 @@ public class PageViewHistory extends UPageView
     }
 
     /**
+     * アクションIDを処理する
+     * サブクラスでオーバーライドして使用する
+     */
+    public void setActionId(int id) {
+        switch (id) {
+            case R.id.action_clear_history: {
+                // クリア確認ダイアログを表示する
+                // お問い合わせメールダイアログを表示
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                }
+
+                boolean isEmpty = false;
+                String title, message;
+
+
+                if (mListView == null || mListView.getItemNum() == 0) {
+                    isEmpty = true;
+                }
+                if (isEmpty) {
+                    // リストが空の場合はクリアできないメッセージを表示
+                    title = UResourceManager.getStringById(R.string.error);
+                    message = UResourceManager.getStringById(R.string
+                            .study_list_is_empty1);
+                } else {
+                    // リストがある場合はクリア確認メッセージを表示
+                    title = UResourceManager.getStringById(R.string.confirm);
+                    message = UResourceManager.getStringById(R.string
+                            .confirm_clear_history);
+                }
+
+                mDialog = UDialogWindow.createInstance(this, this,
+                        UDialogWindow.ButtonDir.Horizontal,
+                        mParentView.getWidth(),
+                        mParentView.getHeight());
+                mDialog.setTitle(title);
+                mDialog.addTextView(message,
+                        UAlignment.CenterX, true, false, UDpi.toPixel(TEXT_SIZE), TEXT_COLOR, 0);
+
+                if (isEmpty) {
+                    mDialog.addCloseButton("OK", TEXT_COLOR, UColor.WHITE);
+                } else {
+                    mDialog.addButton(ButtonIdClearOK,
+                            "OK",TEXT_COLOR,
+                            Color.WHITE);
+                    mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));                  }
+                mDialog.addToDrawManager();
+
+                mParentView.invalidate();
+            }
+            break;
+        }
+    }
+
+    /**
      * Callbacks
      */
 
@@ -181,28 +226,6 @@ public class PageViewHistory extends UPageView
         switch(id) {
             case ButtonIdReturn:
                 PageViewManager.getInstance().popPage();
-                break;
-            case ButtonIdClear:
-            {
-                // クリア確認ダイアログを表示する
-                // お問い合わせメールダイアログを表示
-                if (mDialog == null) {
-                    mDialog = UDialogWindow.createInstance(this, this,
-                            UDialogWindow.ButtonDir.Horizontal,
-                            mParentView.getWidth(),
-                            mParentView.getHeight());
-                    mDialog.setTitle(UResourceManager.getStringById(R.string.confirm));
-                    mDialog.addTextView(UResourceManager.getStringById(R.string
-                            .confirm_clear_history),
-                            UAlignment.CenterX, true, false, UDpi.toPixel(TEXT_SIZE), TEXT_COLOR, 0);
-                    mDialog.addButton(ButtonIdClearOK,
-                            "OK",TEXT_COLOR,
-                            Color.WHITE);
-                    mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-                    mDialog.addToDrawManager();
-                }
-
-            }
                 break;
             case ButtonIdClearOK:
                 RealmManager.getBookHistoryDao().deleteAll();

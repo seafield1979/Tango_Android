@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         TangoEdit2,      // 単語帳編集ページ(アイコン選択時0
         SelectStudyBook, // 学習する単語帳選択ページ
         AddCsv,          // CSV追加
+        StudiedHistory,  // 学習単語帳履歴ページ
     }
 
     /**
@@ -187,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_search_card:
             case R.id.action_settings:
             case R.id.action_select_csv_file:
+            case R.id.action_clear_history:
                 PageViewManager.getInstance().setActionId(itemId);
                 break;
         }
@@ -237,6 +239,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case AddCsv:
                 getMenuInflater().inflate(R.menu.menu_page_csv, menu);
+                break;
+            case StudiedHistory:
+                getMenuInflater().inflate(R.menu.menu_page_history, menu);
                 break;
         }
 

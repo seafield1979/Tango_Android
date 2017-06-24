@@ -70,7 +70,6 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
     private static final int TEXT_SIZE_2 = 13;
     private static final int TEXT_SIZE_3 = 23;
     private static final int BUTTON_TEXT_SIZE = 17;
-    private static final int TITLE_WIDTH = 0;
 
     private static final int BUTTON_W = 200;
     private static final int BUTTON_H = 40;
@@ -284,7 +283,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                 .getName();
         textTitle = UTextView.createInstance( title, UDpi.toPixel(TEXT_SIZE_3), 0,
                 UAlignment.CenterX, screenW, false, false,
-                width / 2, y, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
+                width / 2, y, 0, TEXT_COLOR, 0);
         y += textTitle.getHeight() + UDpi.toPixel(MARGIN_V);
 
         // カード数
@@ -295,7 +294,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                 cardCount,
                 fontSize, 0,
                 UAlignment.CenterX, screenW, false, false,
-                width / 2, y, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
+                width / 2, y, 0, TEXT_COLOR, 0);
         y += textCount.getHeight() + UDpi.toPixel(MARGIN_V);
 
         // 最終学習日時
@@ -306,7 +305,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                             .last_studied_date) + ": " + UUtil.convDateFormat(date, ConvDateMode.DateTime),
                     fontSize, 0,
                     UAlignment.CenterX, screenW, false, false,
-                    width / 2, y, UDpi.toPixel(TITLE_WIDTH), TEXT_DATE_COLOR, 0);
+                    width / 2, y, 0, TEXT_DATE_COLOR, 0);
             y += textLastStudied.getHeight() + UDpi.toPixel(MARGIN_V) * 2;
         } else {
             textLastStudied = null;
@@ -315,8 +314,8 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
         /**
          * Buttons
          */
-        float titleX = (width - UDpi.toPixel(TITLE_WIDTH + BUTTON_W)) / 2 + UDpi.toPixel(TITLE_WIDTH);
-        float buttonX = titleX + marginH;
+        float titleX = (width - UDpi.toPixel(BUTTON_W - 40)) / 2;
+        float buttonX = titleX + UDpi.toPixel(8);
 
         // 出題方法（出題モード)
         // タイトル
@@ -324,7 +323,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                 UResourceManager.getStringById(R.string.study_mode),
                 UDpi.toPixel(TEXT_SIZE_2), 0,
                 UAlignment.Right_CenterY, screenW, false, false,
-                titleX, y + UDpi.toPixel(BUTTON_H) / 2, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
+                titleX, y + UDpi.toPixel(BUTTON_H) / 2, 0, TEXT_COLOR, 0);
 
         // Button
         buttons[ButtonId.Option1.ordinal()] = new UButtonText(this, UButtonType.BGColor,
@@ -341,7 +340,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                 UResourceManager.getStringById(R.string.study_type),
                 UDpi.toPixel(TEXT_SIZE_2), 0,
                 UAlignment.Right_CenterY, screenW, false, false,
-                titleX, y + UDpi.toPixel(BUTTON_H) / 2, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
+                titleX, y + UDpi.toPixel(BUTTON_H) / 2, 0, TEXT_COLOR, 0);
 
         // Button
         buttons[ButtonId.Option2.ordinal()] = new UButtonText(this, UButtonType.BGColor,
@@ -359,7 +358,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                 UResourceManager.getStringById(R.string.study_order),
                 UDpi.toPixel(TEXT_SIZE_2), 0,
                 UAlignment.Right_CenterY, screenW, false, false,
-                titleX, y + UDpi.toPixel(BUTTON_H) / 2, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, Color.argb(1,0,0,0));
+                titleX, y + UDpi.toPixel(BUTTON_H) / 2, 0, TEXT_COLOR, Color.argb(1,0,0,0));
 
         // Button
         StudyOrder studyOrder = StudyOrder.toEnum(MySharedPref.readInt(MySharedPref.StudyOrderKey));
@@ -379,7 +378,7 @@ public class PreStudyWindow extends UWindow implements UDialogCallbacks {
                 UResourceManager.getStringById(R.string.study_filter),
                 UDpi.toPixel(TEXT_SIZE_2), 0,
                 UAlignment.Right_CenterY, screenW, false, false,
-                titleX, y + UDpi.toPixel(BUTTON_H) / 2, UDpi.toPixel(TITLE_WIDTH), TEXT_COLOR, 0);
+                titleX, y + UDpi.toPixel(BUTTON_H) / 2, 0, TEXT_COLOR, 0);
 
         // Button
         StudyFilter studyFilter = StudyFilter.toEnum(MySharedPref.readInt(MySharedPref
