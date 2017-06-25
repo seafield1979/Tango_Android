@@ -26,7 +26,7 @@ abstract public class UMenuBar extends UWindow {
     public static final int DRAW_PRIORITY = 90;
     public static final int MENU_BAR_H = 60;
     protected static final int MARGIN_L = 10;
-    protected static final int MARGIN_H = 27;
+    protected static final int MARGIN_H = 15;
 
 
     protected UMenuItemCallbacks mMenuItemCallbacks;

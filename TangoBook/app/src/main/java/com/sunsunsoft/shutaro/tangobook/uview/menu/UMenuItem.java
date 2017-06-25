@@ -273,7 +273,7 @@ public class UMenuItem extends UDrawable {
      * @return
      */
     public boolean checkTouch(ViewTouch vt, float touchX, float touchY) {
-        if (vt.checkInsideCircle(touchX, touchY, pos.x + mItemW / 2, pos.y + mItemW / 2, mItemW / 2))
+        if (vt.checkInsideCircle(touchX, touchY, pos.x + mItemW / 2, pos.y + mItemW / 2, mItemW))
         {
             if (vt.type != TouchType.Touch) return false;
 
