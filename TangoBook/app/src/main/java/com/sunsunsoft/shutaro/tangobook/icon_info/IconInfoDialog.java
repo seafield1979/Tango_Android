@@ -121,6 +121,7 @@ abstract public class IconInfoDialog extends UWindow {
     protected static final int MARGIN_H = 17;
     protected static final int MARGIN_V = 17;
     protected static final int MARGIN_V_S = 7;
+    protected static final int DLG_MARGIN = 15;
 
     /**
      * Member Variables

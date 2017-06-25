@@ -403,7 +403,7 @@ public class UIconManager implements UIconCallbacks{
      * UIconCallbacks
      */
     public void iconClicked(UIcon icon) {
-        if (getParentWindow().getType() == UIconWindow.WindowType.Home) {
+        if (icon.getParentWindow().getType() == UIconWindow.WindowType.Home) {
             selectedIcon = icon;
         }
         if (mIconCallbacks != null) {

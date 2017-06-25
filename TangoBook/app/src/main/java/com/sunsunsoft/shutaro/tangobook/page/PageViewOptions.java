@@ -191,72 +191,18 @@ public class PageViewOptions extends UPageView
                 title = option.title + " : " + str;
             }
             break;
-            case DefaultNameBook: {
-                String str = MySharedPref.readString(MySharedPref.DefaultNameBookKey);
-                if (str != null && str.length() > 0) {
-                    title = option.title + "\n" + str;
-                } else {
-                    title = option.title;
-                }
-            }
-            break;
+            case DefaultNameBook:
+                title = option.title;
+                break;
             case DefaultNameCard:
-            {
-                StringBuffer buf = new StringBuffer(OptionItems.DefaultNameCard.title);
-                String str = MySharedPref.readString(MySharedPref
-                        .DefaultCardWordAKey);
-                if (str != null && str.length() > 0) {
-                    buf.append("\n" + UResourceManager.getStringById(R.string.word_a) + " : " +
-                            str);
-                }
-                str = MySharedPref.readString(MySharedPref
-                        .DefaultCardWordBKey);
-                if (str != null && str.length() > 0) {
-                    buf.append("\n" + UResourceManager.getStringById(R.string.word_b) + " : "
-                            +str);
-                }
-                title = buf.toString();
-            }
-            break;
-//            case AddNgCard:
-//            {
-//                String str = UResourceManager.getStringById(
-//                        MySharedPref.readBoolean(MySharedPref.AddNgCardToBookKey) ?
-//                                R.string.option_add_ng_card1 : R.string.option_add_ng_card2);
-//
-//                if (str != null) {
-//                    title = option.title + "\n    " + str;
-//                } else {
-//                    title = option.title;
-//                }
-//            }
-//            break;
+                title = option.title;
+                break;
             case StudyMode3:
-            {
-                String str = UResourceManager.getStringById(
-                        MySharedPref.readBoolean(MySharedPref.StudyMode3OptionKey) ?
-                                R.string.option_mode3_2 : R.string.option_mode3_3);
-
-                if (str != null) {
-                    title = option.title + "\n    " + str;
-                } else {
-                    title = option.title;
-                }
-            }
+                title = option.title;
                 break;
 
             case StudyMode4:
-            {
-                String str = UResourceManager.getStringById(
-                        MySharedPref.readBoolean(MySharedPref.StudyMode4OptionKey) ?
-                                R.string.option_mode4_4 : R.string.option_mode4_3);
-
-                if (str != null) {
-                    title = option.title + "\n    " + str;
-                } else {
-                    title = option.title;
-                }
-            }
+                title = option.title;
                 break;
 
             default:

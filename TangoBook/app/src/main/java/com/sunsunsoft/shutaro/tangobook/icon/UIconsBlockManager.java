@@ -153,14 +153,14 @@ class IconsBlock {
         rect.left = 1000000;
         rect.top = 1000000;
         for (UIcon icon : icons) {
-            if (icon.getPosX() < rect.left) {
-                rect.left = (int)icon.getPosX();
+            if (icon.getX() < rect.left) {
+                rect.left = (int)icon.getX();
             }
             if (icon.getRight() > rect.right) {
                 rect.right = (int)icon.getRight();
             }
-            if (icon.getPosY() < rect.top) {
-                rect.top = (int)icon.getPosY();
+            if (icon.getY() < rect.top) {
+                rect.top = (int)icon.getY();
             }
             if (icon.getBottom() > rect.bottom) {
                 rect.bottom = (int)icon.getBottom();

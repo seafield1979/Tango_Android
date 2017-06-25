@@ -577,11 +577,12 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
         if (closeIcon == null) return;
 
         float x, y;
-        y = UButtonClose.BUTTON_RADIUS * 2;
+        final int MARGIN = 4;
+        y = UDpi.toPixel(UButtonClose.RADIUS + MARGIN);
         if (closeIconPos == CloseIconPos.LeftTop) {
-            x = UButtonClose.BUTTON_RADIUS * 2;
+            x = UDpi.toPixel(UButtonClose.RADIUS + MARGIN);
         } else {
-            x = size.width - UButtonClose.BUTTON_RADIUS * 2;
+            x = size.width - UDpi.toPixel(UButtonClose.RADIUS + MARGIN);
         }
 
         closeIcon.setPos(x, y);

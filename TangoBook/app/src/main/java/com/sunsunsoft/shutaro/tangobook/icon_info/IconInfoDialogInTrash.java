@@ -48,7 +48,6 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
      */
     private static final String TAG = "IconInfoDialogBook";
     private static final int BG_COLOR = Color.LTGRAY;
-    private static final int DLG_MARGIN = 35;
     private static final int TOP_ITEM_Y = 35;
     private static final int TEXT_VIEW_H = 35;
     private static final int ICON_W = 40;
@@ -187,9 +186,9 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
         y += UDpi.toPixel(TEXT_VIEW_H) + marginV;
 
         // テキストの幅に合わせてダイアログのサイズ更新
-        Size size = UDraw.getOneLineTextSize(new Paint(), mIcon.getTitle(), textSize);
-        if (size.width + marginH * 4 > width) {
-            width = size.width + marginH * 4;
+        Size textSize2 = UDraw.getOneLineTextSize(new Paint(), mIcon.getTitle(), textSize);
+        if (textSize2.width + marginH * 4 > width) {
+            width = textSize2.width + marginH * 4;
         }
 
         // Count(Bookの場合のみ)
@@ -202,9 +201,9 @@ public class IconInfoDialogInTrash extends IconInfoDialog {
                     marginH, y, width - marginH * 2, TEXT_COLOR, TEXT_BG_COLOR);
 
             // テキストの幅に合わせてダイアログのサイズ更新
-            size = UDraw.getOneLineTextSize(new Paint(), textCount.getText(), textSize);
-            if (size.width + marginH * 4 > width) {
-                width = size.width + marginH * 4;
+            textSize2 = UDraw.getOneLineTextSize(new Paint(), textCount.getText(), textSize);
+            if (textSize2.width + marginH * 4 > width) {
+                width = textSize2.width + marginH * 4;
             }
 
             y += UDpi.toPixel(TEXT_VIEW_H) + marginV;

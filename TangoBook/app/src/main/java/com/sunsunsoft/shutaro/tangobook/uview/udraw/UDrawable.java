@@ -103,8 +103,6 @@ abstract public class UDrawable {
     public PointF getPos() {
         return pos;
     }
-    public float getPosX() { return pos.x; }
-    public float getPosY() { return pos.y; }
 
     public void setPos(float x, float y) {
         setPos(x, y, true);

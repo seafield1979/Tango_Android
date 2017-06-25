@@ -20,6 +20,7 @@ import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
 import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
+import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 
 import java.util.List;
@@ -163,7 +164,7 @@ public class PageViewStudySlide extends PageViewStudy
 
         // あと〜枚
         String title = getCardsRemainText(mCardsStack.getCardCount());
-        mTextCardCount = UTextView.createInstance( title, UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
+        mTextCardCount = UTextView.createInstance( title, UDraw.getFontSize(FontSize.L), DRAW_PRIORITY,
                 UAlignment.CenterX, screenW, false, true,
                 screenW / 2, UDpi.toPixel(17), UDpi.toPixel(100), Color.rgb(100,50,50), 0);
         mTextCardCount.addToDrawManager();
@@ -195,11 +196,11 @@ public class PageViewStudySlide extends PageViewStudy
 
         // OK/NGボタンの座標をCardsStackに教えてやる
         PointF _pos = mOkView.getPos();
-        mCardsStack.setOkBoxPos(_pos.x - (mCardsStack.getPosX() + mCardsStack.getWidth() / 2),
-                _pos.y - mCardsStack.getPosY());
+        mCardsStack.setOkBoxPos(_pos.x - (mCardsStack.getX() + mCardsStack.getWidth() / 2),
+                _pos.y - mCardsStack.getY());
         _pos = mNgView.getPos();
-        mCardsStack.setNgBoxPos(_pos.x - (mCardsStack.getPosX() + mCardsStack.getWidth() / 2),
-                _pos.y - mCardsStack.getPosY());
+        mCardsStack.setNgBoxPos(_pos.x - (mCardsStack.getX() + mCardsStack.getWidth() / 2),
+                _pos.y - mCardsStack.getY());
     }
 
     private String getCardsRemainText(int count) {

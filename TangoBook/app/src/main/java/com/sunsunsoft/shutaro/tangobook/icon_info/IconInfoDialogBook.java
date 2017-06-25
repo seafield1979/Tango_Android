@@ -56,8 +56,6 @@ public class IconInfoDialogBook extends IconInfoDialog {
      * Consts
      */
     private static final String TAG = "IconInfoDialogBook";
-    private static final int BG_COLOR = Color.LTGRAY;
-    private static final int DLG_MARGIN = 35;
     private static final int ICON_W = 40;
     private static final int ICON_MARGIN_H = 10;
     private static final int TEXT_SIZE = 17;

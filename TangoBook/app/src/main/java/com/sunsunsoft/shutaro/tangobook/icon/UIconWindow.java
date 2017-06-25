@@ -90,7 +90,7 @@ public class UIconWindow extends UWindow {
 
     public static final int ICON_MARGIN = 10;
 
-    public static final int ICON_W = 45;
+    public static final int ICON_W = 57;
     public static final int ICON_H = 50;
     protected static final int MARGIN_D = UMenuBar.MENU_BAR_H;
 
@@ -856,14 +856,14 @@ public class UIconWindow extends UWindow {
             if (dir == WindowDir.Vertical) {
                 if (contentTop.y > dropIcon.getBottom()) {
                     continue;
-                } else if (contentTop.y + size.height < dropIcon.getPosY()){
+                } else if (contentTop.y + size.height < dropIcon.getY()){
                     // これ以降は画面外に表示されるアイコンなので処理を中止
                     break;
                 }
             } else {
                 if (contentTop.x > dropIcon.getRight()) {
                     continue;
-                } else if (contentTop.x + size.width < dropIcon.getPosX()){
+                } else if (contentTop.x + size.width < dropIcon.getX()){
                     break;
                 }
             }
@@ -902,20 +902,20 @@ public class UIconWindow extends UWindow {
                 // アイコンのマージン部分にドロップされたかのチェック
                 if (dir == WindowDir.Vertical) {
                     // 縦画面
-                    if (dropIcon.getPosX() - iconMargin * 2 <= winX &&
-                            winX <= dropIcon.getPosX() + iconMargin &&
-                            dropIcon.getPosY() <= winY &&
-                            winY <= dropIcon.getPosY() + iconH )
+                    if (dropIcon.getX() - iconMargin * 2 <= winX &&
+                            winX <= dropIcon.getRight() + iconMargin * 2 &&
+                            dropIcon.getY() - iconMargin * 2  <= winY &&
+                            winY <= dropIcon.getBottom() + iconMargin * 2 )
                     {
                         // ドラッグ位置（アイコンの左側)にアイコンを挿入する
                         ret.dropedIcon = dropIcon;
                         ret.isDroped = true;
                         break;
-                    } else if (dropIcon.getPosX() + (iconMargin + iconW) * 2 > size.width ) {
+                    } else if (dropIcon.getX() + (iconMargin + iconW) * 2 > size.width ) {
                         // 右端のアイコンは右側に挿入できる
                         if (winX > dropIcon.getRight() &&
-                                dropIcon.getPosY() <= winY &&
-                                winY <= dropIcon.getPosY() + dropIcon.getSize().height )
+                                dropIcon.getY() <= winY &&
+                                winY <= dropIcon.getY() + dropIcon.getSize().height )
                         {
                             // 右側の場合は次のアイコンの次の位置に挿入
                             if (i < dstIcons.size() - 1) {
@@ -928,19 +928,19 @@ public class UIconWindow extends UWindow {
                     }
                 } else {
                     // 横画面
-                    if (dropIcon.getPosY() - iconMargin * 2 <= winY &&
-                            winY <= dropIcon.getPosY() + iconMargin &&
-                            dropIcon.getPosX() <= winX && winX <= dropIcon.getPosX() + dropIcon.getSize()
+                    if (dropIcon.getY() - iconMargin * 2 <= winY &&
+                            winY <= dropIcon.getY() + iconMargin &&
+                            dropIcon.getX() <= winX && winX <= dropIcon.getX() + dropIcon.getSize()
                             .width )
                     {
                         ret.dropedIcon = dropIcon;
                         ret.isDroped = true;
                         break;
-                    } else if (dropIcon.getPosY() + (iconMargin + iconH) * 2 > size.height ) {
+                    } else if (dropIcon.getY() + (iconMargin + iconH) * 2 > size.height ) {
                         // 下端のアイコンは下側に挿入できる
                         if (winY > dropIcon.getBottom() &&
-                                dropIcon.getPosX() <= winX &&
-                                winX <= dropIcon.getPosX() + dropIcon.getSize().width )
+                                dropIcon.getX() <= winX &&
+                                winX <= dropIcon.getX() + dropIcon.getSize().width )
                         {
                             // 右側の場合は次のアイコンの次の位置に挿入
                             if (i < dstIcons.size() - 1) {
@@ -1042,7 +1042,7 @@ public class UIconWindow extends UWindow {
             if (isDroped && srcIcons != dstIcons) {
                 // 座標系変換(移動元Windowから移動先Window)
                 for (UIcon icon : checkedIcons) {
-                    icon.setPos(win1ToWin2X(icon.getPosX(), this, window), win1ToWin2Y(icon.getPosY(), this, window));
+                    icon.setPos(win1ToWin2X(icon.getX(), this, window), win1ToWin2Y(icon.getY(), this, window));
                 }
                 window.sortIcons(true);
             }
@@ -1248,13 +1248,10 @@ public class UIconWindow extends UWindow {
             icon2.setParentWindow(window1);
 
             // ドロップアイコンの座標系を変換
-            // アイコン1 UWindow -> アイコン2 UWindow
-            icon1.setPos(icon1.getPosX() + this.pos.x - window2.pos.x,
-                    icon1.getPosY() + this.pos.y - window2.pos.y);
 
             // アイコン2 UWindow -> アイコン1 UWindow
-            icon2.setPos(icon2.getPosX() + window2.pos.x - this.pos.x,
-                    icon2.getPosY() + window2.pos.y - this.pos.y);
+            icon2.setPos(icon2.getX() + (window2.pos.x - window1.pos.x),
+                    icon2.getY() + (window2.pos.y - window1.pos.y));
             window2.sortIcons(true);
 
         }
@@ -1296,8 +1293,8 @@ public class UIconWindow extends UWindow {
             icon2.setParentWindow(window1);
 
             // ドロップアイコンの座標系を変換
-            dragedIcon.setPos(icon1.getPosX() + window2.pos.x - window1.pos.x,
-                    icon1.getPosY() + window2.pos.y - window1.pos.y);
+            dragedIcon.setPos(icon1.getX() + window2.pos.x - window1.pos.x,
+                    icon1.getY() + window2.pos.y - window1.pos.y);
             window2.sortIcons(animate);
 
             // データベース更新
@@ -1324,7 +1321,7 @@ public class UIconWindow extends UWindow {
      * アイコンを移動する
      * アイコンを別のボックスタイプのアイコンにドロップした時に使用する
      * @param icon1 ドロップ元のIcon(Card/Book)
-     * @param icon2 ドロップ先のIcon(Book/Box)
+     * @param icon2 ドロップ先のIcon(Book/Trash)
      */
     private void moveIconIn(UIcon icon1, UIcon icon2)
     {
