@@ -8,7 +8,9 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
+import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
@@ -239,7 +241,7 @@ abstract public class UIcon extends UDrawable {
             float _x = pos.x + offset.x;
             float _y = pos.y + offset.y;
             int width = UDpi.toPixel(CHECKED_WIDTH);
-            UDraw.drawCheckbox(canvas, paint, isChecked, _x + UDpi.toPixel(CHECKED_FRAME), _y + size.height - width - UDpi.toPixel(CHECKED_FRAME), width,
+            UDraw.drawCheckboxImage(canvas, paint, isChecked, _x + UDpi.toPixel(CHECKED_FRAME), _y + size.height - width - UDpi.toPixel(CHECKED_FRAME), width,
                     Color.rgb
                             (100,100,200));
         }

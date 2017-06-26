@@ -2,6 +2,7 @@ package com.sunsunsoft.shutaro.tangobook.util;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.ULogWindow;
 import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuBar;
 import com.sunsunsoft.shutaro.tangobook.uview.scrollbar.UScrollBar;
@@ -61,6 +62,7 @@ public class ULog {
         setEnable(UColor.TAG, false);
         setEnable(UResourceManager.TAG, false);
         setEnable(UWindow.TAG, false);
+        setEnable(XmlManager.TAG, true);
 
         startTime = System.nanoTime();
     }

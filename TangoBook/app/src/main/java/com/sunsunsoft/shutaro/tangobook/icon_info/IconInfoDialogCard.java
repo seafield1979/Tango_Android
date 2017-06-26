@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.RectF;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
@@ -60,9 +59,11 @@ public class IconInfoDialogCard extends IconInfoDialog {
     private static final String TAG = "IconInfoDialogCard";
     private static final int ICON_W = 40;
     private static final int ICON_MARGIN_H = 10;
-    private static final int TEXT_SIZE = 17;
+    private static final int TEXT_SIZE_M = 14;
+    private static final int TEXT_SIZE_L = 17;
     private static final int ICON_TEXT_SIZE = 10;
 
+    private static final int TITLE_COLOR = Color.BLACK;
     private static final int TEXT_COLOR = Color.BLACK;
     private static final int TEXT_BG_COLOR = Color.WHITE;
 
@@ -173,10 +174,10 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         // タイトル(カード)
         textTitle = UTextView.createInstance( mContext.getString(R.string.card),
-                UDpi.toPixel(TEXT_SIZE), 0,
+                UDpi.toPixel(TEXT_SIZE_M), 0,
                 UAlignment.None, canvas.getWidth(), false, false,
-                UDpi.toPixel(MARGIN_H), y, width - UDpi.toPixel(MARGIN_H) * 2, TEXT_COLOR, TEXT_BG_COLOR);
-        y += UDpi.toPixel(TEXT_SIZE + MARGIN_V_S);
+                UDpi.toPixel(MARGIN_H), y, width - UDpi.toPixel(MARGIN_H) * 2, TITLE_COLOR, TEXT_BG_COLOR);
+        y += UDpi.toPixel(TEXT_SIZE_L + MARGIN_V);
 
         String titleStr = null;
         String bodyStr = null;

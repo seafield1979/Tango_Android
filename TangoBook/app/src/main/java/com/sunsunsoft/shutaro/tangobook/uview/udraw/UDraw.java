@@ -13,9 +13,12 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
+import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
+import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
+import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.FontSize;
 import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 
@@ -288,6 +291,18 @@ public class UDraw {
         } else {
             // 枠
             drawRoundRect(canvas, paint, rect, UDpi.toPixel(3), UDpi.toPixel(5), Color.rgb(140, 140, 140));
+        }
+    }
+
+    // Bitmapで描画1
+    public static void drawCheckboxImage(Canvas canvas, Paint paint, boolean isChecked,
+                                    float x, float y, float width, int color) {
+        if (isChecked) {
+            // 枠とチェック
+            UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapWithColor(R.drawable.checked2, color), x, y, (int)width, (int)width);
+        } else {
+            // 枠
+            UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.checked3_frame), x, y, (int)width, (int)width);
         }
     }
 

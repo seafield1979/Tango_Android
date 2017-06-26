@@ -206,7 +206,7 @@ public class PageViewBackup extends UPageView
             XmlManager.startBackupManual(this, mContext, backup.getId());
         } else {
             BackupFileInfo backupInfo = XmlManager.getInstance().saveManualBackup(backup.getId());
-            String newText = XmlManager.getInstance().getManualXmlInfo(backup.getId());
+            String newText = XmlManager.getInstance().getXmlInfo(backupInfo);
             if (newText == null) {
                 return false;
             }

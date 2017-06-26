@@ -98,6 +98,8 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     // CSV出力アイコン
     private IconBook mExportIcon;
 
+    // コピーアイコン
+    private UIcon mCopyIcon;
 
     /**
      * Get/Set
@@ -658,6 +660,15 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                     mDialog.startClosing();
                 }
                 return true;
+            case ButtonIdCopyOK:
+                // 単語帳のコピーを作成する
+                copyIcon(mCopyIcon);
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+                break;
+
             case ExportDialogButtonOK:
                 // CSVファイルに出力する
             {
@@ -891,6 +902,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
     public static final int ExportDialogButtonOK = 103;
     public static final int ExportFinishedDialogButtonOk = 104;
     public static final int ButtonIdMoveIconsToTrash = 105;
+    public static final int ButtonIdCopyOK = 106;
 
     public void IconInfoCleanup(UIcon icon) {
         if (icon == null || icon.getType() == IconType.Trash) {
@@ -965,7 +977,31 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                 }
                 break;
             case Copy:
-                copyIcon(icon);
+                // コピー確認ダイアログを表示する
+                if (mDialog != null) {
+                    mDialog.closeDialog();
+                    mDialog = null;
+                }
+                // Daoデバッグ用のダイアログを表示
+                mDialog = UDialogWindow.createInstance(UDialogWindow.DialogType.Mordal,
+                        this, this,
+                        UDialogWindow.ButtonDir.Horizontal, UDialogWindow.DialogPosType.Center,
+                        true,
+                        mParentView.getWidth(), mParentView.getHeight(),
+                        Color.rgb(200,100,100), Color.WHITE);
+                mDialog.addToDrawManager();
+
+                // 確認のダイアログを表示する
+                String text = String.format(UResourceManager.getStringById(R.string.confirm_copy_book), icon.getTitle());
+                mDialog.setTitle(String.format(text, icon.getTitle()));
+
+                // ボタンを追加
+                mDialog.addButton(ButtonIdCopyOK, "OK", Color.BLACK,
+                        UColor.LightGreen);
+                mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
+
+                // 捨てるアイコンを保持
+                mCopyIcon = icon;
                 break;
             case Delete: {
                 // 確認のダイアログを表示する

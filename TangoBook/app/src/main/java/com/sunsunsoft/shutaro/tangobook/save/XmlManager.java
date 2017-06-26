@@ -197,7 +197,7 @@ public class XmlManager implements Runnable{
             Serializer serializer = new Persister();
             tangoTop = serializer.read(XmlTangoTop.class, file);
 
-            ULog.print(TAG, "ok");
+            ULog.print(TAG, "getXmlInfo:ok");
         } catch (Exception e) {
             Log.e("tag", e.toString());
             return null;
@@ -388,7 +388,7 @@ public class XmlManager implements Runnable{
             Serializer serializer = new Persister();
             tangoTop = serializer.read(XmlTangoTop.class, file);
 
-            ULog.print(TAG, "ok");
+            ULog.print(TAG, "loadXml:ok");
 
         } catch (Exception e) {
             Log.e("tag", e.toString());

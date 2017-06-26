@@ -5,10 +5,12 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
+import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.TouchType;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.Size;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
+import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
@@ -92,8 +94,14 @@ public class UCheckBox extends UDrawable {
         }
 
         // Box
-        UDraw.drawCheckbox(canvas, paint, isChecked, _pos.x, _pos.y,
-                mBoxWidth, COLOR_BOX);
+        if (false) {
+            // プリミティブで描画
+            UDraw.drawCheckbox(canvas, paint, isChecked, _pos.x, _pos.y,
+                    mBoxWidth, COLOR_BOX);
+        } else {
+            UDraw.drawCheckboxImage(canvas, paint, isChecked, _pos.x, _pos.y,
+                    mBoxWidth, COLOR_BOX);
+        }
 
         // Text
         if (mText != null) {

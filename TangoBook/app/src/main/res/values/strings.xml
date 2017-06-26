@@ -119,6 +119,7 @@
     <string name="finish">終了</string>
     <string name="cards_remain">あと%d枚</string>
     <string name="confirm_exit">学習を終了しますか？</string>
+    <string name="confirm_copy_book">%s(単語帳)をコピーしますか？</string>
     <string name="confirm_moveto_trash">ゴミ箱に捨てますか？</string>
     <string name="confirm_cleanup_trash">ゴミ箱を空にしますか？</string>
     <string name="confirm_clear_history">学習記録をクリアしますか？</string>
