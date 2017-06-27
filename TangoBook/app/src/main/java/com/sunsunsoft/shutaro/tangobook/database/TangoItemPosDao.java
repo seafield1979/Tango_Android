@@ -903,7 +903,7 @@ public class TangoItemPosDao {
         mRealm.beginTransaction();
         for (TangoItemPos itemPos : list) {
             itemPos.setPos(itemPos.getPos() + 1);
-            mRealm.copyToRealm(itemPos);
+            //mRealm.copyToRealm(itemPos);
         }
         mRealm.commitTransaction();
     }

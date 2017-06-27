@@ -370,13 +370,7 @@ public class BackupManager {
                     throw new Exception("Couldn't create external document directory.");
                 }
             }
-
-            int cardNum = (backupData.cards != null) ? backupData.cards.size() : 0;
-            int bookNum = (backupData.books != null) ? backupData.books.size() : 0;
-
-            backupInfo = new BackupFileInfo(file.getName(), path.getPath(), backupData.updateDate, bookNum, cardNum);
-
-            writeToFile(file, backupData);
+            backupInfo = writeToFile(file, backupData);
 
         } catch (Exception e) {
             ULog.print(TAG, e.toString());
@@ -395,6 +389,7 @@ public class BackupManager {
     private BackupFileInfo writeToFile(File file, BackupData backupData) {
         // 書き込み用のファイルを開く
         BufferedOutputStream output = null;
+        BackupFileInfo backupInfo = null;
         try {
             output = new BufferedOutputStream(new FileOutputStream(file));
 
@@ -412,6 +407,9 @@ public class BackupManager {
             // last update date
             writeDate(mBuf, backupData.updateDate);
 
+            backupInfo = new BackupFileInfo(file.getName(), file.getPath(), backupData.updateDate,
+                    backupData.bookNum, backupData.cardNum);
+
             output.write(mBuf.array(), 0, mBuf.position());
 
             /**
@@ -420,6 +418,7 @@ public class BackupManager {
             //---------------
             // card
             //---------------
+            ULog.print(TAG, "point61");
             mBuf.clear();
             // num
             mBuf.putInt(backupData.cardNum);
@@ -432,6 +431,7 @@ public class BackupManager {
             //---------------
             // book
             //---------------
+            ULog.print(TAG, "point62");
             mBuf.clear();
             SaveBook saveBook = new SaveBook(mBuf);
             // num
@@ -445,6 +445,7 @@ public class BackupManager {
             //---------------
             // card&book position
             //---------------
+            ULog.print(TAG, "point63");
             mBuf.clear();
             // num
             mBuf.putInt(backupData.itemPoses.size());
@@ -458,6 +459,7 @@ public class BackupManager {
             //---------------
             // 学習した単語帳履歴(1学習1履歴)
             //---------------
+            ULog.print(TAG, "point64");
             mBuf.clear();
             // num
             mBuf.putInt(backupData.bookHistories.size());
@@ -471,6 +473,7 @@ public class BackupManager {
             //---------------
             // 学習カード(1枚学習するたびに1つ)
             //---------------
+            ULog.print(TAG, "point65");
             mBuf.clear();
             // num
             mBuf.putInt(backupData.studiedCards.size());
@@ -484,6 +487,7 @@ public class BackupManager {
             //---------------
             // 学習カード履歴(1カード1履歴)
             //---------------
+            ULog.print(TAG, "point66");
             mBuf.clear();
             // num
             mBuf.putInt(backupData.cardHistories.size());
@@ -501,7 +505,7 @@ public class BackupManager {
             System.out.println(e);
         }
 
-        return null;
+        return backupInfo;
     }
 
     /**
