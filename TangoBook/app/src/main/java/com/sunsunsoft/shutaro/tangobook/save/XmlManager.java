@@ -4,6 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sunsunsoft.shutaro.tangobook.database.BackupFileDao;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.BHistory;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.Book;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.CHistory;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.Card;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.Pos;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.StudiedC;
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
 import com.sunsunsoft.shutaro.tangobook.R;
@@ -159,10 +165,10 @@ public class XmlManager implements Runnable{
     }
 
     public static File getAutoXmlFile() {
-        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
-        File file = new File(path, String.format(ManualBackupFile, BackupFileDao.AUTO_BACKUP_ID));
+//        File path = UUtil.getPath(getInstance().mContext, FilePathType.ExternalDocument);
+//        File file = new File(path, String.format(ManualBackupFile, BackupFileDao.AUTO_BACKUP_ID));
 
-        return file;
+        return null;
     }
 
     /**
@@ -276,7 +282,8 @@ public class XmlManager implements Runnable{
         LinkedList<Card> cards2 = new LinkedList<>();
         for (TangoCard card : cards) {
             Card saveCard = new Card(card.getId(),card.getWordA(), card.getWordB(),
-                    card.getComment(), card.getCreateTime(), card.getColor(),
+                    card.getComment(), card.getCreateTime(), card.getUpdateTime(),
+                    card.getLastStudiedTime(), card.getColor(),
                     card.getStar(), card.isNewFlag());
             cards2.add(saveCard);
         }
@@ -289,7 +296,8 @@ public class XmlManager implements Runnable{
         LinkedList<Book> book2 = new LinkedList<>();
         for (TangoBook book : books) {
             Book saveBook = new Book(book.getId(), book.getName(), book.getComment(),
-                    book.getColor(), book.getCreateTime(), book.isNewFlag());
+                    book.getColor(), book.getCreateTime(), book.getLastStudiedTime(),
+                    book.isNewFlag());
             book2.add(saveBook);
         }
         tangoTop.book = book2;

@@ -1,4 +1,4 @@
-package com.sunsunsoft.shutaro.tangobook.save;
+package com.sunsunsoft.shutaro.tangobook.save.saveitem;
 
 /**
  * Created by shutaro on 2017/06/14.
@@ -9,21 +9,21 @@ package com.sunsunsoft.shutaro.tangobook.save;
  * TangoItemPos保存用
  */
 public class Pos {
-    private int pType;  // parentType
-    private int pId;    // parentId
+    private int parentType;  // parentType
+    private int parentId;    // parentId
     private int pos;
-    private int iType;  // itemType
-    private int iId;    // itemId
+    private int itemType;  // itemType
+    private int itemId;    // itemId
 
     /**
      * Get/Set
      */
     public int getParentType() {
-        return pType;
+        return parentType;
     }
 
     public int getParentId() {
-        return pId;
+        return parentId;
     }
 
     public int getPos() {
@@ -31,19 +31,19 @@ public class Pos {
     }
 
     public int getItemType() {
-        return iType;
+        return itemType;
     }
 
     public int getItemId() {
-        return iId;
+        return itemId;
     }
 
     public Pos(){}
     public Pos(int parentType, int parentId, int pos, int itemType, int itemId) {
-        this.pType = parentType;
-        this.pId = parentId;
+        this.parentType = parentType;
+        this.parentId = parentId;
         this.pos = pos;
-        this.iType = itemType;
-        this.iId = itemId;
+        this.itemType = itemType;
+        this.itemId = itemId;
     }
 }

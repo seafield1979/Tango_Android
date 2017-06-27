@@ -12,6 +12,7 @@ import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
 import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemBackup;
 import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
+import com.sunsunsoft.shutaro.tangobook.save.BackupManager;
 import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.FileDialog;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
@@ -63,7 +64,7 @@ public class PageViewRestore extends UPageView
      */
     private Context mContext;
 
-    private UButtonText mRestoreButton;     // xmlファイル選択で復元ボタン
+    private UButtonText mRestoreButton;     // 復元ボタン
     private ListViewBackup mListView;
     private ListItemBackup mBackupItem;     // リストで選択したアイテム
 
@@ -71,7 +72,7 @@ public class PageViewRestore extends UPageView
     private UDialogWindow mDialog;
 
     private FileDialog mFileDialog;      // ファイルを選択するモーダルダイアログ
-    private File mRestoreFile;          // 復元元のxmlファイル
+    private File mRestoreFile;          // 復元元のバックアップファイル
 
     /**
      * Constructor
@@ -127,7 +128,7 @@ public class PageViewRestore extends UPageView
 
         UDrawManager.getInstance().init();
 
-        // 復元元のxmlファイル選択
+        // 復元元のファイル選択
         // button
         boolean enableFlag = true;
         String title = UResourceManager.getStringById(R.string.restore_from_file);
@@ -150,11 +151,11 @@ public class PageViewRestore extends UPageView
     }
 
     /**
-     * xmlファイルを選択するためのダイアログを表示する
+     * ファイルを選択するためのダイアログを表示する
      */
     private void getFilePath() {
         File mPath = UUtil.getPath(mContext, FilePathType.ExternalDocument);
-        mFileDialog = new FileDialog((Activity)mContext, mPath, ".xml");
+        mFileDialog = new FileDialog((Activity)mContext, mPath, ".bin");
 
         // ファイルを選択
         mFileDialog.addFileListener(new FileDialog.FileSelectedListener() {
@@ -172,8 +173,8 @@ public class PageViewRestore extends UPageView
      * 選択したファイルから復元するかの確認ダイアログを表示する
      */
     private void showRestoreConfirmDialog(File file) {
-        String xmlInfo = XmlManager.getInstance().getXmlInfo(file);
-
+//        String xmlInfo = XmlManager.getInstance().getXmlInfo(file);
+        String fileInfo = BackupManager.getInstance().getBackupInfo(file);
         if (mDialog != null) {
             mDialog.closeDialog();
         }
@@ -182,16 +183,16 @@ public class PageViewRestore extends UPageView
                 UDialogWindow.ButtonDir.Horizontal, mParentView.getWidth(), mParentView.getHeight());
         mDialog.addToDrawManager();
 
-        if (xmlInfo != null) {
+        if (fileInfo != null) {
             mRestoreFile = file;
 
             // 復元確認ダイアログの表示
             mDialog.setTitle(mContext.getString(R.string.confirm_restore));
-            mDialog.addTextView(xmlInfo + "\n\n", UAlignment.CenterX, true, false, UDpi.toPixel(TEXT_SIZE_S), TEXT_COLOR, 0);
+            mDialog.addTextView(fileInfo + "\n\n", UAlignment.CenterX, true, false, UDpi.toPixel(TEXT_SIZE_S), TEXT_COLOR, 0);
             mDialog.addButton(ButtonIdRestoreFromFileOK, "OK", Color.BLACK, Color.WHITE);
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
         } else {
-            // xmlファイルから情報を取得できなかった
+            // ファイルから情報を取得できなかった
             mDialog.setTitle(mContext.getString(R.string.failed_restore));
             mDialog.addCloseButton("OK", TEXT_COLOR, 0);
         }
@@ -221,7 +222,8 @@ public class PageViewRestore extends UPageView
      * @return 結果(成功/失敗)
      */
     private boolean doRestore(File file) {
-        boolean ret = XmlManager.getInstance().loadXml(file);
+//        boolean ret = XmlManager.getInstance().loadXml(file);
+        boolean ret = BackupManager.getInstance().loadBackup(file);
 
         String title = UResourceManager.getStringById( ret ? R.string.succeed_restore : R.string.failed_restore);
 
@@ -268,7 +270,7 @@ public class PageViewRestore extends UPageView
             }
                 break;
             case ButtonIdRestoreOK2: {
-                File file = XmlManager.getManualXmlFile(mBackupItem.getBackup().getId());
+                File file = BackupManager.getManualBackupFile(mBackupItem.getBackup().getId());
                 doRestore(file);
             }
                 break;
@@ -309,7 +311,7 @@ public class PageViewRestore extends UPageView
             // バックアップファイルの有無を確認（手動で消されていることもありえる）
             File file = new File(backup.getFilePath());
             if (file.exists() == false) {
-                // xmlファイルが見つからなかった
+                // ファイルが見つからなかった
                 mDialog = UDialogWindow.createInstance(this, this,
                         UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
                 mDialog.addToDrawManager();

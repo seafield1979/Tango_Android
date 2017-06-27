@@ -2,7 +2,7 @@ package com.sunsunsoft.shutaro.tangobook.database;
 
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.save.StudiedC;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.StudiedC;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 
 import java.util.List;
@@ -142,6 +142,9 @@ public class TangoStudiedCardDao {
      * XMLファイルから読み込んだデータを追加する
      */
     public void addXmlCard(List<StudiedC> studiedCard, boolean transaction) {
+        if (studiedCard == null || studiedCard.size() == 0) {
+            return;
+        }
         if (transaction) {
             mRealm.beginTransaction();
         }

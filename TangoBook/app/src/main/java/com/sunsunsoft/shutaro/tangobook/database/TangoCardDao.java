@@ -3,8 +3,7 @@ package com.sunsunsoft.shutaro.tangobook.database;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.save.Card;
-import com.sunsunsoft.shutaro.tangobook.database.TangoItem;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.Card;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 
 import java.util.ArrayList;
@@ -594,7 +593,9 @@ public class TangoCardDao {
      * @param transaction   トランザクションを行うかどうか
      */
     public void addXmlCards(List<Card> cards, boolean transaction) {
-
+        if (cards == null || cards.size() == 0) {
+            return;
+        }
         if (transaction) {
             mRealm.beginTransaction();
         }

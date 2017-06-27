@@ -1,4 +1,4 @@
-package com.sunsunsoft.shutaro.tangobook.save;
+package com.sunsunsoft.shutaro.tangobook.save.saveitem;
 
 /**
  * Created by shutaro on 2017/06/14.
@@ -10,28 +10,28 @@ import java.util.Date;
  * TangoCardHistory保存用
  */
 public class CHistory {
-    private int cId;             // cardId
-    private int cfn;     // correctFlagNum
-    private byte[] cf = new byte[10];     // correctFlags
-    private Date date;       // studiedDate
+    private int cardId;
+    private int correctFlagNum;
+    private byte[] correctFlags = new byte[10];
+    private Date studiedDate;
 
     /**
      * Get/Set
      */
     public int getCardId() {
-        return cId;
+        return cardId;
     }
 
     public int getCorrectFlagNum() {
-        return cfn;
+        return correctFlagNum;
     }
 
     public byte[] getCorrectFlag() {
-        return cf;
+        return correctFlags;
     }
 
     public Date getStudiedDate() {
-        return date;
+        return studiedDate;
     }
 
     /**
@@ -39,9 +39,9 @@ public class CHistory {
      */
     public CHistory(){}
     public CHistory(int cardId, int correctFlagNum, byte[] correctFlag, Date studiedDate){
-        this.cId = cardId;
-        this.cfn = correctFlagNum;
-        this.cf = correctFlag;
-        this.date = studiedDate;
+        this.cardId = cardId;
+        this.correctFlagNum = correctFlagNum;
+        this.correctFlags = correctFlag;
+        this.studiedDate = studiedDate;
     }
 }

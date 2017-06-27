@@ -2,7 +2,7 @@ package com.sunsunsoft.shutaro.tangobook.database;
 
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.save.CHistory;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.CHistory;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 
 import java.util.Date;
@@ -146,6 +146,9 @@ public class TangoCardHistoryDao {
      * XMLファイルから読み込んだデータを追加する
      */
     public void addXmlCard(List<CHistory> cardHistory, boolean transaction) {
+        if (cardHistory == null || cardHistory.size() == 0) {
+            return;
+        }
         if (transaction) {
             mRealm.beginTransaction();
         }

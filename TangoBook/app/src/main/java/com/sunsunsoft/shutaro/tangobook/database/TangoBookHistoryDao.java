@@ -1,6 +1,6 @@
 package com.sunsunsoft.shutaro.tangobook.database;
 
-import com.sunsunsoft.shutaro.tangobook.save.BHistory;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.BHistory;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -175,6 +175,9 @@ public class TangoBookHistoryDao {
      * XMLファイルから読み込んだデータを追加する
      */
     public void addXmlBook(List<BHistory> bookHistory, boolean transaction) {
+        if (bookHistory == null || bookHistory.size() == 0) {
+            return;
+        }
         if (transaction) {
             mRealm.beginTransaction();
         }

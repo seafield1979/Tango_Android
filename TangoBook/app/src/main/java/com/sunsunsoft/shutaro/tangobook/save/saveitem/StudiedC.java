@@ -1,4 +1,4 @@
-package com.sunsunsoft.shutaro.tangobook.save;
+package com.sunsunsoft.shutaro.tangobook.save.saveitem;
 
 /**
  * Created by shutaro on 2017/06/14.
@@ -8,29 +8,29 @@ package com.sunsunsoft.shutaro.tangobook.save;
  * どのカードを学習した情報が入る。ここクラスはその情報を保持する。
  */
 public class StudiedC {
-    private int bId;        // bookHistoryId
-    private int cId;        // cardId
-    private boolean ok;     // okFlag
+    private int bookHistoryId;        // bookHistoryId
+    private int cardId;        // cardId
+    private boolean okFlag;     // okFlag
 
     /**
      * Get/Set
      */
     public int getBookHistoryId() {
-        return bId;
+        return bookHistoryId;
     }
 
     public int getCardId() {
-        return cId;
+        return cardId;
     }
 
     public boolean isOkFlag() {
-        return ok;
+        return okFlag;
     }
 
     public StudiedC(){}
     public StudiedC(int bookHistoryId, int cardId, boolean okFlag) {
-        this.bId = bookHistoryId;
-        this.cId = cardId;
-        this.ok = okFlag;
+        this.bookHistoryId = bookHistoryId;
+        this.cardId = cardId;
+        this.okFlag = okFlag;
     }
 }

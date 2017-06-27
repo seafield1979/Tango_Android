@@ -13,8 +13,8 @@ import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemBackup;
 import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
 import com.sunsunsoft.shutaro.tangobook.save.BackupFileInfo;
+import com.sunsunsoft.shutaro.tangobook.save.BackupManager;
 import com.sunsunsoft.shutaro.tangobook.save.XmlBackupCallbacks;
-import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
@@ -201,20 +201,16 @@ public class PageViewBackup extends UPageView
         mBackupItem = backupItem;
 
         // バックアップファイルがなければそのまま保存
-        // xmlに保存
-        if (false) {
-            XmlManager.startBackupManual(this, mContext, backup.getId());
-        } else {
-            BackupFileInfo backupInfo = XmlManager.getInstance().saveManualBackup(backup.getId());
-            String newText = XmlManager.getInstance().getXmlInfo(backupInfo);
-            if (newText == null) {
-                return false;
-            }
-            backupItem.setText(newText);
-
-            // データベース更新(BackupFile)
-            RealmManager.getBackupFileDao().updateOne(backup.getId(), backupInfo.getFilePath(), backupInfo.getBookNum(), backupInfo.getCardNum());
+        BackupFileInfo backupInfo = BackupManager.getInstance().saveManualBackup(backup.getId());
+        String newText = BackupManager.getInstance().getBackupInfo(backupInfo);
+        if (newText == null) {
+            return false;
         }
+        backupItem.setText(newText);
+
+        // データベース更新(BackupFile)
+        RealmManager.getBackupFileDao().updateOne(backup.getId(), backupInfo.getFilePath(), backupInfo.getBookNum(), backupInfo.getCardNum());
+
         return true;
     }
 
@@ -229,8 +225,9 @@ public class PageViewBackup extends UPageView
 
         String text;
         if (success) {
-            text = UResourceManager.getStringById(R.string.backup_complete) + "\n\n" +
-                    XmlManager.getInstance().getManualXmlInfo(mBackupItem.getBackup().getId());
+            text = UResourceManager.getStringById(R.string.backup_complete);
+//            + "\n\n" +
+//                    BackupManager.getInstance().getBackupInfo(backupInfo);
         } else {
             text = UResourceManager.getStringById(R.string.backup_failed);
         }
@@ -278,7 +275,7 @@ public class PageViewBackup extends UPageView
      * @param backupInfo
      */
     public void finishBackup(BackupFileInfo backupInfo) {
-        String newText = XmlManager.getInstance().getXmlInfo(backupInfo);
+        String newText = BackupManager.getInstance().getBackupInfo(backupInfo);
         if (newText == null) {
             showDoneDialog(false);
             return;

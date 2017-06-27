@@ -1,6 +1,5 @@
 package com.sunsunsoft.shutaro.tangobook.save;
 
-
 import com.sunsunsoft.shutaro.tangobook.save.saveitem.BHistory;
 import com.sunsunsoft.shutaro.tangobook.save.saveitem.Book;
 import com.sunsunsoft.shutaro.tangobook.save.saveitem.CHistory;
@@ -8,62 +7,47 @@ import com.sunsunsoft.shutaro.tangobook.save.saveitem.Card;
 import com.sunsunsoft.shutaro.tangobook.save.saveitem.Pos;
 import com.sunsunsoft.shutaro.tangobook.save.saveitem.StudiedC;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
-
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by shutaro on 2017/01/17.
+ * Created by shutaro on 2017/06/27.
  *
- * 全データをxmlに書き込むための DTOクラス
+ * バイナリ形式のバックアップファイルから読み込んだデータを格納するクラス
+ * あくまで読み込み時にしか使用しない
  */
 
-
-@Root
-public class XmlTangoTop {
-    @Element
-    // Xml backup version
-    public int version = 100;
+public class BackupLoadData {
+    // backup file version
+    public int version;
 
     // Number of card
-    @Element
     public int cardNum;
 
     // Number of book
-    @Element
     public int bookNum;
 
     // last update date
-    @Element (required = false)
     public Date updateDate;
 
     /**
      * Database
      */
     // card
-    @ElementList(required = false)
-    public List<Card> card;
+    public List<Card> cards;
 
     // book
-    @ElementList(required = false)
-    public List<Book> book;
+    public List<Book> books;
 
     // card&book location
-    @ElementList(required = false)
-    public List<Pos> itemPos;
+    public List<Pos> itemPoses;
 
     // 学習単語帳履歴(1学習1履歴)
-    @ElementList(required = false)
-    public List<BHistory> bHistory;
+    public List<BHistory> bookHistories;
 
     // 学習カード(1回学習するたびに1つ)
-    @ElementList(required = false)
-    public List<StudiedC> studiedC;
+    public List<StudiedC> studiedCards;
 
     // 学習カード履歴(1カード1履歴)
-    @ElementList(required = false)
-    public List<CHistory> cHistory;
+    public List<CHistory> cardHistories;
 }

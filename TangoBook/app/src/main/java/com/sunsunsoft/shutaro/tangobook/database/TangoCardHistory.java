@@ -11,7 +11,7 @@ import io.realm.annotations.Index;
  * Created by shutaro on 2016/12/04.
  *
  * Cardの学習履歴等の情報
- *
+ * 1枚のカードにつき１レコード
  */
 
 public class TangoCardHistory extends RealmObject {

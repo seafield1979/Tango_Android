@@ -61,6 +61,23 @@ public class BackupFileDao {
     }
 
     /**
+     * １件取得
+     * @param id
+     * @return
+     */
+    public BackupFile selectById(int id) {
+        BackupFile backup =
+                mRealm.where(BackupFile.class)
+                        .equalTo("id", id).
+                        findFirst();
+
+        if (backup == null) return null;
+        BackupFile newBackup = mRealm.copyFromRealm(backup);
+
+        return newBackup;
+    }
+
+    /**
      * アプリ初回起動時にレコードを作成する
      * 実際にバックアップとして使用しているレコードは enabled が trueになる
      */

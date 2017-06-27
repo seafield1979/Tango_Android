@@ -3,7 +3,7 @@ package com.sunsunsoft.shutaro.tangobook.database;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.save.Book;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.Book;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 
 import java.util.Date;
@@ -315,6 +315,9 @@ public class TangoBookDao {
      * @param books
      */
     public void addXmlBooks(List<Book> books, boolean transaction) {
+        if (books == null || books.size() == 0) {
+            return;
+        }
         if (transaction) {
             mRealm.beginTransaction();
         }
@@ -324,7 +327,7 @@ public class TangoBookDao {
             book.setName( _book.getName());
             book.setComment( _book.getComment());
             book.setColor( _book.getColor());
-            book.setCreateTime( _book.getCreateTime());
+            book.setCreateTime( _book.getCreatedDate());
             book.setNewFlag( _book.isNewFlag());
 
             mRealm.copyToRealm(book);

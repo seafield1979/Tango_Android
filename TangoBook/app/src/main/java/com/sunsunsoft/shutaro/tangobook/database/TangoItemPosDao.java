@@ -1,7 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook.database;
 
 import com.sunsunsoft.shutaro.tangobook.icon.IconSortMode;
-import com.sunsunsoft.shutaro.tangobook.save.Pos;
+import com.sunsunsoft.shutaro.tangobook.save.saveitem.Pos;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 import com.sunsunsoft.shutaro.tangobook.icon.UIcon;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
@@ -1359,6 +1359,9 @@ public class TangoItemPosDao {
      * @param poses
      */
     public void addXmlPos(List<Pos> poses, boolean transaction) {
+        if (poses == null || poses.size() == 0) {
+            return;
+        }
         if (transaction) {
             mRealm.beginTransaction();
         }
