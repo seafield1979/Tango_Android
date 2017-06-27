@@ -378,7 +378,8 @@ public class XmlManager implements Runnable{
         ULog.print(TAG, "point7");
 
         // バックアップテーブルに書き込む情報を設定する
-        BackupFileInfo backupInfo = new BackupFileInfo(file.getName(), result.toString(), tangoTop.bookNum, tangoTop.cardNum);
+        BackupFileInfo backupInfo = new BackupFileInfo(file.getName(), result.toString(),
+                tangoTop.updateDate, tangoTop.bookNum, tangoTop.cardNum);
 
         ULog.print(TAG, "point8");
         return backupInfo;

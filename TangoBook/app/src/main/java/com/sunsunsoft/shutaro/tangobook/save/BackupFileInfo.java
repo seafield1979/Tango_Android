@@ -12,6 +12,7 @@ public class BackupFileInfo {
     private String filePath;    // バックアップファイルパス
     private int cardNum;        // 総カード数
     private int bookNum;        // 総ブック数
+    private Date backupDate;    // バックアップ日時
 
     /**
      * Getter/Setter
@@ -32,12 +33,15 @@ public class BackupFileInfo {
         return fileName;
     }
 
+    public Date getBackupDate() { return backupDate; }
+
     /**
      * Constructor
      */
-    public BackupFileInfo(String fileName, String filePath, int bookNum, int cardNum) {
+    public BackupFileInfo(String fileName, String filePath, Date backupDate, int bookNum, int cardNum) {
         this.fileName = fileName;
         this.filePath = filePath;
+        this.backupDate = backupDate;
         this.bookNum = bookNum;
         this.cardNum = cardNum;
     }

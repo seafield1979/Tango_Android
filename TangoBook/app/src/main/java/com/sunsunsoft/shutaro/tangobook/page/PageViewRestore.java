@@ -13,18 +13,11 @@ import com.sunsunsoft.shutaro.tangobook.database.RealmManager;
 import com.sunsunsoft.shutaro.tangobook.listview.ListItemBackup;
 import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
 import com.sunsunsoft.shutaro.tangobook.save.BackupManager;
-import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
-import com.sunsunsoft.shutaro.tangobook.util.FileDialog;
-import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
-import com.sunsunsoft.shutaro.tangobook.util.UColor;
-import com.sunsunsoft.shutaro.tangobook.util.UDpi;
-import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
-import com.sunsunsoft.shutaro.tangobook.util.UUtil;
+import com.sunsunsoft.shutaro.tangobook.util.*;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonText;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonType;
-import com.sunsunsoft.shutaro.tangobook.uview.text.UTextView;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
@@ -173,7 +166,6 @@ public class PageViewRestore extends UPageView
      * 選択したファイルから復元するかの確認ダイアログを表示する
      */
     private void showRestoreConfirmDialog(File file) {
-//        String xmlInfo = XmlManager.getInstance().getXmlInfo(file);
         String fileInfo = BackupManager.getInstance().getBackupInfo(file);
         if (mDialog != null) {
             mDialog.closeDialog();
@@ -222,7 +214,6 @@ public class PageViewRestore extends UPageView
      * @return 結果(成功/失敗)
      */
     private boolean doRestore(File file) {
-//        boolean ret = XmlManager.getInstance().loadXml(file);
         boolean ret = BackupManager.getInstance().loadBackup(file);
 
         String title = UResourceManager.getStringById( ret ? R.string.succeed_restore : R.string.failed_restore);

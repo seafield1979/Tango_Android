@@ -202,24 +202,36 @@ public class BackupManager {
      */
     public static String getBackupInfo(File file) {
 
-        BackupData backupData = null;
+        BackupFileInfo backupInfo = null;
         try {
-//            Serializer serializer = new Persister();
-//            backupData = serializer.read(XmlTangoTop.class, file);
 
-            ULog.print(TAG, "getBackupInfo:ok");
-        } catch (Exception e) {
+            BufferedInputStream input = new BufferedInputStream(new FileInputStream(file));
+
+            // ヘッダ部分のみ読み込む
+            final int readSize = 4 + 4 + 4 + 7;
+            ByteBuffer byteBuf = ByteBuffer.allocate(readSize);
+            input.read(byteBuf.array(), 0, readSize);
+
+            // header
+            int version = byteBuf.getInt();     // シーク用に必要
+            int cardNum = byteBuf.getInt();
+            int bookNum = byteBuf.getInt();
+            Date createdDate = readDate(byteBuf);
+
+            backupInfo = new BackupFileInfo(file.getName(), file.getPath(), createdDate, bookNum, cardNum);
+         } catch (Exception e) {
             Log.e("tag", e.toString());
             return null;
         }
 
-        String str =  UUtil.convDateFormat(backupData.updateDate, ConvDateMode.DateTime) + "\n" +
+        String str =  UUtil.convDateFormat(backupInfo.getBackupDate(),
+                ConvDateMode.DateTime) + "\n" +
                 UResourceManager.getStringById(R.string.filename) +
                 " :  " + file.getName() + "\n" +
                 UResourceManager.getStringById(R.string.card_count) +
-                " :  " + backupData.cardNum + "\n" +
+                " :  " + backupInfo.getCardNum() + "\n" +
                 UResourceManager.getStringById(R.string.book_count) +
-                " :  " + backupData.bookNum + "\n";
+                " :  " + backupInfo.getBookNum() + "\n";
         return str;
     }
 
@@ -361,7 +373,8 @@ public class BackupManager {
 
             int cardNum = (backupData.cards != null) ? backupData.cards.size() : 0;
             int bookNum = (backupData.books != null) ? backupData.books.size() : 0;
-            backupInfo = new BackupFileInfo(file.getName(), path.getPath(), bookNum, cardNum);
+
+            backupInfo = new BackupFileInfo(file.getName(), path.getPath(), backupData.updateDate, bookNum, cardNum);
 
             writeToFile(file, backupData);
 
@@ -493,7 +506,7 @@ public class BackupManager {
 
     /**
      * バックアップファイルから情報を読み込む
-     * @return
+     * @return file バックアプファイル
      */
     private BackupLoadData readFromFile(File file) {
         BufferedInputStream input;

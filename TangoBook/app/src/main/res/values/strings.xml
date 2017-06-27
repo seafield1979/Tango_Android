@@ -134,7 +134,6 @@
 
     <string name="backup">バックアップ</string>
     <string name="backup_auto">自動バックアップ</string>
-    <string name="backup_xml">バックアップ(xml)</string>
     <string name="backup_and_restore">バックアップと復元</string>
     <string name="location">場所</string>
     <string name="backup_complete">バックアップが完了しました</string>
@@ -145,7 +144,7 @@
     <string name="backup_path_title2">自動バックアップ</string>
     <string name="datetime">日時</string>
     <string name="restore">復元</string>
-    <string name="restore_from_file">XMLファイルから復元</string>
+    <string name="restore_from_file">指定ファイルから復元</string>
     <string name="confirm_backup">バックアップしますか？\nバックアップを行うと、以前の\n状態に戻せるようになります。\n
         また、別の端末に状態を移動することができます。</string>
     <string name="succeed_restore">復元に成功しました</string>
