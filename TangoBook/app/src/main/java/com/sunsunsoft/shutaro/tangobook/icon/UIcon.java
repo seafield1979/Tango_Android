@@ -42,6 +42,7 @@ abstract public class UIcon extends UDrawable {
     protected static final int TOUCH_MARGIN = 10;
 
     public static final int DISP_TITLE_LEN = 8;
+    public static final int DISP_TITLE_LEN_J = 5;       // 日本語表示時の最大文字列数
 
     private static final int CHECKED_WIDTH = 24;    // 選択中のアイコンのチェックの幅
     private static final int CHECKED_FRAME = 3;    // 選択中のアイコンのチェックの枠
@@ -82,7 +83,7 @@ abstract public class UIcon extends UDrawable {
     protected int touchedColor;
     protected int longPressedColor;
 
-    protected String title;
+    protected String title;         // アイコンの下に表示するテキスト
     protected IconType type;
 
     /**

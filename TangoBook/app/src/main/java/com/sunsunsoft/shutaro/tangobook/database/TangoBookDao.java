@@ -39,6 +39,14 @@ public class TangoBookDao {
     }
 
     /**
+     * 要素数を取得
+     */
+    public int getNum() {
+        List<TangoBook> list = selectAll();
+        return list.size();
+    }
+
+    /**
      * 全要素取得
      * @return nameのString[]
      */

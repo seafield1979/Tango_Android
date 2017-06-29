@@ -49,9 +49,6 @@ public class MySharedPref {
     // 出題絞り込み
     public static final String StudyFilterKey = "StudyFilter";
 
-    // バックアップ情報
-//    public static final String BackupInfoKey = "BackupInfo";
-
     // 自動バックアップ
     public static final String AutoBackup = "AutoBackup";
 
@@ -77,9 +74,6 @@ public class MySharedPref {
 
     // デフォルトの単語帳名
     public static final String DefaultNameBookKey = "DefaultNameBook";
-
-    // NGカードを自動的に単語帳に追加
-//    public static final String AddNgCardToBookKey = "AddNgCardToBook";
 
     // ４択モードで正解以外のカードをどの範囲から取得するか
     public static final String StudyMode3OptionKey = "StudyMode3Select";
@@ -250,5 +244,27 @@ public class MySharedPref {
         for(Map.Entry<String,?> entry : keys.entrySet()){
             ULog.print( TAG, entry.getKey() + ": " + entry.getValue().toString() + "\n");
         }
+    }
+
+    /**
+     * 全てのデータを削除
+     */
+    public static void clearAllData() {
+        delete(ScaleKey);
+        delete(InitializeKey);
+        delete(EditCardNameKey);
+        delete(StudyModeKey);
+        delete(StudyTypeKey);
+        delete(StudyOrderKey);
+        delete(StudyFilterKey);
+        delete(MenuHelpModeKey);
+        delete(StudyBookSortKey);
+        delete(DefaultColorCardKey);
+        delete(DefaultColorBookKey);
+        delete(DefaultCardWordAKey);
+        delete(DefaultCardWordBKey);
+        delete(DefaultNameBookKey);
+        delete(StudyMode3OptionKey);
+        delete(StudyMode4OptionKey);
     }
 }

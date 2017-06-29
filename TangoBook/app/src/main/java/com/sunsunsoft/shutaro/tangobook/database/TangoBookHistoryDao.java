@@ -34,6 +34,14 @@ public class TangoBookHistoryDao {
     }
 
     /**
+     * 要素数を取得
+     */
+    public int getNum() {
+        List<TangoBookHistory> list = selectAll(false);
+        return list.size();
+    }
+
+    /**
      * 全て選択
      * @param reverse  並び順を逆順にする
      * @return

@@ -2,8 +2,8 @@ package com.sunsunsoft.shutaro.tangobook.util;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.sunsunsoft.shutaro.tangobook.page.PageViewDebug;
 import com.sunsunsoft.shutaro.tangobook.save.BackupManager;
-import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.ULogWindow;
 import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuBar;
 import com.sunsunsoft.shutaro.tangobook.uview.scrollbar.UScrollBar;
@@ -25,6 +25,7 @@ public class ULog {
      * Constants
      */
     public static final String TAG = "ULog";
+    private static final boolean isEnable = false;  // マスターのスイッチ
     private static final boolean isCount = true;
 
     private static final long NANO_TO_SEC = 1000000000;
@@ -54,17 +55,17 @@ public class ULog {
      */
     // 初期化、アプリ起動時に１回だけ呼ぶ
     public static void init() {
-        setEnable(ViewTouch.TAG, false);
-        setEnable(UDrawManager.TAG, false);
-        setEnable(UMenuBar.TAG, false);
-        setEnable(UScrollBar.TAG, true);
-        setEnable(UIconWindow.TAG, false);
-        setEnable(UButton.TAG, false);
-        setEnable(UColor.TAG, false);
+        setEnable(ViewTouch.TAG,        false);
+        setEnable(UDrawManager.TAG,     false);
+        setEnable(UMenuBar.TAG,         false);
+        setEnable(UScrollBar.TAG,       false);
+        setEnable(UIconWindow.TAG,      false);
+        setEnable(UButton.TAG,          false);
+        setEnable(UColor.TAG,           false);
         setEnable(UResourceManager.TAG, false);
-        setEnable(UWindow.TAG, false);
-        setEnable(XmlManager.TAG, true);
-        setEnable(BackupManager.TAG, true);
+        setEnable(UWindow.TAG,          false);
+        setEnable(BackupManager.TAG,    false);
+        setEnable(PageViewDebug.TAG,    false);
 
         startTime = System.nanoTime();
     }
@@ -79,6 +80,10 @@ public class ULog {
 
     // ログ出力
     public static void print(String tag, String msg) {
+        if (!isEnable) {
+            return;
+        }
+
         // 有効無効判定
         Boolean enable = enables.get(tag);
         if (enable != null && !enable) {

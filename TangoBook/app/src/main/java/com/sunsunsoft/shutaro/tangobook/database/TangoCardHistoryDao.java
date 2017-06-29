@@ -36,6 +36,13 @@ public class TangoCardHistoryDao {
         mRealm = realm;
     }
 
+    /**
+     * 要素数を取得
+     */
+    public int getNum() {
+        List<TangoCardHistory> list = selectAll();
+        return list.size();
+    }
 
     /**
      * Choice4

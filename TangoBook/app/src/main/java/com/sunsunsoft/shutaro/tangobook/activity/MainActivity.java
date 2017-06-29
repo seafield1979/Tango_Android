@@ -21,7 +21,6 @@ import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
-import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.fragment.HelpFragment;
 import com.sunsunsoft.shutaro.tangobook.fragment.HelpPageId;
 import com.sunsunsoft.shutaro.tangobook.help.HelpPageFragment;
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         // オートバックアップ
         if (MySharedPref.readBoolean(MySharedPref.AutoBackup)) {
-            XmlManager.saveAutoBackup();
+            BackupManager.getInstance().saveAutoBackup();
         }
 
         // PresetBookManager

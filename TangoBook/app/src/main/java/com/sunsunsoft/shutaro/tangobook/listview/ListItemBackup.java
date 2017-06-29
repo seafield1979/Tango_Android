@@ -4,11 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.BackupFile;
-import com.sunsunsoft.shutaro.tangobook.save.XmlManager;
 import com.sunsunsoft.shutaro.tangobook.util.ConvDateMode;
 import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
@@ -20,7 +18,6 @@ import com.sunsunsoft.shutaro.tangobook.uview.UListItem;
 import com.sunsunsoft.shutaro.tangobook.uview.UListItemCallbacks;
 
 import java.io.File;
-import java.util.Date;
 
 /**
  * Created by shutaro on 2017/06/16.

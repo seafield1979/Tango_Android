@@ -40,7 +40,7 @@ public class PageViewRestore extends UPageView
     private static final int TOP_Y = 17;
     private static final int MARGIN_H = 17;
     private static final int MARGIN_V = 17;
-    private static final int TEXT_SIZE_S = 13;
+    private static final int TEXT_SIZE_S = 15;
     private static final int TEXT_SIZE = 17;
 
     private static final int TEXT_COLOR = Color.BLACK;

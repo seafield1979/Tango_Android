@@ -63,7 +63,6 @@ public class BackupManager {
      */
     private Context mContext;
 
-    private XmlManager.RunMode mRunMode;               // スレッド実行モード
     private XmlBackupCallbacks mCallbacks;  // バックアップ完了のコールバック
     private int mSaveSlot;                  // マニュアルバックアップのスロット番号
 

@@ -129,13 +129,29 @@ public class IconCard extends UIcon {
     public void updateTitle() {
         // 改行ありなら１行目のみ切り出す
         if (card.getWordA() == null) return;
-        String str = (MySharedPref.getCardName()) ? card.getWordB() : card.getWordA();
-        String[] strs = str.split("\n");
 
-        if (strs[0].length() < DISP_TITLE_LEN) {
+        String str;
+        String[] strs;
+        int maxLen;
+
+        if (MySharedPref.getCardName()) {
+            // 日本語
+            str = card.getWordB();
+            maxLen = DISP_TITLE_LEN_J;
+        } else {
+            str = card.getWordA();
+            maxLen = DISP_TITLE_LEN;
+        }
+
+        // ２行以上の文字列は１行目のみ表示
+        strs = str.split("\n");
+        this.title = strs[0];
+
+        // 文字数制限
+        if (strs[0].length() < maxLen) {
             this.title = strs[0];
         } else {
-            this.title = strs[0].substring(0, DISP_TITLE_LEN);
+            this.title = strs[0].substring(0, maxLen);
         }
     }
 

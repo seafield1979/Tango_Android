@@ -41,6 +41,15 @@ public class TangoCardDao {
     }
 
     /**
+     * カード数を取得
+     * @return カード数
+     */
+    public int getNum() {
+        List<TangoCard> list = selectAll();
+        return list.size();
+    }
+
+    /**
      * 全要素取得
      * @return nameのString[]
      */

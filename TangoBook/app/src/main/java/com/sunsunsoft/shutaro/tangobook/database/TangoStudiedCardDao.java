@@ -35,6 +35,14 @@ public class TangoStudiedCardDao {
 
 
     /**
+     * 要素数を取得
+     */
+    public int getNum() {
+        List<TangoStudiedCard> list = selectAll();
+        return list.size();
+    }
+
+    /**
      * 取得系(Selection type)
      */
     /**
