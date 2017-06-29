@@ -22,8 +22,6 @@ import com.sunsunsoft.shutaro.tangobook.uview.UAlignment;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDraw;
 import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawable;
 
-import static com.sunsunsoft.shutaro.tangobook.util.UDebug.drawIconId;
-
 /**
  * ViewのonDrawで描画するアイコンの情報
  */
@@ -342,7 +340,7 @@ abstract public class UIcon extends UDrawable {
                 }
                 break;
             case LongPress:
-                if (getRect().contains((int)vt.getX(offset.x), (int)vt.getY(offset.y))) {
+                if (getRect().contains((int)vt.touchX(offset.x), (int)vt.touchY(offset.y))) {
                     isLongTouched = true;
                     isChecking = true;
                     isChecked = true;

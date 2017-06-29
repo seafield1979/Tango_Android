@@ -555,11 +555,11 @@ public class UIconWindow extends UWindow {
         List<UIcon> icons = getIcons();
         if (icons == null) return false;
 
-        // 長押しを話したときにClickイベントが発生しないようにする
+        // 長押しを離したときにClickイベントが発生しないようにする
         vt.setTouching(false);
 
         if (state == WindowState.none) {
-            // チェック中のアイコンが１つでも存在していたら他のアイコンを全部チェック中に変更
+            // チェック中のアイコンが１つでも存在していたら他のアイコンを全部チェック可能状態に変更
             boolean isChecking = false;
             for (UIcon icon : icons) {
                 if (icon.isChecking) {
@@ -575,10 +575,11 @@ public class UIconWindow extends UWindow {
                 MainActivity.getInstance().startVibration(100);
             }
         } else if (state == WindowState.icon_selecting) {
+            // チェック中ならチェック可能状態を解除
+            setState(WindowState.none);
+
             // Vibrate
             MainActivity.getInstance().startVibration(100);
-
-            setState(WindowState.none);
         }
         return true;
     }
@@ -1461,6 +1462,8 @@ public class UIconWindow extends UWindow {
     /**
      * アイコンの選択状態を変更する
      * ただしゴミ箱アイコンは除く
+     * @param icons
+     * @param isChecking  false:チェック状態を解除 / true:チェック可能状態にする
      */
     private void changeIconChecked(List<UIcon> icons, boolean isChecking) {
         if (icons == null) return;
