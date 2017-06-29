@@ -54,8 +54,8 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
     protected static final int MOVE_FRAME = 10;
     protected static final int MOVE_IN_FRAME = 30;
 
-    protected static final int TEXT_SIZE = 17;
-    protected static final int TEXT_SIZE_L = 23;
+    protected static final int TEXT_SIZE_A = 20;
+    protected static final int TEXT_SIZE_B = 17;
     protected static final int MARGIN_TEXT_H = 13;
     protected static final int MARGIN_TEXT_V = 7;
 
@@ -86,9 +86,11 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
      */
     protected PointF basePos = new PointF();
     protected State mState;
-    protected String wordA, wordB;
+    protected String wordA;             // 正解（表）のテキスト
+    protected String wordB;             // 不正解（裏）のテキスト
+    protected int textSizeA;            // 正解のテキストサイズ
+    protected int textSizeB;            // 不正解(裏)のテキスト
     protected TangoCard mCard;
-    protected int mTextSize;
     protected boolean isTouching;
     protected float slideX;
     protected boolean showArrow;
@@ -136,9 +138,13 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
         if (isEnglish) {
             wordA = card.getWordA();
             wordB = card.getWordB();
+            textSizeA = UDpi.toPixel(TEXT_SIZE_A);
+            textSizeB = UDpi.toPixel(TEXT_SIZE_B);
         } else {
             wordA = card.getWordB();
             wordB = card.getWordA();
+            textSizeA = UDpi.toPixel(TEXT_SIZE_B);
+            textSizeB = UDpi.toPixel(TEXT_SIZE_A);
         }
         mState = State.None;
         mCard = card;
@@ -147,8 +153,8 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
         int maxWidth = canvasW - UDpi.toPixel(ARROW_W * 2 + ARROW_MARGIN * 4);
         if (isMultiCard) {
             // WordA,WordBの大きい方の高さに合わせる
-            Size sizeA = UDraw.getTextSize(canvasW, wordA, UDpi.toPixel(TEXT_SIZE));
-            Size sizeB = UDraw.getTextSize(canvasW, wordB, UDpi.toPixel(TEXT_SIZE));
+            Size sizeA = UDraw.getTextSize(canvasW, wordA, UDpi.toPixel(TEXT_SIZE_A));
+            Size sizeB = UDraw.getTextSize(canvasW, wordB, UDpi.toPixel(TEXT_SIZE_B));
 
             // width
             int width =  (sizeA.width > sizeB.width) ? sizeA.width : sizeB.width;
@@ -167,13 +173,10 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
             if (height < UDpi.toPixel(MIN_HEIGHT)) height = UDpi.toPixel(MIN_HEIGHT);
             else if (height > maxHeight) height = maxHeight;
             size.height = height;
-            mTextSize = UDpi.toPixel(TEXT_SIZE);
         } else {
             size.width = maxWidth;
             size.height = maxHeight;
-            mTextSize = UDpi.toPixel(TEXT_SIZE_L);
         }
-
 
         int arrowW = UDpi.toPixel(ARROW_W);
         int arrowH = UDpi.toPixel(ARROW_H);
@@ -313,8 +316,16 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
         // Text
         if (!isMoveToBox) {
             // タッチ中は正解を表示
-            String text = isTouching ? wordB : wordA;
-            UDraw.drawText(canvas, text, UAlignment.Center, mTextSize,
+            String text;
+            int textSize;
+            if (isTouching) {
+                text = wordB;
+                textSize = textSizeB;
+            } else {
+                text = wordA;
+                textSize = textSizeA;
+            }
+            UDraw.drawText(canvas, text, UAlignment.Center, textSize,
                     _pos.x, _pos.y + size.height / 2, TEXT_COLOR);
         }
 
