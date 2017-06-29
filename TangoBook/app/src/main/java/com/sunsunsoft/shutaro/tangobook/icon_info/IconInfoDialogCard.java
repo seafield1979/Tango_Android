@@ -226,7 +226,7 @@ public class IconInfoDialogCard extends IconInfoDialog {
                     UAlignment.None, canvas.getWidth(), false, false,
                     UDpi.toPixel(MARGIN_H), y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, 0);
 
-            y += mItems[item.ordinal()].title.getHeight() + UDpi.toPixel(3);
+            y += mItems[item.ordinal()].title.getHeight() + UDpi.toPixel(MARGIN_V_S);
 
             // body
             mItems[item.ordinal()].body = UTextView.createInstance( bodyStr,

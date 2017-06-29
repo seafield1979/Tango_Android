@@ -32,12 +32,16 @@ public class PresetBookManager {
     public static final String TAG = "PresetBookManager";
 
     private static int[] presetCsvs = {
-            R.raw.animal,
-            R.raw.fruit,
             R.raw.week,
             R.raw.month,
+            R.raw.animal,
+            R.raw.fruit,
+            R.raw.vegetable,
             R.raw.questions,
-            R.raw.toeic1
+            R.raw.greetings,
+            R.raw.fish,
+            R.raw.flower,
+            R.raw.insect
     };
 
     /**
