@@ -28,6 +28,8 @@ public class IconCard extends UIcon {
     private static final int ICON_W = 40;
     private static final int ICON_H = 40;
 
+    private static final int TOUCHED_COLOR = Color.rgb(100,200,100);
+
     /**
      * Member Variables
      */
@@ -63,7 +65,7 @@ public class IconCard extends UIcon {
 
         this.card = card;
         updateTitle();
-        setColor(card.getColor());
+        setColor(TOUCHED_COLOR);
         iconW = UDpi.toPixel(ICON_W);
         iconH = UDpi.toPixel(ICON_H);
 

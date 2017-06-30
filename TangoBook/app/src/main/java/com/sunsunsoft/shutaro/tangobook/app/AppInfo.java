@@ -9,6 +9,6 @@ package com.sunsunsoft.shutaro.tangobook.app;
 
 public class AppInfo {
     // メールでのお問い合わせ先
-    public static final String contactMailTo = "sunsunsoft2016@gmail.com";
+    public static final String contactMailTo = "sunsunsoft.sup@gmail.com";
 
 }

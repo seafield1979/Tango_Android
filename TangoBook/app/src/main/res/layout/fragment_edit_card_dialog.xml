@@ -69,18 +69,18 @@
                 android:ems="10"
                 android:id="@+id/editWordB"/>
 
-            <TextView
-                android:text="@string/comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView5"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine|textPersonName"
-                android:text=""
-                android:ems="10"
-                android:id="@+id/editComment"/>
+            <!--<TextView-->
+                <!--android:text="@string/comment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/textView5"/>-->
+            <!--<EditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:inputType="textMultiLine|textPersonName"-->
+                <!--android:text=""-->
+                <!--android:ems="10"-->
+                <!--android:id="@+id/editComment"/>-->
 
             <!-- Color -->
             <TextView

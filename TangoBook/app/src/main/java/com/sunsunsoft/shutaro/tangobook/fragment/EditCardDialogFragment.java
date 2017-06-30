@@ -38,7 +38,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
     public static final String KEY_MODE = "key_mode";
     public static final String KEY_WORD_A = "key_word_a";
     public static final String KEY_WORD_B = "key_word_b";
-    public static final String KEY_COMMENT = "key_comment";
+//    public static final String KEY_COMMENT = "key_comment";
     public static final String KEY_COLOR = "key_color";
 
 
@@ -66,13 +66,13 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
     private int mMode;
     private EditText mEditWordA;
     private EditText mEditWordB;
-    private EditText mEditComment;
+//    private EditText mEditComment;
     // 選択された色を表示するView
     private ColorView mColorView;
 
     private String mWordA;
     private String mWordB;
-    private String mComment;
+//    private String mComment;
     private int mColor;
 
     /**
@@ -104,9 +104,9 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
             if (card.getWordB() != null) {
                 args.putString(KEY_WORD_B, card.getWordB());
             }
-            if (card.getComment() != null) {
-                args.putString(KEY_COMMENT, card.getComment());
-            }
+//            if (card.getComment() != null) {
+//                args.putString(KEY_COMMENT, card.getComment());
+//            }
             args.putInt(KEY_COLOR, card.getColor());
 
         } else {
@@ -138,7 +138,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
             mMode = args.getInt(KEY_MODE, EditCardDialogMode.Create.ordinal());
             mWordA = args.getString(KEY_WORD_A, "");
             mWordB = args.getString(KEY_WORD_B, "");
-            mComment = args.getString(KEY_COMMENT, "");
+//            mComment = args.getString(KEY_COMMENT, "");
             mColor = args.getInt(KEY_COLOR, 0);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -168,8 +168,8 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
         mEditWordB = (EditText)view.findViewById(R.id.editWordB);
         mEditWordB.setText(mWordB);
 
-        mEditComment = (EditText)view.findViewById(R.id.editComment);
-        mEditComment.setText(mComment);
+//        mEditComment = (EditText)view.findViewById(R.id.editComment);
+//        mEditComment.setText(mComment);
 
         mColorView = (ColorView)view.findViewById(R.id.current_color);
         mColorView.setColor(mColor);
@@ -209,7 +209,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
         args.putInt(KEY_MODE, mMode);
         args.putString(KEY_WORD_A, mEditWordA.getText().toString());
         args.putString(KEY_WORD_B, mEditWordB.getText().toString());
-        args.putString(KEY_COMMENT, mEditComment.getText().toString());
+//        args.putString(KEY_COMMENT, mEditComment.getText().toString());
         args.putInt(KEY_COLOR, mColorView.getColor());
 
         if (dialogCallbacks != null) {
@@ -238,7 +238,7 @@ public class EditCardDialogFragment extends DialogFragment implements OnClickLis
 
         mEditWordA.setText("A " + value);
         mEditWordB.setText("B " + value);
-        mEditComment.setText("C " + value);
+//        mEditComment.setText("C " + value);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.sunsunsoft.shutaro.tangobook.icon;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,7 +7,6 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Vibrator;
 
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
@@ -30,8 +28,6 @@ import com.sunsunsoft.shutaro.tangobook.uview.udraw.UDrawManager;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static android.content.Context.VIBRATOR_SERVICE;
 
 /**
  * Windows for Icons
