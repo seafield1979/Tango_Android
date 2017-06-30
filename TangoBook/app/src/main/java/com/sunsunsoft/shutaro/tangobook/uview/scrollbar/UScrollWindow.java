@@ -65,9 +65,9 @@ public class UScrollWindow extends UWindow {
         }
         // スクロール処理
         boolean isDraw = false;
-        if (vt.type == TouchType.Touch) {
-            return true;
-        }
+//        if (vt.type == TouchType.Touch) {
+//            return true;
+//        }
         if (vt.type == TouchType.Moving) {
             if (contentSize.width > clientSize.width) {
                 if (vt.getMoveX() != 0) {
