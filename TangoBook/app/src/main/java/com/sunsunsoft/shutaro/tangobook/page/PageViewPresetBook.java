@@ -114,7 +114,7 @@ public class PageViewPresetBook extends UPageView
         int width = mParentView.getWidth();
         int height = mParentView.getHeight();
 
-        float x = MARGIN_H;
+        float x = UDpi.toPixel(MARGIN_H);
         float y = UDpi.toPixel(TOP_Y);
 
         // Title
@@ -139,8 +139,7 @@ public class PageViewPresetBook extends UPageView
             ListItemPresetBook item = new ListItemPresetBook(this, presetBook, mListView.getClientSize().width);
             mListView.add(item);
         }
-
-        y += listViewH + UDpi.toPixel(MARGIN_H);
+        mListView.updateWindow();
     }
 
     /**

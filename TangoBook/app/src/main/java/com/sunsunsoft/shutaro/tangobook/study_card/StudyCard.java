@@ -57,7 +57,7 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
     protected static final int TEXT_SIZE_A = 20;
     protected static final int TEXT_SIZE_B = 17;
     protected static final int MARGIN_TEXT_H = 13;
-    protected static final int MARGIN_TEXT_V = 7;
+    protected static final int MARGIN_TEXT_V = 20;
 
     protected static final int ARROW_W = 50;
     protected static final int ARROW_H = 50;
@@ -170,8 +170,13 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
             // height
             int height = (sizeA.height > sizeB.height) ? sizeA.height : sizeB.height;
             height += UDpi.toPixel(MARGIN_TEXT_V) * 2;
-            if (height < UDpi.toPixel(MIN_HEIGHT)) height = UDpi.toPixel(MIN_HEIGHT);
-            else if (height > maxHeight) height = maxHeight;
+
+            if (height < UDpi.toPixel(MIN_HEIGHT)) {
+                height = UDpi.toPixel(MIN_HEIGHT);
+            }
+            else if (height > maxHeight) {
+                height = maxHeight;
+            }
             size.height = height;
         } else {
             size.width = maxWidth;
@@ -313,6 +318,11 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
                         _pos.x + size.width / 2, _pos.y + size.height),
                 UDpi.toPixel(3), color, UDpi.toPixel(2), FRAME_COLOR);
 
+        // 矢印
+        if (showArrow && !isTouching && !isMoveToBox) {
+            mArrowL.draw(canvas, paint, _pos);
+            mArrowR.draw(canvas, paint, _pos);
+        }
         // Text
         if (!isMoveToBox) {
             // タッチ中は正解を表示
@@ -329,11 +339,6 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
                     _pos.x, _pos.y + size.height / 2, TEXT_COLOR);
         }
 
-        // 矢印
-        if (showArrow && !isTouching && !isMoveToBox) {
-            mArrowL.draw(canvas, paint, _pos);
-            mArrowR.draw(canvas, paint, _pos);
-        }
     }
 
     /**

@@ -49,7 +49,7 @@ public class PageViewStudySlide extends PageViewStudy
      */
     public static final String TAG = "PageViewStudySlide";
 
-    private static final int TOP_AREA_H = 65;
+    private static final int TOP_AREA_H = 50;
     private static final int BOTTOM_AREA_H = 100;
     private static final int TEXT_SIZE = 17;
     private static final int BUTTON_W = 100;
@@ -166,7 +166,7 @@ public class PageViewStudySlide extends PageViewStudy
         String title = getCardsRemainText(mCardsStack.getCardCount());
         mTextCardCount = UTextView.createInstance( title, UDraw.getFontSize(FontSize.L), DRAW_PRIORITY,
                 UAlignment.CenterX, screenW, false, true,
-                screenW / 2, UDpi.toPixel(17), UDpi.toPixel(100), Color.rgb(100,50,50), 0);
+                screenW / 2, UDpi.toPixel(10), UDpi.toPixel(100), Color.rgb(100,50,50), 0);
         mTextCardCount.addToDrawManager();
 
         // 終了ボタン

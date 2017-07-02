@@ -43,8 +43,6 @@ public class PageViewHistory extends UPageView
 
     // layout
     private static final int TOP_Y = 17;
-    private static final int BUTTON_W = 100;
-    private static final int BUTTON_H = 40;
     private static final int TEXT_SIZE = 17;
 
     // button ids
@@ -54,9 +52,7 @@ public class PageViewHistory extends UPageView
     /**
      * Member variables
      */
-    private UTextView mTitleText;
     private ListViewStudyHistory mListView;
-    private UButtonText mClearButton;
 
     private UDialogWindow mDialog;      // OK/NGのカード一覧を表示するダイアログ
 
@@ -116,17 +112,8 @@ public class PageViewHistory extends UPageView
         float x = UDpi.toPixel(MARGIN_H);
         float y = UDpi.toPixel(TOP_Y);
 
-        // Title
-        mTitleText = UTextView.createInstance(UResourceManager.getStringById(R.string
-                .history_book),
-                UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
-                UAlignment.CenterX, width, false, false,
-                width / 2, y, width, Color.BLACK, 0);
-        mTitleText.addToDrawManager();
-        y += mTitleText.getSize().height + UDpi.toPixel(MARGIN_V);
-
         // ListView
-        int listViewH = height - (UDpi.toPixel(MARGIN_H) * 3 + mTitleText.getSize().height);
+        int listViewH = height - (UDpi.toPixel(MARGIN_H) * 3);
         mListView = new ListViewStudyHistory(this, DRAW_PRIORITY, x, y,
                 width - UDpi.toPixel(MARGIN_H) * 2, listViewH, 0);
         if (mListView.getItemNum() > 0) {

@@ -169,7 +169,7 @@
     <string name="contact_message">ご要望、不具合の報告等は\nこちらからお願いします\n</string>
     <string name="send_mail">メールを送る</string>
 
-    <string name="preset_title2">Addボタンをタップしてプリセットを\n追加します</string>
+    <string name="preset_title2">Addボタン(＋)をタップして\nアプリ内蔵の単語帳を追加します</string>
     <string name="csv_title2">指定のフォルダ(/sdcard/Documents/)\nにあるCSVファイルから単語帳を追加します。</string>
 
     <!-- メニュー menu -->
