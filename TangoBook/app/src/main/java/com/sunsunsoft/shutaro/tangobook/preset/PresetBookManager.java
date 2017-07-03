@@ -1,6 +1,7 @@
 package com.sunsunsoft.shutaro.tangobook.preset;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.csv.CsvParser;
@@ -9,6 +10,7 @@ import com.sunsunsoft.shutaro.tangobook.database.TangoBook;
 import com.sunsunsoft.shutaro.tangobook.database.TangoCard;
 import com.sunsunsoft.shutaro.tangobook.database.TangoParentType;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
+import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 
@@ -149,6 +151,7 @@ public class PresetBookManager {
         TangoBook book = TangoBook.createBook();
         book.setName(presetBook.mName);
         book.setComment(presetBook.mComment);
+        book.setColor(presetBook.mColor);
         RealmManager.getBookDao().addOne(book, -1);
 
         // 中のカードを作成する
@@ -200,9 +203,14 @@ public class PresetBookManager {
 
             // 1行目はbooke名
             StringBuffer bookText = new StringBuffer(encodeCsv(book.getName()));
-            if (book.getComment() != null && book.getComment().length() > 0) {
+            if (book.getComment() == null || book.getComment().length() == 0) {
+                bookText.append(", ");
+            } else {
                 bookText.append("," + encodeCsv(book.getComment()));
             }
+            // 色情報
+            bookText.append("," + UColor.toColorString(book.getColor()));
+
             fw.write(bookText.toString() + "\n");
             // 2行目以降はcardの英語、日本語
             for (TangoCard card : cards) {

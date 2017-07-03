@@ -117,7 +117,7 @@ public class ListItemPresetBook extends UListItem implements UButtonCallbacks {
         float marginV = (UDpi.toPixel(ITEM_H) - fontSize * 2) / 3;
         float y = _pos.y + marginV;
         // Icon image
-        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapById(R.drawable.cards), x,
+        UDraw.drawBitmap(canvas, paint, UResourceManager.getBitmapWithColor(R.drawable.cards, mBook.mColor), x,
                 _pos.y + (size.height - iconW) / 2,
                 iconW, iconW );
         x += iconW + marginH;

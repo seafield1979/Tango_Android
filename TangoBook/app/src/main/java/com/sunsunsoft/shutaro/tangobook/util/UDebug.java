@@ -10,7 +10,7 @@ import com.sunsunsoft.shutaro.tangobook.preset.PresetBookManager;
 
 public class UDebug {
     // Debug mode
-    public static final boolean isDebug = false;
+    public static final boolean isDebug = true;
 
     // IconをまとめたブロックのRECTを描画するかどうか
     public static final boolean DRAW_ICON_BLOCK_RECT = false;

@@ -2,8 +2,9 @@ package com.sunsunsoft.shutaro.tangobook.preset;
 
 /**
  * Created by shutaro on 2017/06/14.
+ *
+ * プリセット単語帳を保持するクラス
  */
-
 
 import android.content.Context;
 
@@ -14,12 +15,10 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * プリセット単語帳を保持するクラス
- */
 public class PresetBook {
     public String mName;
     public String mComment;
+    public int mColor;
     private Context mContext;
     private int mCsvId = -1;
     private File mFile;
@@ -51,18 +50,20 @@ public class PresetBook {
      * Constructor
      */
     // アプリ内のCSVから追加する
-    public PresetBook(Context context, int csvId, String name, String comment) {
+    public PresetBook(Context context, int csvId, String name, String comment, int color) {
         mContext = context;
         mCsvId = csvId;
         mName = name;
         mComment = comment;
+        mColor = color;
     }
     // ストレージにあるCSVから追加する
-    public PresetBook(Context context, File file, String name, String comment) {
+    public PresetBook(Context context, File file, String name, String comment, int color) {
         mContext = context;
         mName = name;
         mFile = file;
         mComment = comment;
+        mColor = color;
     }
 
     public void addCard(PresetCard card) {

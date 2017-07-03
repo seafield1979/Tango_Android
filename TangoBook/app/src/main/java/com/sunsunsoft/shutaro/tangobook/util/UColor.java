@@ -77,6 +77,15 @@ public class UColor extends Color {
     }
 
     /**
+     * 文字列に変換する
+     * @param color 変換元の色
+     * @return 変換後の文字列 (#xxxxxx形式)
+     */
+    public static String toColorString(int color) {
+        return String.format("#%06x", color);
+    }
+
+    /**
      * RGB -> YUV に変換
      */
     public static int RGBtoYUV(int rgb) {

@@ -1,10 +1,13 @@
 package com.sunsunsoft.shutaro.tangobook.csv;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 
 import com.sunsunsoft.shutaro.tangobook.preset.PresetBook;
 import com.sunsunsoft.shutaro.tangobook.preset.PresetCard;
+import com.sunsunsoft.shutaro.tangobook.util.UColor;
+import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -53,10 +56,14 @@ public class CsvParser {
                     // 最初の行は単語帳データ
                     isFirst = false;
 
-                    if (words.length >= 2) {
-                        book = new PresetBook(context, csvId, words[0], words[1]);
+                    if (words.length >= 3) {
+                        int color = Color.parseColor(words[2]);
+                        book = new PresetBook(context, csvId, words[0], words[1], color);
+                    }
+                    else if (words.length >= 2) {
+                        book = new PresetBook(context, csvId, words[0], words[1], 0);
                     } else if (words.length >= 1) {
-                        book = new PresetBook(context, csvId, words[0], null);
+                        book = new PresetBook(context, csvId, words[0], null, 0);
                     }
                     if (onlyBook) {
                         break;
@@ -162,10 +169,14 @@ public class CsvParser {
                     isFirst = false;
 
                     if (words.length >= 1) {
+                        int color = 0;
+                        if (words.length >= 3) {
+                            color = UColor.parseColor(words[2]);
+                        }
                         if (words.length >= 2) {
-                            book = new PresetBook(context, file, words[0], words[1]);
+                            book = new PresetBook(context, file, words[0], words[1], color);
                         } else {
-                            book = new PresetBook(context, file, words[0], null);
+                            book = new PresetBook(context, file, words[0], null, 0);
                         }
                     } else {
                         return null;
