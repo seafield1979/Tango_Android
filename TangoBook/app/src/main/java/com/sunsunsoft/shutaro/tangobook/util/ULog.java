@@ -3,7 +3,7 @@ import android.graphics.Rect;
 import android.util.Log;
 
 import com.sunsunsoft.shutaro.tangobook.page.PageViewDebug;
-import com.sunsunsoft.shutaro.tangobook.save.BackupManager;
+import com.sunsunsoft.shutaro.tangobook.backup.BackupManager;
 import com.sunsunsoft.shutaro.tangobook.uview.window.ULogWindow;
 import com.sunsunsoft.shutaro.tangobook.uview.menu.UMenuBar;
 import com.sunsunsoft.shutaro.tangobook.uview.scrollbar.UScrollBar;

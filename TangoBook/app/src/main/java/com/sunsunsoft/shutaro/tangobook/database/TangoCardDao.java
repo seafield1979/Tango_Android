@@ -3,7 +3,7 @@ package com.sunsunsoft.shutaro.tangobook.database;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.save.saveitem.Card;
+import com.sunsunsoft.shutaro.tangobook.backup.saveitem.Card;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 
 import java.util.ArrayList;

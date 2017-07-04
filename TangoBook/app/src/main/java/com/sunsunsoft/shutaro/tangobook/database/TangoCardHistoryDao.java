@@ -2,7 +2,7 @@ package com.sunsunsoft.shutaro.tangobook.database;
 
 import android.util.Log;
 
-import com.sunsunsoft.shutaro.tangobook.save.saveitem.CHistory;
+import com.sunsunsoft.shutaro.tangobook.backup.saveitem.CHistory;
 import com.sunsunsoft.shutaro.tangobook.util.UDebug;
 
 import java.util.Date;

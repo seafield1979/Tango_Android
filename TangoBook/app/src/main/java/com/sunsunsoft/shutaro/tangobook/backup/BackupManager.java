@@ -1,21 +1,18 @@
-package com.sunsunsoft.shutaro.tangobook.save;
+package com.sunsunsoft.shutaro.tangobook.backup;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.database.*;
-import com.sunsunsoft.shutaro.tangobook.save.saveitem.SaveBook;
-import com.sunsunsoft.shutaro.tangobook.save.saveitem.SaveBookHistory;
-import com.sunsunsoft.shutaro.tangobook.save.saveitem.SaveCard;
-import com.sunsunsoft.shutaro.tangobook.save.saveitem.SaveCardHistory;
-import com.sunsunsoft.shutaro.tangobook.save.saveitem.SaveItemPos;
-import com.sunsunsoft.shutaro.tangobook.save.saveitem.SaveStudiedCard;
+import com.sunsunsoft.shutaro.tangobook.backup.saveitem.SaveBook;
+import com.sunsunsoft.shutaro.tangobook.backup.saveitem.SaveBookHistory;
+import com.sunsunsoft.shutaro.tangobook.backup.saveitem.SaveCard;
+import com.sunsunsoft.shutaro.tangobook.backup.saveitem.SaveCardHistory;
+import com.sunsunsoft.shutaro.tangobook.backup.saveitem.SaveItemPos;
+import com.sunsunsoft.shutaro.tangobook.backup.saveitem.SaveStudiedCard;
 import com.sunsunsoft.shutaro.tangobook.util.*;
 
-
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -35,6 +32,11 @@ import io.realm.Realm;
  *
  * ファイルにバックアップを行うクラス
  * ファイルにバックアップと、バックアップファイルからの復元を行う
+ *
+ * バックアップファイルのフォーマット
+ * [ヘッダー]
+ *
+ * [本体]
  */
 
 public class BackupManager {
@@ -55,6 +57,8 @@ public class BackupManager {
 
     // 手動バックアップファイル名
     public static final String ManualBackupFile = "tango_m%02d.bin";
+
+    private static final int BACKUP_FILE_TAG = 0x01212123;      // binファイルが単語帳アプリのものであるという判定用
 
     private static final int WRITE_BUF_SIZE = 1000; // 書き込みバッファー
 
@@ -197,9 +201,9 @@ public class BackupManager {
     /**
      * バックアップの情報を取得する
      * @param file バックアップファイルから情報を取得
-     * @return
+     * @return バックアップファイルの情報 (null:エラー)
      */
-    public static String getBackupInfo(File file) {
+    public static String getBackupInfo(File file){
 
         BackupFileInfo backupInfo = null;
         try {
@@ -207,11 +211,16 @@ public class BackupManager {
             BufferedInputStream input = new BufferedInputStream(new FileInputStream(file));
 
             // ヘッダ部分のみ読み込む
-            final int readSize = 4 + 4 + 4 + 7;
+            final int readSize = 4 + 4 + 4 + 4 + 7;
             ByteBuffer byteBuf = ByteBuffer.allocate(readSize);
             input.read(byteBuf.array(), 0, readSize);
 
             // header
+            int tagId = byteBuf.getInt();
+            if (tagId != BACKUP_FILE_TAG) {
+                throw new BackupFileException("Error", BackupFileException.BackupError.FileIsNotTangoApp);
+            }
+
             int version = byteBuf.getInt();     // シーク用に必要
             int cardNum = byteBuf.getInt();
             int bookNum = byteBuf.getInt();
@@ -394,6 +403,9 @@ public class BackupManager {
 
             mBuf.clear();
 
+            // tag id
+            mBuf.putInt(BACKUP_FILE_TAG);
+
             // version
             mBuf.putInt(backupData.version);
 
@@ -509,7 +521,7 @@ public class BackupManager {
 
     /**
      * バックアップファイルから情報を読み込む
-     * @return file バックアプファイル
+     * @return file バックアプファイル (null:エラー)
      */
     private BackupLoadData readFromFile(File file) {
         BufferedInputStream input;
@@ -523,6 +535,11 @@ public class BackupManager {
             input.read(byteBuf.array(), 0, fileSize);
 
             // header
+            int tagId = byteBuf.getInt();
+            if (tagId != BACKUP_FILE_TAG) {
+                throw new BackupFileException("Error", BackupFileException.BackupError.FileIsNotTangoApp);
+            }
+
             backup.version = byteBuf.getInt();
             backup.cardNum = byteBuf.getInt();
             backup.bookNum = byteBuf.getInt();
@@ -584,6 +601,7 @@ public class BackupManager {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return backup;
     }
@@ -598,7 +616,9 @@ public class BackupManager {
         BackupLoadData backupData = null;
         try {
             backupData = readFromFile(file);
-
+            if (backupData == null) {
+                return false;
+            }
         } catch (Exception e) {
             Log.e("tag", e.toString());
             return false;
