@@ -1276,11 +1276,11 @@ public class UIconWindow extends UWindow {
 
         // 挿入元と先の位置関係で追加と削除の順番が前後する
         if (index1 < index2) {
-            icons2.add(index2, icon1);
+            icons2.add(index2+1, icon1);
             icons1.remove(icon1);
         } else {
             icons1.remove(icon1);
-            icons2.add(index2, icon1);
+            icons2.add(index2+1, icon1);
         }
 
         // 再配置
