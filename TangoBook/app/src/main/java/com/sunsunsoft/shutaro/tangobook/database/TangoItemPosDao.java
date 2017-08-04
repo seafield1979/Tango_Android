@@ -107,13 +107,13 @@ public class TangoItemPosDao {
      *
      * @return
      */
-    public List<TangoItem> selectItemsInHome(boolean changeable) {
-        return selectItemsByParentType(TangoParentType.Home, 0, changeable);
-    }
-
-    public List<TangoItem> selectItemsInTrash(boolean changeable) {
-        return selectItemsByParentType(TangoParentType.Trash, 0, changeable);
-    }
+//    public List<TangoItem> selectItemsInHome(boolean changeable) {
+//        return selectItemsByParentType(TangoParentType.Home, 0, changeable);
+//    }
+//
+//    public List<TangoItem> selectItemsInTrash(boolean changeable) {
+//        return selectItemsByParentType(TangoParentType.Trash, 0, changeable);
+//    }
 
     /**
      * 指定の単語帳に含まれるカードのIDを取得する

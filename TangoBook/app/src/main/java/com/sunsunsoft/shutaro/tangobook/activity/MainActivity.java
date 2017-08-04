@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public enum MenuType {
         None,            // 非表示
         TangoEdit,       // 単語帳編集ページ
-        TangoEdit2,      // 単語帳編集ページ(アイコン選択時0
+        TangoEdit2,      // 単語帳編集ページ(アイコン選択時)
         SelectStudyBook, // 学習する単語帳選択ページ
         AddCsv,          // CSV追加
         StudiedHistory,  // 学習単語帳履歴ページ

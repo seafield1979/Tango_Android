@@ -37,9 +37,6 @@ public class PageViewSettingsTop extends UPageView
     /**
      * Enums
      */
-    /**
-     * Enums
-     */
     enum ButtonId {
         Option(R.string.title_options, UColor.DarkBlue, UColor.DarkBlue,
                 Color.rgb(153,204,255), R.drawable.settings_1),

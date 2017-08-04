@@ -138,7 +138,7 @@ public class PageViewTitle extends UPageView implements UButtonCallbacks {
 
         buttonType = UButtonType.Press;
 
-        // ズームボタン
+        // ズームボタン + -
         int zoomButtonW = UDpi.toPixel(ZOOM_BUTTON_W);
         if (zoomButtonW < ZOOM_BUTTON_W) {
             zoomButtonW = ZOOM_BUTTON_W;

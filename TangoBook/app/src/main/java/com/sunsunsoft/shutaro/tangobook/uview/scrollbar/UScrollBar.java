@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.ULog;
 import com.sunsunsoft.shutaro.tangobook.uview.ViewTouch;
 
@@ -312,15 +313,15 @@ public class UScrollBar {
      * @param tv
      * @return
      */
-    public boolean touchEvent(ViewTouch tv, PointF offset) {
-        switch(tv.type) {
+    public boolean touchEvent(ViewTouch vt, PointF offset) {
+        switch(vt.type) {
             case Touch:
-                if (touchDown(tv, offset)) {
+                if (touchDown(vt, offset)) {
                     return true;
                 }
                 break;
             case Moving:
-                if (touchMove(tv)) {
+                if (touchMove(vt)) {
                     return true;
                 }
                 break;
@@ -343,8 +344,8 @@ public class UScrollBar {
 
         RectF rect;
         if (type == ScrollBarType.Vertical) {
-            rect = new RectF(pos.x - TOUCH_MARGIN, pos.y,
-                        pos.x + bgWidth + TOUCH_MARGIN, pos.y + bgLength);
+            rect = new RectF(pos.x - UDpi.toPixel(TOUCH_MARGIN), pos.y,
+                        pos.x + bgWidth + UDpi.toPixel(TOUCH_MARGIN), pos.y + bgLength);
             if (rect.left <= ex && ex < rect.right &&
                     rect.top <= ey && ey < rect.bottom)
             {
@@ -366,7 +367,7 @@ public class UScrollBar {
                 }
             }
         } else {
-            rect = new RectF(pos.x, pos.y - TOUCH_MARGIN,
+            rect = new RectF(pos.x, pos.y - UDpi.toPixel(TOUCH_MARGIN),
                     pos.x + bgLength, pos.y + bgWidth);
 
             if (rect.left <= ex && ex < rect.right &&

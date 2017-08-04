@@ -136,7 +136,7 @@ public class PageViewPresetBook extends UPageView
         // add items to ListView
         List<PresetBook> presetBooks = PresetBookManager.getInstance().getBooks();
         for (PresetBook presetBook : presetBooks) {
-            ListItemPresetBook item = new ListItemPresetBook(this, presetBook, mListView.getClientSize().width);
+                ListItemPresetBook item = new ListItemPresetBook(this, presetBook, mListView.getClientSize().width);
             mListView.add(item);
         }
         mListView.updateWindow();
