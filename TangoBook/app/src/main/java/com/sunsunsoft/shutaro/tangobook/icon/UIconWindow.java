@@ -1416,10 +1416,11 @@ public class UIconWindow extends UWindow {
         UIconWindow window1 = dragIcon.parentWindow;
         UIconWindow window2 = _dropedIcon.getSubWindow();
         List<UIcon> icons = window1.getIcons();
+        List<UIcon> icons2 = window2.getIcons();
 
         icons.removeAll(checkedIcons);
+        icons2.addAll(checkedIcons);
 
-        window2.sortIcons(false);
         for (UIcon icon : checkedIcons) {
             icon.isChecking = false;
             icon.setParentWindow(window2);
@@ -1438,6 +1439,7 @@ public class UIconWindow extends UWindow {
         RealmManager.getItemPosDao().moveItems(items, _dropedIcon.getParentType().ordinal(),
                 itemId);
 
+        window2.sortIcons(false);
         // 箱の中に入れた後のアイコン整列後にチェックを解除したいのでフラグを持っておく
         isDropInBox = true;
     }
