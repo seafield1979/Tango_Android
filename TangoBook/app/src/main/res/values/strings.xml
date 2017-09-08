@@ -123,7 +123,7 @@
     <string name="confirm_moveto_trash">ゴミ箱に捨てますか？</string>
     <string name="confirm_cleanup_trash">ゴミ箱を空にしますか？</string>
     <string name="confirm_clear_history">学習記録をクリアしますか？</string>
-    <string name="study_list_is_empty1">学習履歴がありません</string>
+    <string name="study_list_is_empty1">単語帳がありません</string>
     <string name="confirm_export_csv">単語帳をcsvファイルに出力しますか？\n出力したファイルから単語帳を復元できます。</string>
     <string name="no_study_history">学習履歴がありません</string>
 

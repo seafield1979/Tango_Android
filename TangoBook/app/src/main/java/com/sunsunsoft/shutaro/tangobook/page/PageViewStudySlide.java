@@ -173,9 +173,10 @@ public class PageViewStudySlide extends PageViewStudy
         mExitButton = new UButtonText(this, UButtonType.Press,
                 ButtonIdExit,
                 DRAW_PRIORITY, mContext.getString(R.string.finish),
-                (screenW - UDpi.toPixel(BUTTON_W)) / 2, screenH - UDpi.toPixel(50),
+                (screenW - UDpi.toPixel(BUTTON_W)) / 2,
+                screenH - UDpi.toPixel(50),
                 UDpi.toPixel(BUTTON_W), UDpi.toPixel(BUTTON_H),
-                UDpi.toPixel(TEXT_SIZE), Color.BLACK, Color.rgb(100,200,100));
+                UDpi.toPixel(TEXT_SIZE), Color.BLACK, UColor.ExitButton);
         mExitButton.addToDrawManager();
 
         // OK

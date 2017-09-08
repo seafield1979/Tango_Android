@@ -171,7 +171,7 @@ public class PageViewHistory extends UPageView
                     // リストが空の場合はクリアできないメッセージを表示
                     title = UResourceManager.getStringById(R.string.error);
                     message = UResourceManager.getStringById(R.string
-                            .study_list_is_empty1);
+                            .no_study_history);
                 } else {
                     // リストがある場合はクリア確認メッセージを表示
                     title = UResourceManager.getStringById(R.string.confirm);

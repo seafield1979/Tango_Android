@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.uview.button.UButtonCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogCallbacks;
 import com.sunsunsoft.shutaro.tangobook.uview.window.UDialogWindow;
@@ -56,7 +57,7 @@ abstract  class PageViewStudy extends UPageView
                     Color.BLACK, Color.LTGRAY);
             mConfirmDialog.addToDrawManager();
             mConfirmDialog.setTitle(mContext.getString(R.string.confirm_exit));
-            mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, Color.WHITE);
+            mConfirmDialog.addButton(ButtonIdExitOk, "OK", Color.BLACK, UColor.OkButton);
             mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
         }
     }

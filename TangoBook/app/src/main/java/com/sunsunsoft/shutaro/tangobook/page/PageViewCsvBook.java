@@ -12,6 +12,7 @@ import com.sunsunsoft.shutaro.tangobook.preset.*;
 import com.sunsunsoft.shutaro.tangobook.R;
 import com.sunsunsoft.shutaro.tangobook.util.FileDialog;
 import com.sunsunsoft.shutaro.tangobook.util.FilePathType;
+import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UUtil;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
@@ -201,7 +202,7 @@ public class PageViewCsvBook extends UPageView
                     Color.BLACK, Color.LTGRAY);
             mMessageDialog.addToDrawManager();
             mMessageDialog.setTitle(title);
-            mMessageDialog.addButton(ButtonIdAddOk2, "OK", Color.BLACK, Color.WHITE);
+            mMessageDialog.addButton(ButtonIdAddOk2, "OK", Color.BLACK, UColor.OkButton);
         }
     }
 
@@ -221,7 +222,7 @@ public class PageViewCsvBook extends UPageView
             mConfirmDialog.addToDrawManager();
             String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book), book.mName);
             mConfirmDialog.setTitle(title);
-            mConfirmDialog.addButton(ButtonIdAddOk, "OK", Color.BLACK, Color.WHITE);
+            mConfirmDialog.addButton(ButtonIdAddOk, "OK", Color.BLACK, UColor.OkButton);
             mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
             // クリックされた項目のBookを記憶しておく

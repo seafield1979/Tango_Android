@@ -9,12 +9,12 @@
     <item android:id="@+id/action_sort_word_desc"
           android:title="@string/sort_word_desc_2"
         />
-    <item android:id="@+id/action_sort_time_asc"
-          android:title="@string/sort_time_asc_2"
-        />
-    <item android:id="@+id/action_sort_time_desc"
-          android:title="@string/sort_time_desc_2"
-        />
+    <!--<item android:id="@+id/action_sort_time_asc"-->
+          <!--android:title="@string/sort_time_asc_2"-->
+        <!--/>-->
+    <!--<item android:id="@+id/action_sort_time_desc"-->
+          <!--android:title="@string/sort_time_desc_2"-->
+        <!--/>-->
     <item android:id="@+id/action_sort_studied_time_asc"
           android:title="@string/sort_studied_time_asc"
         />

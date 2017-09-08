@@ -170,7 +170,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
         String title = getCardsRemainText(mCardsStack.getCardCount());
         mTextCardCount = UTextView.createInstance( title, UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY,
                 UAlignment.CenterX, width, false, true,
-                width / 2, UDpi.toPixel(17), UDpi.toPixel(100), Color.rgb(100,50,50), 0);
+                width / 2, UDpi.toPixel(17), UDpi.toPixel(100), UColor.ExitButton, 0);
         mTextCardCount.addToDrawManager();
 
         int buttonW = UDpi.toPixel(BUTTON_W);
@@ -181,7 +181,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
                 DRAW_PRIORITY, mContext.getString(R.string.finish),
                 width / 2 - buttonW - UDpi.toPixel(MARGIN_H) / 2, height - UDpi.toPixel(50),
                 buttonW, UDpi.toPixel(BUTTON_H),
-                UDpi.toPixel(TEXT_SIZE), Color.BLACK, Color.rgb(100,200,100));
+                UDpi.toPixel(TEXT_SIZE), Color.BLACK, UColor.ExitButton);
         mExitButton.addToDrawManager();
 
         // 現在のカードをスキップボタン
@@ -190,7 +190,7 @@ public class PageViewStudyInputCorrect extends PageViewStudy
                 DRAW_PRIORITY, mContext.getString(R.string.skip),
                 width / 2 + UDpi.toPixel(MARGIN_H) / 2, height - UDpi.toPixel(50),
                 buttonW, UDpi.toPixel(BUTTON_H),
-                UDpi.toPixel(TEXT_SIZE), Color.BLACK, UColor.LightPink);
+                UDpi.toPixel(TEXT_SIZE), Color.BLACK, UColor.Yellow);
         mSkipButton.addToDrawManager();
 
         // 設定ボタン

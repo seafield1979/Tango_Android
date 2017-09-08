@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.sunsunsoft.shutaro.tangobook.preset.*;
 import com.sunsunsoft.shutaro.tangobook.R;
+import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
 import com.sunsunsoft.shutaro.tangobook.uview.UListView;
@@ -185,7 +186,7 @@ public class PageViewPresetBook extends UPageView
             mMessageDialog.addToDrawManager();
             String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book2), mBook.mName);
             mMessageDialog.setTitle(title);
-            mMessageDialog.addButton(ButtonIdAddOk2, "OK", Color.BLACK, Color.WHITE);
+            mMessageDialog.addButton(ButtonIdAddOk2, "OK", Color.BLACK, UColor.OkButton);
         }
     }
 
@@ -272,7 +273,7 @@ public class PageViewPresetBook extends UPageView
                     mConfirmDialog.addToDrawManager();
                     String title = String.format(UResourceManager.getStringById(R.string.confirm_add_book), book.getBook().mName);
                     mConfirmDialog.setTitle(title);
-                    mConfirmDialog.addButton(ButtonIdAddOk, "OK", Color.BLACK, Color.WHITE);
+                    mConfirmDialog.addButton(ButtonIdAddOk, "OK", Color.BLACK, UColor.OkButton);
                     mConfirmDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
                     // クリックされた項目のBookを記憶しておく
@@ -295,3 +296,4 @@ public class PageViewPresetBook extends UPageView
         }
     }
 }
+

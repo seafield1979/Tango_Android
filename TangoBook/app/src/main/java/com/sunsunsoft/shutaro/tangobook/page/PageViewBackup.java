@@ -15,6 +15,7 @@ import com.sunsunsoft.shutaro.tangobook.listview.ListViewBackup;
 import com.sunsunsoft.shutaro.tangobook.backup.BackupFileInfo;
 import com.sunsunsoft.shutaro.tangobook.backup.BackupManager;
 import com.sunsunsoft.shutaro.tangobook.backup.XmlBackupCallbacks;
+import com.sunsunsoft.shutaro.tangobook.util.UColor;
 import com.sunsunsoft.shutaro.tangobook.util.UDpi;
 import com.sunsunsoft.shutaro.tangobook.util.UResourceManager;
 import com.sunsunsoft.shutaro.tangobook.uview.*;
@@ -187,7 +188,7 @@ public class PageViewBackup extends UPageView
                 UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
         mDialog.addToDrawManager();
         mDialog.setTitle(title);
-        mDialog.addButton(buttonId, "OK", Color.BLACK, Color.WHITE);
+        mDialog.addButton(buttonId, "OK", Color.BLACK, UColor.OkButton);
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
     }
 
@@ -236,7 +237,7 @@ public class PageViewBackup extends UPageView
                 UDialogWindow.ButtonDir.Horizontal, mParentView.getWidth(), mParentView.getHeight());
         mDialog.addToDrawManager();
         mDialog.setTitle(text);
-        mDialog.addCloseButton("OK", Color.BLACK, Color.WHITE);
+        mDialog.addCloseButton("OK", Color.BLACK, UColor.OkButton);
     }
 
     public void ListItemButtonClicked(UListItem item, int buttonId) {

@@ -395,11 +395,13 @@ public class StudyCard extends UDrawable implements UButtonCallbacks {
                         pos.x += slideX;
                         slideX = 0;
                         moveRequest = lastRequest = RequestToParent.MoveToNG;
+                        setColor(NG_BG_COLOR);
                     } else if (slideX >= UDpi.toPixel(SLIDE_LEN)) {
                         // OK
                         pos.x += slideX;
                         slideX = 0;
                         moveRequest = lastRequest = RequestToParent.MoveToOK;
+                        setColor(OK_BG_COLOR);
                     }
                 }
                 break;

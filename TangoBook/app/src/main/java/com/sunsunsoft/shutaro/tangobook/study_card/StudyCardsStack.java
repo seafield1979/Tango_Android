@@ -13,6 +13,8 @@ import com.sunsunsoft.shutaro.tangobook.app.MySharedPref;
 
 import java.util.LinkedList;
 
+import static com.sunsunsoft.shutaro.tangobook.study_card.StudyMode.SlideOne;
+
 /**
  * Created by shutaro on 2016/12/07.
  *
@@ -35,6 +37,7 @@ public class StudyCardsStack extends UDrawable {
 
     // layout
     public static final int MARGIN_V = 10;
+    protected static final int CARD_H = 200;
     protected static final int MOVING_FRAME = 10;
 
 
@@ -103,7 +106,7 @@ public class StudyCardsStack extends UDrawable {
             isMultiCard = true;
         }
 
-        setInitialCards(canvasW, isMultiCard, maxHeight);
+        setInitialCards(canvasW, isMultiCard);
     }
 
     /**
@@ -112,13 +115,13 @@ public class StudyCardsStack extends UDrawable {
     /**
      * 初期表示分のカードを取得
      */
-    protected void setInitialCards(int canvasW, boolean isMultiCard, int maxHeight) {
+    protected void setInitialCards(int canvasW, boolean isMultiCard) {
         boolean isEnglish = (MySharedPref.getStudyType() == StudyType.EtoJ);
 
         while(mCardManager.getCardCount() > 0) {
             TangoCard tangoCard = mCardManager.popCard();
             StudyCard studyCard = new StudyCard(tangoCard, isMultiCard, isEnglish,
-                    canvasW, maxHeight);
+                    canvasW, UDpi.toPixel(CARD_H));
             mCardsInBackYard.add(studyCard);
         }
     }
@@ -236,15 +239,20 @@ public class StudyCardsStack extends UDrawable {
 
         float dstY;
 
-        if (mCards.size() > 0) {
-            // スタックの最後のカードの上に配置
-            int height = 0;
-            for (StudyCard _card : mCards) {
-                height += _card.getHeight() + UDpi.toPixel(MARGIN_V);
-            }
-            dstY = size.height - height - card.getHeight();
+        if (mStudyMode == StudyMode.SlideOne) {
+            // 画面の中央に来るように配置
+            dstY = (size.height - card.getHeight()) / 2;
         } else {
-            dstY = size.height - card.getHeight();
+            if (mCards.size() > 0) {
+                // スタックの最後のカードの上に配置
+                int height = 0;
+                for (StudyCard _card : mCards) {
+                    height += _card.getHeight() + UDpi.toPixel(MARGIN_V);
+                }
+                dstY = size.height - height - card.getHeight();
+            } else {
+                dstY = size.height - card.getHeight();
+            }
         }
 
         mCards.add(card);

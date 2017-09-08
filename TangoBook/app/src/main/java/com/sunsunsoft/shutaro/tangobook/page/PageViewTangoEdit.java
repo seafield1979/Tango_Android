@@ -199,7 +199,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                         Color.BLACK, Color.LTGRAY);
                 mDialog.addToDrawManager();
                 mDialog.setTitle(mContext.getString(R.string.confirm_moveto_trash));
-                mDialog.addButton(ButtonIdMoveIconsToTrash, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addButton(ButtonIdMoveIconsToTrash, "OK", Color.BLACK, UColor.OkButton);
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
                 mParentView.invalidate();
             }
@@ -695,7 +695,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
                         Color.BLACK, Color.LTGRAY);
                 mDialog.addToDrawManager();
                 mDialog.setTitle(message);
-                mDialog.addButton(ExportFinishedDialogButtonOk, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addButton(ExportFinishedDialogButtonOk, "OK", Color.BLACK, UColor.OkButton);
             }
                 break;
             case ExportFinishedDialogButtonOk:
@@ -924,7 +924,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
             // ボタンを追加
             mDialog.addButton(CleanupDialogButtonOK, "OK", Color.BLACK,
-                    UColor.LightGreen);
+                    UColor.OkButton);
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
         }
     }
@@ -997,7 +997,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
                 // ボタンを追加
                 mDialog.addButton(ButtonIdCopyOK, "OK", Color.BLACK,
-                        UColor.LightGreen);
+                        UColor.OkButton);
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
                 // 捨てるアイコンを保持
@@ -1023,7 +1023,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
                 // ボタンを追加
                 mDialog.addButton(TrashDialogButtonOK, "OK", Color.BLACK,
-                        UColor.LightGreen);
+                        UColor.OkButton);
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
                 // 捨てるアイコンを保持
@@ -1051,7 +1051,7 @@ public class PageViewTangoEdit extends UPageView implements UMenuItemCallbacks,
 
                 // ボタンを追加
                 mDialog.addButton(ExportDialogButtonOK, "OK", Color.BLACK,
-                        UColor.LightGreen);
+                        UColor.OkButton);
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
 
                 // アイコンを保持

@@ -180,7 +180,7 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks, UBut
         mDialog.addToDrawManager();
 
         mDialog.setTitle("アプリの情報を初期化しますか？");
-        mDialog.addButton(ButtonIdClearOK, "OK", UColor.BLACK, UColor.WHITE);
+        mDialog.addButton(ButtonIdClearOK, "OK", UColor.BLACK, UColor.OkButton);
         mDialog.addCloseButton("Cancel");
     }
 
@@ -216,7 +216,7 @@ public class PageViewDebug extends UPageView implements UListItemCallbacks, UBut
                 mDialog.addToDrawManager();
                 mDialog.setTitle("System data has cleared!!");
 
-                mDialog.addCloseButton("OK", UColor.BLACK, UColor.WHITE);
+                mDialog.addCloseButton("OK", UColor.BLACK, UColor.OkButton);
                 return true;
         }
         return false;

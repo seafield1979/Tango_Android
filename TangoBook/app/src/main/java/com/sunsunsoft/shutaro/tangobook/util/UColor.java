@@ -37,7 +37,7 @@ public class UColor extends Color {
     public static final int LightBlue = 0xFFADD8E6;
     public static final int LightCyan = 0xFFE0FFFF;
     public static final int LightGreen = 0xFF90EE90;
-    public static final int LightGray = 0xFFD3D3D3;
+    public static final int LightGray = 0xFFE0E0E0;
     public static final int LightPink = 0xFFFFB6C1;
     public static final int LightRed = 0xFFEE9090;
     public static final int LightSalmon = 0xFFFFA07A;
@@ -66,6 +66,8 @@ public class UColor extends Color {
     public static final int Yellow = 0xFFFFFF00;
     public static final int YellowGreen = 0xFF9ACD32;
 
+    public static final int OkButton = LightGreen;
+    public static final int ExitButton = LightBlue;
 
     /**
      * ランダムな色を取得

@@ -302,7 +302,6 @@ public class UIconWindow extends UWindow {
         mIconManager = UIconManager.createInstance(this, iconCallbacks);
         this.windowCallbacks = windowCallbacks;
         this.dir = dir;
-        iconMargin = UDpi.toPixel(ICON_MARGIN);
         iconW = UDpi.toPixel(ICON_W);
         iconH = UDpi.toPixel(ICON_H);
     }
@@ -455,15 +454,16 @@ public class UIconWindow extends UWindow {
 
         int i=0;
         if (dir == WindowDir.Vertical) {
-            int column = (clientSize.width - iconMargin) / (iconW + iconMargin);
+            int margin = UDpi.toPixel(ICON_MARGIN);
+            int column = (int)(clientSize.width * 0.9) / (iconW + margin);
             if (column <= 0) {
                 return;
             }
-            int margin = (clientSize.width - iconW * column) / (column + 1);
+            iconMargin = (clientSize.width - iconW * column) / (column + 1);
             for (UIcon icon : icons) {
-                int x = margin + (i % column) * (iconW + margin);
-                int y = margin + (i / column) * (iconH + margin);
-                int height = y + (iconH + margin) * 2;
+                int x = iconMargin + (i % column) * (iconW + iconMargin);
+                int y = iconMargin + (i / column) * (iconH + iconMargin);
+                int height = y + (iconH + iconMargin) * 2;
                 if (height >= maxSize) {
                     maxSize = height;
                 }
@@ -480,15 +480,15 @@ public class UIconWindow extends UWindow {
                 i++;
             }
         } else {
-            int column = (clientSize.height - iconMargin) / (iconH + iconMargin);
+            int column = (int)(clientSize.height * 0.9) / (iconH + iconMargin);
             if (column <= 0) {
                 return;
             }
-            int margin = (clientSize.height - iconH * column) / (column + 1);
+            iconMargin = (clientSize.height - iconH * column) / (column + 1);
             for (UIcon icon : icons) {
-                int x = margin + (i / column) * (iconW + margin);
-                int y = margin + (i % column) * (iconH + margin);
-                int width = x + (iconW + margin);
+                int x = iconMargin + (i / column) * (iconW + iconMargin);
+                int y = iconMargin + (i % column) * (iconH + iconMargin);
+                int width = x + (iconW + iconMargin);
                 if (width >= maxSize) {
                     maxSize = width;
                 }
@@ -757,11 +757,15 @@ public class UIconWindow extends UWindow {
                 switch(ret.movingType) {
                     case Insert:
                         // ドロップ先の位置に挿入
-                        insertIcons(dragedIcon, ret.dropedIcon, true);
+                        if (insertIcons(dragedIcon, ret.dropedIcon, true)) {
+                            isDroped = true;
+                        }
                         break;
                     case Exchange:
                         // ドロップ先のアイコンと場所交換
-                        changeIcons(dragedIcon, ret.dropedIcon);
+                        if (changeIcons(dragedIcon, ret.dropedIcon)) {
+                            isDroped = true;
+                        }
                         break;
                 }
             }
@@ -1218,7 +1222,7 @@ public class UIconWindow extends UWindow {
      * @param icon1
      * @param icon2
      */
-    private void changeIcons(UIcon icon1, UIcon icon2 )
+    private boolean changeIcons(UIcon icon1, UIcon icon2 )
     {
         // アイコンの位置を交換
         // 並び順も重要！
@@ -1229,7 +1233,7 @@ public class UIconWindow extends UWindow {
 
         int index = icons2.indexOf(icon2);
         int index2 = icons1.indexOf(icon1);
-        if (index == -1 || index2 == -1) return;
+        if (index == -1 || index2 == -1) return false;
 
 
         icons1.remove(icon1);
@@ -1256,6 +1260,7 @@ public class UIconWindow extends UWindow {
         }
 
         window1.sortIcons(true);
+        return true;
     }
 
     /**
@@ -1264,7 +1269,7 @@ public class UIconWindow extends UWindow {
      * @param icon2  挿入先のアイコン
      * @param animate
      */
-    private void insertIcons(UIcon icon1, UIcon icon2, boolean animate)
+    private boolean insertIcons(UIcon icon1, UIcon icon2, boolean animate)
     {
         UIconWindow window1 = icon1.parentWindow;
         UIconWindow window2 = icon2.parentWindow;
@@ -1274,7 +1279,7 @@ public class UIconWindow extends UWindow {
         int index1 = icons1.indexOf(icon1);
         int index2 = icons2.indexOf(icon2);
 
-        if (index1 == -1 || index2 == -1) return;
+        if (index1 == -1 || index2 == -1) return false;
 
         // 挿入元と先の位置関係で追加と削除の順番が前後する
         if (index1 < index2) {
@@ -1292,28 +1297,35 @@ public class UIconWindow extends UWindow {
             icon2.setParentWindow(window1);
 
             // ドロップアイコンの座標系を変換
-            dragedIcon.setPos(icon1.getX() + window2.pos.x - window1.pos.x,
-                    icon1.getY() + window2.pos.y - window1.pos.y);
+//            dragedIcon.setPos(icon1.getX() + (window1.pos.x - window2.pos.x),
+//                    icon1.getY() + (window1.pos.y - window2.pos.y));
             window2.sortIcons(animate);
 
             // データベース更新
             // 挿入位置以降の全てのposを更新
             if (index1 < icons1.size()) {
-                RealmManager.getItemPosDao().updatePoses(icons1, icons1.get(index1).getTangoItem()
-                        .getPos());
+                RealmManager.getItemPosDao().updatePoses(
+                        icons1,
+                        window1.parentType.ordinal(),
+                        window1.getParentId(),
+                        0);
             }
-            if (index1 < icons2.size()) {
-                RealmManager.getItemPosDao().updatePoses(icons2, icons2.get(index2).getTangoItem()
-                        .getPos());
+            if (index2 < icons2.size()) {
+                RealmManager.getItemPosDao().updatePoses(
+                        icons2,
+                        window2.parentType.ordinal(),
+                        window2.getParentId(),
+                        0);
             }
         } else {
             // データベース更新
             // 挿入位置でずれた先頭以降のposを更新
             int startPos = (index1 < index2) ? index1 : index2;
-            RealmManager.getItemPosDao().updatePoses(icons1, startPos);
+            RealmManager.getItemPosDao().updatePoses(icons1, window1.parentType.ordinal(), window1.parentId, startPos);
         }
 
         window1.sortIcons(animate);
+        return true;
     }
 
     /**

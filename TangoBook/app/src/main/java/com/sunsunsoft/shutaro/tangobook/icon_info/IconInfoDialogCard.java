@@ -164,19 +164,20 @@ public class IconInfoDialogCard extends IconInfoDialog {
      */
     protected void updateLayout(Canvas canvas) {
 
-        int y = TOP_ITEM_Y;
 
         List<ActionIcons> icons = ActionIcons.getCardIcons();
 
-        int width = UDpi.toPixel(ICON_W) * icons.size() + UDpi.toPixel(ICON_MARGIN_H) * (icons.size() + 1) + UDpi.toPixel(DLG_MARGIN);
+        int width = mParentView.getWidth() - UDpi.toPixel(ICON_MARGIN_H) * 2;
+        int x = width / 2;
+        int y = UDpi.toPixel(TOP_ITEM_Y);
         int fontSizeS = UDraw.getFontSize(FontSize.S);
         int fontSize = UDraw.getFontSize(FontSize.M);
 
         // タイトル(カード)
         textTitle = UTextView.createInstance( mContext.getString(R.string.card),
                 UDpi.toPixel(TEXT_SIZE_M), 0,
-                UAlignment.None, canvas.getWidth(), false, false,
-                UDpi.toPixel(MARGIN_H), y, width - UDpi.toPixel(MARGIN_H) * 2, TITLE_COLOR, TEXT_BG_COLOR);
+                UAlignment.CenterX, canvas.getWidth(), false, false,
+                x, y, width - UDpi.toPixel(MARGIN_H) * 2, TITLE_COLOR, TEXT_BG_COLOR);
         y += UDpi.toPixel(TEXT_SIZE_L + MARGIN_V);
 
         String titleStr = null;
@@ -223,16 +224,16 @@ public class IconInfoDialogCard extends IconInfoDialog {
             // title
             mItems[item.ordinal()].title = UTextView.createInstance( titleStr ,
                     fontSizeS, 0,
-                    UAlignment.None, canvas.getWidth(), false, false,
-                    UDpi.toPixel(MARGIN_H), y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, 0);
+                    UAlignment.CenterX, canvas.getWidth(), false, false,
+                    x, y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, 0);
 
             y += mItems[item.ordinal()].title.getHeight() + UDpi.toPixel(MARGIN_V_S);
 
             // body
             mItems[item.ordinal()].body = UTextView.createInstance( bodyStr,
                     fontSize, 0,
-                    UAlignment.None, canvas.getWidth(), true, true,
-                    UDpi.toPixel(MARGIN_H), y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, bgColor);
+                    UAlignment.CenterX, canvas.getWidth(), true, true,
+                    x, y, size.width - UDpi.toPixel(MARGIN_H), TEXT_COLOR, bgColor);
             y += mItems[item.ordinal()].body.getHeight() + UDpi.toPixel(MARGIN_V_S);
 
             // 幅は最大サイズに合わせる
@@ -250,7 +251,8 @@ public class IconInfoDialogCard extends IconInfoDialog {
         }
 
         // アクションボタン
-        int x = (width - (UDpi.toPixel(ICON_W) * icons.size() + UDpi.toPixel(MARGIN_H) * (icons.size() - 1))) / 2;
+        x = (width - (UDpi.toPixel(ICON_W) * icons.size() + UDpi.toPixel(ICON_MARGIN_H) * (icons.size() - 1))) / 2;
+
         for (ActionIcons icon : icons) {
             int color = (icon == ActionIcons.Favorite) ? UColor.LightYellow : frameColor;
 
@@ -291,13 +293,9 @@ public class IconInfoDialogCard extends IconInfoDialog {
 
         setSize(width, y);
 
-        // 座標補正
-        if ( pos.x + size.width > mParentView.getWidth() - UDpi.toPixel(DLG_MARGIN)) {
-            pos.x = mParentView.getWidth() - size.width - UDpi.toPixel(DLG_MARGIN);
-        }
-        if (pos.y + size.height > mParentView.getHeight() - UDpi.toPixel(DLG_MARGIN)) {
-            pos.y = mParentView.getHeight() - size.height - UDpi.toPixel(DLG_MARGIN);
-        }
+        // ダイアログの座標
+        pos.x = (mParentView.getWidth() - width) / 2;
+        pos.y = (mParentView.getHeight() - y) / 2;
         updateRect();
     }
 

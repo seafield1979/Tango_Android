@@ -131,7 +131,7 @@ public class PageViewStudyBookSelect extends UPageView
             // リストが空
             mListView = null;
             y += UDpi.toPixel(67);
-            UTextView text = UTextView.createInstance(UResourceManager.getStringById(R.string.no_study_history),
+            UTextView text = UTextView.createInstance(UResourceManager.getStringById(R.string.study_list_is_empty1),
                     UDpi.toPixel(TEXT_SIZE), DRAW_PRIORITY - 1,
                     UAlignment.CenterX, width, false, false,
                     width / 2, y, width, Color.BLACK, 0);

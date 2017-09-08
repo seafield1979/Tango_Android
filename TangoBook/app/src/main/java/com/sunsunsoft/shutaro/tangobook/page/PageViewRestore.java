@@ -181,7 +181,7 @@ public class PageViewRestore extends UPageView
             // 復元確認ダイアログの表示
             mDialog.setTitle(mContext.getString(R.string.confirm_restore));
             mDialog.addTextView(fileInfo + "\n\n", UAlignment.CenterX, true, false, UDpi.toPixel(TEXT_SIZE_S), TEXT_COLOR, 0);
-            mDialog.addButton(ButtonIdRestoreFromFileOK, "OK", Color.BLACK, Color.WHITE);
+            mDialog.addButton(ButtonIdRestoreFromFileOK, "OK", Color.BLACK, UColor.OkButton);
             mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
         } else {
             // ファイルから情報を取得できなかった
@@ -207,7 +207,7 @@ public class PageViewRestore extends UPageView
         // 復元確認ダイアログの表示
         mDialog.setTitle(mContext.getString(R.string.confirm_restore2));
         mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
-        mDialog.addButton(ButtonIdRestoreOK2, "OK", Color.BLACK, Color.WHITE);
+        mDialog.addButton(ButtonIdRestoreOK2, "OK", Color.BLACK, UColor.OkButton);
     }
     /**
      * 復元を行う
@@ -226,7 +226,7 @@ public class PageViewRestore extends UPageView
                 UDialogWindow.ButtonDir.Horizontal, mParentView.getWidth(), mParentView.getHeight());
         mDialog.addToDrawManager();
         mDialog.setTitle(title);
-        mDialog.addCloseButton("OK", Color.BLACK, Color.WHITE);
+        mDialog.addCloseButton("OK", Color.BLACK, UColor.OkButton);
 
         return ret;
     }
@@ -307,14 +307,14 @@ public class PageViewRestore extends UPageView
                         UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
                 mDialog.addToDrawManager();
                 mDialog.setTitle(mContext.getString(R.string.backup_not_found));
-                mDialog.addButton(ButtonIdNotFoundOK, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addButton(ButtonIdNotFoundOK, "OK", Color.BLACK, UColor.OkButton);
             } else {
                 // ファイルがあるので復元確認ダイアログを表示する
                 mDialog = UDialogWindow.createInstance(this, this,
                         UDialogWindow.ButtonDir.Horizontal, width, mParentView.getHeight());
                 mDialog.addToDrawManager();
                 mDialog.setTitle(mContext.getString(R.string.confirm_restore));
-                mDialog.addButton(ButtonIdRestoreOK1, "OK", Color.BLACK, Color.WHITE);
+                mDialog.addButton(ButtonIdRestoreOK1, "OK", Color.BLACK, UColor.OkButton);
                 mDialog.addCloseButton(UResourceManager.getStringById(R.string.cancel));
             }
         }

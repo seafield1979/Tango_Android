@@ -74,7 +74,7 @@ public class StudyCardInput extends UDrawable implements UButtonCallbacks {
     protected static final int ONE_TEXT_HEIGHT = TEXT_SIZE + 7;
 
     // color
-    protected static final int BUTTON_COLOR = UColor.LTGRAY;
+    protected static final int BUTTON_COLOR = UColor.LightGray;
     protected static final int NG_BUTTON_COLOR = UColor.LightRed;
 
 

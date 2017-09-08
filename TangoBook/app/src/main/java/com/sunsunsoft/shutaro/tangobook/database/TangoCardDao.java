@@ -116,7 +116,7 @@ public class TangoCardDao {
             // 全ての項目を取得しているがRealmは遅延ロードでそんなに時間がかからない。
             results = mRealm.where(TangoCard.class).findAll();
             // 最低２件以上のレコードがないと後の処理で無限ループにはまる
-            if (!(results == null || results.size() <= 2)) {
+            if (!(results == null || results.size() >= 2)) {
                 Random rand = new Random();
                 for (int i = 0; i < num; i++) {
                     TangoCard card;

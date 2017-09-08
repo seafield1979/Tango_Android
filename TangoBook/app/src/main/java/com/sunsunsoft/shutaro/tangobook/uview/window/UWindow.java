@@ -56,7 +56,7 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
     protected static final int FRAME_COLOR = 0;
     private static final int TOUCH_MARGIN = 13;
     private static final int BG_RADIUS = 7;
-    private static final int BG_FRAME_W = 1;
+    private static final int BG_FRAME_W = 2;
 
     /**
      * Member Variables
@@ -376,9 +376,11 @@ abstract public class UWindow extends UDrawable implements UButtonCallbacks {
         int frameWidth = (frameColor == 0) ? 0 : UDpi.toPixel(BG_FRAME_W);
         UDraw.drawRoundRectFill(canvas, paint, new RectF(rect), UDpi.toPixel(BG_RADIUS), bgColor, frameWidth, frameColor);
     }
+
     protected void drawBG(Canvas canvas, Paint paint) {
         this.drawBG(canvas, paint, rect);
     }
+
 
     protected void drawBG(Canvas canvas, Paint paint, PointF offset) {
         this.drawBG(canvas, paint, new Rect((int)offset.x + rect.left,

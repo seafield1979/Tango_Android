@@ -993,9 +993,11 @@ public class TangoItemPosDao {
     /**
      * 指定位置以降のアイコンの保持するアイテムのposを更新
      * @param icons
+     * @param parentType  親の種類
+     * @param parentId  親のID
      * @param startPos
      */
-    public void updatePoses(List<UIcon> icons, int startPos )
+    public void updatePoses(List<UIcon> icons, int parentType, int parentId, int startPos )
     {
         int pos = startPos;
 
@@ -1024,6 +1026,8 @@ public class TangoItemPosDao {
                     .findFirst();
             if (result == null) continue;
 
+            result.setParentType(parentType);
+            result.setParentId(parentId);
             result.setPos(pos);
             tangoItem.setPos(pos);
             pos++;
